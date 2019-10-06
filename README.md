@@ -2,6 +2,15 @@
 ### Emulador del microprocesador de arquitectura microsex de memoria común
 
 Uso del código require Python 3.6 por el uso de la librería PyQt5
+(No estoy seguro si es un bug pero PyQt5 en Python 3.7 no llega a instalarse correctamente en mi PC)
+
+# POR CORREGIR:
+
+- [ ] Cambiar mnemónico de INV >> NOT.
+- [ ] Generar archivo de listado y mostrar en la interfaz gráfica.
+- [ ] Corregir archivo que actualiza la tabla de símbolos.
+- [ ] Corregir la verificación del tipo de datos (crear una clase para utilizar en los modos de direccionamiento).
+- [ ] Agregar funciones matemáticas en el direccionamiento indexado.
 
 #### 1. Instalar librería PyQt5
 
@@ -38,6 +47,11 @@ Unidad Secuencial de Cálculo
 Unidad Secuencial de Cálculo con memoria de datos
 
     python usc_md.py
+    
+Computador Completo.
+La ejecución del computador completo despliega en la línea de comandos el código ensamblado en formato de archivo de listado
+
+    python cc.py
 
 #### 3. Ejecución de Módulos
 
