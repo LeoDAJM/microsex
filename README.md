@@ -30,49 +30,34 @@ Clonar o descargar el repositorio.
 
 En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex.
 
-Unidad Básica de Cálculo:
+- Unidad Básica de Cálculo (UBC)
+- Unidad Aritmética Lógica (ALU)
+- Unidad Secuencial de Cálculo (USC)
+- USC con Memoria de Datos (USC-MD)
+- Computador Completo (CC)
 
-    python ubc.py
-
-Unidad Aritmética Lógica
-
-    python alu.py
-  
-Unidad Secuencial de Cálculo
-
-    python usc.py
-
-Unidad Secuencial de Cálculo con memoria de datos
-
-    python usc_md.py
-    
-Computador Completo.
+```
+python ubc.py
+python alu.py
+python usc.py 
+python usc_md.py
+python cc.py
+```
 
 La ejecución del computador completo despliega en la línea de comandos el código ensamblado en formato de archivo de listado
 
-    python cc.py
 
 #### 3. Ejecución de Módulos
 
-Apuntar a la carpeta módulos:
+En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex/módulos:
 
-    cd microsex/modulos
-  
-Unidad Básica de Cálculo
-
-    python modulo_ubc.py
-
-Unidad Aritmética Lógica
-
-    python modulo_alu.py
-  
-Unidad Secuencial de Cálculo
-
-    python modulo_usc.py
-
-Unidad Secuencial de Cálculo con memoria de datos
-
-    python modulo_usc_md.py
+```  
+python modulo_ubc.py
+python modulo_alu.py
+python modulo_usc.py
+python modulo_usc_md.py
+python modulo_cc.py
+```
 
 #### 4. Ejecución del Programa completo
 
