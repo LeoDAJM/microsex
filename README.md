@@ -4,7 +4,7 @@
 Uso del código require Python 3.6 por el uso de la librería PyQt5
 (No estoy seguro si es un bug pero PyQt5 en Python 3.7 no llega a instalarse correctamente en mi PC)
 
-# POR CORREGIR:
+## POR CORREGIR:
 
 - [ ] Cambiar mnemónico de INV >> NOT.
 - [ ] Generar archivo de listado y mostrar en la interfaz gráfica.
@@ -12,15 +12,15 @@ Uso del código require Python 3.6 por el uso de la librería PyQt5
 - [ ] Corregir la verificación del tipo de datos (crear una clase para utilizar en los modos de direccionamiento).
 - [ ] Agregar funciones matemáticas en el direccionamiento indexado.
 
-#### 1. Instalar librería PyQt5
+### 1. Instalar librería PyQt5
 
 Para agregar la librería PyQt5:
 
-En Linux:
+#### En Linux:
 
     sudo apt install pyqt5
 
-En Windows:
+#### En Windows:
 
     pip install pyqt5
   
@@ -30,9 +30,7 @@ Clonar o descargar el repositorio.
 
 En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex.
 
-    cd microsex
-
-Unidad Básica de Cálculo
+Unidad Básica de Cálculo:
 
     python ubc.py
 
@@ -49,6 +47,7 @@ Unidad Secuencial de Cálculo con memoria de datos
     python usc_md.py
     
 Computador Completo.
+
 La ejecución del computador completo despliega en la línea de comandos el código ensamblado en formato de archivo de listado
 
     python cc.py
