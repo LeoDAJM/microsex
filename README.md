@@ -11,6 +11,7 @@ Uso del código require Python 3.6 por el uso de la librería PyQt5
 - [ ] Corregir archivo que actualiza la tabla de símbolos.
 - [ ] Corregir la verificación del tipo de datos (crear una clase para utilizar en los modos de direccionamiento).
 - [ ] Agregar funciones matemáticas en el direccionamiento indexado.
+- [ ] Mapear un puerto de entrada en el computador completo
 
 ### 1. Instalar librería PyQt5
 
