@@ -1,8 +1,8 @@
 # mircosex versión 1.0
 ### Emulador del microprocesador de arquitectura microsex de memoria común
 
-Uso del código require Python 3.6 por el uso de la librería PyQt5
-(No estoy seguro si es un bug pero PyQt5 en Python 3.7 no llega a instalarse correctamente en mi PC)
+Uso del código require Python 3.5 o superior por el uso de la librería PyQt5
+(Yo utilizo Python 3.6.8)
 
 ## POR CORREGIR:
 
