@@ -34,7 +34,7 @@ Para agregar la librería PyQt5:
     pip install pyqt5
 
 
-#### 2. Ejecución de Módulos
+### 2. Ejecución de Módulos
 
 En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex/SRC/GUI:
 
@@ -55,7 +55,7 @@ tabla de instrucciones USCE.txt
 tabla de instrucciones CC.txt
 ```
 
-#### 3. Ejecución del Programa completo
+### 3. Ejecución del Programa completo
 
 Desde la carpeta módulos ejecutar
 
