@@ -8,13 +8,12 @@ Uso del código require Python 3.6 por el uso de la librería PyQt5
 
 - [ ] Cambiar mnemónico de INV >> NOT.
 - [ ] Generar archivo de listado y mostrar en la interfaz gráfica.
-- [ ] Corregir archivo que actualiza la tabla de símbolos.
 - [ ] Corregir la verificación del tipo de datos (crear una clase para utilizar en los modos de direccionamiento).
-- [ ] Agregar funciones matemáticas en el direccionamiento indexado.
+- [ ] Definir funciones matemáticas en el direccionamiento indexado (sólo suma y resta).
 - [ ] Mapear un puerto de entrada en el computador completo.
 - [ ] Agregar modo de direccionamiento directo a instrucciones de carga de punteros.
-- [ ] Guardar archivo nuevo no habilita función para ensamblar/ejecutar.
-- [ ] Tabla de símbolos no sobreescribe nombres repetidos.
+- [ ] Corregir habilitación de función ensamblar al guardar archivo nuevo.
+- [ ] Tabla de símbolos debe sobreescribe nombres repetidos.
 
 ### 1. Instalar librería PyQt5
 
