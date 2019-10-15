@@ -14,6 +14,7 @@ Uso del código require Python 3.5 o superior por el uso de la librería PyQt5
 - [ ] Agregar modo de direccionamiento directo a instrucciones de carga de punteros.
 - [ ] Corregir habilitación de función ensamblar al guardar archivo nuevo.
 - [ ] Tabla de símbolos debe sobreescribe nombres repetidos.
+- [ ] Agregar Computador Completo (cc.py) a ejecución funcional.
 
 ### 1. Instalar librería PyQt5
 
@@ -37,14 +38,12 @@ En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex
 - Unidad Aritmética Lógica (ALU)
 - Unidad Secuencial de Cálculo (USC)
 - USC con Memoria de Datos (USC-MD)
-- Computador Completo (CC)
 
 ```
 python ubc.py
 python alu.py
 python usc.py 
 python usc_md.py
-python cc.py
 ```
 
 La ejecución del computador completo despliega en la línea de comandos el código ensamblado en formato de archivo de listado
@@ -66,4 +65,4 @@ python modulo_cc.py
 
 Desde la carpeta módulos ejecutar
 
-    python microsex_v01.py
+    python microsex.py
