@@ -68,7 +68,7 @@ tabla de instrucciones CC.txt
 - [ ] Definir funciones matemáticas en el direccionamiento indexado (sólo suma y resta).
 - [ ] Mapear un puerto de entrada en el computador completo.
 - [x] Agregar modo de direccionamiento directo a instrucciones de carga de punteros.
-- [ ] Corregir habilitación de función ensamblar al guardar archivo nuevo.
+- [x] Corregir habilitación de función ensamblar al guardar archivo nuevo.
 - [ ] Tabla de símbolos debe mostrar error si hay nombres repetidos.
 - [ ] Admitir definición de cadena de datos y sin nombre.
 - [ ] Ensamblar ASCII.
