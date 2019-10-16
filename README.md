@@ -36,17 +36,22 @@ Para agregar la librería PyQt5:
 
 ### 2. Ejecución de Módulos
 
-En la línea de comandos o terminal, cambiar el directorio a la carpeta microsex/SRC/GUI:
+En la línea de comandos o terminal, cambiar el directorio a la carpeta `microsex/SRC`
 
 ```  
-python modulo_ubc.py
-python modulo_alu.py
-python modulo_usc.py
-python modulo_usce.py
-python modulo_cc.py
+python modulo_UBC.py
+python modulo_ALU.py
+python modulo_USC.py
+python modulo_USCE.py
+python modulo_CC.py
 ```
 
-Las instrucciones incluidas en cada módulo están en la carpeta microsex/DOC
+Para la ejecución del programa completo, desde el mismo directorio, ejecutar
+
+    python microsex.py
+
+Las instrucciones incluidas en cada módulo están en la carpeta `microsex/DOC`
+
 ```
 tabla de instrucciones UBC.txt
 tabla de instrucciones ALU.txt
@@ -54,13 +59,6 @@ tabla de instrucciones USC.txt
 tabla de instrucciones USCE.txt
 tabla de instrucciones CC.txt
 ```
-
-### 3. Ejecución del Programa completo
-
-Desde la carpeta módulos ejecutar
-
-    python microsex.py
-
 
 ## POR CORREGIR:
 
