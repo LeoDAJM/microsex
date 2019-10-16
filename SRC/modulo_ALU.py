@@ -7,8 +7,8 @@ from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 
 from FUN.util import *
 from FUN.alu import unidad_aritmetica_logica
+import FUN.CONF.configALU as config
 
-import FUN.CONF.modulo_ALU_Config as config
 
 class ALU(QWidget):
 

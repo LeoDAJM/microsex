@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QFont
 from FUN.CONF.HojaEstilos import stylesheet
-from FUN.CONF.modulo_USC_Descod import nemonicosUSC
-from FUN.CONF.modulo_USC_Descod import descodificadorUSC
+from FUN.CONF.descodUSC import nemonicosUSC
+from FUN.CONF.descodUSC import descodificadorUSC
 
 # Valores para operar
 Acumulador    = [0]*8

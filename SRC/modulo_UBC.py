@@ -8,7 +8,7 @@ from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 from FUN.util import *
 from FUN.ubc import unidad_basica_calculo
 
-import FUN.CONF.modulo_UBC_Config as config
+import FUN.CONF.configUBC as config
 
 class UBC(QWidget):
     def __init__(self):

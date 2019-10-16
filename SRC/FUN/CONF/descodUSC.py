@@ -1,4 +1,4 @@
-from FUN.CONF.modulo_ALU_Descod import descodificadorALU
+from FUN.CONF.descodALU import descodificadorALU
 
 def expandir(funcion,*vector):
     palabra_control = list(funcion)

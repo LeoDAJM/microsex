@@ -7,7 +7,7 @@ from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 
 from FUN.util import *
 from FUN.usce import unidad_secuencial_calculo
-import FUN.CONF.modulo_USCE_Config as config
+import FUN.CONF.configUSCE as config
 
 
 class USCE(QWidget):

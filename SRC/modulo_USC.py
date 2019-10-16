@@ -8,7 +8,7 @@ from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 from FUN.util import *
 from FUN.alu import unidad_aritmetica_logica
 from FUN.usc import unidad_secuencial_calculo
-import FUN.CONF.modulo_USC_Config as config
+import FUN.CONF.configUSC as config
 
 
 class USC(QWidget):

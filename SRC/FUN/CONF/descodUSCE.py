@@ -1,5 +1,5 @@
-from FUN.CONF.modulo_USC_Descod import expandir
-from FUN.CONF.modulo_USC_Descod import descodificadorUSC
+from FUN.CONF.descodUSC import expandir
+from FUN.CONF.descodUSC import descodificadorUSC
 
 do_usc1 = descodificadorUSC()
 
