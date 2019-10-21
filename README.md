@@ -1,7 +1,7 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
-## CARACTERÍSITCAS
+## CARACTERÍSTICAS
 Emulador con módulos que demuestran el desarrollo evolutivo de un computador.
 
 - Unidad Básica de Cálculo
