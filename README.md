@@ -1,4 +1,4 @@
-# mircosex
+# microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
 ## CARACTERÍSITCAS
