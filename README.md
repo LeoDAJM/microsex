@@ -48,7 +48,7 @@ python modulo_CC.py
 
 Para la ejecución del programa completo, desde el mismo directorio, ejecutar
 
-    python microsex.py
+    python Microsex.py
 
 Las instrucciones incluidas en cada módulo están en la carpeta `microsex/DOC`
 
@@ -73,3 +73,5 @@ tabla de instrucciones CC.txt
 - [ ] Admitir definición de cadena de datos y sin nombre.
 - [ ] Ensamblar ASCII.
 
+#### Contacto.
+diego.ramirez.jove@gmail.com
