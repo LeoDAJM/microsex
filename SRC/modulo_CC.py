@@ -182,7 +182,7 @@ class ComputadorCompleto(QMainWindow):
 
         self.setFixedSize(1024, 680)
         self.setWindowTitle('Microsex - Computador Completo')
-        self.setWindowIcon(QIcon('icono.png'))
+        self.setWindowIcon(QIcon('IMG/icono.png'))
 
 
 
