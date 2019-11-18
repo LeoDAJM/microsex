@@ -63,9 +63,9 @@ tabla de instrucciones CC.txt
 ## POR HACER:
 
 - [x] Cambiar mnemónico de INV >> NOT.
-- [ ] Generar archivo de listado y mostrar en la interfaz gráfica.
-- [ ] Corregir la verificación del tipo de datos (crear una clase para utilizar en los modos de direccionamiento).
-- [ ] Definir funciones matemáticas en el direccionamiento indexado (sólo suma y resta).
+- [x] Generar archivo de listado
+- [ ] Mostrar archivo de listado en la interfaz gráfica.
+- [x] Interpretar expreiones matemáticas en argumentos.
 - [ ] Mapear un puerto de entrada en el computador completo.
 - [x] Agregar modo de direccionamiento directo a instrucciones de carga de punteros.
 - [x] Corregir habilitación de función ensamblar al guardar archivo nuevo.
