@@ -60,10 +60,14 @@ tabla de instrucciones USCE.txt
 tabla de instrucciones CC.txt
 ```
 
+### Archivos ejecutables
+
+https://drive.google.com/open?id=1CmQDQDVMAC20-RAs2bOrinkgPaieFWvK
+
 ## POR HACER:
 
 - [x] Cambiar mnemónico de INV >> NOT.
-- [x] Generar archivo de listado
+- [x] Generar archivo de listado.
 - [ ] Mostrar archivo de listado en la interfaz gráfica.
 - [x] Interpretar expreiones matemáticas en argumentos.
 - [ ] Mapear un puerto de entrada en el computador completo.
