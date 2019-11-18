@@ -411,7 +411,7 @@ class USC(QWidget):
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon('icono.png'))
+        self.setWindowIcon(QIcon('IMG/icono.png'))
 
 
 if __name__ == '__main__':
