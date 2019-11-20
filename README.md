@@ -1,6 +1,34 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
+## CAMBIOS EN LA VERSIÓN 1.2
+
+- Creación de un archivo de listado
+  - Cuenta con número de línea, dirección de memoria y contenido
+  - Genera la tabla de símbolos al final del listado
+  - Se guarda automáticamente en el directorio del archivo .asm
+  - Se guarda con extensión **.lst** como texto sin formato
+- Ahora con dos opciones de carga más rápidas
+  - Ensamblar y cargar en la memoria borrando los datos anteriores
+  - Ensamblar y cargar sobreescribiendo sólo los datos generados en el ensamblado
+
+## CAMBIOS EN LA VERSIÓN 1.1
+
+- Corrección de función *guardar como...* no habilitaba función de ensamblar
+- Corrección en el editor de memoria que permitía cualquier cadena
+  - Ahora sólo permite **dos dígitos hexadecimales**
+- Instrucción de *Negar* cambió de abreviatura mnemónica de **INV** a **NOT**
+- Instrucciones de carga de punteros de datos en modo directo
+  - LDX dir16 (BF)
+  - LDY dir16 (FF)
+  - LDP dir16 (F3)
+- Ahora interpreta expresiones matemáticas en los argumentos **dat8** y **dir16**
+  - CCC #**dat8**
+  - CCC IX+**dat8**
+  - CCC IY+**dat8**
+  - CCC **dir16**
+
+
 ## CARACTERÍSTICAS
 Emulador con módulos que demuestran el desarrollo evolutivo de un computador.
 
@@ -66,13 +94,8 @@ https://drive.google.com/open?id=1CmQDQDVMAC20-RAs2bOrinkgPaieFWvK
 
 ## POR HACER:
 
-- [x] Cambiar mnemónico de INV >> NOT.
-- [x] Generar archivo de listado.
 - [ ] Mostrar archivo de listado en la interfaz gráfica.
-- [x] Interpretar expreiones matemáticas en argumentos.
 - [ ] Mapear un puerto de entrada en el computador completo.
-- [x] Agregar modo de direccionamiento directo a instrucciones de carga de punteros.
-- [x] Corregir habilitación de función ensamblar al guardar archivo nuevo.
 - [ ] Tabla de símbolos debe mostrar error si hay nombres repetidos.
 - [ ] Admitir definición de cadena de datos y sin nombre.
 - [ ] Ensamblar ASCII.
