@@ -78,7 +78,7 @@ def llamada_subrutina():
     config.PP -= 1
     config.RDir = config.PP
 
-    PIns_H = str(config.PIns // 256)
+    config.PIns_H = str(config.PIns // 256)
     config.m_prog[config.RDir] = dec_a_hex(config.PIns_H)
 
     config.PP -= 1
