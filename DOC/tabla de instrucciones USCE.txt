@@ -1,28 +1,31 @@
 ﻿-------------------------------------------------------------------
-Operación		Mnem	Cod Op	Acumulador	Argumento
-CONTROL				/Ext	A  B  C
+Operación		Mnem  	________Cod Op_________________
+				Ext	Acumulador	Memoria
+CONTROL					A  B  C
 -------------------------------------------------------------------
 No operar		NOP	00	-  -  -		-
 Cero al acarreo		CLC	40	-  -  -		-
 Cero al desborde	CLV	50	-  -  -		-
 Establecer acarreo	SEC	C0	-  -  -		-
 Establecer desborde	SEV	D0	-  -  -		-
-Cero al resutlado	CLR	-	01 11 12	31
+Cero al resultado	CLR	-	01 11 21	31
 
 
--------------------------------------------------------------------
-Operación		Mnem	Cod Op	Acumulador	Argumento
-ENTRADA DE DATOS		/Ext	A  B  C
+﻿-------------------------------------------------------------------
+Operación		Mnem  	________Cod Op_________________
+				Ext	Acumulador	Memoria
+ENTRADA DE DATOS			A  B  C
 -------------------------------------------------------------------
 Ingresar dato		IN	-	02 12 22	-
 
 
--------------------------------------------------------------------
-Operación		Mnem	Cod Op	Acumulador	Argumento
-LÓGICAS-ARITMÉTICAS		/Ext	A  B  C
+﻿-------------------------------------------------------------------
+Operación		Mnem  	________Cod Op_________________
+				Ext	Acumulador	Memoria
+LÓGICAS-ARITMÉTICAS			A  B  C
 -------------------------------------------------------------------
 Negativo (comp2)	NEG	-	03 13 23	33
-Inversa	(comp1)		NOT	-	04 14 24	34
+Inverso	(comp1)		NOT	-	04 14 24	34
 Incremento		INC	-	43 53 63	73
 Decremento		DEC	-	44 54 64	74
 
@@ -50,7 +53,7 @@ Suma con acarreo	ADC A	0A	-  5A 6A	7A
 			ADC B	-	9A -  AA	BA
 			ADC C	-	DA EA - 	FA
 
-Resta con acarreo	SBC A	0B	-  5B 6B	7B
+Resta con préstamo	SBC A	0B	-  5B 6B	7B
 			SBC B	-	9B -  AB	BB
 			SBC C	-	DB EB - 	FB
 
@@ -59,9 +62,10 @@ Comparación		CMP A	0C	-  5C 6C	7C
 			CMP C	-	DC EC - 	FC
 
 
--------------------------------------------------------------------
-Operación		Mnem	Cod Op	Acumulador	Argumento
-ROTACIÓN-DESPLAZAMIENTO		/Ext	A  B  C
+﻿-------------------------------------------------------------------
+Operación		Mnem  	________Cod Op_________________
+				Ext	Acumulador	Memoria
+ROTACIÓN-DESPLAZAMIENTO			A  B  C
 -------------------------------------------------------------------
 Rotación a derecha	ROD	-	0D 1D 2D	3D
 Rotación a izquierda	ROI	-	0E 1E 2E	3E
@@ -72,11 +76,12 @@ Desp.aritm.a izquierda	DAI	-	8E 9E AE	BE
 Desp.lógico a derecha	DLD	-	CD DD ED	FD
 
 
+﻿-------------------------------------------------------------------
+Operación		Mnem  	________Cod Op_________________
+				Ext	Acumulador	Memoria
+TRANSFERENCIA				A  B  C
 -------------------------------------------------------------------
-Operación		Mnem	Cod Op	Acumulador	Argumento
-TRANSFERENCIA			/Ext	A  B  C
--------------------------------------------------------------------
-Gargar acumulador	LDA A	-	-  51 61	71
+Cargar acumulador	LDA A	-	-  51 61	71
 			LDA B	-	91 -  A1	B1
 			LDA C	-	D1 E1 - 	F1
 
