@@ -95,6 +95,18 @@ class UBC(QWidget):
             self.lbl_valor_dec[i].setAlignment(Qt.AlignCenter)
             self.lbl_valor_dec[i].setFont(config.fuente_num)
 
+        # GRUPO DECIMAL SIGNADO
+        lbl_dec = QLabel('Dec. Signado', self)
+        lbl_dec.move(560,20)
+        lbl_dec.setFont(config.fuente_texto)
+
+        self.lbl_valor_sig = [0]*2
+        for i in range(0,2):
+            self.lbl_valor_sig[i] = QLabel("0",self)
+            self.lbl_valor_sig[i].setGeometry(560,50 + i*20,80,20)
+            self.lbl_valor_sig[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_sig[i].setFont(config.fuente_num)
+
         # GRUPO SEÑALES DE CONTROL
         lbl_s=[0]*5
         for i in range(5):
@@ -178,12 +190,12 @@ class UBC(QWidget):
             self.lbl_in_b[i].setFont(config.fuente_num)
 
         self.lbl_resultado = QLabel("00", self)
-        self.lbl_resultado.setGeometry(640, 270, 40, 20)#
+        self.lbl_resultado.setGeometry(640, 310, 40, 20)
         self.lbl_resultado.setAlignment(Qt.AlignCenter)
         self.lbl_resultado.setFont(config.fuente_num)
 
         self.lbl_carry_out = QLabel("0", self)
-        self.lbl_carry_out.setGeometry(640, 310, 40, 20)#
+        self.lbl_carry_out.setGeometry(640, 270, 40, 20)
         self.lbl_carry_out.setAlignment(Qt.AlignCenter)
         self.lbl_carry_out.setFont(config.fuente_num)
 
@@ -221,14 +233,14 @@ class UBC(QWidget):
         qp.drawLine(60, 330, 160, 330)      # Línea de B
         qp.drawLine(220, 340, 330, 340)
         qp.drawLine(380, 350, 445, 350)
-        qp.drawLine(555, 280, 620, 280)     # Línea de R
+        qp.drawLine(555, 320, 620, 320)     # Línea de R
 
         if config.C[8] == 1:
             linea_datos = QPen(QColor(0,230,230), 2, Qt.SolidLine)          #rgb(0,230,230)
         else:
             linea_datos = QPen(QColor(0,100,100), 3, Qt.SolidLine)          #rgb(0,120,120)
         qp.setPen(linea_datos)
-        qp.drawLine(555, 320, 620, 320)     # Línea de C_out
+        qp.drawLine(555, 280, 620, 280)     # Línea de C_out
 
     def definir_sis_num(self):
         sistema_numerico = self.sender()
@@ -256,6 +268,7 @@ class UBC(QWidget):
                     config.val_h[i] = valor
                     config.val_b[i] = hex_a_bin(config.val_h[i])
                     config.val_d[i] = hex_a_dec(config.val_h[i])
+                    config.val_s[i] = dec_a_sig(config.val_d[i])
                     config.var_op[i] = bin_a_op(config.val_b[i])
                     self.edit_bin[i].setText(config.val_b[i])
 
@@ -265,6 +278,7 @@ class UBC(QWidget):
                     config.val_h[i] = bin_a_hex(valor)
                     config.val_b[i] = valor
                     config.val_d[i] = bin_a_dec(config.val_b[i])
+                    config.val_s[i] = dec_a_sig(config.val_d[i])
                     config.var_op[i] = bin_a_op(config.val_b[i])
                     self.edit_hex[i].setText(config.val_h[i])
 
@@ -275,6 +289,7 @@ class UBC(QWidget):
             self.lbl_valor_hex[i].setText(config.val_h[i])
             self.lbl_valor_bin[i].setText(config.val_b[i])
             self.lbl_valor_dec[i].setText(config.val_d[i])
+            self.lbl_valor_sig[i].setText(config.val_s[i])
 
         config.R, config.C, config.intr = unidad_basica_calculo (config.A, config.B, 0, config.S)
         self.actualizar_cadenas()

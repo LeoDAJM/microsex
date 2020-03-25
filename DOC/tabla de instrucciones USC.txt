@@ -2,11 +2,11 @@
 					C V H N Z P
 ---------------------------------------------------
 No operar		NOP	00	• • • • • •
-Cero al resultado	CLR	01	• 0 0 0 1 1
+Cero al resultado	CLR	01	• • 0 0 1 1
 Ingresar dato		IN	02	• • 0 ↕ ↕ ↕
 ---------------------------------------------------
-Negativo de A		NEG	03	↕ ↕ 0 ↕ ↕ ↕
-Inversa de A		NOT	04	↕ ↕ 0 ↕ ↕ ↕
+Negativo de A		NEG	03	• • 0 ↕ ↕ ↕
+Inversa de A		NOT	04	• • 0 ↕ ↕ ↕
 ---------------------------------------------------
 A AND B			AND	05	• • 0 ↕ ↕ ↕
 A OR B			OR	06	• • 0 ↕ ↕ ↕
@@ -17,19 +17,19 @@ Resta			SUB	09	↕ ↕ ↕ ↕ ↕ ↕
 Suma con acarreo	ADC	0A	↕ ↕ ↕ ↕ ↕ ↕
 Resta con acarreo	SBC	0B	↕ ↕ ↕ ↕ ↕ ↕
 ---------------------------------------------------
-Incrementar A		INC	0C	• ↕ ↕ ↕ ↕ ↕
-Decrementar A		DEC	0D	• ↕ ↕ ↕ ↕ ↕
+Incrementar A		INC	0C	↕ ↕ ↕ ↕ ↕ ↕
+Decrementar A		DEC	0D	↕ ↕ ↕ ↕ ↕ ↕
 ---------------------------------------------------
-Rotación a derecha	ROD	0E	↕ ↕ 0 ↕ ↕ ↕
-Rotación a izquierda	ROI	0F	↕ ↕ 0 ↕ ↕ ↕
-Rot.con acarreo a der	RCD	10	↕ ↕ 0 ↕ ↕ ↕
-Rot.con acarreo a izq	RCI	11	↕ ↕ 0 ↕ ↕ ↕
-Desp.aritm.a derecha	DAD	12	↕ ↕ 0 ↕ ↕ ↕
-Desp.aritm.a izquierda	DAI	13	↕ ↕ 0 ↕ ↕ ↕
-Desp.lógico a derecha	DLD	14	↕ ↕ 0 ↕ ↕ ↕
+Rotación a derecha	ROD	0E	↕ • 0 ↕ ↕ ↕
+Rotación a izquierda	ROI	0F	↕ • 0 ↕ ↕ ↕
+Rot.con acarreo a der	RCD	10	↕ • 0 ↕ ↕ ↕
+Rot.con acarreo a izq	RCI	11	↕ • 0 ↕ ↕ ↕
+Desp.aritm.a derecha	DAD	12	↕ • 0 ↕ ↕ ↕
+Desp.aritm.a izquierda	DAI	13	↕ • 0 ↕ ↕ ↕
+Desp.lógico a derecha	DLD	14	↕ • 0 ↕ ↕ ↕
 ---------------------------------------------------
-Cero al acarreo		CLC	15	0 ↕ ↕ ↕ ↕ ↕
-Establecer acarreo	SEC	16	1 ↕ ↕ ↕ ↕ ↕
-Cero al desborde	CLV	17	↕ 0 ↕ ↕ ↕ ↕
-Establecer desborde	SEV	18	↕ 1 ↕ ↕ ↕ ↕
+Cero al acarreo		CLC	15	0 • • • • •
+Establecer acarreo	SEC	16	1 • • • • •
+Cero al desborde	CLV	17	• 0 • • • •
+Establecer desborde	SEV	18	• 1 • • • •
 ---------------------------------------------------

@@ -15,6 +15,7 @@ C = [0]*9
 val_h = ["00"]*2
 val_b = ["00000000"]*2
 val_d = ["0"]*2
+val_s = ["0"]*2
 
 # Fuentes y estilo
 fuente_texto = QFont("Calibri", 11)

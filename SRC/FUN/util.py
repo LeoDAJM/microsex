@@ -63,6 +63,13 @@ def dec_a_hex4(txt_dec):
     return txt_hex
 
 
+def dec_a_sig(txt_dec):
+    if int(txt_dec) > 127:
+        txt_sig = str(int(txt_dec) - 256)
+    else:
+        txt_sig = txt_dec
+    return txt_sig
+
 
 def bin_a_dec(txt_bin):
     txt_dec = str(int(txt_bin,2))
