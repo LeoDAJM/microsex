@@ -97,9 +97,6 @@ nemonicos_usc = {
 23: "CLV", 24: "SEV"
 }
 
-for i in instrucciones_usc:
-    print(nemonicos_usc[i], instrucciones_usc[i])
-
 def descodificadorUSC():
     return dict(instrucciones_usc)
 
