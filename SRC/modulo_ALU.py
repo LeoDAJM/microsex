@@ -96,6 +96,18 @@ class ALU(QWidget):
             self.lbl_valor_dec[i].setAlignment(Qt.AlignCenter)
             self.lbl_valor_dec[i].setFont(config.fuente_num)
 
+        # GRUPO DECIMAL SIGNADO
+        lbl_dec = QLabel('Dec. Signado', self)
+        lbl_dec.move(560,20)
+        lbl_dec.setFont(config.fuente_texto)
+
+        self.lbl_valor_sig = [0]*2
+        for i in range(0,2):
+            self.lbl_valor_sig[i] = QLabel("0",self)
+            self.lbl_valor_sig[i].setGeometry(560,50 + i*20,80,20)
+            self.lbl_valor_sig[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_sig[i].setFont(config.fuente_num)
+
         # GRUPO SEÑALES DE CONTROL
         lbl_s=[0]*7
         for i in range(7):
@@ -185,7 +197,7 @@ class ALU(QWidget):
         self.lbl_resultado.setFont(config.fuente_num)
 
         self.lbl_carry_out = QLabel("0", self)
-        self.lbl_carry_out.setGeometry(620, 370, 40, 20)
+        self.lbl_carry_out.setGeometry(620, 250, 40, 20)
         self.lbl_carry_out.setAlignment(Qt.AlignCenter)
         self.lbl_carry_out.setFont(config.fuente_num)
         self.lbl_carry_out.setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
@@ -213,6 +225,9 @@ class ALU(QWidget):
         s_con[2] = [[250, 440], [250, 390]]
         s_con[1] = [[270, 440], [270, 390]]
         s_con[0] = [[290, 440], [290, 390]]
+
+        # Trayectoria de bandera C:
+        band_c = [[300, 360],[450, 360], [450, 260], [600, 260]]
 
         for i in range(7):                # Señales de control
             if config.S[config.S_alu_simple[i]] == 1:
@@ -242,7 +257,7 @@ class ALU(QWidget):
         qp.drawLine(260, 220, 440, 220)
         qp.drawLine(260, 270, 440, 270)
         qp.drawLine(260, 320, 440, 320)
-        qp.drawLine(300, 360, 440, 360)
+        qp.drawLine(300, 380, 440, 380)
 
         linea_seleccion = QPen(QColor(0, 230, 230), 2, Qt.SolidLine)              #rgb(0, 230, 230)
         qp.setPen(linea_seleccion)
@@ -256,14 +271,14 @@ class ALU(QWidget):
             if config.S[9] == 0:
                 qp.drawLine(260, 320, 440, 320)
             else:
-                qp.drawLine(300, 360, 440, 360)
+                qp.drawLine(300, 380, 440, 380)
 
         if config.F[0] == 1:
             linea_datos = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)          #rgb(140, 125, 230)
         else:
             linea_datos = QPen(QColor(70, 63, 200), 3, Qt.SolidLine)          #rgb(70, 63, 200)
         qp.setPen(linea_datos)
-        qp.drawLine(300, 380, 600, 380)     # Línea de C_out
+        qp.drawPolyline(self.poly(band_c))
 
     def definir_sis_num(self):
         sistema_numerico = self.sender()
@@ -291,6 +306,7 @@ class ALU(QWidget):
                     config.val_h[i] = valor
                     config.val_b[i] = hex_a_bin(config.val_h[i])
                     config.val_d[i] = hex_a_dec(config.val_h[i])
+                    config.val_s[i] = dec_a_sig(config.val_d[i])
                     config.var_op[i] = bin_a_op(config.val_b[i])
                     self.edit_bin[i].setText(config.val_b[i])
 
@@ -300,6 +316,7 @@ class ALU(QWidget):
                     config.val_h[i] = bin_a_hex(valor)
                     config.val_b[i] = valor
                     config.val_d[i] = bin_a_dec(config.val_b[i])
+                    config.val_s[i] = dec_a_sig(config.val_d[i])
                     config.var_op[i] = bin_a_op(config.val_b[i])
                     self.edit_hex[i].setText(config.val_h[i])
 
@@ -310,6 +327,7 @@ class ALU(QWidget):
             self.lbl_valor_hex[i].setText(config.val_h[i])
             self.lbl_valor_bin[i].setText(config.val_b[i])
             self.lbl_valor_dec[i].setText(config.val_d[i])
+            self.lbl_valor_sig[i].setText(config.val_s[i])
 
         config.R, config.F = unidad_aritmetica_logica(config.A, config.B, 0, config.S)
         self.actualizar_cadenas()

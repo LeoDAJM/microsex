@@ -19,6 +19,7 @@ instruccion = ""
 val_b = "00000000"
 val_h = "00"
 val_d = "0"
+val_s = "0"
 
 # Fuentes y estilo
 fuente_texto = QFont("Calibri", 11)

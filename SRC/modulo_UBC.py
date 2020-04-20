@@ -198,6 +198,7 @@ class UBC(QWidget):
         self.lbl_carry_out.setGeometry(640, 270, 40, 20)
         self.lbl_carry_out.setAlignment(Qt.AlignCenter)
         self.lbl_carry_out.setFont(config.fuente_num)
+        self.lbl_carry_out.setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
     def poly(self, pts):
         return QPolygonF(map(lambda p: QPointF(*p), pts))
@@ -236,9 +237,9 @@ class UBC(QWidget):
         qp.drawLine(555, 320, 620, 320)     # Línea de R
 
         if config.C[8] == 1:
-            linea_datos = QPen(QColor(0,230,230), 2, Qt.SolidLine)          #rgb(0,230,230)
+            linea_datos = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)          #rgb(140, 125, 230)
         else:
-            linea_datos = QPen(QColor(0,100,100), 3, Qt.SolidLine)          #rgb(0,120,120)
+            linea_datos = QPen(QColor(70, 63, 200), 3, Qt.SolidLine)          #rgb(70, 63, 200)
         qp.setPen(linea_datos)
         qp.drawLine(555, 280, 620, 280)     # Línea de C_out
 

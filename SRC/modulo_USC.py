@@ -85,6 +85,17 @@ class USC(QWidget):
         self.lbl_valor_dec.setAlignment(Qt.AlignCenter)
         self.lbl_valor_dec.setFont(config.fuente_num)
 
+        # GRUPO DECIMAL SIGNADO
+        lbl_dec = QLabel('Dec. Signado', self)
+        lbl_dec.move(540,20)
+        lbl_dec.setFont(config.fuente_texto)
+
+        self.lbl_valor_sig = QLabel("0",self)
+        self.lbl_valor_sig.setGeometry(540, 50, 80, 20)
+        self.lbl_valor_sig.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_sig.setFont(config.fuente_num)
+
+        # GRUPO SEÑALES DE CONTROL
         grp_lct = QGroupBox("LCT",self)
         grp_lct.setStyleSheet(config.estilo["estilo_grupo_interno"])
         grp_lct.setGeometry(180, 85, 160, 65)
@@ -123,7 +134,7 @@ class USC(QWidget):
             self.lbl_senales[19-i].setFont(config.fuente_num)
             self.lbl_senales[19-i].setStyleSheet("QLabel { color: rgb(255, 255, 255);}")
 
-        self.lbl_instruccion = QLabel("CLR", self)
+        self.lbl_instruccion = QLabel("NOP", self)
         self.lbl_instruccion.setAlignment(Qt.AlignCenter)
         self.lbl_instruccion.setGeometry(610, 100, 60, 25)
         self.lbl_instruccion.setFont(config.fuente_num)
@@ -147,11 +158,11 @@ class USC(QWidget):
 
         lgc_acu = QLabel(self)
         lgc_acu.setPixmap(pix_acu)
-        lgc_acu.setGeometry(360, 270, 40, 40)
+        lgc_acu.setGeometry(360, 300, 40, 40)
 
         lgc_lct = QLabel(self)
         lgc_lct.setPixmap(pix_lct)
-        lgc_lct.setGeometry(350, 330, 60, 40)
+        lgc_lct.setGeometry(350, 240, 60, 40)
 
         lgc_do = QLabel(self)
         lgc_do.setPixmap(pix_do)
@@ -189,16 +200,6 @@ class USC(QWidget):
         self.btn_reloj.clicked.connect(self.control_USC)
 
 
-        lbl_f = [0]*6
-        txt_f = ["C", "V", "H", "N", "Z", "P"]
-        for i in range(6):
-            lbl_f[i] = QLabel(txt_f[i], self)
-            lbl_f[i].setGeometry(520 + i*20, 310, 20, 20)
-            lbl_f[i].setAlignment(Qt.AlignCenter)
-            lbl_f[i].setFont(config.fuente_num)
-            lbl_f[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
-
-
     def etiquetas_resultados(self):
 
         self.lbl_in_b = QLabel("00", self)
@@ -208,19 +209,28 @@ class USC(QWidget):
         self.lbl_in_b.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
         self.lbl_resultado = QLabel("00", self)
-        self.lbl_resultado.setGeometry(300, 250, 40, 20)
+        self.lbl_resultado.setGeometry(275, 280, 40, 20)
         self.lbl_resultado.setAlignment(Qt.AlignCenter)
         self.lbl_resultado.setFont(config.fuente_num)
 
         self.lbl_acumulador = QLabel("00", self)
-        self.lbl_acumulador.setGeometry(520, 270, 40, 20)
+        self.lbl_acumulador.setGeometry(520, 300, 40, 20)
         self.lbl_acumulador.setAlignment(Qt.AlignCenter)
         self.lbl_acumulador.setFont(config.fuente_num)
+
+        lbl_f = [0]*6
+        txt_f = ["C", "V", "H", "N", "Z", "P"]
+        for i in range(6):
+            lbl_f[i] = QLabel(txt_f[i], self)
+            lbl_f[i].setGeometry(520 + i*20, 220, 20, 20)
+            lbl_f[i].setAlignment(Qt.AlignCenter)
+            lbl_f[i].setFont(config.fuente_num)
+            lbl_f[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
         self.lbl_banderas = [0]*6
         for i in range(6):
             self.lbl_banderas[i] = QLabel("0", self)
-            self.lbl_banderas[i].setGeometry(520 + i*20, 330, 20, 20)
+            self.lbl_banderas[i].setGeometry(520 + i*20, 240, 20, 20)
             self.lbl_banderas[i].setAlignment(Qt.AlignCenter)
             self.lbl_banderas[i].setFont(config.fuente_num)
             self.lbl_banderas[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
@@ -236,8 +246,8 @@ class USC(QWidget):
     def drawLines(self, qp):
 
         # Trayectorias de control a dibujar:
-        realim_a = [[460, 280], [460, 200], [140, 200], [140, 280], [200, 280]]
-        realim_c = [[440, 340], [440, 220], [160, 220], [160, 260], [200, 260]]
+        realim_a = [[460, 310], [460, 200], [140, 200], [140, 280], [200, 280]]
+        realim_c = [[440, 250], [440, 220], [160, 220], [160, 250], [200, 250]]
 
         sen_con = [0]*5
 
@@ -255,34 +265,33 @@ class USC(QWidget):
             qp.setPen(linea_control)
             qp.drawPolyline(self.poly(sen_con[i]))
 
-
-        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
-        qp.setPen(linea_acumulador)
-        qp.drawLine(280, 280, 360, 280)
-        qp.drawLine(400, 280, 500, 280)
-        qp.drawPolyline(self.poly(realim_a))
-        qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
-        qp.drawPoint(460, 280)
-
         linea_dato_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)                 #rgb(0,230,125)
         qp.setPen(linea_dato_b)
         qp.drawLine(120, 340, 200, 340)
 
         linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)           #rgb(140, 125, 230)
         qp.setPen(linea_banderas)
-        qp.drawLine(280, 340, 350, 340)
-        qp.drawLine(410, 340, 500, 340)
+        qp.drawLine(240, 250, 350, 250)
+        qp.drawLine(410, 250, 500, 250)
         qp.drawPolyline(self.poly(realim_c))
         qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.SolidLine, Qt.RoundCap))
-        qp.drawPoint(440, 340)
+        qp.drawPoint(440, 250)
+
+        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        qp.setPen(linea_acumulador)
+        qp.drawLine(280, 310, 360, 310)
+        qp.drawLine(400, 310, 500, 310)
+        qp.drawPolyline(self.poly(realim_a))
+        qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.drawPoint(460, 310)
 
         linea_reloj = QPen(QColor(0,100,200), 2, Qt.SolidLine)                 #rgb(0,100,200)
         qp.setPen(linea_reloj)
-        qp.drawLine(320, 300, 360, 300)
-        qp.drawLine(320, 360, 360, 360)
+        qp.drawLine(320, 270, 360, 270)
+        qp.drawLine(320, 330, 360, 330)
         qp.setPen(QPen(QColor(0,0,122), 12, Qt.SolidLine, Qt.RoundCap))
-        qp.drawPoint(320, 300)
-        qp.drawPoint(320, 360)
+        qp.drawPoint(320, 270)
+        qp.drawPoint(320, 330)
 
     def definir_sis_num(self):
         sistema_numerico = self.sender()
@@ -307,6 +316,7 @@ class USC(QWidget):
                 config.val_h = valor
                 config.val_b = hex_a_bin(config.val_h)
                 config.val_d = hex_a_dec(config.val_h)
+                config.val_s = dec_a_sig(config.val_d)
                 config.Var_Ingreso = bin_a_op(config.val_b)
                 self.edit_bin.setText(config.val_b)
 
@@ -315,12 +325,14 @@ class USC(QWidget):
                 config.val_h = bin_a_hex(valor)
                 config.val_b = valor
                 config.val_d = bin_a_dec(config.val_b)
+                config.val_s = dec_a_sig(config.val_d)
                 config.Var_Ingreso = bin_a_op(config.val_b)
                 self.edit_hex.setText(config.val_h)
 
         self.lbl_valor_hex.setText(config.val_h)
         self.lbl_valor_bin.setText(config.val_b)
         self.lbl_valor_dec.setText(config.val_d)
+        self.lbl_valor_sig.setText(config.val_s)
 
         op = int(op_a_bin(config.descod_op),2)
         if op >= 25:

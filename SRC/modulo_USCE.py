@@ -84,6 +84,17 @@ class USCE(QWidget):
         self.lbl_valor_dec.setAlignment(Qt.AlignCenter)
         self.lbl_valor_dec.setFont(config.fuente_num)
 
+        # GRUPO DECIMAL SIGNADO
+        lbl_dec = QLabel('Dec. Signado', self)
+        lbl_dec.move(540,20)
+        lbl_dec.setFont(config.fuente_texto)
+
+        self.lbl_valor_sig = QLabel("0",self)
+        self.lbl_valor_sig.setGeometry(540, 50, 80, 20)
+        self.lbl_valor_sig.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_sig.setFont(config.fuente_num)
+
+        # GRUPO PALABRA DE CONTROL
         lbl_cod_op = QLabel('Cod. Op.',self)
         lbl_cod_op.move(180, 90)
         lbl_cod_op.setFont(config.fuente_texto)
@@ -140,7 +151,7 @@ class USCE(QWidget):
 
         lgc_alu = QLabel(self)
         lgc_alu.setPixmap(pix_alu)
-        lgc_alu.setGeometry(270, 240, 80, 140)
+        lgc_alu.setGeometry(250, 220, 80, 140)
 
         lgc_acu = QLabel(self)
         lgc_acu.setPixmap(pix_acu)
@@ -152,11 +163,11 @@ class USCE(QWidget):
 
         lgc_mux_A = QLabel(self)
         lgc_mux_A.setPixmap(pix_mux)
-        lgc_mux_A.setGeometry(160, 240, 20, 60)
+        lgc_mux_A.setGeometry(160, 220, 20, 60)
 
         lgc_mux_B = QLabel(self)
         lgc_mux_B.setPixmap(pix_mux)
-        lgc_mux_B.setGeometry(160, 320, 20, 60)
+        lgc_mux_B.setGeometry(160, 300, 20, 60)
 
         lgc_do = QLabel(self)
         lgc_do.setPixmap(pix_do)
@@ -183,13 +194,13 @@ class USCE(QWidget):
         self.lbl_codigo_op.setFont(config.fuente_num)
         self.lbl_codigo_op.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
-        self.lbl_codigo_arg = QLabel('AR',self)
-        self.lbl_codigo_arg.move(50, 445)
+        self.lbl_codigo_arg = QLabel('Arg',self)
+        self.lbl_codigo_arg.move(40, 445)
         self.lbl_codigo_arg.setFont(config.fuente_num)
         self.lbl_codigo_arg.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
-        self.lbl_dato_mem = QLabel('DM', self)
-        self.lbl_dato_mem.move(50,385)
+        self.lbl_dato_mem = QLabel('Dato M', self)
+        self.lbl_dato_mem.move(40,365)
         self.lbl_dato_mem.setFont(config.fuente_num)
         self.lbl_dato_mem.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
@@ -211,8 +222,8 @@ class USCE(QWidget):
 
     def etiquetas_resultados(self):
 
-        self.lbl_in_b = QLabel("00", self)
-        self.lbl_in_b.move(50, 325)
+        self.lbl_in_b = QLabel("Ext", self)
+        self.lbl_in_b.move(40, 305)
         self.lbl_in_b.setFont(config.fuente_num)
         self.lbl_in_b.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
@@ -250,22 +261,22 @@ class USCE(QWidget):
     def drawLines(self, qp):
 
         # Trayectorias de control a dibujar:
-        pl_realim_a = [[160, 350], [140, 350], [140, 200], [480, 200], [480, 296]]
-        pl_realim_b = [[160, 360], [130, 360], [130, 190], [490, 190], [490, 320]]
-        pl_realim_c = [[160, 370], [120, 370], [120, 180], [500, 180], [500, 344]]
-        pl_realim_f = [[270, 250], [250, 250], [250, 220], [460, 220], [460, 250]]
+        pl_realim_a = [[160, 330], [140, 330], [140, 200], [480, 200], [480, 296]]
+        pl_realim_b = [[160, 340], [130, 340], [130, 190], [490, 190], [490, 320]]
+        pl_realim_c = [[160, 350], [120, 350], [120, 180], [500, 180], [500, 344]]
+        pl_realim_f = [[250, 240], [220, 240], [220, 210], [460, 210], [460, 250]]
 
-        pl_dato_mem  = [[180, 400], [180, 390], [110, 390], [110, 340], [160, 340]]
-        pl_banderas  = [[330, 290], [340, 290], [340, 250], [380, 250]]
+        pl_dato_mem  = [[180, 400], [180, 380], [110, 380], [110, 320], [160, 320]]
+        pl_resultado = [[340, 290], [340, 380], [220, 380], [220, 400]]
+        pl_banderas  = [[290, 240], [360, 240], [360, 250], [380, 250]]
 
         linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_acumulador)
         # Entradas a la ALU
-        qp.drawLine(180, 270, 270, 270)
-        qp.drawLine(180, 350, 270, 350)
-        qp.drawLine(220, 270, 220, 400)
+        qp.drawLine(180, 250, 250, 250)
+        qp.drawLine(180, 330, 250, 330)
         # Resultado de la ALU
-        qp.drawLine(330, 320, 380, 320)
+        qp.drawLine(310, 290, 380, 290)
         # Acumuladores
         qp.drawLine(440, 296, 520, 296)
         qp.drawLine(440, 320, 520, 320)
@@ -275,27 +286,29 @@ class USCE(QWidget):
         qp.drawPolyline(self.poly(pl_realim_b))
         qp.drawPolyline(self.poly(pl_realim_c))
         # Conexiones de entradas a Muxes de entrada
-        qp.drawLine(140, 250, 160, 250)
-        qp.drawLine(130, 270, 160, 270)
-        qp.drawLine(120, 290, 160, 290)
+        qp.drawLine(140, 240, 160, 240)
+        qp.drawLine(130, 250, 160, 250)
+        qp.drawLine(120, 260, 160, 260)
         # Puntos de conexión
         qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
         # Conexiones antes del mux A
-        qp.drawPoint(140, 250)
-        qp.drawPoint(130, 270)
-        qp.drawPoint(120, 290)
+        qp.drawPoint(140, 240)
+        qp.drawPoint(130, 250)
+        qp.drawPoint(120, 260)
         # Conexiones de Realimentación
         qp.drawPoint(480, 296)
         qp.drawPoint(490, 320)
         qp.drawPoint(500, 344)
         # Conexion a Interfaz de memoria
-        qp.drawPoint(220, 270)
+        qp.drawPoint(340, 290)
 
         linea_dato_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)                 #rgb(0,230,125)
         qp.setPen(linea_dato_b)
-        qp.drawLine(80, 330, 160, 330)
+        qp.drawLine(80, 310, 160, 310)
         # Dato de memoria hacia entrada B de la ALU
         qp.drawPolyline(self.poly(pl_dato_mem))
+        # Resultado de la ALU a memoria
+        qp.drawPolyline(self.poly(pl_resultado))
         # Argumento, dirección de memoria
         qp.drawLine(80, 450, 130, 450)
         # Operación a ser descodificada
@@ -305,17 +318,17 @@ class USCE(QWidget):
         qp.setPen(linea_banderas)
         qp.drawLine(440, 250, 520, 250)
         qp.drawPolyline(self.poly(pl_realim_f))
-        qp.drawPolyline(self.poly(pl_banderas))
+        # qp.drawPolyline(self.poly(pl_banderas))
+        qp.drawLine(290, 240, 380, 240)
         qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.SolidLine, Qt.RoundCap))
         qp.drawPoint(460, 250)
 
         linea_reloj_usc = QPen(QColor(0,100,200), 2, Qt.SolidLine)                 #rgb(0,100,200)
         qp.setPen(linea_reloj_usc)
-        qp.drawLine(360, 280, 360, 260)
         qp.drawLine(360, 260, 380, 260)
         qp.drawLine(360, 350, 380, 350)
         qp.setPen(QPen(QColor(0,100,200), 12, Qt.SolidLine, Qt.RoundCap))
-        qp.drawPoint(360, 280)
+        qp.drawPoint(360, 260)
         qp.drawPoint(360, 350)
 
 
@@ -342,6 +355,7 @@ class USCE(QWidget):
                 config.val_h = valor
                 config.val_b = hex_a_bin(config.val_h)
                 config.val_d = hex_a_dec(config.val_h)
+                config.val_s = dec_a_sig(config.val_d)
                 config.Var_Ingreso = bin_a_op(config.val_b)
                 self.edit_bin.setText(config.val_b)
 
@@ -358,12 +372,14 @@ class USCE(QWidget):
                 config.val_h = bin_a_hex(valor)
                 config.val_b = valor
                 config.val_d = bin_a_dec(config.val_b)
+                config.val_s = dec_a_sig(config.val_d)
                 config.Var_Ingreso = bin_a_op(config.val_b)
                 self.edit_hex.setText(config.val_h)
 
         self.lbl_valor_hex.setText(config.val_h)
         self.lbl_valor_bin.setText(config.val_b)
         self.lbl_valor_dec.setText(config.val_d)
+        self.lbl_valor_sig.setText(config.val_s)
 
         self.actualizar_cadenas()
 
@@ -377,7 +393,7 @@ class USCE(QWidget):
         if config.codigo_op in config.operaciones:
             op = config.codigo_op
         else:
-            op = 1
+            op = 0
 
         S_con = config.senal_control_USC2[op]
         usc, res = unidad_secuencial_calculo(Est_Anterior, Extern, [0,0,0,0], S_con) # Banderas_CP no se utiliza
