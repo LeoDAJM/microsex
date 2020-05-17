@@ -89,6 +89,18 @@ def verificar_argumento(argumento, permitidos):
             else:
                 intento += 1
 
+        elif perm == 'punteros':
+            if argumento in ['X', 'Y']:
+                return argumento
+            else:
+                intento += 1
+
+        elif perm == 'ppila':
+            if argumento in ['P']:
+                return argumento
+            else:
+                intento += 1
+
 
         elif perm == 'inmediato':
             if argumento.startswith("#"):

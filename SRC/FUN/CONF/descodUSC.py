@@ -9,7 +9,8 @@ def expandir(funcion,*vector):
 do_alu = descodificadorALU()
 
 
-# Bandera C: S[12:15], Bandera V: S[15:18]
+# Bandera C: S[12:15],
+# Bandera V: S[15:18]:
 siPasa = [1, 0, 1]
 noPasa = [0, 0, 0]
 forzar = [0, 1, 1]

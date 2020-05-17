@@ -6,7 +6,6 @@ from FUN.pd import bloque_puntero_datos
 from FUN.cp import comparador_punteros
 import FUN.CONF.configCC as config
 
-
 def ciclo_instruccion():
 
     config.RDir = config.PIns

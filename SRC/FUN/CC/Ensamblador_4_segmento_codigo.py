@@ -92,7 +92,11 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                             errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento1, argumentos_permitidos[0], i)
                             if argum != None:
                                 instruccion = instruccion + ' ' + simb
-                                errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento2, argumentos_permitidos[1], i)
+                                if simb in ['X', 'Y', 'P']:
+                                    argumentos_permitidos = instrucciones_arg[instruccion]
+                                    errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento2, argumentos_permitidos[0], i)
+                                else:
+                                    errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento2, argumentos_permitidos[1], i)
                                 if argum != None:
                                     instruccion = instruccion + ',' + simb
                                     codigo_operacion = ne_usex[instruccion][0]
@@ -134,6 +138,18 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
     for perm in permitidos:
         if perm == 'acumuladores':
             if argumento in ['A', 'B', 'C']:
+                return errores_previos, mensaje, argumento, ['NA']
+            else:
+                intento += 1
+
+        elif perm == 'punteros':
+            if argumento in ['X', 'Y']:
+                return errores_previos, mensaje, argumento, ['NA']
+            else:
+                intento += 1
+
+        elif perm == 'ppila':
+            if argumento in ['P']:
                 return errores_previos, mensaje, argumento, ['NA']
             else:
                 intento += 1

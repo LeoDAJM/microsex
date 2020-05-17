@@ -279,13 +279,10 @@ INP   = expandir(NOP, [0,0,1, 1,0, 0], [0], [0], [0,0,0])
 DEP   = expandir(NOP, [0,0,1, 0,0, 0], [0], [0], [0,0,0])
 
 NOP[30:34] = [0,1,0,0]
-# CP[30:34]  = [0,1,0,0]
 LDX_N = expandir(NOP, [1,0,0, 0,1, 0], [0], [0], [0,0,0])
 LDY_N = expandir(NOP, [0,1,0, 0,1, 0], [0], [0], [0,0,0])
 LDP_N = expandir(NOP, [0,0,1, 0,1, 0], [0], [0], [0,0,0])
 
-# CPX_N = expandir(CP,  [0,0,0, 0,0, 0], [0], [0], [0,0,0])
-# CPY_N = expandir(CP,  [0,0,0, 0,0, 0], [0], [1], [0,0,0])
 
 NOP[30:34] = [0,0,1,0]
 CP[30:34]  = [0,0,1,0]
@@ -335,19 +332,11 @@ instrucciones_punteros = {
 # 0x3F: CPX_M, 0x7F: CPY_M
 }
 
-# instrucciones_indexadas = {
-# 0x6F: LDX_IX, 0x7F: LDY_IX, 0x73: LDP_IX,
-# 0xEF: LDY_IY, 0xFF: LDY_IY, 0xF3: LDP_IY,
-# 0x4F: CPX_IX, 0x5F: CPY_IX,
-# 0xCF: CPX_IY, 0xDF: CPY_IY
-# }
-
 instrucciones_guardar_punteros = {
 0xB0: STX_M2, 0xF0: STY_M2, 0xF4: STP_M2
 }
 
 do_comp.update(instrucciones_punteros)
-# do2_comp.update(instrucciones_indexadas)
 do2_comp.update(instrucciones_guardar_punteros)
 
 
