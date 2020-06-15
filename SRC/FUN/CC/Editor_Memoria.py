@@ -54,7 +54,6 @@ class Memoria(QWidget):
         delegado = Validador()
 
         espacio = int(config.tamano)
-        # self.datos = [0]*espacio
         cabecera_horz = [format(i,'X').zfill(4) for i in range(0,espacio+1,16)]
         cabecera_vert = [format(i,'X') for i in range(16)]
 

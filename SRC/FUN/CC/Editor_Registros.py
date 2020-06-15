@@ -2,8 +2,41 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QLabel
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import Qt
 
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+
 from FUN.util import *
 import FUN.CONF.configCC as config
+
+class LineEditHex(QLineEdit):
+    def __init__(self, cantDigitos):
+        super().__init__()
+
+        self.cant = cantDigitos
+
+        regex = QRegExp("[0-9a-fA-F]{"+ str(cantDigitos) +"}")
+        self.rxval = QRegExpValidator(regex, self)
+
+        self.setAlignment(Qt.AlignCenter)
+        self.textChanged[str].connect(self.verificar)
+        self.editingFinished.connect(self.finalizado)
+
+    def verificar(self, cadena):
+        a = self.rxval.validate(cadena, 0)
+        if a[0] == 0:
+            c = self.text()
+            c = c[0:len(c)-1]
+            self.setText(c)
+
+    def finalizado(self):
+        cadena = self.text()
+        a = self.rxval.validate(cadena, 0)
+        c = self.text()
+        if a[0] == 1:
+            c = c.zfill(self.cant)
+        c = c.upper()
+        self.setText(c)
+
 
 class EditorRegistros(QWidget):
     def __init__(self):
@@ -38,11 +71,9 @@ class EditorRegistros(QWidget):
 # Edición de Registros
         self.edit_acumuladores = [0]*3
         for i in range(0,3):
-            self.edit_acumuladores[i] = QLineEdit(self)
-            self.edit_acumuladores[i].setInputMask('HH')
-            self.edit_acumuladores[i].setAlignment(Qt.AlignCenter)
+            self.edit_acumuladores[i] = LineEditHex(2)
             self.edit_acumuladores[i].setFixedWidth(50)
-            self.edit_acumuladores[i].textEdited[str].connect(self.editar_acumuladores)
+            self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
         for i in range(0,6):
@@ -50,21 +81,17 @@ class EditorRegistros(QWidget):
             self.edit_banderas[i].setInputMask('B')
             self.edit_banderas[i].setAlignment(Qt.AlignCenter)
             self.edit_banderas[i].setFixedWidth(40)
-            self.edit_banderas[i].textEdited[str].connect(self.editar_banderas)
+            self.edit_banderas[i].editingFinished.connect(self.editar_banderas)
 
         self.edit_punteros = [0]*3
         for i in range(0,3):
-            self.edit_punteros[i] = QLineEdit(self)
-            self.edit_punteros[i].setInputMask('HHHH')
-            self.edit_punteros[i].setAlignment(Qt.AlignCenter)
+            self.edit_punteros[i] = LineEditHex(4)
             self.edit_punteros[i].setFixedWidth(70)
-            self.edit_punteros[i].textEdited[str].connect(self.editar_punteros)
+            self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
 
-        self.edit_PIns = QLineEdit(self)
-        self.edit_PIns.setInputMask('HHHH')
-        self.edit_PIns.setAlignment(Qt.AlignCenter)
+        self.edit_PIns = LineEditHex(4)
         self.edit_PIns.setFixedSize(70, 40)
-        self.edit_PIns.textEdited[str].connect(self.editar_PIns)
+        self.edit_PIns.editingFinished.connect(self.editar_PIns)
 
         self.actualizar_registros()
 
@@ -171,19 +198,18 @@ class EditorRegistros(QWidget):
         if config.PIns != 'FIN':
             self.edit_PIns.setText(dec_a_hex4(config.PIns))
 
-    def editar_PIns(self, texto):
-        if len(texto) == 4:
-            config.PIns = int(texto,16)
+    def editar_PIns(self):
+        texto = self.sender().text()
+        config.PIns = int(texto,16)
 
-    def editar_acumuladores(self, texto):
-        if len(texto) == 2:
-            if self.sender() == self.edit_acumuladores[0]:
-                config.AcA = hex_a_op(texto)
-            elif self.sender() == self.edit_acumuladores[1]:
-                config.AcB = hex_a_op(texto)
-            elif self.sender() == self.edit_acumuladores[2]:
-                config.AcB = hex_a_op(texto)
-        self.actualizar_registros()
+    def editar_acumuladores(self):
+        texto = self.sender().text()
+        if self.sender() == self.edit_acumuladores[0]:
+            config.AcA = hex_a_op(texto)
+        elif self.sender() == self.edit_acumuladores[1]:
+            config.AcB = hex_a_op(texto)
+        elif self.sender() == self.edit_acumuladores[2]:
+            config.AcC = hex_a_op(texto)
 
     def editar_banderas(self, texto):
         if len(texto) == 1:
@@ -199,14 +225,12 @@ class EditorRegistros(QWidget):
                 config.Z = int(texto)
             elif self.sender() == self.edit_banderas[5]:
                 config.P = int(texto)
-        self.actualizar_registros()
 
-    def editar_punteros(self, texto):
-        if len(texto) == 4:
-            if self.sender() == self.edit_punteros[0]:
-                config.IX = int(texto,16)
-            elif self.sender() == self.edit_punteros[1]:
-                config.IY = int(texto,16)
-            elif self.sender() == self.edit_punteros[2]:
-                config.PP = int(texto,16)
-        self.actualizar_registros()
+    def editar_punteros(self):
+        texto = self.sender().text()
+        if self.sender() == self.edit_punteros[0]:
+            config.IX = int(texto,16)
+        elif self.sender() == self.edit_punteros[1]:
+            config.IY = int(texto,16)
+        elif self.sender() == self.edit_punteros[2]:
+            config.PP = int(texto,16)
