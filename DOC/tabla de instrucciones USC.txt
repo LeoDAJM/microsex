@@ -17,8 +17,8 @@ Resta			SUB	09	↕ ↕ ↕ ↕ ↕ ↕
 Suma con acarreo	ADC	0A	↕ ↕ ↕ ↕ ↕ ↕
 Resta con acarreo	SBC	0B	↕ ↕ ↕ ↕ ↕ ↕
 ---------------------------------------------------
-Incrementar A		INC	0C	↕ ↕ ↕ ↕ ↕ ↕
-Decrementar A		DEC	0D	↕ ↕ ↕ ↕ ↕ ↕
+Incrementar A		INC	0C	• ↕ ↕ ↕ ↕ ↕
+Decrementar A		DEC	0D	• ↕ ↕ ↕ ↕ ↕
 ---------------------------------------------------
 Rotación a derecha	ROD	0E	↕ • 0 ↕ ↕ ↕
 Rotación a izquierda	ROI	0F	↕ • 0 ↕ ↕ ↕
