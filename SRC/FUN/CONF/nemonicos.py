@@ -138,7 +138,7 @@ instrucciones_arg = {
 'CLV' : [],
 'SEC' : [],
 'SEV' : [],
-'IN'  : [['acumuladores']],
+# 'IN'  : [['acumuladores']],
 'NEG' : [['acumuladores', 'indexado', 'directo']],
 'NOT' : [['acumuladores', 'indexado', 'directo']],
 'INC' : [['acumuladores', 'punteros', 'ppila', 'indexado', 'directo']],

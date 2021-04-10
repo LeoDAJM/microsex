@@ -90,20 +90,20 @@ Desp.lógico a derecha	DLD		CD DD ED	FD		7D	FD
 Operación		Pnem	INMED	ACUM		DIREC	INHER	INDEX (80_)
 PUNTEROS IX/IY/PP			A  B  C				IX	IY
 ----------------------------------------------------------------------------------
-Comparar Puntero IX	CPX	3F
-Comparar Puntero IY	CPY	7F
-Incrementar PIX		INX					83
-Incrementar PIY		INY					93
-Incrementar PP		INP					A3
-Decrementar PIX		DEX					84
-Decrementar PIY		DEY					94
-Decrementar PP		DEP					A4
-Cargar IX		LDX	8F			BF
-Cargar IY		LDY	CF			FF
-Cargar PP		LDP	C3			F3
-Guardar IX		STX				B0
-Guardar IY		STY				F0
-Guardar PP		STP				F4
+Comparar Puntero IX	CMP X	3F
+Comparar Puntero IY	CMP Y	7F
+Incrementar PIX		INC X					83
+Incrementar PIY		INC Y					93
+Incrementar PP		INC P					A3
+Decrementar PIX		DEC X					84
+Decrementar PIY		DEC Y					94
+Decrementar PP		DEC P					A4
+Cargar IX		LDA X	8F			BF
+Cargar IY		LDA Y	CF			FF
+Cargar PP		LDA P	C3			F3
+Guardar IX		STA X				B0
+Guardar IY		STA Y				F0
+Guardar PP		STA P				F4
 
 ----------------------------------------------------------------------------------
 Operación		Pnem	INMED	ACUM		DIREC	INHER	INDEX (80_)

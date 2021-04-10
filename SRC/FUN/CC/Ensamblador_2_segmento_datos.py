@@ -18,7 +18,7 @@ directivas_dseg = [
 
 nemonicos = list(argumentos_instrucciones().keys())
 
-reservados = ['A', 'B', 'C', 'IX', 'IY']
+reservados = ['A', 'B', 'C', 'IX', 'IY', 'X', 'Y']
 
 palabras_reservadas = list(nemonicos)
 palabras_reservadas.extend(reservados)

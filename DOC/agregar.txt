@@ -3,7 +3,7 @@ PUSH A/B/C
 copiar		RDir  <- PIns
 copiar		RIns  <- @RDir
 
-decrementar	PP
+decrementar	      PP
 copiar		RDir  <- PP
 
 ;copiar		@RDir <- Acumuladores
@@ -16,7 +16,7 @@ copiar		RDir  <- PIns
 copiar		RIns  <- @RDir
 
 copiar		RDir  <- PP
-incrementar	PP
+incrementar	      PP
 
 copiar		BMem  <- @RDir
 ejecutar USC/MEM
@@ -26,7 +26,7 @@ PUSH IX/IY
 copiar		RDir  <- PIns
 copiar		RIns  <- @RDir
 
-decrementar	PP
+decrementar	      PP
 copiar		RDir  <- PP
 
 ;copiar		@RDir <- IXH
