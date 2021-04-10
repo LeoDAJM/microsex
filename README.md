@@ -1,6 +1,16 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
+## CAMBIOS EN LA VERSIÓN 1.3
+- Cambio de sintaxis en instrucciones de carga de punteros
+  - ~~LDX~~ -> LDA X
+  - ~~LDY~~ -> LDA Y
+  - ~~LDP~~ -> LDA P
+  - ~~STX~~ -> STA X
+  - ~~STY~~ -> STA Y
+  - ~~STP~~ -> STA P
+- Corrección en Editor de Registros
+
 ## CAMBIOS EN LA VERSIÓN 1.2
 
 - Creación de un archivo de listado
