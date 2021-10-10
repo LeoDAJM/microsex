@@ -40,16 +40,17 @@ N = 0
 Z = 0
 P = 0
 
-senal_control = [0]*65
+senal_control = [0]*67
 
-senal_control_USC     = senal_control[0:30]
-lectura_escritura     = senal_control[21]
-modo_direccionamiento = senal_control[30:34]
-senal_control_LR      = senal_control[34:53]
-hacer_alto_contador   = senal_control[53]
-senal_control_PD      = senal_control[54:60]
-guardado_punteros     = senal_control[60]
-senal_control_CP      = senal_control[61]
-mux_interfaz_memoria  = senal_control[62:65]
+senal_control_USC     = senal_control[0:31]
+lectura_escritura     = senal_control[22]
+modo_direccionamiento = senal_control[31:35]
+senal_control_LR      = senal_control[35:54]
+hacer_alto_contador   = senal_control[54]
+senal_control_PD      = senal_control[55:61]
+guardado_punteros     = senal_control[61]
+senal_control_CP      = senal_control[62]
+mux_interfaz_memoria  = senal_control[63:66]
+uso_pila              = senal_control[66]
 
 estilo = stylesheet()

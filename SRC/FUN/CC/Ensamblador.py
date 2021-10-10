@@ -119,16 +119,16 @@ def verificacion_codigo(DATOS):
 
     return errores, mensaje, m_prog, listado, tabla_simbolos
 
-if __name__ == '__main__':
-
-    archivo = "E:/Escritorio/ejemplos_microsex/fibonacci_msex2.asm"
-    f = open(archivo)
-    DATOS = f.readlines()
-    codigo = list(DATOS)
-    f.close()
-
-    listado, TS = verificacion_codigo(DATOS)[3:5]
-    archlist = crear_archivo_listado(archivo, codigo, listado, TS)
+# if __name__ == '__main__':
+#
+#     archivo = "E:/Escritorio/ejemplos_microsex/fibonacci_msex2.asm"
+#     f = open(archivo)
+#     DATOS = f.readlines()
+#     codigo = list(DATOS)
+#     f.close()
+# 
+#     listado, TS = verificacion_codigo(DATOS)[3:5]
+#     archlist = crear_archivo_listado(archivo, codigo, listado, TS)
 
 
 

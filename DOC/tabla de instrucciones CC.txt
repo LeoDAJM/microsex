@@ -4,10 +4,10 @@ CONTROL					A  B  C  			IX   	IY
 -----------------------------------------------------------------------------------
 No operar		NOP					00
 Detener			HLT					10
-Cero al acarreo		CLC					40
-Cero al desborde	CLV					50
-Establecer acarreo	SEC					C0
-Establecer desborde	SEV					D0
+Cero al acarreo		CLC					20
+Cero al desborde	CLV					30
+Establecer acarreo	SEC					90
+Establecer desborde	SEV					A0
 Cero al resultado	CLR		01 11 21	31		41	C1
 
 
@@ -132,7 +132,23 @@ Brinco incondicional	BRI				35
 Llamada a subrutina	BSR				36
 Retorno de subrutina	RET					37
 
+----------------------------------------------------------------------------------
+Operación		Pnem	INMED	ACUM		DIREC	INHER	INDEX (80_)
+PILA					A  B  C				IX	IY
+----------------------------------------------------------------------------------
+Guardar en la pila	GPI A					42
+			GPI B					52
+			GPI C					62
+			GPI X					C2
+			GPI Y					D2
+			GPI F					E2
 
+Recuperar de la pila	RPI A					40
+			RPI B					50
+			RPI C					60
+			RPI X					C0
+			RPI Y					D0
+			RPI F					E0
 
 
 

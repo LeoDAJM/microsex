@@ -101,6 +101,12 @@ def verificar_argumento(argumento, permitidos):
             else:
                 intento += 1
 
+        elif perm == 'banderas':
+            if argumento in ['F']:
+                return argumento
+            else:
+                intento += 1
+
 
         elif perm == 'inmediato':
             if argumento.startswith("#"):

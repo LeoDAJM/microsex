@@ -1,213 +1,212 @@
 from FUN.CONF.descodUSC import expandir
 from FUN.CONF.descodUSC import descodificadorUSC
 
-do_usc1 = descodificadorUSC()
+do_usc = descodificadorUSC()
 
-lectura_n = [0]                 # S[21]
+lectura_n = [0]                 # S[22]
 escritura = [1]
 
-entradaA_AcumA = [0,0]          # S[22:24]
+entradaA_AcumA = [0,0]          # S[23:25]
 entradaA_AcumB = [1,0]
 entradaA_AcumC = [0,1]
+entradaA_RegB  = [1,1]
 
-entradaB_Ext_N = [0,0,0]        # S[24:27]
+entradaB_Ext_N = [0,0,0]        # S[25:28]
 entradaB_Memor = [1,0,0]
 entradaB_AcumA = [0,1,0]
 entradaB_AcumB = [1,1,0]
 entradaB_AcumC = [0,0,1]
 
-actualiza_No    = [0,0,0]       # S[27:30]
+actualiza_No    = [0,0,0]       # S[28:31]
 actualiza_AcumA = [1,0,0]
 actualiza_AcumB = [0,1,0]
 actualiza_AcumC = [0,0,1]
 
 # Parte 1, se extienden instrucciones para el acumulador A e instrucciones sin argumento (verde oscuro)
 
-NOP   = expandir(do_usc1[0], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-CLC   = expandir(do_usc1[21], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-SEC   = expandir(do_usc1[22], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-CLV   = expandir(do_usc1[23], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-SEV   = expandir(do_usc1[24], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+NOP   = expandir(do_usc[0], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+CLC   = expandir(do_usc[21], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+SEC   = expandir(do_usc[22], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+CLV   = expandir(do_usc[23], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+SEV   = expandir(do_usc[24], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
 
-CLR_A = expandir(do_usc1[1], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-IN_A  = expandir(do_usc1[2], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-NEG_A = expandir(do_usc1[3], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-NOT_A = expandir(do_usc1[4], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-AND_A = expandir(do_usc1[5], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-OR_A  = expandir(do_usc1[6], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-XOR_A = expandir(do_usc1[7], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-ADD_A = expandir(do_usc1[8], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-SUB_A = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-ADC_A = expandir(do_usc1[10], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-SBC_A = expandir(do_usc1[11], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-CMP_A = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-INC_A = expandir(do_usc1[12], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-DEC_A = expandir(do_usc1[13], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-ROD_A = expandir(do_usc1[14], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-ROI_A = expandir(do_usc1[15], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-RCD_A = expandir(do_usc1[16], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-RCI_A = expandir(do_usc1[17], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-DAD_A = expandir(do_usc1[18], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-DAI_A = expandir(do_usc1[19], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
-DLD_A = expandir(do_usc1[20], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+CLR_A = expandir(do_usc[1], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+IN_A  = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+NEG_A = expandir(do_usc[3], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+NOT_A = expandir(do_usc[4], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+AND_A = expandir(do_usc[5], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+OR_A  = expandir(do_usc[6], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+XOR_A = expandir(do_usc[7], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+ADD_A = expandir(do_usc[8], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+SUB_A = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+ADC_A = expandir(do_usc[10], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+SBC_A = expandir(do_usc[11], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+CMP_A = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+INC_A = expandir(do_usc[12], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+DEC_A = expandir(do_usc[13], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+ROD_A = expandir(do_usc[14], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+ROI_A = expandir(do_usc[15], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+RCD_A = expandir(do_usc[16], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+RCI_A = expandir(do_usc[17], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+DAD_A = expandir(do_usc[18], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+DAI_A = expandir(do_usc[19], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
+DLD_A = expandir(do_usc[20], lectura_n, entradaA_AcumA, entradaB_Ext_N, actualiza_AcumA)
 
 # Parte 2, se agregan instrucciones con acumuladores nuevos (Instrucciones sin argumento) (Verde claro)
 
-CLR_B = expandir(do_usc1[1], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-IN_B  = expandir(do_usc1[2], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-NEG_B = expandir(do_usc1[3], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-NOT_B = expandir(do_usc1[4], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-INC_B = expandir(do_usc1[12], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-DEC_B = expandir(do_usc1[13], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-ROD_B = expandir(do_usc1[14], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-ROI_B = expandir(do_usc1[15], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-RCD_B = expandir(do_usc1[16], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-RCI_B = expandir(do_usc1[17], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-DAD_B = expandir(do_usc1[18], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-DAI_B = expandir(do_usc1[19], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
-DLD_B = expandir(do_usc1[20], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+CLR_B = expandir(do_usc[1], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+IN_B  = expandir(do_usc[2], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+NEG_B = expandir(do_usc[3], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+NOT_B = expandir(do_usc[4], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+INC_B = expandir(do_usc[12], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+DEC_B = expandir(do_usc[13], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+ROD_B = expandir(do_usc[14], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+ROI_B = expandir(do_usc[15], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+RCD_B = expandir(do_usc[16], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+RCI_B = expandir(do_usc[17], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+DAD_B = expandir(do_usc[18], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+DAI_B = expandir(do_usc[19], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
+DLD_B = expandir(do_usc[20], lectura_n, entradaA_AcumB, entradaB_Ext_N, actualiza_AcumB)
 
-CLR_C = expandir(do_usc1[1], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-IN_C  = expandir(do_usc1[2], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-NEG_C = expandir(do_usc1[3], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-NOT_C = expandir(do_usc1[4], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-INC_C = expandir(do_usc1[12], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-DEC_C = expandir(do_usc1[13], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-ROD_C = expandir(do_usc1[14], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-ROI_C = expandir(do_usc1[15], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-RCD_C = expandir(do_usc1[16], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-RCI_C = expandir(do_usc1[17], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-DAD_C = expandir(do_usc1[18], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-DAI_C = expandir(do_usc1[19], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
-DLD_C = expandir(do_usc1[20], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+CLR_C = expandir(do_usc[1], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+IN_C  = expandir(do_usc[2], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+NEG_C = expandir(do_usc[3], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+NOT_C = expandir(do_usc[4], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+INC_C = expandir(do_usc[12], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+DEC_C = expandir(do_usc[13], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+ROD_C = expandir(do_usc[14], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+ROI_C = expandir(do_usc[15], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+RCD_C = expandir(do_usc[16], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+RCI_C = expandir(do_usc[17], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+DAD_C = expandir(do_usc[18], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+DAI_C = expandir(do_usc[19], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
+DLD_C = expandir(do_usc[20], lectura_n, entradaA_AcumC, entradaB_Ext_N, actualiza_AcumC)
 
 # Parte 3, se agregan instrucciones con memoria (el argumento es la dirección de memoria) (Celeste)
 # Direccionamiento directo.
 
-AND_A_mem = expandir(do_usc1[5], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-OR_A_mem  = expandir(do_usc1[6], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-XOR_A_mem = expandir(do_usc1[7], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-ADD_A_mem = expandir(do_usc1[8], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-SUB_A_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-ADC_A_mem = expandir(do_usc1[10], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-SBC_A_mem = expandir(do_usc1[11], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-CMP_A_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_No)
+AND_A_mem = expandir(do_usc[5], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+OR_A_mem  = expandir(do_usc[6], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+XOR_A_mem = expandir(do_usc[7], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+ADD_A_mem = expandir(do_usc[8], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+SUB_A_mem = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+ADC_A_mem = expandir(do_usc[10], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+SBC_A_mem = expandir(do_usc[11], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+CMP_A_mem = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_No)
 
-AND_B_mem = expandir(do_usc1[5], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-OR_B_mem  = expandir(do_usc1[6], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-XOR_B_mem = expandir(do_usc1[7], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-ADD_B_mem = expandir(do_usc1[8], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-SUB_B_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-ADC_B_mem = expandir(do_usc1[10], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-SBC_B_mem = expandir(do_usc1[11], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-CMP_B_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_No)
+AND_B_mem = expandir(do_usc[5], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+OR_B_mem  = expandir(do_usc[6], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+XOR_B_mem = expandir(do_usc[7], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+ADD_B_mem = expandir(do_usc[8], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+SUB_B_mem = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+ADC_B_mem = expandir(do_usc[10], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+SBC_B_mem = expandir(do_usc[11], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
+CMP_B_mem = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_No)
 
-AND_C_mem = expandir(do_usc1[5], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-OR_C_mem  = expandir(do_usc1[6], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-XOR_C_mem = expandir(do_usc1[7], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-ADD_C_mem = expandir(do_usc1[8], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-SUB_C_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-ADC_C_mem = expandir(do_usc1[10], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-SBC_C_mem = expandir(do_usc1[11], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
-CMP_C_mem = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_No)
+AND_C_mem = expandir(do_usc[5], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+OR_C_mem  = expandir(do_usc[6], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+XOR_C_mem = expandir(do_usc[7], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+ADD_C_mem = expandir(do_usc[8], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+SUB_C_mem = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+ADC_C_mem = expandir(do_usc[10], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+SBC_C_mem = expandir(do_usc[11], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+CMP_C_mem = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_No)
 
 # Parte 4, se agregan instrucciones de operaciones entre acumuladores                   (Rosado)
 
-AND_AB = expandir(do_usc1[5], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-AND_AC = expandir(do_usc1[5], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-AND_BA = expandir(do_usc1[5], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-AND_BC = expandir(do_usc1[5], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-AND_CA = expandir(do_usc1[5], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-AND_CB = expandir(do_usc1[5], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+AND_AB = expandir(do_usc[5], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+AND_AC = expandir(do_usc[5], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+AND_BA = expandir(do_usc[5], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+AND_BC = expandir(do_usc[5], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+AND_CA = expandir(do_usc[5], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+AND_CB = expandir(do_usc[5], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-OR_AB  = expandir(do_usc1[6], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-OR_AC  = expandir(do_usc1[6], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-OR_BA  = expandir(do_usc1[6], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-OR_BC  = expandir(do_usc1[6], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-OR_CA  = expandir(do_usc1[6], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-OR_CB  = expandir(do_usc1[6], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+OR_AB  = expandir(do_usc[6], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+OR_AC  = expandir(do_usc[6], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+OR_BA  = expandir(do_usc[6], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+OR_BC  = expandir(do_usc[6], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+OR_CA  = expandir(do_usc[6], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+OR_CB  = expandir(do_usc[6], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-XOR_AB = expandir(do_usc1[7], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-XOR_AC = expandir(do_usc1[7], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-XOR_BA = expandir(do_usc1[7], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-XOR_BC = expandir(do_usc1[7], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-XOR_CA = expandir(do_usc1[7], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-XOR_CB = expandir(do_usc1[7], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+XOR_AB = expandir(do_usc[7], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+XOR_AC = expandir(do_usc[7], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+XOR_BA = expandir(do_usc[7], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+XOR_BC = expandir(do_usc[7], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+XOR_CA = expandir(do_usc[7], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+XOR_CB = expandir(do_usc[7], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-ADD_AB = expandir(do_usc1[8], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-ADD_AC = expandir(do_usc1[8], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-ADD_BA = expandir(do_usc1[8], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-ADD_BC = expandir(do_usc1[8], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-ADD_CA = expandir(do_usc1[8], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-ADD_CB = expandir(do_usc1[8], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+ADD_AB = expandir(do_usc[8], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+ADD_AC = expandir(do_usc[8], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+ADD_BA = expandir(do_usc[8], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+ADD_BC = expandir(do_usc[8], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+ADD_CA = expandir(do_usc[8], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+ADD_CB = expandir(do_usc[8], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-SUB_AB = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-SUB_AC = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-SUB_BA = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-SUB_BC = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-SUB_CA = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-SUB_CB = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+SUB_AB = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+SUB_AC = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+SUB_BA = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+SUB_BC = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+SUB_CA = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+SUB_CB = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-ADC_AB = expandir(do_usc1[10], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-ADC_AC = expandir(do_usc1[10], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-ADC_BA = expandir(do_usc1[10], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-ADC_BC = expandir(do_usc1[10], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-ADC_CA = expandir(do_usc1[10], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-ADC_CB = expandir(do_usc1[10], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+ADC_AB = expandir(do_usc[10], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+ADC_AC = expandir(do_usc[10], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+ADC_BA = expandir(do_usc[10], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+ADC_BC = expandir(do_usc[10], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+ADC_CA = expandir(do_usc[10], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+ADC_CB = expandir(do_usc[10], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-SBC_AB = expandir(do_usc1[11], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-SBC_AC = expandir(do_usc1[11], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-SBC_BA = expandir(do_usc1[11], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-SBC_BC = expandir(do_usc1[11], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-SBC_CA = expandir(do_usc1[11], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-SBC_CB = expandir(do_usc1[11], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+SBC_AB = expandir(do_usc[11], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+SBC_AC = expandir(do_usc[11], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+SBC_BA = expandir(do_usc[11], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+SBC_BC = expandir(do_usc[11], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+SBC_CA = expandir(do_usc[11], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+SBC_CB = expandir(do_usc[11], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-CMP_AB = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_No)
-CMP_AC = expandir(do_usc1[9], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_No)
-CMP_BA = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_No)
-CMP_BC = expandir(do_usc1[9], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_No)
-CMP_CA = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_No)
-CMP_CB = expandir(do_usc1[9], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_No)
+CMP_AB = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_No)
+CMP_AC = expandir(do_usc[9], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_No)
+CMP_BA = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_No)
+CMP_BC = expandir(do_usc[9], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_No)
+CMP_CA = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_No)
+CMP_CB = expandir(do_usc[9], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_No)
 
 #Parte 5, Instrucciones de carga (leer Dato, depoSiTAr) de memoria (guardar y cargar)  (Celeste/Rosado)
-LDA_A_mem = expandir(do_usc1[2], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
-LDA_B_mem = expandir(do_usc1[2], lectura_n, entradaA_AcumB, entradaB_Memor, actualiza_AcumB)
-LDA_C_mem = expandir(do_usc1[2], lectura_n, entradaA_AcumC, entradaB_Memor, actualiza_AcumC)
+LDA_A_mem = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumA)
+LDA_B_mem = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumB)
+LDA_C_mem = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_Memor, actualiza_AcumC)
 
-LDA_AB = expandir(do_usc1[2], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
-LDA_AC = expandir(do_usc1[2], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
-LDA_BA = expandir(do_usc1[2], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
-LDA_BC = expandir(do_usc1[2], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
-LDA_CA = expandir(do_usc1[2], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
-LDA_CB = expandir(do_usc1[2], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
+LDA_AB = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_AcumB, actualiza_AcumA)
+LDA_AC = expandir(do_usc[2], lectura_n, entradaA_AcumA, entradaB_AcumC, actualiza_AcumA)
+LDA_BA = expandir(do_usc[2], lectura_n, entradaA_AcumB, entradaB_AcumA, actualiza_AcumB)
+LDA_BC = expandir(do_usc[2], lectura_n, entradaA_AcumB, entradaB_AcumC, actualiza_AcumB)
+LDA_CA = expandir(do_usc[2], lectura_n, entradaA_AcumC, entradaB_AcumA, actualiza_AcumC)
+LDA_CB = expandir(do_usc[2], lectura_n, entradaA_AcumC, entradaB_AcumB, actualiza_AcumC)
 
-STA_A_mem = expandir(do_usc1[0], escritura, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-STA_B_mem = expandir(do_usc1[0], escritura, entradaA_AcumB, entradaB_Ext_N, actualiza_No)
-STA_C_mem = expandir(do_usc1[0], escritura, entradaA_AcumC, entradaB_Ext_N, actualiza_No)
+STA_A_mem = expandir(do_usc[0], escritura, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+STA_B_mem = expandir(do_usc[0], escritura, entradaA_AcumB, entradaB_Ext_N, actualiza_No)
+STA_C_mem = expandir(do_usc[0], escritura, entradaA_AcumC, entradaB_Ext_N, actualiza_No)
 
-CLR_mem = expandir(do_usc1[1], escritura, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
-NEG_mem = expandir(do_usc1[40], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-NOT_mem = expandir(do_usc1[41], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-INC_mem = expandir(do_usc1[42], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-DEC_mem = expandir(do_usc1[43], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+CLR_mem = expandir(do_usc[1], escritura, entradaA_AcumA, entradaB_Ext_N, actualiza_No)
+NEG_mem = expandir(do_usc[40], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+NOT_mem = expandir(do_usc[41], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+INC_mem = expandir(do_usc[42], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+DEC_mem = expandir(do_usc[43], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
 
-ROD_mem = expandir(do_usc1[50], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-ROI_mem = expandir(do_usc1[51], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-RCD_mem = expandir(do_usc1[52], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-RCI_mem = expandir(do_usc1[53], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-DAD_mem = expandir(do_usc1[54], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-DAI_mem = expandir(do_usc1[55], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-DLD_mem = expandir(do_usc1[56], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
-
-"""Agregar estas instrucciones al diccionario de instrucciones_memoria"""
+ROD_mem = expandir(do_usc[50], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+ROI_mem = expandir(do_usc[51], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+RCD_mem = expandir(do_usc[52], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+RCI_mem = expandir(do_usc[53], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+DAD_mem = expandir(do_usc[54], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+DAI_mem = expandir(do_usc[55], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
+DLD_mem = expandir(do_usc[56], escritura, entradaA_AcumA, entradaB_Memor, actualiza_No)
 
 # Los modos inmediato e Indexado; se agregarán en el módulo computador completo
 
 
 instrucciones_sin_argumento = {
 0x00: NOP,
-0x40: CLC, 0x50: CLV,
-0xC0: SEC, 0xD0: SEV
+0x20: CLC, 0x30: CLV,
+0x90: SEC, 0xA0: SEV
 }
 
 instrucciones_acum_a = {
@@ -280,19 +279,19 @@ instrucciones_memoria = {
 }
 
 
-instrucciones_usc_02 = {}
-instrucciones_usc_02.update(instrucciones_sin_argumento)
-instrucciones_usc_02.update(instrucciones_acum_a)
-instrucciones_usc_02.update(instrucciones_acum_b)
-instrucciones_usc_02.update(instrucciones_acum_c)
-instrucciones_usc_02.update(instrucciones_entre_ac)
-instrucciones_usc_02.update(instrucciones_acum_memoria)
-instrucciones_usc_02.update(instrucciones_memoria)
+instrucciones_usce = {}
+instrucciones_usce.update(instrucciones_sin_argumento)
+instrucciones_usce.update(instrucciones_acum_a)
+instrucciones_usce.update(instrucciones_acum_b)
+instrucciones_usce.update(instrucciones_acum_c)
+instrucciones_usce.update(instrucciones_entre_ac)
+instrucciones_usce.update(instrucciones_acum_memoria)
+instrucciones_usce.update(instrucciones_memoria)
 
-nemonicos_usc_02 = {
+nemonicos_usce = {
 0x00: "NOP",
-0x40: "CLC", 0x50: "CLV",
-0xC0: "SEC", 0xD0: "SEV",
+0x20: "CLC", 0x30: "CLV",
+0x90: "SEC", 0xA0: "SEV",
 
 0x01: "CLR A", 0x02: "IN A",  0x03: "NEG A", 0x04: "NOT A",
 0x43: "INC A", 0x44: "DEC A",
@@ -354,7 +353,7 @@ nemonicos_usc_02 = {
 
 
 def descodificadorUSCE():
-    return dict(instrucciones_usc_02)
+    return dict(instrucciones_usce)
 
 def nemonicosUSCE():
-    return dict(nemonicos_usc_02)
+    return dict(nemonicos_usce)

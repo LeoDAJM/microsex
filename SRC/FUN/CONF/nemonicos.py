@@ -1,7 +1,7 @@
 nemonicos_computador_completo = {
 "NOP": [[0x00], 1],
-"CLC": [[0x40], 1], "CLV": [[0x50], 1],
-"SEC": [[0xC0], 1], "SEV": [[0xD0], 1],
+"CLC": [[0x20], 1], "CLV": [[0x30], 1],
+"SEC": [[0x90], 1], "SEV": [[0xA0], 1],
 
 # "IN A": [[0x02], 1], "IN B": [[0x12], 1], "IN C": [[0x22], 1],
 
@@ -127,6 +127,13 @@ nemonicos_computador_completo = {
 "INC IY": [[0x80, 0xD3], 3], "DEC IY": [[0x80, 0xD4], 3],
 "ROD IY": [[0x80, 0xCD], 3], "ROI IY": [[0x80, 0xCE], 3], "RCD IY": [[0x80, 0xDD], 3], "RCI IY": [[0x80, 0xDE], 3],
 "DAD IY": [[0x80, 0xED], 3], "DAI IY": [[0x80, 0xEE], 3], "DLD IY": [[0x80, 0xFD], 3],
+
+"RPI A": [[0x40], 1], "RPI B": [[0x50], 1], "RPI C": [[0x60], 1],
+"GPI A": [[0x42], 1], "GPI B": [[0x52], 1], "GPI C": [[0x62], 1],
+
+"RPI X": [[0xC0], 1], "RPI Y": [[0xD0], 1], "RPI F": [[0xE0], 1],
+"GPI X": [[0xC2], 1], "GPI Y": [[0xD2], 1], "GPI F": [[0xE2], 1],
+
 }
 
 
@@ -186,7 +193,15 @@ instrucciones_arg = {
 'BII' : [['directo']],
 'BRI' : [['directo']],
 'BSR' : [['directo']],
-'RET' : []
+'RET' : [],
+'GPI' : [['acumuladores', 'punteros', 'banderas']],
+'RPI' : [['acumuladores', 'punteros', 'banderas']],
+'GPI X': [],
+'GPI Y': [],
+'GPI F': [],
+'RPI X': [],
+'RPI Y': [],
+'RPI F': [],
 }
 
 def nemonicos_microsex():

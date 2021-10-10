@@ -92,7 +92,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                             errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento1, argumentos_permitidos[0], i)
                             if argum != None:
                                 instruccion = instruccion + ' ' + simb
-                                if simb in ['X', 'Y', 'P']:
+                                if simb in ['X', 'Y', 'P', 'F']:
                                     argumentos_permitidos = instrucciones_arg[instruccion]
                                     errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento2, argumentos_permitidos[0], i)
                                 else:
@@ -150,6 +150,12 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
 
         elif perm == 'ppila':
             if argumento in ['P']:
+                return errores_previos, mensaje, argumento, ['NA']
+            else:
+                intento += 1
+
+        elif perm == 'banderas':
+            if argumento in ['F']:
                 return errores_previos, mensaje, argumento, ['NA']
             else:
                 intento += 1

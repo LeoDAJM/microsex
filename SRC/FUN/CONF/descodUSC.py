@@ -28,48 +28,52 @@ nact = [0]
 BNormal = [0]
 BCompXY = [1]
 
+# Mux para recuperar banderas desde la pila S[21]
+B_ALU = [0]
+B_PILA = [1]
 
-NOP = expandir(do_alu[0], noPasa, noPasa, noH, nact, BNormal)
-CLR = expandir(do_alu[1], noPasa, noPasa, noH, actB, BNormal)
-IN  = expandir(do_alu[2], noPasa, noPasa, noH, actB, BNormal)
-NEG = expandir(do_alu[3], noPasa, noPasa, noH, actB, BNormal)
-NOT = expandir(do_alu[4], noPasa, noPasa, noH, actB, BNormal)
-AND = expandir(do_alu[5], noPasa, noPasa, noH, actB, BNormal)
-OR  = expandir(do_alu[6], noPasa, noPasa, noH, actB, BNormal)
-XOR = expandir(do_alu[7], noPasa, noPasa, noH, actB, BNormal)
-ADD = expandir(do_alu[8], siPasa, siPasa, siH, actB, BNormal)
-SUB = expandir(do_alu[9], siPasa, siPasa, siH, actB, BNormal)
-ADC = expandir(do_alu[10], siPasa, siPasa, siH, actB, BNormal)
-SBC = expandir(do_alu[11], siPasa, siPasa, siH, actB, BNormal)
-INC = expandir(do_alu[12], noPasa, siPasa, siH, actB, BNormal)
-DEC = expandir(do_alu[13], noPasa, siPasa, siH, actB, BNormal)
 
-ROD = expandir(do_alu[14], siPasa, noPasa, noH, actB, BNormal)
-ROI = expandir(do_alu[15], siPasa, noPasa, noH, actB, BNormal)
-RCD = expandir(do_alu[16], siPasa, noPasa, noH, actB, BNormal)
-RCI = expandir(do_alu[17], siPasa, noPasa, noH, actB, BNormal)
-DAD = expandir(do_alu[18], siPasa, noPasa, noH, actB, BNormal)
-DAI = expandir(do_alu[19], siPasa, noPasa, noH, actB, BNormal)
-DLD = expandir(do_alu[20], siPasa, noPasa, noH, actB, BNormal)
+NOP = expandir(do_alu[0], noPasa, noPasa, noH, nact, BNormal, B_ALU)
+CLR = expandir(do_alu[1], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+IN  = expandir(do_alu[2], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+NEG = expandir(do_alu[3], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+NOT = expandir(do_alu[4], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+AND = expandir(do_alu[5], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+OR  = expandir(do_alu[6], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+XOR = expandir(do_alu[7], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+ADD = expandir(do_alu[8], siPasa, siPasa, siH, actB, BNormal, B_ALU)
+SUB = expandir(do_alu[9], siPasa, siPasa, siH, actB, BNormal, B_ALU)
+ADC = expandir(do_alu[10], siPasa, siPasa, siH, actB, BNormal, B_ALU)
+SBC = expandir(do_alu[11], siPasa, siPasa, siH, actB, BNormal, B_ALU)
+INC = expandir(do_alu[12], noPasa, siPasa, siH, actB, BNormal, B_ALU)
+DEC = expandir(do_alu[13], noPasa, siPasa, siH, actB, BNormal, B_ALU)
 
-CLC = expandir(do_alu[0], borrar, noPasa, noH, nact, BNormal)
-SEC = expandir(do_alu[0], forzar, noPasa, noH, nact, BNormal)
+ROD = expandir(do_alu[14], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+ROI = expandir(do_alu[15], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+RCD = expandir(do_alu[16], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+RCI = expandir(do_alu[17], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DAD = expandir(do_alu[18], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DAI = expandir(do_alu[19], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DLD = expandir(do_alu[20], siPasa, noPasa, noH, actB, BNormal, B_ALU)
 
-CLV = expandir(do_alu[0], noPasa, borrar, noH, nact, BNormal)
-SEV = expandir(do_alu[0], noPasa, forzar, noH, nact, BNormal)
+CLC = expandir(do_alu[0], borrar, noPasa, noH, nact, BNormal, B_ALU)
+SEC = expandir(do_alu[0], forzar, noPasa, noH, nact, BNormal, B_ALU)
 
-NEG_B = expandir(do_alu[40], noPasa, noPasa, noH, actB, BNormal)
-NOT_B = expandir(do_alu[41], noPasa, noPasa, noH, actB, BNormal)
-INC_B = expandir(do_alu[42], noPasa, siPasa, siH, actB, BNormal)
-DEC_B = expandir(do_alu[43], noPasa, siPasa, siH, actB, BNormal)
+CLV = expandir(do_alu[0], noPasa, borrar, noH, nact, BNormal, B_ALU)
+SEV = expandir(do_alu[0], noPasa, forzar, noH, nact, BNormal, B_ALU)
 
-ROD_B = expandir(do_alu[50], siPasa, noPasa, noH, actB, BNormal)
-ROI_B = expandir(do_alu[51], siPasa, noPasa, noH, actB, BNormal)
-RCD_B = expandir(do_alu[52], siPasa, noPasa, noH, actB, BNormal)
-RCI_B = expandir(do_alu[53], siPasa, noPasa, noH, actB, BNormal)
-DAD_B = expandir(do_alu[54], siPasa, noPasa, noH, actB, BNormal)
-DAI_B = expandir(do_alu[55], siPasa, noPasa, noH, actB, BNormal)
-DLD_B = expandir(do_alu[56], siPasa, noPasa, noH, actB, BNormal)
+NEG_B = expandir(do_alu[40], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+NOT_B = expandir(do_alu[41], noPasa, noPasa, noH, actB, BNormal, B_ALU)
+INC_B = expandir(do_alu[42], noPasa, siPasa, siH, actB, BNormal, B_ALU)
+DEC_B = expandir(do_alu[43], noPasa, siPasa, siH, actB, BNormal, B_ALU)
+
+ROD_B = expandir(do_alu[50], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+ROI_B = expandir(do_alu[51], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+RCD_B = expandir(do_alu[52], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+RCI_B = expandir(do_alu[53], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DAD_B = expandir(do_alu[54], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DAI_B = expandir(do_alu[55], siPasa, noPasa, noH, actB, BNormal, B_ALU)
+DLD_B = expandir(do_alu[56], siPasa, noPasa, noH, actB, BNormal, B_ALU)
 
 
 instrucciones_usc = {

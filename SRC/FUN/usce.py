@@ -12,13 +12,13 @@ def unidad_secuencial_calculo(estado_anterior_USC, entrada_externa_USC, banderas
     dato_memoria = entrada_externa_USC[1]
 
     control_ALU = senal_control_USC[0:12]
-    control_LCT = senal_control_USC[12:21]
+    control_LCT = senal_control_USC[12:22]
 
-    control_LE = senal_control_USC[21]
+    control_LE = senal_control_USC[22]
 
-    control_entrada_A  = senal_control_USC[22:24]
-    control_entrada_B  = senal_control_USC[24:27]
-    control_acumulador = senal_control_USC[27:30]
+    control_entrada_A  = senal_control_USC[23:25]
+    control_entrada_B  = senal_control_USC[25:28]
+    control_acumulador = senal_control_USC[28:31]
 
 
     if control_entrada_A == [0, 0]:
@@ -27,6 +27,9 @@ def unidad_secuencial_calculo(estado_anterior_USC, entrada_externa_USC, banderas
         entrada_A = acumulador_B_anterior
     elif control_entrada_A == [0, 1]:
         entrada_A = acumulador_C_anterior
+    elif control_entrada_A == [1, 1]:
+        entrada_A = list(registro_F_anterior)
+        entrada_A.extend([0, 0])
 
     if control_entrada_B == [0, 0, 0]:
         entrada_B = dato_externo
@@ -41,7 +44,7 @@ def unidad_secuencial_calculo(estado_anterior_USC, entrada_externa_USC, banderas
 
     resultado_actual, banderas_actual = unidad_aritmetica_logica(entrada_A, entrada_B, registro_F_anterior[0], control_ALU)
 
-    registro_F_acutal = logica_control_temporizacion(registro_F_anterior, banderas_actual, banderas_cp, control_LCT)
+    registro_F_acutal = logica_control_temporizacion(registro_F_anterior, banderas_actual, banderas_cp, resultado_actual[0:6], control_LCT)
 
     acumulador_A_actual = acumulador_A_anterior
     acumulador_B_actual = acumulador_B_anterior
