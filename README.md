@@ -1,14 +1,45 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
+## CAMBIOS EN LA VERSIÓN 1.4
+- Cambio en códigos de operación de las instrucciones:
+  - **CLC** cambia de 40 a 20
+  - **CLV** cambia de 50 a 30
+  - **SEC** cambia de C0 a 90
+  - **SEV** cambia de D0 a A0
+
+- Se agregó instrucciones de guardado de datos en la PILA:
+  - GPI A (42)
+  - GPI B (52)
+  - GPI C (62)
+  - GPI X (C2)
+  - GPI Y (D2)
+  - GPI F (E2)
+
+- Se agregó instrucciones de recuperación de datos desde la PILA:
+  - RPI A (40)
+  - RPI B (50)
+  - RPI C (60)
+  - RPI X (C0)
+  - RPI Y (D0)
+  - RPI F (E0)
+
+- Se agregó nuevas dos nuevas señales de control:
+  - Se insertó la nueva señal S21: Ahora el mux de la LCT es de 4 a 1, la tercera entrada es el resultado de la ALU.
+  - Desde el anterior S21 hasta el S64 se desplazan una posición. (S22: S65)
+  - Se insertó la nueva señal S66: Indica que se utiliza al puntero de pila para almacenar o recuperar datos.
+
+- Para almacenar el registro de banderas en la memoria, se agrega la realimentación de este registro al mux de la entrada A de la ALU.
+
 ## CAMBIOS EN LA VERSIÓN 1.3
 - Cambio de sintaxis en instrucciones de carga de punteros
-  - ~~LDX~~ -> LDA X
-  - ~~LDY~~ -> LDA Y
-  - ~~LDP~~ -> LDA P
-  - ~~STX~~ -> STA X
-  - ~~STY~~ -> STA Y
-  - ~~STP~~ -> STA P
+  - ~~LDX~~ -> **LDA X**
+  - ~~LDY~~ -> **LDA Y**
+  - ~~LDP~~ -> **LDA P**
+  - ~~STX~~ -> **STA X**
+  - ~~STY~~ -> **STA Y**
+  - ~~STP~~ -> **STA P**
+
 - Corrección en Editor de Registros
 
 ## CAMBIOS EN LA VERSIÓN 1.2
@@ -18,6 +49,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
   - Genera la tabla de símbolos al final del listado
   - Se guarda automáticamente en el directorio del archivo .asm
   - Se guarda con extensión **.lst** como texto sin formato
+
 - Ahora con dos opciones de carga más rápidas
   - Ensamblar y cargar en la memoria borrando los datos anteriores
   - Ensamblar y cargar sobreescribiendo sólo los datos generados en el ensamblado
@@ -27,17 +59,20 @@ Emulador del microprocesador de arquitectura microsex de memoria común
 - Corrección de función *guardar como...* no habilitaba función de ensamblar
 - Corrección en el editor de memoria que permitía cualquier cadena
   - Ahora sólo permite **dos dígitos hexadecimales**
-- Instrucción de *Negar* cambió de abreviatura mnemónica de **INV** a **NOT**
+
+- Cambió de abreviatura mnemónica de instrucción *Negar*:
+  - ~~INV~~ -> **NOT**
+
 - Instrucciones de carga de punteros de datos en modo directo
   - LDX dir16 (BF)
   - LDY dir16 (FF)
   - LDP dir16 (F3)
+
 - Ahora interpreta expresiones matemáticas en los argumentos **dat8** y **dir16**
   - CCC #**dat8**
   - CCC IX+**dat8**
   - CCC IY+**dat8**
   - CCC **dir16**
-
 
 ## CARACTERÍSTICAS
 Emulador con módulos que demuestran el desarrollo evolutivo de un computador.
@@ -63,14 +98,9 @@ Require Python 3.5 o superior por el uso de la librería PyQt5
 
 Para agregar la librería PyQt5:
 
-#### En Linux:
-
-    sudo apt install pyqt5
-
-#### En Windows:
-
-    pip install pyqt5
-
+```
+pip install pyqt5
+```
 
 ### 2. Ejecución de Módulos
 
@@ -86,7 +116,9 @@ python modulo_CC.py
 
 Para la ejecución del programa completo, desde el mismo directorio, ejecutar
 
-    python Microsex.py
+```
+python Microsex.py
+```
 
 Las instrucciones incluidas en cada módulo están en la carpeta `microsex/DOC`
 
@@ -97,10 +129,6 @@ tabla de instrucciones USC.txt
 tabla de instrucciones USCE.txt
 tabla de instrucciones CC.txt
 ```
-
-### Archivos ejecutables
-
-https://drive.google.com/open?id=1CmQDQDVMAC20-RAs2bOrinkgPaieFWvK
 
 ## POR HACER:
 
