@@ -136,7 +136,7 @@ def verificar_segmento_datos(DATOS, origen):
         # print('\nDIRECCIÓN ACTUAL',hex(direccion))
     else:
         mensaje = mensaje + str('\n ** Total errores en segmento de datos: {}'.format(errores))
-
+        
     return errores, mensaje, tabla_simbolos, lista_simbolos, direccion
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):

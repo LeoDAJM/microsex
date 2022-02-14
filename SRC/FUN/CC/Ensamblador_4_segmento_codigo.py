@@ -119,6 +119,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
             errores, mensaje = err_sintaxis(errores, mensaje, i)
 
         # print(i, DATOS[i])
+        # print({direccion: hex(contenido_m_prog[n])})
 
     if errores == 0:
         mensaje = mensaje + str('\n ** OK **: todo correcto en segmento de código')
@@ -168,6 +169,7 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
                     argumento = eval(argumento)
                     return errores_previos, mensaje, simbolo, [argumento//256, argumento%256]
                 except NameError:
+                    intento += 1
                     errores = errores_previos + 1
                     mensaje = mensaje + str('\nError en linea {}: número inválido "{}"'.format(indice+1,argumento))
                     pass

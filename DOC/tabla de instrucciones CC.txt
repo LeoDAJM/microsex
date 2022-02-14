@@ -13,7 +13,7 @@ Cero al resultado	CLR		01 11 21	31		41	C1
 
 ----------------------------------------------------------------------------------
 Operación		Mnem	INMED	ACUM		DIREC	INHER	INDEX (80_)
-ENTRADA-SALIDA			A  B  C  			IX   	IY
+ENTRADA-SALIDA			A  B  C  				IX   	IY
 -----------------------------------------------------------------------------------
 Ingresar dato*		IN		02 12 22
 
