@@ -117,7 +117,7 @@ class USC(QWidget):
             lbl_s[i] = QLabel(self)
             lbl_s[i].setAlignment(Qt.AlignCenter)
             lbl_s[i].setFont(config.fuente_grande)
-        lbl_s[0].setText('S <sub>20:12</sub>')
+        lbl_s[0].setText('S <sub>19:12</sub>')
         lbl_s[0].setGeometry(180, 100, 160, 25)
         lbl_s[1].setText('S <sub>11:9</sub>')
         lbl_s[1].setGeometry(340, 100, 60, 25)
@@ -363,7 +363,7 @@ class USC(QWidget):
 
         S_con = config.senal_control_USC1[op]
 
-        for i in range(len(S_con)-1):
+        for i in range(len(S_con)-2):
             self.lbl_senales[i].setText(str(S_con[i]))
 
         alu = unidad_aritmetica_logica(config.Acumulador, config.Var_Ingreso, config.Registro_F[0], S_con[0:12])
