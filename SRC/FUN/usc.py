@@ -15,10 +15,10 @@ def unidad_secuencial_calculo(estado_anterior_USC, entrada_externa_USC, senal_co
     entrada_B = dato_externo
 
     resultado_actual, banderas_actual = unidad_aritmetica_logica(entrada_A, entrada_B, registro_F_anterior[0], control_ALU)
-    registro_F_acutal = logica_control_temporizacion(registro_F_anterior, banderas_actual, [0,0,0,0], [0,0,0,0,0,0], control_LCT)
+    registro_F_actual = logica_control_temporizacion(registro_F_anterior, banderas_actual, [0,0,0,0], [0,0,0,0,0,0], control_LCT)
 
     acumulador_A_actual = resultado_actual
 
-    estado_actual_USC = [acumulador_A_actual, registro_F_acutal]
+    estado_actual_USC = [acumulador_A_actual, registro_F_actual]
 
     return estado_actual_USC
