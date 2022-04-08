@@ -4,10 +4,10 @@ Operación		Mnem  	________Cod Op_________________
 CONTROL					A  B  C
 -------------------------------------------------------------------
 No operar		NOP	00	-  -  -		-
-Cero al acarreo		CLC	40	-  -  -		-
-Cero al desborde	CLV	50	-  -  -		-
-Establecer acarreo	SEC	C0	-  -  -		-
-Establecer desborde	SEV	D0	-  -  -		-
+Cero al acarreo		CLC	20	-  -  -		-
+Cero al desborde	CLV	30	-  -  -		-
+Establecer acarreo	SEC	90	-  -  -		-
+Establecer desborde	SEV	A0	-  -  -		-
 Cero al resultado	CLR	-	01 11 21	31
 
 
@@ -32,7 +32,7 @@ Decremento		DEC	-	44 54 64	74
 AND			AND A	05	-  55 65	75
 			AND B	-	95 -  A5	B5
 			AND C	-	D5 E5 -		F5
-	
+
 OR			OR A	06	-  56 66	76
 			OR B	-	96 -  A6	B6
 			OR C	-	D6 E6 - 	F6
@@ -88,5 +88,3 @@ Cargar acumulador	LDA A	-	-  51 61	71
 Guardar acumulador	STA A	-	-  -  -		72
 			STA B	-	-  -  -		B2
 			STA C	-	-  -  -		F2
-
-
