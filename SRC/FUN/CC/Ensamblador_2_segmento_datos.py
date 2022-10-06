@@ -7,6 +7,7 @@ Los símbolos son guardados en la tabla de símbolos:
 """
 
 import string
+from re import search
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
 directivas_dseg = [
@@ -19,6 +20,7 @@ directivas_dseg = [
 nemonicos = list(argumentos_instrucciones().keys())
 
 reservados = ['A', 'B', 'C', 'IX', 'IY', 'X', 'Y']
+op_validas = '[\+\-\*\%]'
 
 palabras_reservadas = list(nemonicos)
 palabras_reservadas.extend(reservados)
@@ -32,6 +34,7 @@ def verificar_segmento_datos(DATOS, origen):
     tabla_simbolos = []
     lista_simbolos = {}
     simbolos = []
+    valores = {}
     direccion = 0
 
     Indice_Datos  = DATOS.index(['.DSEG'])
@@ -82,7 +85,7 @@ def verificar_segmento_datos(DATOS, origen):
             else:
                 simbolo_correcto += 1
 
-            if contenido.isalnum() or ('_' in contenido):
+            if contenido.isalnum() or ('_' in contenido) or search(op_validas, contenido):
                 try:
                     if contenido.startswith('0X'):
                         contenido = int(contenido,16)
@@ -95,6 +98,14 @@ def verificar_segmento_datos(DATOS, origen):
                     elif contenido.isdecimal():
                         contenido = int(contenido)
                         simbolo_correcto += 1
+
+                    elif search(op_validas, contenido):
+                        # print("codigo", contenido)
+                        for v in valores:
+                            contenido = contenido.replace(v, str(valores[v]))
+                        # print("valores", contenido)
+                        contenido = eval(contenido)
+                        simbolo_correcto +=1
 
                     elif contenido in simbolos:
                         j = simbolos.index(contenido)
@@ -115,15 +126,18 @@ def verificar_segmento_datos(DATOS, origen):
                     tabla_simbolos.append([simbolo, contenido, 'NC'])
                     lista_simbolos.update({i+1: [hex(contenido)]})
                     simbolos.append(simbolo)
+                    valores.update({simbolo: contenido})
                 elif directiva == '.DB':
                     tabla_simbolos.append([simbolo, direccion, contenido])
                     lista_simbolos.update({i+1: [hex(direccion), [hex(contenido)]]})
                     simbolos.append(simbolo)
+                    valores.update({simbolo: direccion})
                     direccion += 1
                 elif directiva == '.RB':
                     tabla_simbolos.append([simbolo, direccion, 'NC'])
                     lista_simbolos.update({i+1: [hex(direccion)]})
                     simbolos.append(simbolo)
+                    valores.update({simbolo: direccion})
                     direccion += contenido
 
 
@@ -136,7 +150,7 @@ def verificar_segmento_datos(DATOS, origen):
         # print('\nDIRECCIÓN ACTUAL',hex(direccion))
     else:
         mensaje = mensaje + str('\n ** Total errores en segmento de datos: {}'.format(errores))
-        
+
     return errores, mensaje, tabla_simbolos, lista_simbolos, direccion
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):
