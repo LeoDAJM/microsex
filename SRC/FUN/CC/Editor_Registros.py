@@ -211,7 +211,8 @@ class EditorRegistros(QWidget):
         elif self.sender() == self.edit_acumuladores[2]:
             config.AcC = hex_a_op(texto)
 
-    def editar_banderas(self, texto):
+    def editar_banderas(self):
+        texto = self.sender().text()
         if len(texto) == 1:
             if self.sender() == self.edit_banderas[0]:
                 config.C = int(texto)
