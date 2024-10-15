@@ -210,7 +210,7 @@ class ComputadorCompleto(QMainWindow):
 
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
-            f = open(nombre_archivo, 'w')
+            f = open(nombre_archivo, 'w', encoding = 'latin-1')
             datos_archivo = self.editor_codigo.editor.toPlainText()
             f.write(datos_archivo)
             f.close()
@@ -232,7 +232,7 @@ class ComputadorCompleto(QMainWindow):
         nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo')
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            f = open(nombre_archivo[0], 'w')
+            f = open(nombre_archivo[0], 'w', encoding = 'latin-1')
             datos_archivo = self.editor_codigo.editor.toPlainText()
             f.write(datos_archivo)
             f.close()
