@@ -5,6 +5,9 @@ Emulador del microprocesador de arquitectura microsex de memoria común
   - Detección de Directivas .org para mostrar por separado segmentos de Pila, Datos y Código.
   - Implementado cambios de propiedades visuales, cuando cambian registros y contenido en memoria.
   - Implementado PIns visual en la tabla de CS.
+# Interfaz
+
+![alt text](https://github.com/LeoDAJM/microsex/tree/master/SRC/IMG/poster.png?raw=true)
 
 # QoL
   - Botón de borrado de registros.
