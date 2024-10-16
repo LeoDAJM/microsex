@@ -1,6 +1,37 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
+## FORK DAJM v0.7 II/2024
+  - Detección de Directivas .org para mostrar por separado segmentos de Pila, Datos y Código.
+  - Implementado cambios de propiedades visuales, cuando cambian registros y contenido en memoria.
+  - Implementado PIns visual en la tabla de CS.
+
+# QoL
+  - Botón de borrado de registros.
+  - Contenido (fontSize) y Boxes ahora son responsive, la ventana se puede redimensionar y maximizar.
+  - Colores cambiados a modo Oscuro.
+  - Añadido aviso al finalizar el CS (barra de reportes).
+  - El PIns (IP) se carga automáticamente al inicio del CS después de ensamblar.
+
+# Bugs
+  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
+  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
+  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
+
+# Otros
+  - Probado hasta la versión Python 3.12.7 sin problema alguno.
+  - Nombres de Registros Cambiados:
+	- **Ac.A** -> **AX**
+	- **Ac.B** -> **BX**
+	- **Ac.C** -> **CX**
+	- **P INS** -> **IP**
+
+
+# Pendiente
+  - Se implemento en el rep. original la alternativa de hacer Dump y Load de memoria, al transponer tablas y reestructurar la memoria, se debe corregir.
+  - Pendiente de MUCHA optimización de código :'3.
+
+## ChangeLog Branch original korvec/microsex/
 ## CAMBIOS EN LA VERSIÓN 1.4
 - Cambio en códigos de operación de las instrucciones:
   - **CLC** cambia de 40 a 20
