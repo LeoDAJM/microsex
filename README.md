@@ -7,7 +7,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
   - Implementado PIns visual en la tabla de CS.
 # Interfaz
 
-![alt text](https://github.com/LeoDAJM/microsex/tree/master/SRC/IMG/poster.png?raw=true)
+![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
 
 # QoL
   - Botón de borrado de registros.
