@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QLineEdit, QLabel
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QLineEdit, QLabel, QPushButton
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QStyle
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtCore import QRegExp
@@ -7,6 +7,7 @@ from PyQt5.QtGui import QRegExpValidator
 
 from FUN.util import *
 import FUN.CONF.configCC as config
+import FUN.CONF.config_custom as config2
 
 class LineEditHex(QLineEdit):
     def __init__(self, cantDigitos):
@@ -41,56 +42,71 @@ class LineEditHex(QLineEdit):
 class EditorRegistros(QWidget):
     def __init__(self):
         super().__init__()
-
         self.initUI()
 
     def initUI(self):
 
-        self.lbl_Acumuladores = QLabel('ACUMULADORES', self)
-        self.lbl_acumulador_A = QLabel('Ac. A:', self)
-        self.lbl_acumulador_B = QLabel('Ac. B:', self)
-        self.lbl_acumulador_C = QLabel('Ac. C:', self)
+        self.lbl_Acumuladores = QLabel('Accum.', self)
+        self.lbl_Acumuladores.setAlignment(Qt.AlignCenter)
+        self.lbl_Acumuladores.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_acumulador_A = QLabel('AX:', self)
+        self.lbl_acumulador_B = QLabel('BX:', self)
+        self.lbl_acumulador_C = QLabel('CX:', self)
 
 
         banderas = ['C:', 'V:', 'H:', 'N:', 'Z:', 'P:']
-        self.lbl_Registro_F = QLabel('REGISTRO DE BANDERAS', self)
+        self.lbl_Registro_F = QLabel('Flags', self)
+        
+        self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_Registro_F.setAlignment(Qt.AlignCenter)
         self.lbl_banderas = [0]*6
         for i in range(0,6):
             self.lbl_banderas[i] = QLabel(banderas[i],self)
 
 
-        self.lbl_Punteros = QLabel('PUNTEROS', self)
+        self.lbl_Punteros = QLabel('Pointers', self)
+        self.lbl_Punteros.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_Punteros.setAlignment(Qt.AlignCenter)
         self.lbl_puntero_IX = QLabel('IX:', self)
         self.lbl_puntero_IY = QLabel('IY:', self)
         self.lbl_puntero_PP = QLabel('PP:', self)
-
-        self.lbl_puntero_PI = QLabel('P INS', self)
+        self.lbl_puntero_PI = QLabel('IP', self)
+        self.lbl_puntero_PI.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_puntero_PI.setAlignment(Qt.AlignCenter)
 
 
+#Clear All Button
+        self.CA_button = QPushButton(self.style().standardIcon(QStyle.SP_DialogResetButton),"Clear", self)
+        #self.CA_button.setGeometry(200, 150, 100, 30)
+        #self.CA_button.setFixedSize(70, 40)
+        self.CA_button.clicked.connect(self.clear_all)
+        self.CA_button.setStyleSheet(config2.styles_cs["clc_button"])
+        
 # Edición de Registros
         self.edit_acumuladores = [0]*3
         for i in range(0,3):
             self.edit_acumuladores[i] = LineEditHex(2)
-            self.edit_acumuladores[i].setFixedWidth(50)
+            #self.edit_acumuladores[i].setFixedWidth(t_w // 15)
             self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
+        
         for i in range(0,6):
             self.edit_banderas[i] = QLineEdit(self)
             self.edit_banderas[i].setInputMask('B')
             self.edit_banderas[i].setAlignment(Qt.AlignCenter)
-            self.edit_banderas[i].setFixedWidth(40)
+            #self.edit_banderas[i].setFixedWidth(t_w // 15)
+            self.edit_banderas[i].setStyleSheet("border: 2px solid rgb(0,60,140);")   # Si es False
             self.edit_banderas[i].editingFinished.connect(self.editar_banderas)
 
         self.edit_punteros = [0]*3
         for i in range(0,3):
             self.edit_punteros[i] = LineEditHex(4)
-            self.edit_punteros[i].setFixedWidth(70)
+            #self.edit_punteros[i].setFixedWidth(t_w // 15)
             self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
 
         self.edit_PIns = LineEditHex(4)
-        self.edit_PIns.setFixedSize(70, 40)
+        #self.edit_PIns.setFixedWidth(t_w // 15)
         self.edit_PIns.editingFinished.connect(self.editar_PIns)
 
         self.actualizar_registros()
@@ -98,30 +114,29 @@ class EditorRegistros(QWidget):
 # Organización de los elementos
 
 # ---- bloque Puntero de instrucciones
-        bloque_PIns = QVBoxLayout()
-        bloque_PIns.addStretch(1)
-        bloque_PIns.addWidget(self.lbl_puntero_PI)
-        bloque_PIns.addWidget(self.edit_PIns)
-        bloque_PIns.addStretch(1)
+        bloque_PIns = QHBoxLayout()
+        bloque_PIns.addWidget(self.lbl_puntero_PI, stretch=1)
+        bloque_PIns.addWidget(self.edit_PIns, stretch=1)
 
 # ---- bloque acumuladores
         bloque_acumuladores = QVBoxLayout()
         acum_A = QHBoxLayout()
-        acum_A.addWidget(self.lbl_acumulador_A)
-        acum_A.addWidget(self.edit_acumuladores[0])
+        acum_A.addWidget(self.lbl_acumulador_A, stretch=1)
+        acum_A.addWidget(self.edit_acumuladores[0], stretch=1)
 
         acum_B = QHBoxLayout()
-        acum_B.addWidget(self.lbl_acumulador_B)
-        acum_B.addWidget(self.edit_acumuladores[1])
+        acum_B.addWidget(self.lbl_acumulador_B, stretch=1)
+        acum_B.addWidget(self.edit_acumuladores[1], stretch=1)
 
         acum_C = QHBoxLayout()
-        acum_C.addWidget(self.lbl_acumulador_C)
-        acum_C.addWidget(self.edit_acumuladores[2])
+        acum_C.addWidget(self.lbl_acumulador_C, stretch=1)
+        acum_C.addWidget(self.edit_acumuladores[2], stretch=1)
 
-        bloque_acumuladores.addWidget(self.lbl_Acumuladores)
-        bloque_acumuladores.addLayout(acum_A)
-        bloque_acumuladores.addLayout(acum_B)
-        bloque_acumuladores.addLayout(acum_C)
+        bloque_acumuladores.addWidget(self.lbl_Acumuladores, stretch=1)
+        bloque_acumuladores.addLayout(acum_A, stretch=1)
+        bloque_acumuladores.addLayout(acum_B, stretch=1)
+        bloque_acumuladores.addLayout(acum_C, stretch=1)
+        
 
 # ---- bloque banderas
         bloque_banderas = QVBoxLayout()
@@ -129,41 +144,42 @@ class EditorRegistros(QWidget):
         bloque_bandera = [0]*6
         for i in range(0,6):
             bloque_bandera[i] = QHBoxLayout()
-            bloque_bandera[i].addWidget(self.lbl_banderas[i])
-            bloque_bandera[i].addWidget(self.edit_banderas[i])
+            bloque_bandera[i].addWidget(self.lbl_banderas[i], stretch=1)
+            bloque_bandera[i].addWidget(self.edit_banderas[i], stretch=1)
 
-        registro_F = QHBoxLayout()
+        registro_F = QVBoxLayout()
         for i in range(0,6):
             registro_F.addLayout(bloque_bandera[i])
-
+        bloque_banderas.addStretch(1)
         bloque_banderas.addWidget(self.lbl_Registro_F)
         bloque_banderas.addLayout(registro_F)
+        bloque_banderas.addStretch(1)
 
 # ---- bloque punteros
         bloque_punteros = QVBoxLayout()
 
         puntero_ix = QHBoxLayout()
-        puntero_ix.addWidget(self.lbl_puntero_IX)
-        puntero_ix.addWidget(self.edit_punteros[0])
+        puntero_ix.addWidget(self.lbl_puntero_IX, stretch=1)
+        puntero_ix.addWidget(self.edit_punteros[0], stretch=1)
 
         puntero_iy = QHBoxLayout()
-        puntero_iy.addWidget(self.lbl_puntero_IY)
-        puntero_iy.addWidget(self.edit_punteros[1])
+        puntero_iy.addWidget(self.lbl_puntero_IY, stretch=1)
+        puntero_iy.addWidget(self.edit_punteros[1], stretch=1)
 
         puntero_pp = QHBoxLayout()
-        puntero_pp.addWidget(self.lbl_puntero_PP)
-        puntero_pp.addWidget(self.edit_punteros[2])
+        puntero_pp.addWidget(self.lbl_puntero_PP, stretch=1)
+        puntero_pp.addWidget(self.edit_punteros[2], stretch=1)
 
-        bloque_punteros.addWidget(self.lbl_Punteros)
-        bloque_punteros.addLayout(puntero_ix)
-        bloque_punteros.addLayout(puntero_iy)
-        bloque_punteros.addLayout(puntero_pp)
+        bloque_punteros.addWidget(self.lbl_Punteros, stretch=1)
+        bloque_punteros.addLayout(puntero_ix, stretch=1)
+        bloque_punteros.addLayout(puntero_iy, stretch=1)
+        bloque_punteros.addLayout(puntero_pp, stretch=1)
 
 # BLOQUE PRINCIPAL
 
         bloque_principal = QVBoxLayout()
 
-        bloque_registros = QHBoxLayout()
+        bloque_registros = QVBoxLayout()
         bloque_registros.addStretch(1)
         bloque_registros.addLayout(bloque_PIns)
         bloque_registros.addStretch(1)
@@ -171,12 +187,18 @@ class EditorRegistros(QWidget):
         bloque_registros.addStretch(1)
         bloque_registros.addLayout(bloque_punteros)
         bloque_registros.addStretch(1)
-
-        bloque_principal.addLayout(bloque_registros)
-        bloque_principal.addLayout(bloque_banderas)
+        
+        bloque_principal.addStretch(1)
+        bloque_principal.addLayout(bloque_registros, stretch=5)
+        bloque_principal.addStretch(1)
+        bloque_principal.addLayout(bloque_banderas, stretch=5)
+        bloque_principal.addStretch(1)
+        bloque_principal.addWidget(self.CA_button, stretch=1)
+        bloque_principal.addStretch(1)
 
         self.setLayout(bloque_principal)
-        self.setMaximumWidth(385)
+        #self.setMaximumWidth(int(t_w * 0.14))
+        #self.setMaximumHeight(int(t_h * 0.8))
 
     def actualizar_registros(self):
 
@@ -200,20 +222,46 @@ class EditorRegistros(QWidget):
 
     def editar_PIns(self):
         texto = self.sender().text()
+        comp = config.PIns
+        self.condP(texto,comp)
         config.PIns = int(texto,16)
+
+    def condP(self,texto,comp):
+        if int(texto,16) != comp:
+            self.sender().setStyleSheet("border: 2px solid rgb(255,60,140);")
+        else:
+            self.sender().setStyleSheet("border: 2px solid rgb(255,255,255);")
+
+    def condAcc(self,texto,comp):
+        if hex_a_op(texto) != comp:
+            self.sender().setStyleSheet("border: 2px solid rgb(255,60,140);")
+        else:
+            self.sender().setStyleSheet("border: 2px solid rgb(255,255,255);")
 
     def editar_acumuladores(self):
         texto = self.sender().text()
         if self.sender() == self.edit_acumuladores[0]:
+            comp = config.AcA
+            self.condAcc(texto,comp)
             config.AcA = hex_a_op(texto)
         elif self.sender() == self.edit_acumuladores[1]:
+            comp = config.AcB
+            self.condAcc(texto,comp)
             config.AcB = hex_a_op(texto)
         elif self.sender() == self.edit_acumuladores[2]:
+            comp = config.AcC
+            self.condAcc(texto,comp)
             config.AcC = hex_a_op(texto)
+    
 
     def editar_banderas(self):
         texto = self.sender().text()
+
         if len(texto) == 1:
+            if texto == "1":
+                self.sender().setStyleSheet("border: 2px solid rgb(255,60,140);")
+            else:
+                self.sender().setStyleSheet("border: 2px solid rgb(0,60,140);")
             if self.sender() == self.edit_banderas[0]:
                 config.C = int(texto)
             elif self.sender() == self.edit_banderas[1]:
@@ -230,8 +278,34 @@ class EditorRegistros(QWidget):
     def editar_punteros(self):
         texto = self.sender().text()
         if self.sender() == self.edit_punteros[0]:
+            comp = config.IX
+            self.condP(texto,comp)
             config.IX = int(texto,16)
         elif self.sender() == self.edit_punteros[1]:
+            comp = config.IY
+            self.condP(texto,comp)
             config.IY = int(texto,16)
         elif self.sender() == self.edit_punteros[2]:
+            comp = config.PP
+            self.condP(texto,comp)
             config.PP = int(texto,16)
+
+    def clear_all(self):
+        config.IX = int("0",16)
+        config.IY = int("0",16)
+        config.PP = int("0",16)
+        config.C = int("0")
+        config.V = int("0")
+        config.H = int("0")
+        config.N = int("0")
+        config.Z = int("0")
+        config.P = int("0")
+        config.AcA = hex_a_op("0")
+        config.AcB = hex_a_op("0")
+        config.AcC = hex_a_op("0")
+        config.PIns = int("0",16)
+        for child in self.findChildren(LineEditHex):
+            child.setStyleSheet("border: 2px solid rgb(255,255,255);")
+        for child in self.findChildren(QLineEdit):
+            child.setStyleSheet("border: 2px solid rgb(0,60,140);")
+        self.actualizar_registros()
