@@ -308,7 +308,7 @@ class ComputadorCompleto(QMainWindow):
             if match_org:
                 # Convertir el valor hexadecimal a decimal
                 valor_hex = int(match_org.group(1).zfill(4),16) // 16
-                match_seg = re.search(regex_seg, texto.splitlines()[i+1])
+                match_seg = re.search(regex_seg, texto.splitlines()[i+1]) or re.search(regex_seg, texto.splitlines()[i-1])
                 if match_seg:
                     secc = match_seg.group(1)[0]
                 else:
