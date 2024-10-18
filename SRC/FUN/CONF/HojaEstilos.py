@@ -185,8 +185,11 @@ estilos_gui = {
                 padding: 0;}
         QHeaderView::section:checked {
                 color: rgb(110, 240, 100);
-                background-color: rgb(160, 160, 160);
-        }""",
+                background-color: rgb(160, 160, 160);}
+        QAbstractButton { color: rgb(0, 230, 125);
+                background-color: rgb(255, 70, 70);}
+        QTableCornerButton { color: rgb(0, 230, 125);
+                background-color: rgb(255, 70, 70);}""",
 "scrolled_monitor":  """
         QScrollBar:vertical {
                 border: 1px solid grey;

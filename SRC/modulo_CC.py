@@ -2,11 +2,14 @@ import sys
 import string
 import csv
 from openpyxl import Workbook, load_workbook
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox
 from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy, QStyledItemDelegate
 from PyQt5.QtGui import QFont, QIcon, QPalette, QPen
 import os
+import io
+from tabulate import tabulate
 import FUN.CONF.config_custom as config2
+
 
 
 from FUN.CC.Editor_Codigo import *
@@ -127,7 +130,7 @@ class ComputadorCompleto(QMainWindow):
         area_trabajo.setStyleSheet(styles["work_space"])
         area_trabajo.setLayout(bloque_principal)
         
-
+        self.Reg_monitor()
         self.setCentralWidget(area_trabajo)
         self.barra_estado = self.statusBar()
         
@@ -232,7 +235,7 @@ class ComputadorCompleto(QMainWindow):
 
         self.Ejecutar_ejecutar = QAction('Ejecutar código Ensamblado', self)
         self.Ejecutar_ejecutar.setShortcut('Ctrl+K')
-        self.Ejecutar_ejecutar.setEnabled(False)
+        #self.Ejecutar_ejecutar.setEnabled(False)
         self.Ejecutar_ejecutar.triggered.connect(self.ejecutar)
 
         self.Ejecutar_ejecutar_instruccion = QAction('Ejecutar siguiente Instrucción', self)
@@ -261,25 +264,13 @@ class ComputadorCompleto(QMainWindow):
         self.Load_Mem.setToolTip('Carga un archivo de memoria.')
         self.Load_Mem.setShortcut('Ctrl+M')
         self.Load_Mem.setEnabled(True)
-        self.Load_Mem.triggered.connect(self.open_csv)
+        self.Load_Mem.triggered.connect(self.open_file)
         
         self.Save_Mem = QAction('Memory Dump to XLSX CSV', self)
         self.Save_Mem.setToolTip('Guarda el contenido de la memoria en un archivo.')
         self.Save_Mem.setShortcut('Alt+M')
         self.Save_Mem.setEnabled(True)
         self.Save_Mem.triggered.connect(self.save_csv)
-        
-        self.Load_Reg = QAction('Regs Load from XLSX CSV', self)
-        self.Load_Reg.setToolTip('Carga un archivo de registros (Acc, Pointers y banderas)')
-        self.Load_Reg.setShortcut('Ctrl+R')
-        self.Load_Reg.setEnabled(True)
-        self.Load_Reg.triggered.connect(self.not_yet)
-        
-        self.Save_Reg = QAction('Regs Dump to XLSX CSV', self)
-        self.Save_Reg.setToolTip('Guarda el contenido de la registros (Acc, Pointers y banderas) en un archivo.')
-        self.Save_Reg.setShortcut('Alt+R')
-        self.Save_Reg.setEnabled(True)
-        self.Save_Reg.triggered.connect(self.not_yet)
         
         self.Tester = QAction('Tester', self)
         self.Tester.setToolTip('NN')
@@ -288,9 +279,6 @@ class ComputadorCompleto(QMainWindow):
         
         menu_Memoria.addAction(self.Load_Mem)
         menu_Memoria.addAction(self.Save_Mem)
-        menu_Memoria.addAction(self.Load_Reg)
-        menu_Memoria.addAction(self.Save_Reg)
-        menu_Memoria.addAction(self.Tester)
 #endregion
 
 # region FUN Extras
@@ -334,11 +322,21 @@ class ComputadorCompleto(QMainWindow):
         dirs = self.extraer_valores()
         self._ds = {
             "c": None,  # Puedes inicializar con None u otro valor
-            "s": None,
+            "s": 0,
             "d": None}
         for row, seg in dirs:
             self._ds[seg] = int(row)
         self._ds = {k: v for k, v in sorted(self._ds.items(), key=lambda item: item[1])}  #men to may
+        self.ds_op()
+        
+        self.memSS.tabla2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.memSS.tabla2.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.regen_all()
+        self.uncolor()
+        self.update_segments()
+        #self.memSS.tabla2.cellChanged.connect(MemoriaSS.cambio_en_memoria3())
+
+    def ds_op(self):
         if  self._ds["c"] > self._ds["d"]:
             self.limd = self._ds["c"]
             self.limc = 4096
@@ -349,18 +347,11 @@ class ComputadorCompleto(QMainWindow):
         self.memCS.tabla2.setRowCount(self.limc - self._ds["c"])
         self.memDS.tabla2.setColumnCount(16)
         self.memCS.tabla2.setColumnCount(16)
-
         self.memCS.tabla2.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["c"],self.limc)])
         self.memSS.tabla2.setHorizontalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["s"],self._ds["s"]+2)])
         self.memDS.tabla2.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["d"],self.limd)])
         self.memSS.tabla2.setVerticalHeaderLabels([format(i,'X') for i in range(16)])
-        
-        self.memSS.tabla2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.memSS.tabla2.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.regen_all()
-        self.uncolor()
-        self.update_segments()
-        #self.memSS.tabla2.cellChanged.connect(MemoriaSS.cambio_en_memoria3())
+
     def uncolor(self):
         for j in range(self.memSS.tabla2.columnCount()):
             for i in range(self.memSS.tabla2.rowCount()):
@@ -632,14 +623,19 @@ class ComputadorCompleto(QMainWindow):
             self.set_Pins()
 
     def ejecutar(self):
+        isd = 0
         while config.PIns != 'FIN':
+            isd += 1
             ciclo_instruccion()
             self.color_Regs()
             self.registros.actualizar_registros()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.memoria.actualizar_tabla(config.m_prog)
-        self.trim_mem()
+        self.regen_all()
+        self.uncolor()
+        self.update_segments()
+        #self.trim_mem()
         self.memCS.tabla2.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.memCS.tabla2.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
@@ -652,7 +648,10 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.memoria.actualizar_tabla(config.m_prog)
-        self.trim_mem()
+        self.regen_all()
+        self.uncolor()
+        self.update_segments()
+        #self.trim_mem()
         #print(int(self.registros.edit_PIns.text(),16), self._ds["c"]*16, self.post)
         #rgb(0,255,140)
         #QColor(0,255,140)
@@ -661,55 +660,94 @@ class ComputadorCompleto(QMainWindow):
         #self.memCS.tabla2.setStyleSheet("QTableWidget { color: rgb(20, 60, 134) ; }")
 
 # FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
+    def ex2csv(self,f,sh):
+        writer = csv.writer(f)
+        for r in sh.rows:
+            writer.writerow([cell.value for cell in r if cell.value is not None and cell.value != ''])
+        contenido = f.getvalue()
+        return contenido
 
 
+    def csv_gen(self, f, mems, strs, chk):
+        writer = csv.writer(f)
+        # Guardado de ORG
+        org_data = ["ORG leaps CS,SS,DS"]
+        for i in self._ds.values():
+            org_data.append(str(i))
+        writer.writerow(org_data)
+        # Escribir la cabecera (primera fila con las direcciones de memoria)
+        for ix, x in enumerate(mems):
+            if not chk[ix].isChecked():
+                continue
+            writer.writerow([strs[ix]])
+            for i in range(x.rowCount()):
+                #row_data = ["00"]*x.columnCount()
+                if all(x.item(i, v).text() == '00' for v in range(x.columnCount())) and (self.response_clear == QMessageBox.Yes):
+                    continue
+                else:
+                    row_data = [str(i)]
+                    for j in range(x.columnCount()):
+                        row_data.append(x.item(i,j).text())
+                    writer.writerow(row_data)
 
-    def open_csv(self):
-        from PyQt5.QtWidgets import QMessageBox
-        nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx);;All Files (*)')
-        try:
+    def save_fun(self,chk):
+        mems = [self.memSS.tabla2, self.memDS.tabla2, self.memCS.tabla2]
+        strs = ["Stack Segment", "Data Segment", "Code Segment"]
+        nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
+        buffer = io.StringIO()
+        self.csv_gen(buffer,mems,strs,chk)
+        #print(buffer)
+        with open(nombre_archivo, 'w', newline='', encoding='utf-8') as f:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
-                with open(nombre_archivo, 'r', encoding='latin-1') as f:
-                    reader = csv.reader(f)
-                    # Leer la cabecera
-                    cabecera_horz = next(reader)
-                    cabecera_horz.pop(0)
-                    cols = [int(num, 16) // 16 for num in cabecera_horz]
-                    rows = list(reader)
-                    from tabulate import tabulate
-                    print(tabulate(rows))
-                    # Leer el contenido y cargarlo en la tabla
-                    for row_index in range(0, 16):  # Comenzar desde la fila 2
-                        for col_index in range(0,len(cabecera_horz)):
-                            data = rows[row_index][col_index+1]
-                            data = data.zfill(2)
-                            data = data.upper()
-                            self.memoria.tabla.item(row_index,cols[col_index]).setText(data)
+                # Obtener el contenido del buffer
+                contenido = buffer.getvalue()
+                # Exportar el contenido a un archivo CSV
+                f.write(contenido)
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
-                workbook = load_workbook(nombre_archivo)
-                sheet = workbook.active
-                
-                # Leer la cabecera
-                cabecera_horz = [sheet.cell(row=1, column=col_index + 2).value for col_index in range(sheet.max_column - 1)]
-                cabecera_horz = [int(num, 16) // 16 for num in cabecera_horz]
-                # Leer el contenido y cargarlo en la tabla
-                for row_index in range(2, sheet.max_row + 1):  # Comenzar desde la fila 2 2-17]
-                    for col_index in range(len(cabecera_horz)):     # 0-3]
-                        data = sheet.cell(row=row_index, column=col_index + 2).value
-                        self.memoria.tabla.item(row_index-2,cabecera_horz[col_index]).setText(str(data))
+                wb = Workbook()
+                ws = wb.active
+                # Obtener el contenido del StringIO como una lista de filas
+                buffer.seek(0)  # Volver al inicio del StringIO para leer
+                reader = csv.reader(buffer)
+                for row in reader:
+                    ws.append(row)
+                # Guardar el archivo de Excel
+                wb.save(nombre_archivo)
+        buffer.close()
+        self.msg.accept()
+        skp = self.response_clear
+        from PyQt5.QtWidgets import QMessageBox
+        #print(skp == QMessageBox.Yes,chk[0].isChecked(), chk[1].isChecked(), chk[2].isChecked())
 
-            QMessageBox.information(self, 'Carga Completa', 'El archivo se ha cargado correctamente.')
-            self.barra_estado.showMessage('Carga de Memoria Completa.')
-
-        except Exception as e:
-            exc_type, _, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            QMessageBox.critical(self, 'Error', f'Ocurrió un error al cargar el archivo: {str(e)}')
+    
+    def dialog_save(self):
+        self.msg = QDialog(self)
+        self.msg.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint | Qt.CustomizeWindowHint)
+        self.msg.setWindowFlags(self.msg.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.msg.setWindowTitle("Dump")
+        lbl = QLabel("Selecciona los segmentos a exportar:")
+        self.btt_dialog = QPushButton("Guardar")
+        self.btt_dialog.setEnabled(False)
+        chkbx = [0]*3
+        chkbx[0] = QCheckBox(text="Stack Segment")
+        chkbx[1] = QCheckBox(text="Data Segment")
+        chkbx[2] = QCheckBox(text="Code Segment")
+        self.btt_dialog.clicked.connect(lambda: self.save_fun(chkbx))
+        layout = QVBoxLayout()
+        layout.addWidget(lbl, stretch=1)
+        for i in chkbx:
+            i.stateChanged.connect(lambda: self.stt_chk(chkbx))
+            layout.addWidget(i, stretch=1)
+        layout.addWidget(self.btt_dialog, stretch=1)
+        self.msg.setLayout(layout)
+        
+        self.msg.exec_()
+        return chkbx
+    def stt_chk (self, chkbx):
+        self.btt_dialog.setEnabled(chkbx[0].isChecked() or chkbx[1].isChecked() or chkbx[2].isChecked())
 
     def save_csv(self):
         self.response_clear = None
-        from PyQt5.QtWidgets import QMessageBox
         # Crear un cuadro de diálogo de mensaje
         mensaje = QMessageBox()
         mensaje.setIcon(QMessageBox.Question)  # Icono de pregunta
@@ -717,67 +755,72 @@ class ComputadorCompleto(QMainWindow):
         mensaje.setWindowTitle("Confirmar Omitir Columnas")
         # Botones de Sí y No
         mensaje.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        # Mostrar el diálogo y capturar la respuesta
-        self.response_clear = mensaje.exec_()
-        # Filtrar columnas si se seleccionó omitir
-        if self.response_clear == QMessageBox.Yes:
-            columnas_a_guardar = []  # Lista de índices de columnas a guardar
-            for col in range(self.memoria.tabla.columnCount()):
-                # Verificar si la columna tiene solo ceros
-                if any(self.memoria.tabla.item(row, col).text() != '00' for row in range(self.memoria.tabla.rowCount())):
-                    columnas_a_guardar.append(col)  # Agregar columna si no es solo ceros
-        else:
-            # Guardar todas las columnas
-            columnas_a_guardar = list(range(self.memoria.tabla.columnCount()))
-        # Abrir un diálogo para guardar el archivo CSV
-        nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx)')
-        espacio = 65536  # Espacio máximo definido
-        cabecera_horz = [format(col * 16, 'X').zfill(4) for col in columnas_a_guardar]
-        print(cabecera_horz)
-        cabecera_vert = [format(i, 'X') for i in range(16)]  # Filas de 0 a F
+        mensaje.setDefaultButton(QMessageBox.Yes)
+        self.response_clear = mensaje.exec()
+        chkbx = self.dialog_save()
+
+
+    def csv2mem(self,csv):
+        rows = list(csv)
+        chk_out = [False]*3
+        mem = self.memDS.tabla2
+        for u in rows:
+            for v in range(max(1,len(u)-1)):
+                if u[v].lower() == "data segment":
+                    mem = self.memDS.tabla2
+                    chk_out[0] = True
+                elif u[v].lower() == "code segment":
+                    mem = self.memCS.tabla2
+                    chk_out[1] = True
+                elif u[v].lower() == "stack segment":
+                    mem = self.memSS.tabla2
+                    chk_out[2] = True
+                elif u[0].lower() == "org leaps cs,ss,ds":
+                    if not hasattr(self, '_ds'):
+                        self._ds = {
+                        "c": None,
+                        "s": 0,
+                        "d": None}
+                    self._ds['c'] = int(u[1])
+                    self._ds['s'] = int(u[2])
+                    self._ds['d'] = int(u[3])
+                    if  v == 2:
+                        self.ds_op()
+                        self.regen_all()
+                else:
+                    data = u[v+1]
+                    data = data.zfill(2)
+                    data = data.upper()
+                    mem.item(int(u[0]),v).setText(data)
+        return chk_out
+
+
+    def open_file(self):
+        nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx);;All Files (*)')
+        if not self.memCS.tabla2.isEnabled():
+            self.memCS.tabla2.setEnabled(True)
+            self.memSS.tabla2.setEnabled(True)
+            self.memDS.tabla2.setEnabled(True)
         try:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
-            #if nombre_archivo:
-                # Cabeceras horizontales (columnas) y verticales (filas) ya definidas en el programa
-                # Crear y abrir el archivo CSV para escribir los datos
-                with open(nombre_archivo, 'w', newline='', encoding='latin-1') as f:
-                    writer = csv.writer(f)
-                    # Escribir la cabecera (primera fila con las direcciones de memoria)
-                    writer.writerow([''] + cabecera_horz)
-                    # Escribir el contenido de la tabla fila por fila, incluyendo la cabecera vertical
-                    for row in range(self.memoria.tabla.rowCount()):
-                        fila_datos = [cabecera_vert[row]]  # Primera celda de la fila (cabecera vertical)
-                        for col in columnas_a_guardar:
-                            item = self.memoria.tabla.item(row, col)
-                            valor = item.text() if item is not None else ''  # Obtener el valor de la celda
-                            fila_datos.append(valor)
-                        writer.writerow(fila_datos)  # Escribir la fila completa en el archivo CSV
+                csv_reader = csv.reader(open(nombre_archivo, 'r', encoding='utf-8'))
+                self.csv2mem(csv_reader)
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
-                # Guardar como archivo Excel (xlsx)
-                workbook = Workbook()
-                sheet = workbook.active
-
-                # Escribir la cabecera (primera fila con las direcciones de memoria)
-                for col_index, col in enumerate(columnas_a_guardar, start=2):
-                    sheet.cell(row=1, column=col_index, value=cabecera_horz[col_index-2])
-
-                # Escribir el contenido de la tabla
-                for row_index in range(self.memoria.tabla.rowCount()):
-                    sheet.cell(row=row_index + 2, column=1, value=cabecera_vert[row_index])  # Cabecera vertical
-                    for col_index, col in enumerate(columnas_a_guardar):
-                        item = self.memoria.tabla.item(row_index, col)
-                        valor = item.text() if item is not None else ''
-                        sheet.cell(row=row_index + 2, column=col_index + 2, value=valor)  # Colocar en la celda
-
-                workbook.save(nombre_archivo)
-            self.barra_estado.showMessage('Volcado de Memoria Completo.')
+                wb = load_workbook(nombre_archivo)
+                sh = wb.active # was .get_active_sheet()
+                buffer2 = io.StringIO()
+                content = self.ex2csv(buffer2,sh)
+                open("tmp.$csv", 'w', encoding='utf-8').write(content)
+                csv_reader = csv.reader(open("tmp.$csv", 'r', encoding='utf-8'))
+                self.csv2mem(csv_reader)
+                os.remove("tmp.$csv")
+                buffer2.close()
+            self.set_Pins()
+            QMessageBox.information(self, 'Carga Completa', 'El archivo se ha cargado correctamente.')
+            self.barra_estado.showMessage('Carga de Memoria Completa.')
         except PermissionError:
             # Mostrar un mensaje de error si ocurre un PermissionError
             QMessageBox.critical(self, 'Error', 'No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.')
-            return  # Terminar la función
-        except Exception as e:
-            # Capturar cualquier otro tipo de error y mostrar un mensaje
-            QMessageBox.critical(self, 'Error', f'Ocurrió un error inesperado: {str(e)}')
             return  # Terminar la función
 
     def not_yet(self):
@@ -793,7 +836,7 @@ class ComputadorCompleto(QMainWindow):
     def texto_modificado(self):
         self.Ejecutar_cargar.setEnabled(False)
         self.Ejecutar_sobreescribir.setEnabled(False)
-        self.Ejecutar_ejecutar.setEnabled(False)
+        #self.Ejecutar_ejecutar.setEnabled(False)
         self.barra_estado.showMessage('Archivo no guardado')
 
 

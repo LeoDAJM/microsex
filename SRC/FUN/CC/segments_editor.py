@@ -1,10 +1,10 @@
 import sys
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
 from PyQt5.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QTableView
 from PyQt5.QtGui import QRegExpValidator, QPalette, QColor
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtCore import Qt, QRegExp, QSize
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex
 
 import FUN.CONF.configCC as config
@@ -61,6 +61,17 @@ class Memoria2(QWidget):
         self.tabla2.setHorizontalHeaderLabels(cabecera_vert)
         self.tabla2.setMinimumWidth(150)
         self.tabla2.horizontalHeader().setMinimumSectionSize(20)
+
+        corner_b = self.tabla2.findChild(QAbstractButton)
+        corner_b.setToolTip("Clear")
+        corner_b.setText("CL")
+
+        icon = self.style().standardIcon(QStyle.SP_DialogResetButton)
+        corner_b.setIcon(icon)
+        corner_b.setIconSize(QSize(5, 7))
+        corner_b.clicked.connect(lambda: self.reset())
+        
+
         for i in range(65536):
             self.tabla2.setRowHeight(i,8)
         self.tabla2.setItemDelegate(delegado)
@@ -80,6 +91,9 @@ class Memoria2(QWidget):
     def cambio_en_memoria2(self, fil, col):
         pos = fil*16 + col
         celda = self.tabla2.item(fil, col)
+        #print(fil, col)
+        #if celda == None:
+        #    print(fil, col)
         dato_a_mem = celda.text()
         dato_a_mem = dato_a_mem.zfill(2)
         dato_a_mem = dato_a_mem.upper()
@@ -89,15 +103,12 @@ class Memoria2(QWidget):
             celda.setBackground(QColor(255, 75, 75, 90))
         celda.setText(dato_a_mem)
         config.m_prog.update({pos_ini: dato_a_mem})
-    def actualizar_tabla2(self, mp):
-        for i in mp:
-            fil = i // 16
-            col = i % 16
-            #fil = i % 16
-            #col = i // 16
-            dato_str = mp[i]
-            celda = self.tabla2.item(fil, col)
-            celda.setText(dato_str)
+    def reset(self):
+        for i in range(self.tabla2.rowCount()):
+            for j in range(self.tabla2.columnCount()):
+                self.tabla2.setItem(i,j,QTableWidgetItem('00'))
+                self.tabla2.item(i,j).setTextAlignment(Qt.AlignCenter)
+    
 
 
 class MemoriaSS(QWidget):
@@ -122,6 +133,16 @@ class MemoriaSS(QWidget):
         self.tabla2.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tabla2.setMinimumWidth(40)
         self.tabla2.horizontalHeader().setMinimumSectionSize(20)
+
+        corner_b = self.tabla2.findChild(QAbstractButton)
+        corner_b.setToolTip("Clear")
+
+
+        icon = self.style().standardIcon(QStyle.SP_DialogDiscardButton)
+        corner_b.setIcon(icon)
+        corner_b.setIconSize(QSize(5, 7))
+        corner_b.clicked.connect(lambda: self.reset())
+
         for i in range(1):
             self.tabla2.setRowHeight(i,10)
         self.tabla2.setItemDelegate(delegado)
@@ -153,6 +174,14 @@ class MemoriaSS(QWidget):
             celda.setBackground(QColor(255, 75, 75, 90))
         celda.setText(dato_a_mem)
         config.m_prog.update({pos_ini: dato_a_mem})
+    def reset(self):
+        icon = self.style().standardIcon(QStyle.SP_DialogDiscardButton)
+        self.tabla2.findChild(QAbstractButton).setIcon(icon)
+        for i in range(self.tabla2.rowCount()):
+            for j in range(self.tabla2.columnCount()):
+                self.tabla2.setItem(i,j,QTableWidgetItem('00'))
+                self.tabla2.item(i,j).setTextAlignment(Qt.AlignCenter)
+                
 
 if __name__ == '__main__':
 

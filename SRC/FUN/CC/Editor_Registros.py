@@ -76,7 +76,7 @@ class EditorRegistros(QWidget):
 
 
 #Clear All Button
-        self.CA_button = QPushButton(self.style().standardIcon(QStyle.SP_DialogResetButton),"Clear", self)
+        self.CA_button = QPushButton(self.style().standardIcon(QStyle.SP_DialogDiscardButton),"Clear", self)
         #self.CA_button.setGeometry(200, 150, 100, 30)
         #self.CA_button.setFixedSize(70, 40)
         self.CA_button.clicked.connect(self.clear_all)

@@ -1,13 +1,32 @@
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
+
+## FORK DAJM v0.8
+
+# Interfaz
+
+![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+
+# **NEW!**
+  - Añadida caracterísica de Volcado y Carga de memoria, de forma selectiva, y conservando los paŕametros ORG desde el guardado, encuéntralo en el menú "*Memoria*"
+      - Compatible con formatos XLSX/CSV (utf-8)
+# QoL
+  - Agregados botones de borrado de tablas (memoria), en cada esquina superior izquierda de las tablas, de color rojo.
+
+# Bugs
+  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
+  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
+  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
+
+# Pendiente
+  - Pendiente (aun) de MUCHA optimización de código :'3.
+
+
 ## FORK DAJM v0.7 II/2024
   - Detección de Directivas .org para mostrar por separado segmentos de Pila, Datos y Código.
   - Implementado cambios de propiedades visuales, cuando cambian registros y contenido en memoria.
   - Implementado PIns visual en la tabla de CS.
-# Interfaz
-
-![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
 
 # QoL
   - Botón de borrado de registros.
