@@ -40,7 +40,7 @@ def ciclo_instruccion():
     config.RDir = config.PIns
     config.BMem = hex_a_op(config.m_prog[config.RDir])
 
-    if direccionamiento_inm == 1 and config.senal_control_PD[0:3] == [0,0,0]:
+    if direccionamiento_inm == 1 and config.senal_control_PD[:3] == [0,0,0]:
         salir()
         return
 
@@ -49,7 +49,7 @@ def ciclo_instruccion():
     config.RDat[8:16] = hex_a_op(config.m_prog[config.RDir])
     config.PIns += 1
     config.RDir = config.PIns
-    config.RDat[0:8] = hex_a_op(config.m_prog[config.RDir])
+    config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])
     if direccionamiento_inm == 1:
         salir()
         return
@@ -57,17 +57,13 @@ def ciclo_instruccion():
     if config.senal_control_LR[17] == 1:
         llamada_subrutina()
         return
-
     config.RDir = int(op_a_dec(config.RDat))
     if config.guardado_punteros == 1:
         guard_punt()
         return
-
-    if config.senal_control_PD[0:3] != [0,0,0]:
+    if config.senal_control_PD[:3] != [0,0,0]:
         carga_punt()
         return
-
-
     config.BMem = hex_a_op(config.m_prog[config.RDir])
 
     salir()
@@ -97,7 +93,7 @@ def llamada_subrutina():
 def retorno_subrutina():
 
     config.RDir = config.PP
-    config.RDat[0:8] = hex_a_op(config.m_prog[config.RDir])
+    config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])
     config.PP += 1
 
     config.RDir = config.PP
@@ -143,9 +139,9 @@ def carga_punt():
     if config.uso_pila == 0:
         config.RDat[8:16] = hex_a_op(config.m_prog[config.RDir])    # parte alta primero
         config.RDir += 1
-        config.RDat[0:8] = hex_a_op(config.m_prog[config.RDir])     # parte baja después
+        config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])     # parte baja después
     else:
-        config.RDat[0:8] = hex_a_op(config.m_prog[config.RDir])     # parta baja primero
+        config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])     # parta baja primero
         config.PP += 1
         config.RDir = config.PP
         config.RDat[8:16] = hex_a_op(config.m_prog[config.RDir])    # parte alta después
@@ -194,7 +190,7 @@ def pila():
     # POP
     else:
         config.RDir = config.PP
-        if config.senal_control_PD[0:3] == [0,0,0]:             # A/B/C/F
+        if config.senal_control_PD[:3] == [0,0,0]:             # A/B/C/F
             config.BMem = hex_a_op(config.m_prog[config.RDir])
             config.PP += 1
             salir()
@@ -225,7 +221,7 @@ def salir():
 
 def distribucion_senales():
 
-    config.senal_control_USC     = config.senal_control[0:31]
+    config.senal_control_USC     = config.senal_control[:31]
     config.lectura_escritura     = config.senal_control[22]
     config.modo_direccionamiento = config.senal_control[31:35]
     config.senal_control_LR      = config.senal_control[35:54]

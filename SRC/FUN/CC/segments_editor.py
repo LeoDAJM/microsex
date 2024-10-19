@@ -48,7 +48,7 @@ class memory(QWidget):
         self.table.setMinimumWidth(150)
         self.table.horizontalHeader().setMinimumSectionSize(20)
         self.table.setItemDelegate(Validador2())
-        
+        self.tst = True
         h_header = [format(i,'X') for i in range(cols)]
         v_header = [format(i,'X') for i in range(rows)]
         self.table.setHorizontalHeaderLabels(h_header)
@@ -81,11 +81,11 @@ class memory(QWidget):
         seg = (self.type.lower() == "stack")
         pos = r + c*16 if seg else c + r*16
         data = self.table.item(r, c).text().zfill(2).upper()
-        pos_ini = int(self.table.verticalHeaderItem(0).text(),16) if seg else int(self.table.horizontalHeaderItem(0).text(),16)
+        pos_ini = int(self.table.horizontalHeaderItem(0).text(),16) if seg else int(self.table.verticalHeaderItem(0).text(),16)
         pos_ini += pos
-        if pos_ini in config.m_prog and data != config.m_prog[pos_ini]:
-            self.table.item(r, c).setBackground(QColor(255, 75, 75, 90))
+        if data != config.m_prog.get(pos_ini, None):
             config.m_prog.update({pos_ini: data})
+            self.table.item(r, c).setBackground(QColor(255, 75, 75, 90))
         self.table.item(r, c).setText(data)
 
     def reset(self):

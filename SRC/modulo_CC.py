@@ -12,7 +12,6 @@ import FUN.CONF.config_custom as config2
 
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
-from FUN.CC.Editor_Memoria import *
 from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
@@ -292,7 +291,6 @@ class ComputadorCompleto(QMainWindow):
 
     def ds_op(self):
         _ds_ordered = dict(sorted(self._ds.items(), key=lambda item: (item[1] is None, item[1]), reverse=True))
-        print(_ds_ordered, self._ds)
         _max = 4096
         for k, v in _ds_ordered.items():
             if v is None:
@@ -301,13 +299,11 @@ class ComputadorCompleto(QMainWindow):
                 self._size[k] = _max  - v
                 _max = v
         for (k, v), (_, u) in zip(self.mem.items(), self._size.items()):
-            print(self._size, k, u)
             if k == "s":
                 v.table.setColumnCount(2)
                 v.table.setRowCount(16)
                 if u == 0:
                     v.table.setColumnCount(0)
-                    print("SSZ")
                 else:
                     v.table.setHorizontalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds[k],self._ds[k]+u)])
             else:
@@ -324,25 +320,18 @@ class ComputadorCompleto(QMainWindow):
                         m.table.item(i, j).setForeground(QColor(120, 150, 175)) # rgb(120, 150, 175)
                         #.setStyleSheet(config.estilo["estilo_celdas"])
 
-        
-
     def regen_all(self):
-        print(self.misc, "asukdhasd")
         for _, v in self.mem.items():
             for i in range(v.table.rowCount()):
                 for j in range(v.table.columnCount()):
                     if v.table.item(i, j) is None:
-                        v.table.setItem(i,j,QTableWidgetItem('00'))
+                        v.table.setItem(i,j,QTableWidgetItem("00"))
                         v.table.setRowHeight(i,8)
                         v.table.item(i,j).setTextAlignment(Qt.AlignCenter)
-        
-
     def update_segments(self, mp_el):
-        print("configmprog",mp_el)
         for k, v in self.mem.items():
             for i, j in itertools.product(range(v.table.rowCount()), range(v.table.columnCount())):
                 pos = self._ds[k]*16+(j*16)+i if k == "s" else self._ds[k]*16+(i*16)+j
-                if pos in mp_el: print(pos,mp_el[pos])
                 if pos in mp_el and v.table.item(i, j).text() != mp_el[pos]:
                     v.table.item(i,j).setText(mp_el[pos])
                     v.table.item(i,j).setBackground(QColor(255, 75, 75, 90))
@@ -467,9 +456,7 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            cursor.movePosition(cursor.StartOfLine)
-            cursor.insertText(tab)
-            cursor.movePosition(cursor.Down)
+            self.movpos(cursor, tab)
 
     def quitar_sangria(self):
         tab = "\t"
@@ -484,11 +471,7 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
-            cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
-            if cursor.selectedText()== tab:
-                cursor.deleteChar()
-            cursor.movePosition(cursor.Down)
+            self._extracted_from_descomentar_14(cursor, tab)
 
     def comentar(self):
         punto_coma = ";"
@@ -503,10 +486,14 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            cursor.movePosition(cursor.StartOfLine)
-            cursor.insertText(punto_coma)
-            cursor.movePosition(cursor.Down)
+            self.movpos(cursor, punto_coma)
 
+    def movpos(self, cursor, arg1):
+        cursor.movePosition(cursor.StartOfLine)
+        cursor.insertText(arg1)
+        cursor.movePosition(cursor.Down)
+
+    # TODO Rename this here and in `agregar_sangria`, `quitar_sangria`, `comentar` and `descomentar`
     def descomentar(self):
         punto_coma = ";"
         cursor = self.editor_codigo.editor.textCursor()
@@ -520,11 +507,15 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
-            cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
-            if cursor.selectedText()== punto_coma:
-                cursor.deleteChar()
-            cursor.movePosition(cursor.Down)
+            self._extracted_from_descomentar_14(cursor, punto_coma)
+
+    # TODO Rename this here and in `agregar_sangria`, `quitar_sangria`, `comentar` and `descomentar`
+    def _extracted_from_descomentar_14(self, cursor, arg1):
+        cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
+        cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
+        if cursor.selectedText() == arg1:
+            cursor.deleteChar()
+        cursor.movePosition(cursor.Down)
 # endregion
 # FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
@@ -541,21 +532,23 @@ class ComputadorCompleto(QMainWindow):
             cod = list(programa)
         err, msj, mp, ls, ts = verificacion_codigo(programa)
         self.mp = mp.copy()
-        print(mp)
         self.monitor.setText(msj)
         if err == 0:
             self.clr_ld(nombre_archivo, cod, ls, ts)
 
     def clr_ld(self, nombre_archivo, cod, ls, ts):
-        crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.Ejecutar_ejecutar.setEnabled(True)
-        print(config.m_prog)
         for i in config.m_prog:
             config.m_prog.update({i: '00'})
+        self.extraer_valores()
+        self.ds_op()
+        self.regen_all()
+        self.uncolor()
         
         config.m_prog.update(self.mp)
         #self.memoria.actualizar_tabla(config.m_prog)
-        self.trim_mem(self.mp)
+        self.update_segments(config.m_prog)
         self.set_Pins()
 
     def cargar(self):
@@ -573,7 +566,7 @@ class ComputadorCompleto(QMainWindow):
 
 
     def load(self, nombre_archivo, cod, ls, ts):
-        crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.Ejecutar_ejecutar.setEnabled(True)
         config.m_prog.update(self.mp)
         #self.memoria.actualizar_tabla(self.mp)
@@ -593,13 +586,12 @@ class ComputadorCompleto(QMainWindow):
         #self.memoria.actualizar_tabla(config.m_prog)
         self.regen_all()
         self.uncolor()
-        print(config.m_prog)
-        print(self.mp)
         self.update_segments(config.m_prog)
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
     def ejecutar_instruccion(self):
+        print(config.PIns,"prev ciclo")
         if config.PIns != 'FIN':
             ciclo_instruccion()
             self.color_Regs()
@@ -610,8 +602,6 @@ class ComputadorCompleto(QMainWindow):
         #self.memoria.actualizar_tabla(config.m_prog)
         self.regen_all()
         self.uncolor()
-        print(config.m_prog)
-        print(self.mp)
         self.update_segments(config.m_prog)
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))

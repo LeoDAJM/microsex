@@ -13,7 +13,6 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
 
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
-
     errores = 0
     mensaje = ''
     m_prog = {}
