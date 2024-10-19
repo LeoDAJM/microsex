@@ -31,24 +31,17 @@ class ComputadorCompleto(QMainWindow):
         self.fuente = QFont("mononoki NF", 10)
         self.initUI()
 
-    def resizeEvent(self, event: 'QResizeEvent'):
-        #newsize = event.size()  # Tamaño nuevo de la ventana
-        _ = event.oldSize()  # Tamaño anterior de la ventana
+    def resizeEvent(self, event: 'QResizeEvent'): # type: ignore
         self.fuente = QFont("mononoki NF", min(max(event.size().height()//80, 8),13))
         self.fuente_mid = QFont("mononoki NF", min(max(event.size().height()//85, 7),12))
         self.fuente_min = QFont("mononoki NF", min(max(event.size().height()//100, 6),10))
         
         self.chkbx = [QCheckBox(text=" ")]*3
-
-        self.memSS.tabla2.setFont(self.fuente_mid)
-        self.memDS.tabla2.setFont(self.fuente_mid)
-        self.memCS.tabla2.setFont(self.fuente_mid)
-        self.memSS.tabla2.horizontalHeader().setFont(self.fuente)
-        self.memDS.tabla2.horizontalHeader().setFont(self.fuente)
-        self.memCS.tabla2.horizontalHeader().setFont(self.fuente)
-        self.memSS.tabla2.verticalHeader().setFont(self.fuente)
-        self.memDS.tabla2.verticalHeader().setFont(self.fuente)
-        self.memCS.tabla2.verticalHeader().setFont(self.fuente)
+        for _, i in self.mem.items():
+            i.table.setFont(self.fuente_mid)
+            i.table.horizontalHeader().setFont(self.fuente)
+            i.table.verticalHeader().setFont(self.fuente)
+            
         self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_min)
         self.editor_codigo.editor.setFont(self.fuente)
         
@@ -59,6 +52,7 @@ class ComputadorCompleto(QMainWindow):
         super().resizeEvent(event)
 
     def initUI(self):
+        self.misc = []
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
         self.direccion_inicio = '0000'
@@ -77,27 +71,22 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setStyleSheet(config.estilo["scrolled_monitor"])
 
         self.registros = EditorRegistros()
-        self.memoria = Memoria()
-        self.memoria.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-        )
-        self.editor_codigo.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-        )
         
-        self.memSS = MemoriaSS()
-        self.memDS = Memoria2()
-        self.memCS = Memoria2()
-        self.memCS.tabla2.setEnabled(False)
-        self.memDS.tabla2.setEnabled(False)
-        self.memSS.tabla2.setEnabled(False)
+        self.mem = {"s": memory(16,0,"stack"),
+                    "c": memory(0,16,"code"),
+                    "d": memory(0,16,"data")}
+        for i in self.mem.values():
+            i.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            i.table.setEnabled(False)
+
+        self.editor_codigo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
-        bloque_ejecucion.addWidget(self.memCS, stretch=1)
+        bloque_ejecucion.addWidget(self.mem["c"], stretch=1)
         
         self.bloque_regSS = QHBoxLayout()
-        self.bloque_regSS.addWidget(self.memSS, stretch=1)
+        self.bloque_regSS.addWidget(self.mem["s"], stretch=1)
         self.bloque_regSS.addWidget(self.registros, stretch=1)
         
         bloque_codigo = QVBoxLayout()
@@ -109,17 +98,21 @@ class ComputadorCompleto(QMainWindow):
         bloque_subprincipal.addLayout(bloque_codigo, stretch=1)
 
         bloque_principal = QVBoxLayout()
-        self.memDS.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-        )
         bloque_principal.addLayout(bloque_subprincipal, stretch=4)
-        bloque_principal.addWidget(self.memDS, stretch=4)
+        bloque_principal.addWidget(self.mem["d"], stretch=4)
         
         area_trabajo = QWidget()
         styles = config2.styles_fun()
         area_trabajo.setStyleSheet(styles["work_space"])
         area_trabajo.setLayout(bloque_principal)
-        
+        self._ds = {
+            "s": None,
+            "c": None,
+            "d": None}
+        self._size = {
+            "s": None,
+            "c": None,
+            "d": None}
         self.Reg_monitor()
         self.setCentralWidget(area_trabajo)
         self.barra_estado = self.statusBar()
@@ -268,118 +261,94 @@ class ComputadorCompleto(QMainWindow):
 
 # region FUN Extras
     def enable_tables(self):
-        if self.Ejecutar_sobreescribir.isEnabled():
-            self.memCS.tabla2.setEnabled(True)
-            self.memDS.tabla2.setEnabled(True)
-            self.memSS.tabla2.setEnabled(True)
-        else:
-            self.memCS.tabla2.setEnabled(False)
-            self.memDS.tabla2.setEnabled(False)
-            self.memSS.tabla2.setEnabled(False)
+        for i in self.mem.values():
+            i.table.setEnabled(bool(self.Ejecutar_sobreescribir.isEnabled()))
 
-    def extraer_valores(self):
+    def extraer_valores(self):  # Detecta las direcciones y directivas ORG
         import re
-        # Expresión regular para capturar las líneas con ".org" y sus valores
         regex_org = r"\.org\s+0x?([0-9A-Fa-f]*|0)"  # Captura el valor hexadecimal después de ".org"
         regex_seg = r"\.(dseg|cseg)"  # Captura el segmento (dseg o cseg)
         texto = self.editor_codigo.editor.toPlainText()
-        
-        array_2d = []
         rowed = enumerate(texto.splitlines())
         # Dividimos el texto en líneas y procesamos cada una
-        for i, linea  in rowed:
-            # Buscamos el valor de .org
-            match_org = re.search(regex_org, linea)
-            if match_org:
+        for i, linea in rowed:
+            if match_org := re.search(regex_org, linea):
                 # Convertir el valor hexadecimal a decimal
                 valor_hex = int(match_org.group(1).zfill(4),16) // 16
-                match_seg = re.search(regex_seg, texto.splitlines()[i+1]) or re.search(regex_seg, texto.splitlines()[i-1])
-                if match_seg:
+                if match_seg := re.search(
+                    regex_seg, texto.splitlines()[i + 1]
+                ) or re.search(regex_seg, texto.splitlines()[i - 1]):
                     secc = match_seg.group(1)[0]
                 else:
                     secc = "s"
-                # Agregar al array con la sección actual
-                array_2d.append([valor_hex, secc])
-        return array_2d
+                self._ds[secc] = valor_hex
 
-    def trim_mem(self):
-        dirs = self.extraer_valores()
-        self._ds = {
-            "c": None,
-            "s": 0,
-            "d": None}
-        for row, seg in dirs:
-            self._ds[seg] = int(row)
-        self._ds = {k: v for k, v in sorted(self._ds.items(), key=lambda item: item[1])}  #men to may
+    def trim_mem(self, mp_prog):
+        self.extraer_valores()
         self.ds_op()
-        
-        self.memSS.tabla2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.memSS.tabla2.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.regen_all()
         self.uncolor()
-        self.update_segments()
+        self.update_segments(mp_prog)
 
     def ds_op(self):
-        if  self._ds["c"] > self._ds["d"]:
-            self.limd = self._ds["c"]
-            self.limc = 4096
-        else:
-            self.limd = 4096
-            self.limc = self._ds["d"]
-        self.memDS.tabla2.setRowCount(self.limd - self._ds["d"])
-        self.memCS.tabla2.setRowCount(self.limc - self._ds["c"])
-        self.memDS.tabla2.setColumnCount(16)
-        self.memCS.tabla2.setColumnCount(16)
-        self.memCS.tabla2.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["c"],self.limc)])
-        self.memSS.tabla2.setHorizontalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["s"],self._ds["s"]+2)])
-        self.memDS.tabla2.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds["d"],self.limd)])
-        self.memSS.tabla2.setVerticalHeaderLabels([format(i,'X') for i in range(16)])
+        _ds_ordered = dict(sorted(self._ds.items(), key=lambda item: (item[1] is None, item[1]), reverse=True))
+        print(_ds_ordered, self._ds)
+        _max = 4096
+        for k, v in _ds_ordered.items():
+            if v is None:
+                self._size[k] = 0
+            else:
+                self._size[k] = _max  - v
+                _max = v
+        for (k, v), (_, u) in zip(self.mem.items(), self._size.items()):
+            print(self._size, k, u)
+            if k == "s":
+                v.table.setColumnCount(2)
+                v.table.setRowCount(16)
+                if u == 0:
+                    v.table.setColumnCount(0)
+                    print("SSZ")
+                else:
+                    v.table.setHorizontalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds[k],self._ds[k]+u)])
+            else:
+                v.table.setRowCount(u)
+                v.table.setColumnCount(16)
+                v.table.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds[k],self._ds[k]+u)])
 
     def uncolor(self):
-        for j in range(self.memSS.tabla2.columnCount()):
-            for i in range(self.memSS.tabla2.rowCount()):
-                self.memSS.tabla2.item(i, j).setBackground(QColor(20, 20, 20))
-        for j in range(self.memDS.tabla2.columnCount()):
-            for i in range(self.memDS.tabla2.rowCount()):
-                self.memDS.tabla2.item(i, j).setBackground(QColor(20, 20, 20))
-        for j in range(self.memCS.tabla2.columnCount()):
-            for i in range(self.memCS.tabla2.rowCount()):
-                self.memCS.tabla2.item(i, j).setBackground(QColor(20, 20, 20))
-                self.memCS.tabla2.item(i, j).setForeground(QColor(120, 150, 175))
-        self.memCS.tabla2.setStyleSheet(config.estilo["estilo_celdas"])
+        for k, m in self.mem.items():
+            for j in range(m.table.columnCount()):
+                for i in range(m.table.rowCount()):
+                    m.table.item(i, j).setBackground(QColor(20, 20, 20))
+                    if k == "c":
+                        m.table.item(i, j).setForeground(QColor(120, 150, 175)) # rgb(120, 150, 175)
+                        #.setStyleSheet(config.estilo["estilo_celdas"])
 
-    def regen_seg(self,table):
-        for i in range(table.rowCount()):
-            for j in range(table.columnCount()):
-                if table.item(i, j) == None:
-                    table.setItem(i,j,QTableWidgetItem('00'))
-                    table.setRowHeight(i,8)
-                    table.item(i,j).setTextAlignment(Qt.AlignCenter)
-    
+        
+
     def regen_all(self):
-        self.regen_seg(self.memCS.tabla2)
-        self.regen_seg(self.memDS.tabla2)
-        #self.regen_seg(self.memSS.tabla2)
+        print(self.misc, "asukdhasd")
+        for _, v in self.mem.items():
+            for i in range(v.table.rowCount()):
+                for j in range(v.table.columnCount()):
+                    if v.table.item(i, j) is None:
+                        v.table.setItem(i,j,QTableWidgetItem('00'))
+                        v.table.setRowHeight(i,8)
+                        v.table.item(i,j).setTextAlignment(Qt.AlignCenter)
+        
 
-    def update_segments(self):
-        for i in range(self.memoria.tabla.rowCount()):
-            for j in range(self.memoria.tabla.columnCount()):
-                if i in range(self._ds["s"],self._ds["s"]+2):
-                    if self.memoria.tabla.item(i, j).text() != self.memSS.tabla2.item(j, i-self._ds["s"]).text():
-                        self.memSS.tabla2.item(j, i-self._ds["s"]).setText(self.memoria.tabla.item(i, j).text())
-                        self.memSS.tabla2.item(j, i-self._ds["s"]).setBackground(QColor(255, 75, 75, 90))
-                if i in range(self._ds["d"],self.limd):
-                    if self.memoria.tabla.item(i, j).text() != self.memDS.tabla2.item(i-self._ds["d"], j).text():
-                        self.memDS.tabla2.item(i-self._ds["d"], j).setText(self.memoria.tabla.item(i, j).text())
-                        self.memDS.tabla2.item(i-self._ds["d"], j).setBackground(QColor(255, 75, 75, 90))
-                if i in range(self._ds["c"],self.limc):
-                    if self.memoria.tabla.item(i, j).text() != self.memCS.tabla2.item(i-self._ds["c"], j).text():
-                        self.memCS.tabla2.item(i-self._ds["c"], j).setText(self.memoria.tabla.item(i, j).text())
-                        self.memCS.tabla2.item(i-self._ds["c"], j).setBackground(QColor(255, 75, 75, 90))
+    def update_segments(self, mp_el):
+        print("configmprog",mp_el)
+        for k, v in self.mem.items():
+            for i, j in itertools.product(range(v.table.rowCount()), range(v.table.columnCount())):
+                pos = self._ds[k]*16+(j*16)+i if k == "s" else self._ds[k]*16+(i*16)+j
+                if pos in mp_el: print(pos,mp_el[pos])
+                if pos in mp_el and v.table.item(i, j).text() != mp_el[pos]:
+                    v.table.item(i,j).setText(mp_el[pos])
+                    v.table.item(i,j).setBackground(QColor(255, 75, 75, 90))
 
     def F_monitor(self):
-        bool_flags = [0,0,0,0,0,0]
-        bool_flags = [True if x.text() == "1" else False for x in self.registros.edit_banderas]
+        bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
         for i, flag in enumerate(bool_flags):
             if flag:
                 self.registros.edit_banderas[i].setStyleSheet("border: 2px solid rgb(255,60,140);")
@@ -429,20 +398,19 @@ class ComputadorCompleto(QMainWindow):
                 self.Ejecutar_sobreescribir.setEnabled(True)
 
     def dialogo_guardar(self):
-        linea_nueva = "\n"
         cursor = self.editor_codigo.editor.textCursor()
         cursor.movePosition(cursor.End, cursor.MoveAnchor)
         cursor.movePosition(cursor.Left, cursor.KeepAnchor)
         if cursor.selectedText() in letras_numeros:
             cursor.movePosition(cursor.End)
+            linea_nueva = "\n"
             cursor.insertText(linea_nueva)
 
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
-            f = open(nombre_archivo, 'w')
-            datos_archivo = self.editor_codigo.editor.toPlainText()
-            f.write(datos_archivo)
-            f.close()
+            with open(nombre_archivo, 'w') as f:
+                datos_archivo = self.editor_codigo.editor.toPlainText()
+                f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)
             self.Ejecutar_sobreescribir.setEnabled(True)
             self.barra_estado.showMessage('Archivo guardado :D')
@@ -450,21 +418,20 @@ class ComputadorCompleto(QMainWindow):
             self.dialogo_guardar_como()
 
     def dialogo_guardar_como(self):
-        linea_nueva = "\n"
         cursor = self.editor_codigo.editor.textCursor()
         cursor.movePosition(cursor.End, cursor.MoveAnchor)
         cursor.movePosition(cursor.Left, cursor.KeepAnchor)
         if cursor.selectedText() in letras_numeros:
             cursor.movePosition(cursor.End)
+            linea_nueva = "\n"
             cursor.insertText(linea_nueva)
 
         nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo')
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            f = open(nombre_archivo[0], 'w')
-            datos_archivo = self.editor_codigo.editor.toPlainText()
-            f.write(datos_archivo)
-            f.close()
+            with open(nombre_archivo[0], 'w') as f:
+                datos_archivo = self.editor_codigo.editor.toPlainText()
+                f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)
             self.Ejecutar_sobreescribir.setEnabled(True)
             self.barra_estado.showMessage('Archivo guardado :D')
@@ -499,7 +466,7 @@ class ComputadorCompleto(QMainWindow):
         cursor.setPosition(inicio_seleccion)
         linea_inicial = cursor.blockNumber()
 
-        for linea in range(linea_inicial, linea_final + 1):
+        for _ in range(linea_inicial, linea_final + 1):
             cursor.movePosition(cursor.StartOfLine)
             cursor.insertText(tab)
             cursor.movePosition(cursor.Down)
@@ -516,7 +483,7 @@ class ComputadorCompleto(QMainWindow):
         cursor.setPosition(inicio_seleccion)
         linea_inicial = cursor.blockNumber()
 
-        for linea in range(linea_inicial, linea_final + 1):
+        for _ in range(linea_inicial, linea_final + 1):
             cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
             cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
             if cursor.selectedText()== tab:
@@ -535,7 +502,7 @@ class ComputadorCompleto(QMainWindow):
         cursor.setPosition(inicio_seleccion)
         linea_inicial = cursor.blockNumber()
 
-        for linea in range(linea_inicial, linea_final + 1):
+        for _ in range(linea_inicial, linea_final + 1):
             cursor.movePosition(cursor.StartOfLine)
             cursor.insertText(punto_coma)
             cursor.movePosition(cursor.Down)
@@ -552,7 +519,7 @@ class ComputadorCompleto(QMainWindow):
         cursor.setPosition(inicio_seleccion)
         linea_inicial = cursor.blockNumber()
 
-        for linea in range(linea_inicial, linea_final + 1):
+        for _ in range(linea_inicial, linea_final + 1):
             cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
             cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
             if cursor.selectedText()== punto_coma:
@@ -569,41 +536,50 @@ class ComputadorCompleto(QMainWindow):
         self.regen_all()
         self.enable_tables()
         nombre_archivo = self.nombre_archivo
-        archivo = open(nombre_archivo)
-        programa = archivo.readlines()
-        cod = list(programa)
-        archivo.close()
+        with open(nombre_archivo) as archivo:
+            programa = archivo.readlines()
+            cod = list(programa)
         err, msj, mp, ls, ts = verificacion_codigo(programa)
         self.mp = mp.copy()
+        print(mp)
         self.monitor.setText(msj)
         if err == 0:
-            crear_archivo_listado(nombre_archivo, cod, ls, ts)
-            self.Ejecutar_ejecutar.setEnabled(True)
-            for i in config.m_prog:
-                config.m_prog.update({i: '00'})
-            config.m_prog.update(self.mp)
-            self.memoria.actualizar_tabla(config.m_prog)
-            self.trim_mem()
-            self.set_Pins()
+            self.clr_ld(nombre_archivo, cod, ls, ts)
+
+    def clr_ld(self, nombre_archivo, cod, ls, ts):
+        crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.Ejecutar_ejecutar.setEnabled(True)
+        print(config.m_prog)
+        for i in config.m_prog:
+            config.m_prog.update({i: '00'})
+        
+        config.m_prog.update(self.mp)
+        #self.memoria.actualizar_tabla(config.m_prog)
+        self.trim_mem(self.mp)
+        self.set_Pins()
 
     def cargar(self):
         self.regen_all()
         self.enable_tables()
         nombre_archivo = self.nombre_archivo
-        archivo = open(nombre_archivo)
-        programa = archivo.readlines()
-        cod = list(programa)
-        archivo.close()
+        with open(nombre_archivo) as archivo:
+            programa = archivo.readlines()
+            cod = list(programa)
         err, msj, mp, ls, ts = verificacion_codigo(programa)
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:
-            crear_archivo_listado(nombre_archivo, cod, ls, ts)
-            self.Ejecutar_ejecutar.setEnabled(True)
-            config.m_prog.update(self.mp)
-            self.memoria.actualizar_tabla(self.mp)
-            self.trim_mem()
-            self.set_Pins()
+            self.load(nombre_archivo, cod, ls, ts)
+
+
+    def load(self, nombre_archivo, cod, ls, ts):
+        crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.Ejecutar_ejecutar.setEnabled(True)
+        config.m_prog.update(self.mp)
+        #self.memoria.actualizar_tabla(self.mp)
+        self.trim_mem(self.mp)
+        self.set_Pins()
+
 
     def ejecutar(self):
         isd = 0
@@ -614,12 +590,14 @@ class ComputadorCompleto(QMainWindow):
             self.registros.actualizar_registros()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.barra_estado.showMessage('Fin de Programa (HLT)')
-        self.memoria.actualizar_tabla(config.m_prog)
+        #self.memoria.actualizar_tabla(config.m_prog)
         self.regen_all()
         self.uncolor()
-        self.update_segments()
-        self.memCS.tabla2.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
-        self.memCS.tabla2.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+        print(config.m_prog)
+        print(self.mp)
+        self.update_segments(config.m_prog)
+        self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
+        self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
     def ejecutar_instruccion(self):
         if config.PIns != 'FIN':
@@ -629,58 +607,53 @@ class ComputadorCompleto(QMainWindow):
             self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
-        self.memoria.actualizar_tabla(config.m_prog)
+        #self.memoria.actualizar_tabla(config.m_prog)
         self.regen_all()
         self.uncolor()
-        self.update_segments()
-        self.memCS.tabla2.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
-        self.memCS.tabla2.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+        print(config.m_prog)
+        print(self.mp)
+        self.update_segments(config.m_prog)
+        self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
+        self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
 
 # FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
         writer = csv.writer(f)
         for r in sh.rows:
             writer.writerow([cell.value for cell in r if cell.value is not None and cell.value != ''])
-        contenido = f.getvalue()
-        return contenido
+        return f.getvalue()
 
 
-    def csv_gen(self, f, mems, strs, chk):
+    def csv_gen(self, f, strs, chk):
         writer = csv.writer(f)
         # Guardado de ORG
         org_data = ["ORG leaps CS,SS,DS"]
-        for i in self._ds.values():
-            org_data.append(str(i))
+        org_data.extend(str(i) for i in self._ds.values())
         writer.writerow(org_data)
-        for ix, x in enumerate(mems):
+        for ix, x in enumerate(self.mem):
             if not chk[ix].isChecked():
                 continue
             writer.writerow([strs[ix]])
-            for i in range(x.rowCount()):
-                if all(x.item(i, v).text() == '00' for v in range(x.columnCount())) and (self.response_clear == QMessageBox.Yes):
-                    continue
-                else:
+            for i in range(x.table.rowCount()):
+                if (any(x.table.item(i, v).text() != '00' for v in range(x.table.columnCount()))
+                or self.response_clear != QMessageBox.Yes):
                     row_data = [str(i)]
-                    for j in range(x.columnCount()):
-                        row_data.append(x.item(i,j).text())
+                    row_data.extend(x.table.item(i,j).text() for j in range(x.table.columnCount()))
                     writer.writerow(row_data)
 
-    def save_fun(self,chk):
-        mems = [self.memSS.tabla2, self.memDS.tabla2, self.memCS.tabla2]
+    def save_fun(self,chk):  # sourcery skip: extract-method
         strs = ["Stack Segment", "Data Segment", "Code Segment"]
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
         buffer = io.StringIO()
-        self.csv_gen(buffer,mems,strs,chk)
+        self.csv_gen(buffer,strs,chk)
         with open(nombre_archivo, 'w', newline='', encoding='utf-8') as f:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
-                # Obtener el contenido del buffer
                 contenido = buffer.getvalue()
-                # Exportar el contenido a un archivo CSV
                 f.write(contenido)
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
                 wb = Workbook()
                 ws = wb.active
-                buffer.seek(0)  # Volver al inicio del StringIO para leer
+                buffer.seek(0)
                 reader = csv.reader(buffer)
                 for row in reader:
                     ws.append(row)
@@ -695,12 +668,12 @@ class ComputadorCompleto(QMainWindow):
         self.msg = QDialog(self)
         self.msg.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint | Qt.CustomizeWindowHint)
         self.msg.setWindowFlags(self.msg.windowFlags() & ~Qt.WindowCloseButtonHint)
-        lbl = QLabel("Selecciona los segmentos a "+ msg_str + ":")
+        lbl = QLabel(f"Selecciona los segmentos a {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
         self.chkbx[0] = QCheckBox(text="Stack Segment")
-        self.chkbx[1] = QCheckBox(text="Data Segment")
-        self.chkbx[2] = QCheckBox(text="Code Segment")
+        self.chkbx[1] = QCheckBox(text="Code Segment")
+        self.chkbx[2] = QCheckBox(text="Data Segment")
         if msg_str.upper() == "IMPORTAR":
             self.msg.setWindowTitle("Load")
             self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
@@ -737,62 +710,48 @@ class ComputadorCompleto(QMainWindow):
         rows = list(csv)
         for u in rows:
             for v in range(max(1,len(u)-1)):
-                if u[v].lower() == "data segment":
-                    self.state[1] = True
-                elif u[v].lower() == "code segment":
-                    self.state[2] = True
-                elif u[v].lower() == "stack segment":
+                if u[v].lower() == "stack segment":
                     self.state[0] = True
+                elif u[v].lower() == "code segment":
+                    self.state[1] = True
+                elif u[v].lower() == "data segment":
+                    self.state[2] = True
+
         return rows
 
     def csv2mem(self,rows):
         chk_imp = self.chkbx
         mem = None
-        if not hasattr(self, '_ds'):
-            self._ds = {
-            "c": None,
-            "s": 0,
-            "d": None}
         for u in rows:
+            key = [u[0].lower()[0] if u[0].lower()[0] in {"s", "c", "d"} else None]
             for v in range(max(1,len(u)-1)):
-                if u[v].lower() == "data segment":
-                    if chk_imp[1].isChecked():
-                        mem = self.memDS.tabla2
-                    else:
-                        mem = None
+                if u[v].lower() == "stack segment":
+                    mem = self.mem[key].table if chk_imp[0].isChecked() else None
                 elif u[v].lower() == "code segment":
-                    if chk_imp[2].isChecked():
-                        mem = self.memCS.tabla2
-                    else:
-                        mem = None
-                elif u[v].lower() == "stack segment":
-                    if chk_imp[0].isChecked():
-                        mem = self.memSS.tabla2
-                    else:
-                        mem = None
+                    mem = self.mem[key].table if chk_imp[1].isChecked() else None
+                elif u[v].lower() == "data segment":
+                    mem = self.mem[key].table if chk_imp[2].isChecked() else None
                 elif u[0].lower() == "org leaps cs,ss,ds":
                     self._ds['c'] = int(u[1])
                     self._ds['s'] = int(u[2])
                     self._ds['d'] = int(u[3])
-                    if  v == 2:
-                        self.ds_op()
-                        self.regen_all()
-                else:
-                    if mem != None:
-                        data = u[v+1]
-                        data = data.zfill(2)
-                        data = data.upper()
-                        mem.item(int(u[0]),v).setText(data)
+                    self.ds_op()
+                    self.regen_all()
+                    break
+                    #v = max(1,len(u)-1)
+                elif mem != None:
+                    data = u[v+1]
+                    data = data.zfill(2)
+                    data = data.upper()
+                    mem.item(int(u[0]),v).setText(data)
         self.msg.accept()
 
 
-    def open_file(self):
+    def open_file(self):  # sourcery skip: extract-method
         self.state = [False]*3
         nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx);;All Files (*)')
-        if not self.memCS.tabla2.isEnabled():
-            self.memCS.tabla2.setEnabled(True)
-            self.memSS.tabla2.setEnabled(True)
-            self.memDS.tabla2.setEnabled(True)
+        for _, i in self.mem.items():
+            i.table.setEnabled(True)
         try:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
                 csv_reader = csv.reader(open(nombre_archivo, 'r', encoding='utf-8'))

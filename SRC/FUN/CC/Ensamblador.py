@@ -8,15 +8,15 @@ from FUN.CC.Listado import *
 def verificacion_codigo(DATOS):
 
     # Convierte todo a mayúsculas
-    for i in range(0,len(DATOS)):
+    for i in range(len(DATOS)):
         DATOS[i] = DATOS[i].upper()
 
     # Elimina los saltos de línea al final de cada línea
-    for i in range(0,len(DATOS)):
+    for i in range(len(DATOS)):
         DATOS[i] = str(DATOS[i][:-1])
 
     # Elimina tabulaciones y espacios al inicio de cada línea
-    for i in range(0,len(DATOS)):
+    for i in range(len(DATOS)):
         cont = DATOS[i].count("\t")
         DATOS[i] = DATOS[i].replace("\t", " ", cont)
         DATOS[i] = DATOS[i].lstrip()
@@ -70,8 +70,6 @@ def verificacion_codigo(DATOS):
             m_prog[i] = m_prog[i].split('x')[1]
             m_prog[i] = m_prog[i].zfill(2)
             m_prog[i] = m_prog[i].upper()
-
-
 
         # Se agrega la tabla de orígenes al archivo de listado
         for i in origen:
