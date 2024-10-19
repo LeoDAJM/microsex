@@ -41,5 +41,6 @@ styles_cs = {
 
 total_w = 800
 total_h = 600
+cs_initial = "0"
 def styles_fun():
         return dict(styles_cs)

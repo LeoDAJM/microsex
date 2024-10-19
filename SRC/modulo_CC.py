@@ -10,8 +10,6 @@ import io
 from tabulate import tabulate
 import FUN.CONF.config_custom as config2
 
-
-
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
 from FUN.CC.Editor_Memoria import *
@@ -40,6 +38,8 @@ class ComputadorCompleto(QMainWindow):
         self.fuente_mid = QFont("mononoki NF", min(max(event.size().height()//85, 7),12))
         self.fuente_min = QFont("mononoki NF", min(max(event.size().height()//100, 6),10))
         
+        self.chkbx = [QCheckBox(text=" ")]*3
+
         self.memSS.tabla2.setFont(self.fuente_mid)
         self.memDS.tabla2.setFont(self.fuente_mid)
         self.memCS.tabla2.setFont(self.fuente_mid)
@@ -56,9 +56,6 @@ class ComputadorCompleto(QMainWindow):
             child.setFont(self.fuente_mid)
         for child in self.menuBar().findChildren(QWidget):
             child.setFont(self.fuente_mid)
-        
-
-        # Llamamos al método original para no perder el comportamiento por defecto
         super().resizeEvent(event)
 
     def initUI(self):
@@ -95,24 +92,17 @@ class ComputadorCompleto(QMainWindow):
         self.memDS.tabla2.setEnabled(False)
         self.memSS.tabla2.setEnabled(False)
         
-
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
         bloque_ejecucion.addWidget(self.memCS, stretch=1)
-        #bloque_ejecucion.addWidget(self.memoria, stretch=2)
-        #bloque_ejecucion.addWidget(self.memDS, stretch=2)
         
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.memSS, stretch=1)
         self.bloque_regSS.addWidget(self.registros, stretch=1)
         
         bloque_codigo = QVBoxLayout()
-        #bloque_codigo.addStretch(1)
         bloque_codigo.addLayout(self.bloque_regSS, stretch=3)
-        #bloque_codigo.addStretch(1)
-        #bloque_codigo.addWidget(self.memoria, stretch=2)
         bloque_codigo.addWidget(self.monitor, stretch=1)
-        #bloque_codigo.addStretch(1)
 
         bloque_subprincipal = QHBoxLayout()
         bloque_subprincipal.addLayout(bloque_ejecucion, stretch=3)
@@ -259,7 +249,7 @@ class ComputadorCompleto(QMainWindow):
         self.setWindowTitle('Microsex - Computador Completo')
         self.setWindowIcon(QIcon('IMG/icono.png'))
 # endregion
-# Menú Memoria ----------------------------------------------------------------
+# region Menú Memoria ----------------------------------------------------------------
         self.Load_Mem = QAction('Memory Load from XLSX CSV', self)
         self.Load_Mem.setToolTip('Carga un archivo de memoria.')
         self.Load_Mem.setShortcut('Ctrl+M')
@@ -272,14 +262,9 @@ class ComputadorCompleto(QMainWindow):
         self.Save_Mem.setEnabled(True)
         self.Save_Mem.triggered.connect(self.save_csv)
         
-        self.Tester = QAction('Tester', self)
-        self.Tester.setToolTip('NN')
-        self.Tester.setEnabled(True)
-        self.Tester.triggered.connect(self.F_monitor)
-        
         menu_Memoria.addAction(self.Load_Mem)
         menu_Memoria.addAction(self.Save_Mem)
-#endregion
+# endregion
 
 # region FUN Extras
     def enable_tables(self):
@@ -318,10 +303,9 @@ class ComputadorCompleto(QMainWindow):
         return array_2d
 
     def trim_mem(self):
-        #self.memSS.tabla2.cellChanged.connect(MemoriaSS.prog_chngs)
         dirs = self.extraer_valores()
         self._ds = {
-            "c": None,  # Puedes inicializar con None u otro valor
+            "c": None,
             "s": 0,
             "d": None}
         for row, seg in dirs:
@@ -334,7 +318,6 @@ class ComputadorCompleto(QMainWindow):
         self.regen_all()
         self.uncolor()
         self.update_segments()
-        #self.memSS.tabla2.cellChanged.connect(MemoriaSS.cambio_en_memoria3())
 
     def ds_op(self):
         if  self._ds["c"] > self._ds["d"]:
@@ -376,7 +359,6 @@ class ComputadorCompleto(QMainWindow):
     def regen_all(self):
         self.regen_seg(self.memCS.tabla2)
         self.regen_seg(self.memDS.tabla2)
-        
         #self.regen_seg(self.memSS.tabla2)
 
     def update_segments(self):
@@ -433,7 +415,7 @@ class ComputadorCompleto(QMainWindow):
                 x.setStyleSheet("border: 2px solid rgb(0,60,140);")
 
 # endregion
-# FUNCIONES DEL MENÚ ARCHIVO ---------------------------------------------------
+# region FUNCIONES DEL MENÚ ARCHIVO ---------------------------------------------------
 
     def dialogo_abrir(self):
         nombre_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo')
@@ -486,8 +468,9 @@ class ComputadorCompleto(QMainWindow):
             self.Ejecutar_cargar.setEnabled(True)
             self.Ejecutar_sobreescribir.setEnabled(True)
             self.barra_estado.showMessage('Archivo guardado :D')
+# endregion
 
-# FUNCIONES DEL MENÚ EDITAR-----------------------------------------------------
+# region FUNCIONES DEL MENÚ EDITAR-----------------------------------------------------
 
     def deshacer_accion(self):
         self.editor_codigo.editor.undo()
@@ -575,13 +558,13 @@ class ComputadorCompleto(QMainWindow):
             if cursor.selectedText()== punto_coma:
                 cursor.deleteChar()
             cursor.movePosition(cursor.Down)
-
+# endregion
 # FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
-        #format(i*16,'X').zfill(4)
         self.registros.edit_PIns.setText(format(self._ds["c"]*16,'X').zfill(4))
         config.PIns = int(self.registros.edit_PIns.text(),16)
+        config2.cs_initial = int(self.registros.edit_PIns.text(),16)
     def borrar_cargar(self):
         self.regen_all()
         self.enable_tables()
@@ -635,7 +618,6 @@ class ComputadorCompleto(QMainWindow):
         self.regen_all()
         self.uncolor()
         self.update_segments()
-        #self.trim_mem()
         self.memCS.tabla2.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.memCS.tabla2.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
@@ -651,13 +633,8 @@ class ComputadorCompleto(QMainWindow):
         self.regen_all()
         self.uncolor()
         self.update_segments()
-        #self.trim_mem()
-        #print(int(self.registros.edit_PIns.text(),16), self._ds["c"]*16, self.post)
-        #rgb(0,255,140)
-        #QColor(0,255,140)
         self.memCS.tabla2.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.memCS.tabla2.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
-        #self.memCS.tabla2.setStyleSheet("QTableWidget { color: rgb(20, 60, 134) ; }")
 
 # FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
@@ -675,13 +652,11 @@ class ComputadorCompleto(QMainWindow):
         for i in self._ds.values():
             org_data.append(str(i))
         writer.writerow(org_data)
-        # Escribir la cabecera (primera fila con las direcciones de memoria)
         for ix, x in enumerate(mems):
             if not chk[ix].isChecked():
                 continue
             writer.writerow([strs[ix]])
             for i in range(x.rowCount()):
-                #row_data = ["00"]*x.columnCount()
                 if all(x.item(i, v).text() == '00' for v in range(x.columnCount())) and (self.response_clear == QMessageBox.Yes):
                     continue
                 else:
@@ -696,7 +671,6 @@ class ComputadorCompleto(QMainWindow):
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
         buffer = io.StringIO()
         self.csv_gen(buffer,mems,strs,chk)
-        #print(buffer)
         with open(nombre_archivo, 'w', newline='', encoding='utf-8') as f:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
                 # Obtener el contenido del buffer
@@ -706,81 +680,97 @@ class ComputadorCompleto(QMainWindow):
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
                 wb = Workbook()
                 ws = wb.active
-                # Obtener el contenido del StringIO como una lista de filas
                 buffer.seek(0)  # Volver al inicio del StringIO para leer
                 reader = csv.reader(buffer)
                 for row in reader:
                     ws.append(row)
-                # Guardar el archivo de Excel
                 wb.save(nombre_archivo)
         buffer.close()
         self.msg.accept()
+        QMessageBox.information(self, 'Volcado Completo', 'El archivo se ha exportado correctamente.')
+        self.barra_estado.showMessage('Volcado de Memoria Completa.')
         skp = self.response_clear
-        from PyQt5.QtWidgets import QMessageBox
-        #print(skp == QMessageBox.Yes,chk[0].isChecked(), chk[1].isChecked(), chk[2].isChecked())
 
-    
-    def dialog_save(self):
+    def dialog_save(self, msg_str: str, row = None):
         self.msg = QDialog(self)
         self.msg.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint | Qt.CustomizeWindowHint)
         self.msg.setWindowFlags(self.msg.windowFlags() & ~Qt.WindowCloseButtonHint)
-        self.msg.setWindowTitle("Dump")
-        lbl = QLabel("Selecciona los segmentos a exportar:")
-        self.btt_dialog = QPushButton("Guardar")
+        lbl = QLabel("Selecciona los segmentos a "+ msg_str + ":")
+        self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
-        chkbx = [0]*3
-        chkbx[0] = QCheckBox(text="Stack Segment")
-        chkbx[1] = QCheckBox(text="Data Segment")
-        chkbx[2] = QCheckBox(text="Code Segment")
-        self.btt_dialog.clicked.connect(lambda: self.save_fun(chkbx))
+        self.chkbx[0] = QCheckBox(text="Stack Segment")
+        self.chkbx[1] = QCheckBox(text="Data Segment")
+        self.chkbx[2] = QCheckBox(text="Code Segment")
+        if msg_str.upper() == "IMPORTAR":
+            self.msg.setWindowTitle("Load")
+            self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
+            self.state = [True]*3
+        else:
+            self.msg.setWindowTitle("Dump")
+            self.btt_dialog.clicked.connect(lambda: self.save_fun(self.chkbx))
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
-        for i in chkbx:
-            i.stateChanged.connect(lambda: self.stt_chk(chkbx))
+        for x,i in enumerate(self.chkbx):
+            i.stateChanged.connect(lambda: self.stt_chk(self.chkbx))
+            i.setEnabled(self.state[x])
+            i.setChecked(self.state[x])
             layout.addWidget(i, stretch=1)
         layout.addWidget(self.btt_dialog, stretch=1)
         self.msg.setLayout(layout)
-        
         self.msg.exec_()
-        return chkbx
+
     def stt_chk (self, chkbx):
         self.btt_dialog.setEnabled(chkbx[0].isChecked() or chkbx[1].isChecked() or chkbx[2].isChecked())
 
     def save_csv(self):
         self.response_clear = None
-        # Crear un cuadro de diálogo de mensaje
         mensaje = QMessageBox()
         mensaje.setIcon(QMessageBox.Question)  # Icono de pregunta
         mensaje.setText("¿Deseas omitir las columnas cuyos valores sean 0?")
         mensaje.setWindowTitle("Confirmar Omitir Columnas")
-        # Botones de Sí y No
         mensaje.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         mensaje.setDefaultButton(QMessageBox.Yes)
         self.response_clear = mensaje.exec()
-        chkbx = self.dialog_save()
+        chkbx = self.dialog_save("exportar")
 
-
-    def csv2mem(self,csv):
+    def recon_seg(self,csv):
         rows = list(csv)
-        chk_out = [False]*3
-        mem = self.memDS.tabla2
         for u in rows:
             for v in range(max(1,len(u)-1)):
                 if u[v].lower() == "data segment":
-                    mem = self.memDS.tabla2
-                    chk_out[0] = True
+                    self.state[1] = True
                 elif u[v].lower() == "code segment":
-                    mem = self.memCS.tabla2
-                    chk_out[1] = True
+                    self.state[2] = True
                 elif u[v].lower() == "stack segment":
-                    mem = self.memSS.tabla2
-                    chk_out[2] = True
+                    self.state[0] = True
+        return rows
+
+    def csv2mem(self,rows):
+        chk_imp = self.chkbx
+        mem = None
+        if not hasattr(self, '_ds'):
+            self._ds = {
+            "c": None,
+            "s": 0,
+            "d": None}
+        for u in rows:
+            for v in range(max(1,len(u)-1)):
+                if u[v].lower() == "data segment":
+                    if chk_imp[1].isChecked():
+                        mem = self.memDS.tabla2
+                    else:
+                        mem = None
+                elif u[v].lower() == "code segment":
+                    if chk_imp[2].isChecked():
+                        mem = self.memCS.tabla2
+                    else:
+                        mem = None
+                elif u[v].lower() == "stack segment":
+                    if chk_imp[0].isChecked():
+                        mem = self.memSS.tabla2
+                    else:
+                        mem = None
                 elif u[0].lower() == "org leaps cs,ss,ds":
-                    if not hasattr(self, '_ds'):
-                        self._ds = {
-                        "c": None,
-                        "s": 0,
-                        "d": None}
                     self._ds['c'] = int(u[1])
                     self._ds['s'] = int(u[2])
                     self._ds['d'] = int(u[3])
@@ -788,14 +778,16 @@ class ComputadorCompleto(QMainWindow):
                         self.ds_op()
                         self.regen_all()
                 else:
-                    data = u[v+1]
-                    data = data.zfill(2)
-                    data = data.upper()
-                    mem.item(int(u[0]),v).setText(data)
-        return chk_out
+                    if mem != None:
+                        data = u[v+1]
+                        data = data.zfill(2)
+                        data = data.upper()
+                        mem.item(int(u[0]),v).setText(data)
+        self.msg.accept()
 
 
     def open_file(self):
+        self.state = [False]*3
         nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx);;All Files (*)')
         if not self.memCS.tabla2.isEnabled():
             self.memCS.tabla2.setEnabled(True)
@@ -804,7 +796,8 @@ class ComputadorCompleto(QMainWindow):
         try:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
                 csv_reader = csv.reader(open(nombre_archivo, 'r', encoding='utf-8'))
-                self.csv2mem(csv_reader)
+                rows = self.recon_seg(csv_reader)
+                self.dialog_save("importar", rows)
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
                 wb = load_workbook(nombre_archivo)
                 sh = wb.active # was .get_active_sheet()
@@ -812,7 +805,8 @@ class ComputadorCompleto(QMainWindow):
                 content = self.ex2csv(buffer2,sh)
                 open("tmp.$csv", 'w', encoding='utf-8').write(content)
                 csv_reader = csv.reader(open("tmp.$csv", 'r', encoding='utf-8'))
-                self.csv2mem(csv_reader)
+                self.recon_seg(csv_reader)
+                self.dialog_save("importar", csv_reader)
                 os.remove("tmp.$csv")
                 buffer2.close()
             self.set_Pins()
@@ -822,15 +816,6 @@ class ComputadorCompleto(QMainWindow):
             # Mostrar un mensaje de error si ocurre un PermissionError
             QMessageBox.critical(self, 'Error', 'No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.')
             return  # Terminar la función
-
-    def not_yet(self):
-        from PyQt5.QtWidgets import QMessageBox
-        # Crear un cuadro de diálogo de mensaje
-        mensaje = QMessageBox()
-        mensaje.setIcon(QMessageBox.Critical)  # Icono de pregunta
-        mensaje.setText("Coming Soon...")
-        mensaje.setWindowTitle("Función aun no implementada")
-        mensaje.exec_()
 # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------
 
     def texto_modificado(self):
