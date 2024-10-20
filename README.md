@@ -25,6 +25,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
 
   # BuGs
   - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
+  - La función de ejcutar todo el programa tiene fallas.
   - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
 
 ## FORK DAJM v0.8
