@@ -2,12 +2,11 @@ import sys
 import string
 import csv
 from openpyxl import Workbook, load_workbook
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox
-from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy, QStyledItemDelegate
-from PyQt5.QtGui import QFont, QIcon, QPalette, QPen
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
+from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy
+from PyQt5.QtGui import QFont, QIcon
 import os
 import io
-from tabulate import tabulate
 import FUN.CONF.config_custom as config2
 
 from FUN.CC.Editor_Codigo import *
@@ -15,6 +14,7 @@ from FUN.CC.Editor_Registros import *
 from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
+import rc_icons
 
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
@@ -48,6 +48,7 @@ class ComputadorCompleto(QMainWindow):
             child.setFont(self.fuente_mid)
         for child in self.menuBar().findChildren(QWidget):
             child.setFont(self.fuente_mid)
+        self.toolbar.setFont(self.fuente_min)
         super().resizeEvent(event)
 
     def initUI(self):
@@ -57,7 +58,8 @@ class ComputadorCompleto(QMainWindow):
         self.direccion_inicio = '0000'
 
         self.editor_codigo = EditorCodigo()
-        
+        self.bpoints = self.editor_codigo.editor.breakline
+
         self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
 
         txt_monitor = 'Monitor de errores'
@@ -70,7 +72,7 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setStyleSheet(config.estilo["scrolled_monitor"])
 
         self.registros = EditorRegistros()
-        
+
         self.mem = {"s": memory(16,0,"stack"),
                     "c": memory(0,16,"code"),
                     "d": memory(0,16,"data")}
@@ -79,15 +81,15 @@ class ComputadorCompleto(QMainWindow):
             i.table.setEnabled(False)
 
         self.editor_codigo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
+
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
         bloque_ejecucion.addWidget(self.mem["c"], stretch=1)
-        
+
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.mem["s"], stretch=1)
         self.bloque_regSS.addWidget(self.registros, stretch=1)
-        
+
         bloque_codigo = QVBoxLayout()
         bloque_codigo.addLayout(self.bloque_regSS, stretch=3)
         bloque_codigo.addWidget(self.monitor, stretch=1)
@@ -99,7 +101,7 @@ class ComputadorCompleto(QMainWindow):
         bloque_principal = QVBoxLayout()
         bloque_principal.addLayout(bloque_subprincipal, stretch=4)
         bloque_principal.addWidget(self.mem["d"], stretch=4)
-        
+
         area_trabajo = QWidget()
         styles = config2.styles_fun()
         area_trabajo.setStyleSheet(styles["work_space"])
@@ -115,7 +117,7 @@ class ComputadorCompleto(QMainWindow):
         self.Reg_monitor()
         self.setCentralWidget(area_trabajo)
         self.barra_estado = self.statusBar()
-        
+
 
 #region     Menus
 # Barra de menús ---------------------------------------------------------------
@@ -125,6 +127,28 @@ class ComputadorCompleto(QMainWindow):
         menu_Editar   = barra_menus.addMenu('&Editar')
         menu_Ejecutar = barra_menus.addMenu('&Ejecutar')
         menu_Memoria = barra_menus.addMenu('&Memoria')
+
+        self.toolbar = QToolBar("My main toolbar")
+        self.toolbar.setIconSize(QSize(16,16))
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        spacer2 = QWidget()
+        spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        tools = [QAction()]*7
+        im_tools = ["ld","clr_ld","back", "step", "next", "run", "power"]
+        txt = ["Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
+        fcns = [self.cargar, self.borrar_cargar, self.registros.clear_all,
+                self.ejecutar_instruccion, self.run_for_bpoint, self.ejecutar, QApplication.instance().quit]
+        for k,i in enumerate(tools):
+            i = QAction(QIcon(f':IMG/{im_tools[k]}.png'), txt[k], self)
+            i.triggered.connect(fcns[k])
+            self.toolbar.addAction(i)
+            if k == 1:
+                self.toolbar.addWidget(spacer)
+            elif k == 5:
+                self.toolbar.addWidget(spacer2)
+        self.addToolBar(self.toolbar)
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
 # region Menú Archivo -----------------------------------------------------------------
         self.nombre_archivo = False
@@ -224,12 +248,17 @@ class ComputadorCompleto(QMainWindow):
         self.Ejecutar_ejecutar_instruccion.setShortcut('Ctrl+L')
         self.Ejecutar_ejecutar_instruccion.triggered.connect(self.ejecutar_instruccion)
 
+        self.run_with_bp = QAction('Ejecutar con Breakpoints', self)
+        self.run_with_bp.triggered.connect(self.run_for_bpoint)
+
+
         menu_Ejecutar.addAction(self.Ejecutar_cargar)
         menu_Ejecutar.addAction(self.Ejecutar_sobreescribir)
         menu_Ejecutar.addAction(self.Ejecutar_ejecutar)
         menu_Ejecutar.addAction(self.Ejecutar_ejecutar_instruccion)
+        menu_Ejecutar.addAction(self.run_with_bp)
 
-        self.setMinimumSize(1024, 680)
+        self.setMinimumSize(600, 400)
         self.setMaximumSize(19200, 10800)
         flags = self.windowFlags()
         flags |= Qt.CustomizeWindowHint
@@ -247,17 +276,19 @@ class ComputadorCompleto(QMainWindow):
         self.Load_Mem.setShortcut('Ctrl+M')
         self.Load_Mem.setEnabled(True)
         self.Load_Mem.triggered.connect(self.open_file)
-        
+
         self.Save_Mem = QAction('Memory Dump to XLSX CSV', self)
         self.Save_Mem.setToolTip('Guarda el contenido de la memoria en un archivo.')
         self.Save_Mem.setShortcut('Alt+M')
         self.Save_Mem.setEnabled(True)
         self.Save_Mem.triggered.connect(self.save_csv)
-        
+
         menu_Memoria.addAction(self.Load_Mem)
         menu_Memoria.addAction(self.Save_Mem)
 # endregion
+# region ToolBar
 
+# endregion
 # region FUN Extras
     def enable_tables(self):
         for i in self.mem.values():
@@ -317,8 +348,7 @@ class ComputadorCompleto(QMainWindow):
                 for i in range(m.table.rowCount()):
                     m.table.item(i, j).setBackground(QColor(20, 20, 20))
                     if k == "c":
-                        m.table.item(i, j).setForeground(QColor(120, 150, 175)) # rgb(120, 150, 175)
-                        #.setStyleSheet(config.estilo["estilo_celdas"])
+                        m.table.item(i, j).setForeground(QColor(120, 150, 175))
 
     def regen_all(self):
         for _, v in self.mem.items():
@@ -517,7 +547,7 @@ class ComputadorCompleto(QMainWindow):
             cursor.deleteChar()
         cursor.movePosition(cursor.Down)
 # endregion
-# FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
+# region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
         self.registros.edit_PIns.setText(format(self._ds["c"]*16,'X').zfill(4))
@@ -538,6 +568,8 @@ class ComputadorCompleto(QMainWindow):
 
     def clr_ld(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
+        #self.bp.dict = dict(zip(rows, mem_place))
         self.Ejecutar_ejecutar.setEnabled(True)
         for i in config.m_prog:
             config.m_prog.update({i: '00'})
@@ -567,6 +599,8 @@ class ComputadorCompleto(QMainWindow):
 
     def load(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
+        self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
+        #self.bp.dict = dict(zip(self.rows, self.mem_place))
         self.Ejecutar_ejecutar.setEnabled(True)
         config.m_prog.update(self.mp)
         #self.memoria.actualizar_tabla(self.mp)
@@ -582,7 +616,7 @@ class ComputadorCompleto(QMainWindow):
             self.color_Regs()
             self.registros.actualizar_registros()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
-        self.barra_estado.showMessage('Fin de Programa (HLT)')
+        if config.PIns == 'FIN': self.barra_estado.showMessage('Fin de Programa (HLT)')
         #self.memoria.actualizar_tabla(config.m_prog)
         self.regen_all()
         self.uncolor()
@@ -590,8 +624,30 @@ class ComputadorCompleto(QMainWindow):
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
+    def run_for_bpoint(self):
+        bp_dict = dict(zip(self.rows, self.mem_place))
+        to_fill = len(self.rows[-1])
+        to_break = {key: bp_dict[str(key).rjust(to_fill)] for key in self.bpoints}
+
+        ktmp, vtmp = list(to_break.keys()), list(to_break.values())
+        while config.PIns != 'FIN':
+            ciclo_instruccion()
+            self.registros.actualizar_registros()
+            self.update_segments(config.m_prog)
+            if config.PIns != 'FIN':
+                pre_ins = f'{int(config.PIns):04X}'
+            if pre_ins in vtmp:
+                print("breaking")
+                msg_bk = f'Breakpoint alcanzado (Fila: {str(ktmp[vtmp.index(pre_ins)])})'
+                self.barra_estado.showMessage(msg_bk)
+                break
+
+        self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
+        self.barra_estado.showMessage('Fin de Programa (HLT)')
+        self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
+        self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+
     def ejecutar_instruccion(self):
-        print(config.PIns,"prev ciclo")
         if config.PIns != 'FIN':
             ciclo_instruccion()
             self.color_Regs()
@@ -600,13 +656,13 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
         #self.memoria.actualizar_tabla(config.m_prog)
-        self.regen_all()
-        self.uncolor()
+        print(config.m_prog[0],config.m_prog[1],config.m_prog[2],config.m_prog[3])
         self.update_segments(config.m_prog)
+        self.uncolor()
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
-
-# FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
+# endregion
+# region FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
         writer = csv.writer(f)
         for r in sh.rows:

@@ -4,7 +4,7 @@
 
 from PyQt5.QtCore import Qt, QRect, QSize
 from PyQt5.QtWidgets import QWidget, QPlainTextEdit, QTextEdit
-from PyQt5.QtGui import QColor, QPainter, QTextFormat
+from PyQt5.QtGui import QColor, QPainter, QTextFormat, QTextCursor, QTextCharFormat
 
 
 class QLineNumberArea(QWidget):
@@ -22,11 +22,24 @@ class QLineNumberArea(QWidget):
 class QCodeEditor(QPlainTextEdit):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.breakline = set()
+        self.xtra = self.extraSelections()
         self.lineNumberArea = QLineNumberArea(self)
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)
         self.cursorPositionChanged.connect(self.highlightCurrentLine)
         self.updateLineNumberAreaWidth(0)
+
+    def keyPressEvent(self, event):
+        if event.key() == 16777265:  # El código de la tecla F2
+            # Cambia el color de fondo de la línea
+            self.highlight_brkp()
+            if {int(self.textCursor().blockNumber() + 1)} <= self.breakline:       #Si ya está
+                self.breakline.discard(int(self.textCursor().blockNumber()+1))
+            else:                                                                   #Si NO está
+                self.breakline.add(int(self.textCursor().blockNumber()+1))
+        else:
+            super().keyPressEvent(event)
 
     def lineNumberAreaWidth(self):
         digits = 1
@@ -34,8 +47,7 @@ class QCodeEditor(QPlainTextEdit):
         while max_value >= 10:
             max_value /= 10
             digits += 1
-        space = 7 + self.fontMetrics().width('9') * digits
-        return space
+        return 7 + self.fontMetrics().width('9') * digits
 
     def updateLineNumberAreaWidth(self, _):
         self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
@@ -53,17 +65,34 @@ class QCodeEditor(QPlainTextEdit):
         cr = self.contentsRect()
         self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height()))
 
-    def highlightCurrentLine(self):
-        extraSelections = []
+    def highlight_brkp(self):
         if not self.isReadOnly():
             selection = QTextEdit.ExtraSelection()
-            lineColor = QColor(60, 64, 72).lighter(80)
+            selection.format.setBackground(QColor(225, 121, 121))
+            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selection.cursor = self.textCursor()
+            selection.cursor.clearSelection()
+            if not ({int(selection.cursor.block().blockNumber()+1)} <= self.breakline):
+                self.xtra.append(selection)
+            else:
+                for xy in self.xtra:
+                    if xy.cursor.block().blockNumber() == selection.cursor.block().blockNumber() and xy.format.background().color() == QColor(225, 121, 121):
+                        self.xtra.remove(xy)
+        self.setExtraSelections(self.xtra)
+        
+    def highlightCurrentLine(self):
+        if hasattr(self, "past_line"):
+            self.xtra.remove(self.past_line)
+        if not self.isReadOnly():
+            selection = QTextEdit.ExtraSelection()
+            lineColor = QColor(60, 64, 72).lighter(40)
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()
-            extraSelections.append(selection)
-        self.setExtraSelections(extraSelections)
+            self.past_line = selection
+            self.xtra.append(selection)
+        self.setExtraSelections(self.xtra)
 
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.lineNumberArea)
