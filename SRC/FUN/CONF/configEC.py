@@ -4,10 +4,14 @@ from FUN.CONF.nemonicos import argumentos_instrucciones
 
 fuente = QFont("mononoki NF", 12)
 
+#rgb(132, 160, 184)
+# rgb(19, 23, 33)
+#rgb(53, 57, 64)
+
 estilo_editor = """ QCodeEditor {
-                color: rgb(200, 230, 255);
-                background-color: rgb(50, 54, 62);
-                selection-background-color: rgb(70, 74, 82);
+                color: rgb(191, 189, 182);
+                background-color: rgb(13, 16, 23);
+                selection-background-color: rgb(19, 23, 33);
                 }
     QScrollBar:vertical {
                 border: 1px solid grey;
@@ -44,14 +48,14 @@ estilo_editor = """ QCodeEditor {
                 }"""
 
 
-color_directivas = QColor(250, 180, 120)        # rgb(250, 180, 120)
-color_instrucciones = QColor(0, 230, 250)       # rgb(0, 230, 250)
-color_comentarios = QColor(100, 100, 150)       # rgb(100, 100, 150)
-color_etiquetas = QColor(0, 230, 125)           # rgb(0, 230, 125)
+color_directivas = QColor(255, 142, 0)        # rgb(250, 180, 120) rgb(255, 142, 0)
+color_instrucciones = QColor(57, 186, 230)       # rgb(0, 230, 250)  D2A6FF rgb(210, 166, 255)
+color_comentarios = QColor(210, 166, 255)       # rgb(100, 100, 150) rgb(57, 186, 230)
+color_etiquetas = QColor(170, 217, 76)           # rgb(0, 230, 125) rgb(170, 217, 76)
 
 
 nemonicos_may = list(argumentos_instrucciones().keys())
-nemonicos_min = [nemonicos_may[i].lower() for i in range(0,len(nemonicos_may))]
+nemonicos_min = [nemonicos_may[i].lower() for i in range(len(nemonicos_may))]
 
 nemonicos = list(nemonicos_may)
 nemonicos.extend(nemonicos_min)

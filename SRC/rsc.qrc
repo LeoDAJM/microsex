@@ -7,5 +7,8 @@
     <file>IMG/power.png</file>
     <file>IMG/run.png</file>
     <file>IMG/step.png</file>
+    <file>IMG/open.png</file>
+    <file>IMG/save.png</file>
+    <file>IMG/icono.png</file>
 </qresource>
 </RCC>

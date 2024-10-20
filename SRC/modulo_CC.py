@@ -134,18 +134,19 @@ class ComputadorCompleto(QMainWindow):
         spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         spacer2 = QWidget()
         spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        tools = [QAction()]*7
-        im_tools = ["ld","clr_ld","back", "step", "next", "run", "power"]
-        txt = ["Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
-        fcns = [self.cargar, self.borrar_cargar, self.registros.clear_all,
+        
+        im_tools = ["open","save", "ld","clr_ld","back", "step", "next", "run", "power"]
+        txt = ["Open","Save","Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
+        tools = [QAction()]*len(im_tools)
+        fcns = [self.dialogo_abrir, self.dialogo_guardar, self.cargar, self.borrar_cargar, self.registros.clear_all,
                 self.ejecutar_instruccion, self.run_for_bpoint, self.ejecutar, QApplication.instance().quit]
         for k,i in enumerate(tools):
             i = QAction(QIcon(f':IMG/{im_tools[k]}.png'), txt[k], self)
             i.triggered.connect(fcns[k])
             self.toolbar.addAction(i)
-            if k == 1:
+            if k == 3:
                 self.toolbar.addWidget(spacer)
-            elif k == 5:
+            elif k == 7:
                 self.toolbar.addWidget(spacer2)
         self.addToolBar(self.toolbar)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -268,16 +269,16 @@ class ComputadorCompleto(QMainWindow):
         flags |= Qt.WindowMaximizeButtonHint
         self.setWindowFlags(flags)
         self.setWindowTitle('Microsex - Computador Completo')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 # endregion
 # region Menú Memoria ----------------------------------------------------------------
-        self.Load_Mem = QAction('Memory Load from XLSX CSV', self)
+        self.Load_Mem = QAction('Memory Load', self)
         self.Load_Mem.setToolTip('Carga un archivo de memoria.')
         self.Load_Mem.setShortcut('Ctrl+M')
         self.Load_Mem.setEnabled(True)
         self.Load_Mem.triggered.connect(self.open_file)
 
-        self.Save_Mem = QAction('Memory Dump to XLSX CSV', self)
+        self.Save_Mem = QAction('Memory Dump', self)
         self.Save_Mem.setToolTip('Guarda el contenido de la memoria en un archivo.')
         self.Save_Mem.setShortcut('Alt+M')
         self.Save_Mem.setEnabled(True)

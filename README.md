@@ -1,210 +1,46 @@
-# microsex
-Emulador del microprocesador de arquitectura microsex de memoria común
+# Microsex - v0.9 (Ale-V)
+
+# Interfaz (*actualizar*)
+
+![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+
+## Descripción Modulo Computador Completo
+
+Es una plataforma de desarrollo diseñada para facilitar la programación en **Microsex**, un lenguaje ensamblador propio basado en una Unidad Secuencial de Cálculo Extendido (USCE). Este entorno ofrece herramientas avanzadas para la escritura, depuración y simulación de código ensamblador, optimizando tanto la gestión de la memoria como la interacción con los segmentos de Pila, Datos y Código.
+
+*El simulador ha sido mejorado con funcionalidades que permiten una mayor flexibilidad en la manipulación de la memoria y una mejor integración con los flujos de trabajo de desarrollo en Microsex.*
+
+## Características
+
+### **Nuevas Funcionalidades**
+- **Soporte de Breakpoints**: Añade y elimina breakpoints mediante la tecla F2, con una opción adicional en el menú "Ejecutar".
+- **Optimización de Memoria**: Una única clase de memoria gestiona de manera eficiente los diferentes segmentos, manteniendo una memoria unificada en el archivo de configuración.
+- **Mejora en Archivos Listados**: Generación optimizada del archivo `.lst` que refleja mejor los resultados de la compilación, e interacción con los Breakpoints.
+- **Volcado y Carga de Memoria**: Carga y volcado selectivo de segmentos de memoria, manteniendo los parámetros ORG originales en archivos XLSX/CSV (codificación UTF-8).
+- **Barra de Herramientas (ToolBar)**: Nueva barra para acceso rápido a funciones esenciales.
+    - Abrir, Guardar, Compilar, Compilar y Borrar, Reset, Paso, Run con BKP, Run, Salir.
+- **Botones de Borrado en Memoria**: Botones rojos para el borrado de tablas de memoria, situados en las esquinas superiores de cada tabla.
+- **Separación de Segmentos por Directivas `.org`**: Visualización separada de los segmentos de Pila, Datos y Código para facilitar su seguimiento.
+- **Indicador Visual de `IP` (PIns)**: Representación visual del registro `IP` en la tabla del CS, actualizándose automáticamente después de ensamblar.
+- **Nuevo Botón de Clear**: Al pulsar "Clear", se reinician todos los registros en `0`, con diferencia del `IP` que vuelve al inicio del segmento de código (CS).
 
 
-## FORK DAJM v0.9b
-  # Interfaz
+### **Mejoras en la Experiencia del Usuario (QoL)**
+- **Interfaz Oscura**: Se ha implementado un esquema de colores oscuros para facilitar el trabajo prolongado.
+- **Ventana Responsive**: El contenido de la interfaz (fuentes y cajas) es ahora redimensionable, lo que permite maximizar la ventana sin comprometer la visibilidad.
+- **Refactorización del Código**: Reescritura de funciones clave y optimización de ciclos para mejorar la eficiencia del simulador.
+- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución (modulo_CC.py).
 
-  ![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+## Errores Conocidos
 
-  # **NEW!**
-  - Añadida la carácterística de colocar breakpoint en el código, mediante la tecla F2 (toggle switch). Tiene su respectiva opción en el menú "Ejecutar".
-  - Memoria oprimizada, ahora se usa solo una clase de memoria, más versátil para cada segmento, pero amnteniendo pa memoria unificada en el archivo de configuración.
-  - Mejoras en la generación del archivo listado ".lst".
-  - Refactorización de funciones y optimización de ciclos.
+- **Python >= 3.13.x**: Si bien el programa se ejecuta, se han reportado errores en la asignación de segmentos en el CS durante el ensamblado (*unknown*).
+- **Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria (*pending*).
 
-  # QoL
-  - Ahora el botón de Clear reinicia el IP al inicio del CS.
-  - Añadido nuevo ToolBar para acceso rápido de funciones.
+## Pendiente Fork:
 
-  # Pendiente
-  - Pendiente (todavía) de MUCHA optimización de código :'3.
+- **Optimización del Código**: Todavía se requiere una mayor optimización de varios aspectos del código. :´3
 
-  # Fixed
-  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*FIXED*).
-
-  # BuGs
-  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
-  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
-
-## FORK DAJM v0.8
-
-# **NEW!**
-  - Añadida caracterísica de Volcado y Carga de memoria, de forma selectiva, y conservando los paŕametros ORG desde el guardado, encuéntralo en el menú "*Memoria*"
-      - Compatible con formatos XLSX/CSV (utf-8)
-# QoL
-  - Agregados botones de borrado de tablas (memoria), en cada esquina superior izquierda de las tablas, de color rojo.
-
-# Bugs
-  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
-  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
-  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
-
-# Pendiente
-  - Pendiente (aun) de MUCHA optimización de código :'3.
-
-
-## FORK DAJM v0.7 II/2024
-  - Detección de Directivas .org para mostrar por separado segmentos de Pila, Datos y Código.
-  - Implementado cambios de propiedades visuales, cuando cambian registros y contenido en memoria.
-  - Implementado PIns visual en la tabla de CS.
-
-# QoL
-  - Botón de borrado de registros.
-  - Contenido (fontSize) y Boxes ahora son responsive, la ventana se puede redimensionar y maximizar.
-  - Colores cambiados a modo Oscuro.
-  - Añadido aviso al finalizar el CS (barra de reportes).
-  - El PIns (IP) se carga automáticamente al inicio del CS después de ensamblar.
-
-# Bugs
-  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
-  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
-  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
-
-# Otros
-  - Probado hasta la versión Python 3.12.7 sin problema alguno.
-  - Nombres de Registros Cambiados:
-	- **Ac.A** -> **AX**
-	- **Ac.B** -> **BX**
-	- **Ac.C** -> **CX**
-	- **P INS** -> **IP**
-
-
-# Pendiente
-  - Se implemento en el rep. original la alternativa de hacer Dump y Load de memoria, al transponer tablas y reestructurar la memoria, se debe corregir.
-  - Pendiente de MUCHA optimización de código :'3.
-
-## ChangeLog Branch original korvec/microsex/
-## CAMBIOS EN LA VERSIÓN 1.4
-- Cambio en códigos de operación de las instrucciones:
-  - **CLC** cambia de 40 a 20
-  - **CLV** cambia de 50 a 30
-  - **SEC** cambia de C0 a 90
-  - **SEV** cambia de D0 a A0
-
-- Se agregó instrucciones de guardado de datos en la PILA:
-  - GPI A (42)
-  - GPI B (52)
-  - GPI C (62)
-  - GPI X (C2)
-  - GPI Y (D2)
-  - GPI F (E2)
-
-- Se agregó instrucciones de recuperación de datos desde la PILA:
-  - RPI A (40)
-  - RPI B (50)
-  - RPI C (60)
-  - RPI X (C0)
-  - RPI Y (D0)
-  - RPI F (E0)
-
-- Se agregó nuevas dos nuevas señales de control:
-  - Se insertó la nueva señal S21: Ahora el mux de la LCT es de 4 a 1, la tercera entrada es el resultado de la ALU.
-  - Desde el anterior S21 hasta el S64 se desplazan una posición. (S22: S65)
-  - Se insertó la nueva señal S66: Indica que se utiliza al puntero de pila para almacenar o recuperar datos.
-
-- Para almacenar el registro de banderas en la memoria, se agrega la realimentación de este registro al mux de la entrada A de la ALU.
-
-## CAMBIOS EN LA VERSIÓN 1.3
-- Cambio de sintaxis en instrucciones de carga de punteros
-  - ~~LDX~~ -> **LDA X**
-  - ~~LDY~~ -> **LDA Y**
-  - ~~LDP~~ -> **LDA P**
-  - ~~STX~~ -> **STA X**
-  - ~~STY~~ -> **STA Y**
-  - ~~STP~~ -> **STA P**
-
-- Corrección en Editor de Registros
-
-## CAMBIOS EN LA VERSIÓN 1.2
-
-- Creación de un archivo de listado
-  - Cuenta con número de línea, dirección de memoria y contenido
-  - Genera la tabla de símbolos al final del listado
-  - Se guarda automáticamente en el directorio del archivo .asm
-  - Se guarda con extensión **.lst** como texto sin formato
-
-- Ahora con dos opciones de carga más rápidas
-  - Ensamblar y cargar en la memoria borrando los datos anteriores
-  - Ensamblar y cargar sobreescribiendo sólo los datos generados en el ensamblado
-
-## CAMBIOS EN LA VERSIÓN 1.1
-
-- Corrección de función *guardar como...* no habilitaba función de ensamblar
-- Corrección en el editor de memoria que permitía cualquier cadena
-  - Ahora sólo permite **dos dígitos hexadecimales**
-
-- Cambió de abreviatura mnemónica de instrucción *Negar*:
-  - ~~INV~~ -> **NOT**
-
-- Instrucciones de carga de punteros de datos en modo directo
-  - LDX dir16 (BF)
-  - LDY dir16 (FF)
-  - LDP dir16 (F3)
-
-- Ahora interpreta expresiones matemáticas en los argumentos **dat8** y **dir16**
-  - CCC #**dat8**
-  - CCC IX+**dat8**
-  - CCC IY+**dat8**
-  - CCC **dir16**
-
-## CARACTERÍSTICAS
-Emulador con módulos que demuestran el desarrollo evolutivo de un computador.
-
-- Unidad Básica de Cálculo
-- Unidad Aritmética Lógica
-- Unidad Secuencial de Cálculo
-- Unidad Secuencial de Cálculo Extendida
-- Computador Completo
-
-El **Computador Completo** a su vez tiene módulos integrados a modo de *Entorno de Desarrollo*.
-
-- Editor de código
-- Editor de registros
-- Editor de memoria
-- Ensamblador cruzado
-- Monitor de errores
-
-Require Python 3.5 o superior por el uso de la librería PyQt5
-(Yo utilizo Python 3.6.8)
-
-### 1. Instalar librería PyQt5
-
-Para agregar la librería PyQt5:
-
-```
-pip install pyqt5
-```
-
-### 2. Ejecución de Módulos
-
-En la línea de comandos o terminal, cambiar el directorio a la carpeta `microsex/SRC`
-
-```  
-python modulo_UBC.py
-python modulo_ALU.py
-python modulo_USC.py
-python modulo_USCE.py
-python modulo_CC.py
-```
-
-Para la ejecución del programa completo, desde el mismo directorio, ejecutar
-
-```
-python Microsex.py
-```
-
-Las instrucciones incluidas en cada módulo están en la carpeta `microsex/DOC`
-
-```
-tabla de instrucciones UBC.txt
-tabla de instrucciones ALU.txt
-tabla de instrucciones USC.txt
-tabla de instrucciones USCE.txt
-tabla de instrucciones CC.txt
-```
-
-## POR HACER:
+# Pendiente Original:
 
 - [ ] Mostrar archivo de listado en la interfaz gráfica.
 - [ ] Mapear un puerto de entrada en el computador completo.
@@ -212,5 +48,11 @@ tabla de instrucciones CC.txt
 - [ ] Admitir definición de cadena de datos y sin nombre.
 - [ ] Ensamblar ASCII.
 
-#### Contacto.
-diego.ramirez.jove@gmail.com
+## Compatibilidad
+
+- Probado en versiones de Python hasta 3.12.7 sin problemas.
+
+## Contacto
+
+diego.jimenez.m.2001@gmail.com (Autor del fork)
+diego.ramirez.jove@gmail.com (Autor repositorio original)
