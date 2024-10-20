@@ -13,7 +13,6 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
 
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
-
     errores = 0
     mensaje = ''
     m_prog = {}
@@ -77,8 +76,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                             num_bytes_prog   = ne_usex[instruccion][1]
                             contenido_m_prog = list(codigo_operacion)
                             contenido_m_prog.extend(argum)
-                            listado.update({i+1: [hex(direccion), [hex(contenido_m_prog[i]) for i in range(0,num_bytes_prog)]]})
-                            for n in range(0,num_bytes_prog):
+                            listado.update({i+1: [hex(direccion), [hex(contenido_m_prog[i]) for i in range(num_bytes_prog)]]})
+                            for n in range(num_bytes_prog):
                                 m_prog.update({direccion: hex(contenido_m_prog[n])})
                                 direccion += 1
 
@@ -106,8 +105,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
 
                                     contenido_m_prog = list(codigo_operacion)
                                     contenido_m_prog.extend(argum)
-                                    listado.update({i+1: [hex(direccion), [hex(contenido_m_prog[i]) for i in range(0,num_bytes_prog)]]})
-                                    for n in range(0,num_bytes_prog):
+                                    listado.update({i+1: [hex(direccion), [hex(contenido_m_prog[i]) for i in range(num_bytes_prog)]]})
+                                    for n in range(num_bytes_prog):
                                         m_prog.update({direccion: hex(contenido_m_prog[n])})
                                         direccion += 1
 

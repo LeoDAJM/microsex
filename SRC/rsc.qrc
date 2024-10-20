@@ -1,0 +1,11 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>IMG/back.png</file>
+    <file>IMG/clr_ld.png</file>
+    <file>IMG/ld.png</file>
+    <file>IMG/next.png</file>
+    <file>IMG/power.png</file>
+    <file>IMG/run.png</file>
+    <file>IMG/step.png</file>
+</qresource>
+</RCC>

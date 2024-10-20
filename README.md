@@ -2,11 +2,32 @@
 Emulador del microprocesador de arquitectura microsex de memoria común
 
 
+## FORK DAJM v0.9b
+  # Interfaz
+
+  ![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+
+  # **NEW!**
+  - Añadida la carácterística de colocar breakpoint en el código, mediante la tecla F2 (toggle switch). Tiene su respectiva opción en el menú "Ejecutar".
+  - Memoria oprimizada, ahora se usa solo una clase de memoria, más versátil para cada segmento, pero amnteniendo pa memoria unificada en el archivo de configuración.
+  - Mejoras en la generación del archivo listado ".lst".
+  - Refactorización de funciones y optimización de ciclos.
+
+  # QoL
+  - Ahora el botón de Clear reinicia el IP al inicio del CS.
+  - Añadido nuevo ToolBar para acceso rápido de funciones.
+
+  # Pendiente
+  - Pendiente (todavía) de MUCHA optimización de código :'3.
+
+  # Fixed
+  - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*FIXED*).
+
+  # BuGs
+  - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
+  - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
+
 ## FORK DAJM v0.8
-
-# Interfaz
-
-![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
 
 # **NEW!**
   - Añadida caracterísica de Volcado y Carga de memoria, de forma selectiva, y conservando los paŕametros ORG desde el guardado, encuéntralo en el menú "*Memoria*"

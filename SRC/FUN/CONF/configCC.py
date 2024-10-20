@@ -12,9 +12,7 @@ m_prog = {}
 inicio = 0
 
 PIns   = inicio
-PIns_H = inicio // 256
-PIns_L = inicio % 256
-
+PIns_H, PIns_L = divmod(inicio, 256)
 RDir = 0
 
 RDat   = [0]*16
@@ -42,7 +40,7 @@ P = 0
 
 senal_control = [0]*67
 
-senal_control_USC     = senal_control[0:31]
+senal_control_USC = senal_control[:31]
 lectura_escritura     = senal_control[22]
 modo_direccionamiento = senal_control[31:35]
 senal_control_LR      = senal_control[35:54]
