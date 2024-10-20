@@ -619,9 +619,9 @@ class ComputadorCompleto(QMainWindow):
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         if config.PIns == 'FIN': self.barra_estado.showMessage('Fin de Programa (HLT)')
         #self.memoria.actualizar_tabla(config.m_prog)
+        self.update_segments(config.m_prog)
         self.regen_all()
         self.uncolor()
-        self.update_segments(config.m_prog)
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
