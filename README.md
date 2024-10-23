@@ -23,7 +23,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 - **Separación de Segmentos por Directivas `.org`**: Visualización separada de los segmentos de Pila, Datos y Código para facilitar su seguimiento.
 - **Indicador Visual de `IP` (PIns)**: Representación visual del registro `IP` en la tabla del CS, actualizándose automáticamente después de ensamblar.
 - **Nuevo Botón de Clear**: Al pulsar "Clear", se reinician todos los registros en `0`, con diferencia del `IP` que vuelve al inicio del segmento de código (CS).
-
+- **Interfaz responsive**: Se ajustaron todos los tamaños de los objetos para permitir que se puedan redimensionar de manera responsiva, conservando su ratio de aspecto, además, de igual forma la ventana ahora permite el redimensionar y maximizar; el tamaño de la fuente se ajusta automáticamente al alto de la ventana. 
 
 ### **Mejoras en la Experiencia del Usuario (QoL)**
 - **Interfaz Oscura**: Se ha implementado un esquema de colores oscuros para facilitar el trabajo prolongado.
