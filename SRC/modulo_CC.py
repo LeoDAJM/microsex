@@ -706,6 +706,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.msg.setWindowTitle("Dump")
             self.btt_dialog.clicked.connect(lambda: self.save_fun(self.chkbx))
+            self.state = [True]*3
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
         for x,i in enumerate(self.chkbx):

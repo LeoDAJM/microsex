@@ -35,10 +35,16 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 - **Python >= 3.13.x**: Si bien el programa se ejecuta, se han reportado errores en la asignación de segmentos en el CS durante el ensamblado (*unknown*).
 - **Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria (*pending*).
+- **Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.
 
 ## Pendiente Fork:
 
 - **Optimización del Código**: Todavía se requiere una mayor optimización de varios aspectos del código. :´3
+- [ ] Seguimiento de IP en el archivo de listado.
+- [ ] Añadir el uso de librerías.
+- [ ] Añadir interacción con puertos físicos.
+- [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
+- [ ] Agregar todas +300 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:
 
