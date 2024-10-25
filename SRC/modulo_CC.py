@@ -8,13 +8,14 @@ from PyQt5.QtGui import QFont, QIcon
 import os
 import io
 import FUN.CONF.config_custom as config2
+import rc_icons
+import re
 
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
 from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
-import rc_icons
 
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
@@ -242,7 +243,6 @@ class ComputadorCompleto(QMainWindow):
 
         self.Ejecutar_ejecutar = QAction('Ejecutar código Ensamblado', self)
         self.Ejecutar_ejecutar.setShortcut('Ctrl+K')
-        #self.Ejecutar_ejecutar.setEnabled(False)
         self.Ejecutar_ejecutar.triggered.connect(self.ejecutar)
 
         self.Ejecutar_ejecutar_instruccion = QAction('Ejecutar siguiente Instrucción', self)
@@ -296,16 +296,13 @@ class ComputadorCompleto(QMainWindow):
             i.table.setEnabled(bool(self.Ejecutar_sobreescribir.isEnabled()))
 
     def extraer_valores(self):  # Detecta las direcciones y directivas ORG
-        import re
-        regex_org = r"\.org\s+0x?([0-9A-Fa-f]*|0)"  # Captura el valor hexadecimal después de ".org"
-        regex_seg = r"\.(dseg|cseg)"  # Captura el segmento (dseg o cseg)
+        regex_org = r"\.org\s+0x?([0-9A-Fa-f]*|0)"
+        regex_seg = r"\.(dseg|cseg)"
         texto = self.editor_codigo.editor.toPlainText()
         rowed = enumerate(texto.splitlines())
-        # Dividimos el texto en líneas y procesamos cada una
         for i, linea in rowed:
             if match_org := re.search(regex_org, linea):
-                # Convertir el valor hexadecimal a decimal
-                valor_hex = int(match_org.group(1).zfill(4),16) // 16
+                valor_hex = int(match_org[1].zfill(4), 16) // 16
                 if match_seg := re.search(
                     regex_seg, texto.splitlines()[i + 1]
                 ) or re.search(regex_seg, texto.splitlines()[i - 1]):
@@ -318,7 +315,6 @@ class ComputadorCompleto(QMainWindow):
         self.extraer_valores()
         self.ds_op()
         self.regen_all()
-        self.uncolor()
         self.update_segments(mp_prog)
 
     def ds_op(self):
@@ -343,13 +339,6 @@ class ComputadorCompleto(QMainWindow):
                 v.table.setColumnCount(16)
                 v.table.setVerticalHeaderLabels([format(i*16,'X').zfill(4) for i in range(self._ds[k],self._ds[k]+u)])
 
-    def uncolor(self):
-        for k, m in self.mem.items():
-            for j in range(m.table.columnCount()):
-                for i in range(m.table.rowCount()):
-                    m.table.item(i, j).setBackground(QColor(20, 20, 20))
-                    if k == "c":
-                        m.table.item(i, j).setForeground(QColor(120, 150, 175))
 
     def regen_all(self):
         for _, v in self.mem.items():
@@ -366,6 +355,11 @@ class ComputadorCompleto(QMainWindow):
                 if pos in mp_el and v.table.item(i, j).text() != mp_el[pos]:
                     v.table.item(i,j).setText(mp_el[pos])
                     v.table.item(i,j).setBackground(QColor(255, 75, 75, 90))
+                else:
+                    v.table.item(i, j).setBackground(QColor(20, 20, 20))
+                    if k == "c":
+                        v.table.item(i, j).setForeground(QColor(120, 150, 175))
+                    
 
     def F_monitor(self):
         bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
@@ -428,7 +422,7 @@ class ComputadorCompleto(QMainWindow):
 
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
-            with open(nombre_archivo, 'w') as f:
+            with open(nombre_archivo, 'w', encoding = 'latin-1') as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)
@@ -445,11 +439,10 @@ class ComputadorCompleto(QMainWindow):
             cursor.movePosition(cursor.End)
             linea_nueva = "\n"
             cursor.insertText(linea_nueva)
-
-        nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo')
+        nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.Options())
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            with open(nombre_archivo[0], 'w') as f:
+            with open(nombre_archivo[0], 'w', encoding = 'latin-1') as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)
@@ -502,7 +495,7 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            self._extracted_from_descomentar_14(cursor, tab)
+            self.set_curs(cursor, tab)
 
     def comentar(self):
         punto_coma = ";"
@@ -524,7 +517,6 @@ class ComputadorCompleto(QMainWindow):
         cursor.insertText(arg1)
         cursor.movePosition(cursor.Down)
 
-    # TODO Rename this here and in `agregar_sangria`, `quitar_sangria`, `comentar` and `descomentar`
     def descomentar(self):
         punto_coma = ";"
         cursor = self.editor_codigo.editor.textCursor()
@@ -538,10 +530,9 @@ class ComputadorCompleto(QMainWindow):
         linea_inicial = cursor.blockNumber()
 
         for _ in range(linea_inicial, linea_final + 1):
-            self._extracted_from_descomentar_14(cursor, punto_coma)
+            self.set_curs(cursor, punto_coma)
 
-    # TODO Rename this here and in `agregar_sangria`, `quitar_sangria`, `comentar` and `descomentar`
-    def _extracted_from_descomentar_14(self, cursor, arg1):
+    def set_curs(self, cursor, arg1):
         cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
         cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
         if cursor.selectedText() == arg1:
@@ -570,17 +561,13 @@ class ComputadorCompleto(QMainWindow):
     def clr_ld(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
-        #self.bp.dict = dict(zip(rows, mem_place))
         self.Ejecutar_ejecutar.setEnabled(True)
         for i in config.m_prog:
             config.m_prog.update({i: '00'})
         self.extraer_valores()
         self.ds_op()
         self.regen_all()
-        self.uncolor()
-        
         config.m_prog.update(self.mp)
-        #self.memoria.actualizar_tabla(config.m_prog)
         self.update_segments(config.m_prog)
         self.set_Pins()
 
@@ -601,10 +588,8 @@ class ComputadorCompleto(QMainWindow):
     def load(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
-        #self.bp.dict = dict(zip(self.rows, self.mem_place))
         self.Ejecutar_ejecutar.setEnabled(True)
         config.m_prog.update(self.mp)
-        #self.memoria.actualizar_tabla(self.mp)
         self.trim_mem(self.mp)
         self.set_Pins()
 
@@ -618,10 +603,8 @@ class ComputadorCompleto(QMainWindow):
             self.registros.actualizar_registros()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         if config.PIns == 'FIN': self.barra_estado.showMessage('Fin de Programa (HLT)')
-        #self.memoria.actualizar_tabla(config.m_prog)
         self.update_segments(config.m_prog)
         self.regen_all()
-        self.uncolor()
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
     
@@ -640,6 +623,7 @@ class ComputadorCompleto(QMainWindow):
                 msg_bk = f'Breakpoint alcanzado (Fila: {str(ktmp[vtmp.index(pre_ins)])})'
                 self.barra_estado.showMessage(msg_bk)
                 break
+        self.color_Regs()
         self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.barra_estado.showMessage('Fin de Programa (HLT)')
@@ -654,9 +638,7 @@ class ComputadorCompleto(QMainWindow):
             self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
-        #self.memoria.actualizar_tabla(config.m_prog)
         self.update_segments(config.m_prog)
-        self.uncolor()
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
 # endregion
@@ -706,7 +688,6 @@ class ComputadorCompleto(QMainWindow):
         self.msg.accept()
         QMessageBox.information(self, 'Volcado Completo', 'El archivo se ha exportado correctamente.')
         self.barra_estado.showMessage('Volcado de Memoria Completa.')
-        skp = self.response_clear
 
     def dialog_save(self, msg_str: str, row = None):
         self.msg = QDialog(self)
@@ -748,7 +729,7 @@ class ComputadorCompleto(QMainWindow):
         mensaje.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         mensaje.setDefaultButton(QMessageBox.Yes)
         self.response_clear = mensaje.exec()
-        chkbx = self.dialog_save("exportar")
+        self.dialog_save("exportar")
 
     def recon_seg(self,csv):
         rows = list(csv)
@@ -793,7 +774,7 @@ class ComputadorCompleto(QMainWindow):
 
     def open_file(self):  # sourcery skip: extract-method
         self.state = [False]*3
-        nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV Files (*.csv);;Excel Files (*.xlsx);;All Files (*)')
+        nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV, XLSX Files (*.csv *.xlsx);;All Files (*)')
         for _, i in self.mem.items():
             i.table.setEnabled(True)
         try:
@@ -803,7 +784,7 @@ class ComputadorCompleto(QMainWindow):
                 self.dialog_save("importar", rows)
             elif tipo_archivo == 'Excel Files (*.xlsx)' or nombre_archivo.endswith('.xlsx'):
                 wb = load_workbook(nombre_archivo)
-                sh = wb.active # was .get_active_sheet()
+                sh = wb.active
                 buffer2 = io.StringIO()
                 content = self.ex2csv(buffer2,sh)
                 open("tmp.$csv", 'w', encoding='utf-8').write(content)
@@ -816,15 +797,13 @@ class ComputadorCompleto(QMainWindow):
             QMessageBox.information(self, 'Carga Completa', 'El archivo se ha cargado correctamente.')
             self.barra_estado.showMessage('Carga de Memoria Completa.')
         except PermissionError:
-            # Mostrar un mensaje de error si ocurre un PermissionError
             QMessageBox.critical(self, 'Error', 'No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.')
-            return  # Terminar la función
+            return
 # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------
 
     def texto_modificado(self):
         self.Ejecutar_cargar.setEnabled(False)
         self.Ejecutar_sobreescribir.setEnabled(False)
-        #self.Ejecutar_ejecutar.setEnabled(False)
         self.barra_estado.showMessage('Archivo no guardado')
 
 
