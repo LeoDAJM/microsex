@@ -42,7 +42,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Pendiente Fork:
 
 - **Optimización del Código**: Todavía se requiere una mayor optimización de varios aspectos del código. :´3
-- [ ] Seguimiento de IP en el archivo de listado.
+- [X] ~~Seguimiento de IP en el archivo de listado.~~
 - [X] ~~Seguimiento de IP en el código.~~
 - [ ] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.

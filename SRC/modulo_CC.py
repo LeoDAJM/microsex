@@ -55,6 +55,7 @@ class ComputadorCompleto(QMainWindow):
 
     def initUI(self):
         self.misc = []
+        self.detected_past = None
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
         self.direccion_inicio = '0000'
@@ -561,8 +562,6 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.clr_ld(nombre_archivo, cod, ls, ts)
-            self.lst = lst_table(self.datalst)
-            self.lst.show()
         self.editor_codigo.editor.setReadOnly(True)
     
     def state_edit(self, state: bool):
@@ -584,6 +583,8 @@ class ComputadorCompleto(QMainWindow):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
         self.Ejecutar_ejecutar.setEnabled(True)
+        self.lst = lst_table(self.datalst)
+        self.lst.show()
         for i in config.m_prog:
             config.m_prog.update({i: '00'})
         self.extraer_valores()
@@ -607,14 +608,13 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.load(nombre_archivo, cod, ls, ts)
-            self.lst = lst_table(self.datalst)
-            #self.showlst()
-            self.lst.show()
 
     def load(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
         self.Ejecutar_ejecutar.setEnabled(True)
+        self.lst = lst_table(self.datalst)
+        self.lst.show()
         config.m_prog.update(self.mp)
         self.trim_mem(self.mp)
         self.set_Pins()
@@ -675,6 +675,14 @@ class ComputadorCompleto(QMainWindow):
                 detected = ix
                 break
         self.editor_codigo.editor.highl_IP(detected)
+        for i in range(self.lst.table.columnCount()):
+            if self.detected_past is not None:
+                self.lst.table.item(self.detected_past,i).setBackground(QColor(20, 20, 20))
+                self.lst.table.item(self.detected_past,i).setForeground(QColor(120, 150, 175))
+            self.lst.table.item(detected,i).setBackground(QColor(0,255,100))
+            self.lst.table.item(detected,i).setForeground(QColor(20, 60, 134))
+        self.detected_past = detected
+        
 # endregion
 # region FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
