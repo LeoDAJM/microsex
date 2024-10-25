@@ -10,5 +10,6 @@
     <file>IMG/open.png</file>
     <file>IMG/save.png</file>
     <file>IMG/icono.png</file>
+    <file>IMG/edit.png</file>
 </qresource>
 </RCC>

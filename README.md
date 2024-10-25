@@ -13,6 +13,8 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Características
 
 ### **Nuevas Funcionalidades**
+- ***NEW*** **Indicador Visual de `IP` (PIns) en editor**: Se agregó en el editor el resaltado de la línea actual de código en ejecución, para un mejor control del proceso.
+- ***NEW*** **Archivo de Listado adjunto al programa**: Al compilar un código, se abrirá automáticamente el archivo de listado respectivo al mismo, eliminando la necesidad de abrirlo con un lector de texto externo.
 - **Soporte de Breakpoints**: Añade y elimina breakpoints mediante la tecla F2, con una opción adicional en el menú "Ejecutar".
 - **Optimización de Memoria**: Una única clase de memoria gestiona de manera eficiente los diferentes segmentos, manteniendo una memoria unificada en el archivo de configuración.
 - **Mejora en Archivos Listados**: Generación optimizada del archivo `.lst` que refleja mejor los resultados de la compilación, e interacción con los Breakpoints.
@@ -41,6 +43,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 - **Optimización del Código**: Todavía se requiere una mayor optimización de varios aspectos del código. :´3
 - [ ] Seguimiento de IP en el archivo de listado.
+- [X] ~~Seguimiento de IP en el código.~~
 - [ ] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
 - [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
@@ -48,7 +51,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 # Pendiente Original:
 
-- [ ] Mostrar archivo de listado en la interfaz gráfica.
+- [X] ~~Mostrar archivo de listado en la interfaz gráfica.~~
 - [ ] Mapear un puerto de entrada en el computador completo.
 - [ ] Tabla de símbolos debe mostrar error si hay nombres repetidos.
 - [ ] Admitir definición de cadena de datos y sin nombre.

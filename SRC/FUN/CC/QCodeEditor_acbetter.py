@@ -79,11 +79,28 @@ class QCodeEditor(QPlainTextEdit):
                     if xy.cursor.block().blockNumber() == selection.cursor.block().blockNumber() and xy.format.background().color() == QColor(225, 121, 121):
                         self.xtra.remove(xy)
         self.setExtraSelections(self.xtra)
+    
+    def highl_IP(self, block_num: int):
+        if hasattr(self, "past_ip"):
+            self.xtra.remove(self.past_ip)
+        if self.isReadOnly():
+            selection = QTextEdit.ExtraSelection()
+            selection.format.setBackground(QColor(0,255,100))
+            selection.format.setForeground(QColor(20, 60, 134))
+            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selection.cursor = self.textCursor()
+            selection.cursor.movePosition(QTextCursor.Start)
+            for _ in range(block_num):
+                selection.cursor.movePosition(QTextCursor.Down)
+            selection.cursor.clearSelection()
+            self.past_ip = selection
+            self.xtra.append(selection)
+        self.setExtraSelections(self.xtra)
         
     def highlightCurrentLine(self):
-        if hasattr(self, "past_line"):
-            self.xtra.remove(self.past_line)
         if not self.isReadOnly():
+            if hasattr(self, "past_line"):
+                self.xtra.remove(self.past_line)
             selection = QTextEdit.ExtraSelection()
             lineColor = QColor(60, 64, 72).lighter(40)
             selection.format.setBackground(lineColor)

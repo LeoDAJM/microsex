@@ -16,6 +16,7 @@ from FUN.CC.Editor_Registros import *
 from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
+from FUN.CC.lst_table import *
 
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
@@ -129,19 +130,22 @@ class ComputadorCompleto(QMainWindow):
         menu_Ejecutar = barra_menus.addMenu('&Ejecutar')
         menu_Memoria = barra_menus.addMenu('&Memoria')
 
-        self.toolbar = QToolBar("My main toolbar")
+        self.toolbar = QToolBar("Main Toolbar")
         self.toolbar.setIconSize(QSize(16,16))
         spacer = QWidget()
         spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         spacer2 = QWidget()
         spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
+        edit_tool = QAction(QIcon(f':IMG/edit.png'), "Edit", self)
+        edit_tool.triggered.connect(self.disablerun)
+        self.toolbar.addAction(edit_tool)
         im_tools = ["open","save", "ld","clr_ld","back", "step", "next", "run", "power"]
         txt = ["Open","Save","Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
-        tools = [QAction()]*len(im_tools)
+        self.tools = [QAction()]*len(im_tools)
         fcns = [self.dialogo_abrir, self.dialogo_guardar, self.cargar, self.borrar_cargar, self.registros.clear_all,
                 self.ejecutar_instruccion, self.run_for_bpoint, self.ejecutar, QApplication.instance().quit]
-        for k,i in enumerate(tools):
+        for k,i in enumerate(self.tools):
             i = QAction(QIcon(f':IMG/{im_tools[k]}.png'), txt[k], self)
             i.triggered.connect(fcns[k])
             self.toolbar.addAction(i)
@@ -557,6 +561,24 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.clr_ld(nombre_archivo, cod, ls, ts)
+            self.lst = lst_table(self.datalst)
+            self.lst.show()
+        self.editor_codigo.editor.setReadOnly(True)
+    
+    def state_edit(self, state: bool):
+        self.editor_codigo.editor.setReadOnly(state)
+        self.Ejecutar_ejecutar.setDisabled(not state)
+        self.Ejecutar_ejecutar_instruccion.setDisabled(not state)
+        self.run_with_bp.setDisabled(not state)
+        self.tools[5].setDisabled(not state)
+        self.tools[6].setDisabled(not state)
+        self.tools[7].setDisabled(not state)
+    
+    def disablerun(self):
+        self.state_edit(False)
+    
+    def enablerun(self):
+        self.state_edit(True)
 
     def clr_ld(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
@@ -570,6 +592,8 @@ class ComputadorCompleto(QMainWindow):
         config.m_prog.update(self.mp)
         self.update_segments(config.m_prog)
         self.set_Pins()
+        self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
+        self.draw_ip()
 
     def cargar(self):
         self.regen_all()
@@ -583,7 +607,9 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.load(nombre_archivo, cod, ls, ts)
-
+            self.lst = lst_table(self.datalst)
+            #self.showlst()
+            self.lst.show()
 
     def load(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
@@ -592,6 +618,8 @@ class ComputadorCompleto(QMainWindow):
         config.m_prog.update(self.mp)
         self.trim_mem(self.mp)
         self.set_Pins()
+        self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
+        self.draw_ip()
 
 
     def ejecutar(self):
@@ -605,8 +633,7 @@ class ComputadorCompleto(QMainWindow):
         if config.PIns == 'FIN': self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.update_segments(config.m_prog)
         self.regen_all()
-        self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
-        self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+        self.draw_ip()
     
     def run_for_bpoint(self):
         bp_dict = dict(zip(self.rows, self.mem_place))
@@ -627,8 +654,7 @@ class ComputadorCompleto(QMainWindow):
         self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.barra_estado.showMessage('Fin de Programa (HLT)')
-        self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
-        self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+        self.draw_ip()
 
     def ejecutar_instruccion(self):
         if config.PIns != 'FIN':
@@ -639,8 +665,16 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.update_segments(config.m_prog)
+        self.draw_ip()
+
+    def draw_ip(self):
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
+        for ix,elm in enumerate(self.mem_place):
+            if elm == f'{int(config.PIns):04X}':
+                detected = ix
+                break
+        self.editor_codigo.editor.highl_IP(detected)
 # endregion
 # region FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
