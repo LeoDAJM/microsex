@@ -629,12 +629,10 @@ class ComputadorCompleto(QMainWindow):
         bp_dict = dict(zip(self.rows, self.mem_place))
         to_fill = len(self.rows[-1])
         to_break = {key: bp_dict[str(key).rjust(to_fill)] for key in self.bpoints}
-
         ktmp, vtmp = list(to_break.keys()), list(to_break.values())
         while config.PIns != 'FIN':
             ciclo_instruccion()
             self.registros.actualizar_registros()
-            self.update_segments(config.m_prog)
             if config.PIns != 'FIN':
                 pre_ins = f'{int(config.PIns):04X}'
             if pre_ins in vtmp:
@@ -642,7 +640,7 @@ class ComputadorCompleto(QMainWindow):
                 msg_bk = f'Breakpoint alcanzado (Fila: {str(ktmp[vtmp.index(pre_ins)])})'
                 self.barra_estado.showMessage(msg_bk)
                 break
-
+        self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
@@ -657,7 +655,6 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.barra_estado.showMessage('Fin de Programa (HLT)')
         #self.memoria.actualizar_tabla(config.m_prog)
-        print(config.m_prog[0],config.m_prog[1],config.m_prog[2],config.m_prog[3])
         self.update_segments(config.m_prog)
         self.uncolor()
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
