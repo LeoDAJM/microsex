@@ -1,6 +1,6 @@
 # Microsex - v0.9 (Ale-V)
 
-# Interfaz (*actualizar*)
+# Interfaz
 
 ![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
 
