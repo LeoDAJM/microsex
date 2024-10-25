@@ -64,7 +64,9 @@ class memory(QWidget):
         
         corner_b = self.table.findChild(QAbstractButton)
         corner_b.setToolTip("Clear")
+        corner_b.clicked.disconnect()
         corner_b.clicked.connect(lambda: self.reset())
+        
 
         for i in range(rows):
             self.table.setRowHeight(i,8)
