@@ -404,7 +404,7 @@ class ComputadorCompleto(QMainWindow):
         nombre_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo')
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            f = open(nombre_archivo[0], 'r', encoding = 'latin-1')
+            f = open(nombre_archivo[0], 'r', encoding = 'utf-8')
             with f:
                 datos_archivo = f.read()
                 self.editor_codigo.editor.setPlainText(datos_archivo)
@@ -422,7 +422,7 @@ class ComputadorCompleto(QMainWindow):
 
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
-            with open(nombre_archivo, 'w', encoding = 'latin-1') as f:
+            with open(nombre_archivo, 'w', encoding = 'utf-8') as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)
@@ -442,7 +442,7 @@ class ComputadorCompleto(QMainWindow):
         nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.Options())
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            with open(nombre_archivo[0], 'w', encoding = 'latin-1') as f:
+            with open(nombre_archivo[0], 'w', encoding = 'utf-8') as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
             self.Ejecutar_cargar.setEnabled(True)

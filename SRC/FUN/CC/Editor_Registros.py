@@ -116,26 +116,26 @@ class EditorRegistros(QWidget):
 # ---- bloque Puntero de instrucciones
         bloque_PIns = QHBoxLayout()
         bloque_PIns.addWidget(self.lbl_puntero_PI, stretch=1)
-        bloque_PIns.addWidget(self.edit_PIns, stretch=1)
+        bloque_PIns.addWidget(self.edit_PIns, stretch=2)
 
 # ---- bloque acumuladores
         bloque_acumuladores = QVBoxLayout()
         acum_A = QHBoxLayout()
         acum_A.addWidget(self.lbl_acumulador_A, stretch=1)
-        acum_A.addWidget(self.edit_acumuladores[0], stretch=1)
+        acum_A.addWidget(self.edit_acumuladores[0], stretch=2)
 
         acum_B = QHBoxLayout()
         acum_B.addWidget(self.lbl_acumulador_B, stretch=1)
-        acum_B.addWidget(self.edit_acumuladores[1], stretch=1)
+        acum_B.addWidget(self.edit_acumuladores[1], stretch=2)
 
         acum_C = QHBoxLayout()
         acum_C.addWidget(self.lbl_acumulador_C, stretch=1)
-        acum_C.addWidget(self.edit_acumuladores[2], stretch=1)
+        acum_C.addWidget(self.edit_acumuladores[2], stretch=2)
 
         bloque_acumuladores.addWidget(self.lbl_Acumuladores, stretch=1)
-        bloque_acumuladores.addLayout(acum_A, stretch=1)
-        bloque_acumuladores.addLayout(acum_B, stretch=1)
-        bloque_acumuladores.addLayout(acum_C, stretch=1)
+        bloque_acumuladores.addLayout(acum_A, stretch=2)
+        bloque_acumuladores.addLayout(acum_B, stretch=2)
+        bloque_acumuladores.addLayout(acum_C, stretch=2)
         
 
 # ---- bloque banderas
@@ -145,7 +145,7 @@ class EditorRegistros(QWidget):
         for i in range(0,6):
             bloque_bandera[i] = QHBoxLayout()
             bloque_bandera[i].addWidget(self.lbl_banderas[i], stretch=1)
-            bloque_bandera[i].addWidget(self.edit_banderas[i], stretch=1)
+            bloque_bandera[i].addWidget(self.edit_banderas[i], stretch=2)
 
         registro_F = QVBoxLayout()
         for i in range(0,6):
@@ -160,15 +160,15 @@ class EditorRegistros(QWidget):
 
         puntero_ix = QHBoxLayout()
         puntero_ix.addWidget(self.lbl_puntero_IX, stretch=1)
-        puntero_ix.addWidget(self.edit_punteros[0], stretch=1)
+        puntero_ix.addWidget(self.edit_punteros[0], stretch=2)
 
         puntero_iy = QHBoxLayout()
         puntero_iy.addWidget(self.lbl_puntero_IY, stretch=1)
-        puntero_iy.addWidget(self.edit_punteros[1], stretch=1)
+        puntero_iy.addWidget(self.edit_punteros[1], stretch=2)
 
         puntero_pp = QHBoxLayout()
         puntero_pp.addWidget(self.lbl_puntero_PP, stretch=1)
-        puntero_pp.addWidget(self.edit_punteros[2], stretch=1)
+        puntero_pp.addWidget(self.edit_punteros[2], stretch=2)
 
         bloque_punteros.addWidget(self.lbl_Punteros, stretch=1)
         bloque_punteros.addLayout(puntero_ix, stretch=1)
