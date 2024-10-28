@@ -27,7 +27,6 @@ def verificacion_codigo(DATOS: list, name):
                 DATOS[i][ix] = DATOS[i][ix].upper()
         if len(DATOS[i]) == 2 and DATOS[i][0].upper() == ".LIB":
             lib_name = DATOS[i][1]
-            print("LIIIB", lib_name)
             # Crear la nueva ruta con el nuevo nombre
             with open(os.path.join(os.path.dirname(name), lib_name)) as archivo:
                 prog = archivo.readlines()
@@ -51,7 +50,6 @@ def verificacion_codigo(DATOS: list, name):
                     data_fin.append(prog[i])
         else:
             data_fin.append(DATOS[i])
-    print(data_fin)
     """         for x in i:
             if len(i) > 1 and x == len(i)-1 and (i[-1][0] == '"' or i[-1][0] == "'") and (i[-1][-1] == i[-1][0]):
                 i[x] = i[x]
@@ -123,11 +121,6 @@ def verificacion_codigo(DATOS: list, name):
 
     return errores, mensaje, m_prog, listado, tabla_simbolos
 
-def extend_libs(DATOS):
-    for i in range(len(DATOS)):
-        if len(DATOS[i]) == 2 and DATOS[i][0] == ".LIB":
-            lib_name = DATOS[i][1]
-            print("LIIIB", lib_name)
 
 
 # if __name__ == '__main__':
