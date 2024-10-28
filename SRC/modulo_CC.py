@@ -723,7 +723,7 @@ class ComputadorCompleto(QMainWindow):
         return f.getvalue()
 
 
-    def csv_gen(self, f, strs, chk):
+    def csv_gen(self, f, strs):
         writer = csv.writer(f)
         # Guardado de ORG
         org_data = ["ORG leaps SS,CS,DS"]
