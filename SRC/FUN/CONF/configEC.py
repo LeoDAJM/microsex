@@ -61,4 +61,4 @@ nemonicos_min = [nemonicos_may[i].lower() for i in range(len(nemonicos_may))]
 nemonicos = list(nemonicos_may)
 nemonicos.extend(nemonicos_min)
 
-directivas = ['\.org', '\.dseg', '\.cseg', '\.fin', '\.equ', '\.db', '\.rb']
+directivas = ['\.org', '\.dseg', '\.cseg', '\.fin', '\.equ', '\.db', '\.rb', '\.lib']

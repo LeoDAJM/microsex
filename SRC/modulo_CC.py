@@ -590,7 +590,7 @@ class ComputadorCompleto(QMainWindow):
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
             cod = list(programa)
-        err, msj, mp, ls, ts = verificacion_codigo(programa)
+        err, msj, mp, ls, ts = verificacion_codigo(programa, self.nombre_archivo)
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:
@@ -645,7 +645,7 @@ class ComputadorCompleto(QMainWindow):
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
             cod = list(programa)
-        err, msj, mp, ls, ts = verificacion_codigo(programa)
+        err, msj, mp, ls, ts = verificacion_codigo(programa, self.nombre_archivo)
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:

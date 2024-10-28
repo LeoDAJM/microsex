@@ -3,41 +3,69 @@ from FUN.CC.Ensamblador_2_segmento_datos import *
 from FUN.CC.Ensamblador_3_etiquetas import *
 from FUN.CC.Ensamblador_4_segmento_codigo import *
 from FUN.CC.Listado import *
+import os
 
 
-def verificacion_codigo(DATOS):
-
-
-    # Elimina los saltos de línea al final de cada línea
+def verificacion_codigo(DATOS: list, name):
+    data_fin = []
     for i in range(len(DATOS)):
-        DATOS[i] = str(DATOS[i][:-1])
-    # Elimina tabulaciones y espacios al inicio de cada línea
-    for i in range(len(DATOS)):
+        DATOS[i] = DATOS[i][:-1]
         cont = DATOS[i].count("\t")
         DATOS[i] = DATOS[i].replace("\t", " ", cont).lstrip()
-
-    # Elimina comentarios
-    for i in range(len(DATOS)):
         posicionComentario = DATOS[i].find(";")
         if posicionComentario == 0:
             DATOS[i] = ""
         if posicionComentario > 0:
-            DATOS[i] = DATOS[i].split(";")[0]
-
-    # Elimina espacios vacios entre nombres, instrucciones, directivas y argumentos
-    for i in range(len(DATOS)):
+            DATOS[i] = i.split(";")[0]
         DATOS[i] = DATOS[i].split(" ")
         for _ in range(DATOS[i].count("")):
             DATOS[i].remove("")
-    
-    for i in range(len(DATOS)):
         for ix in range(len(DATOS[i])):
             if len(DATOS[i]) > 1 and ix == len(DATOS[i])-1 and (DATOS[i][-1][0] == '"' or DATOS[i][-1][0] == "'") and (DATOS[i][-1][-1] == DATOS[i][-1][0]):
                 DATOS[i][ix] = DATOS[i][ix]
             else:
                 DATOS[i][ix] = DATOS[i][ix].upper()
+        if len(DATOS[i]) == 2 and DATOS[i][0].upper() == ".LIB":
+            lib_name = DATOS[i][1]
+            print("LIIIB", lib_name)
+            # Crear la nueva ruta con el nuevo nombre
+            with open(os.path.join(os.path.dirname(name), lib_name)) as archivo:
+                prog = archivo.readlines()
+                for i in range(len(prog)):
+                    prog[i] = prog[i][:-1]
+                    cont = prog[i].count("\t")
+                    prog[i] = prog[i].replace("\t", " ", cont).lstrip()
+                    posicionComentario = prog[i].find(";")
+                    if posicionComentario == 0:
+                        prog[i] = ""
+                    if posicionComentario > 0:
+                        prog[i] = i.split(";")[0]
+                    prog[i] = prog[i].split(" ")
+                    for _ in range(prog[i].count("")):
+                        prog[i].remove("")
+                    for ix in range(len(prog[i])):
+                        if len(prog[i]) > 1 and ix == len(prog[i])-1 and (prog[i][-1][0] == '"' or prog[i][-1][0] == "'") and (prog[i][-1][-1] == prog[i][-1][0]):
+                            prog[i][ix] = prog[i][ix]
+                        else:
+                            prog[i][ix] = prog[i][ix].upper()
+                    data_fin.append(prog[i])
+        else:
+            data_fin.append(DATOS[i])
+    print(data_fin)
+    """         for x in i:
+            if len(i) > 1 and x == len(i)-1 and (i[-1][0] == '"' or i[-1][0] == "'") and (i[-1][-1] == i[-1][0]):
+                i[x] = i[x]
+            else:
+                i[x] = i[x].upper()
+    for i in range(len(DATOS)):
+        for ix in range(len(DATOS[i])):
+            if len(DATOS[i]) > 1 and ix == len(DATOS[i])-1 and (DATOS[i][-1][0] == '"' or DATOS[i][-1][0] == "'") and (DATOS[i][-1][-1] == DATOS[i][-1][0]):
+                DATOS[i][ix] = DATOS[i][ix]
+            else:
+                DATOS[i][ix] = DATOS[i][ix].upper()"""
 
 
+    DATOS = data_fin
 
 
     #------------------------------ VERIFICAR ERRORES ------------------------------
@@ -94,6 +122,13 @@ def verificacion_codigo(DATOS):
         listado |= listado_prog
 
     return errores, mensaje, m_prog, listado, tabla_simbolos
+
+def extend_libs(DATOS):
+    for i in range(len(DATOS)):
+        if len(DATOS[i]) == 2 and DATOS[i][0] == ".LIB":
+            lib_name = DATOS[i][1]
+            print("LIIIB", lib_name)
+
 
 # if __name__ == '__main__':
 #

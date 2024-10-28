@@ -48,7 +48,9 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
             argumento   = DATOS[i][1]
 
             if instruccion.startswith('.'):
-                if instruccion != '.ORG':
+                if instruccion == '.LIB':
+                    print("LIB!!")
+                elif instruccion != '.ORG':
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, instruccion, i)
                 else:
                     direccion = origen[i+1]

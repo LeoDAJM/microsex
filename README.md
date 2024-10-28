@@ -13,6 +13,10 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Características
 
 ### **Nuevas Funcionalidades**
+- ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
+            `.lib` lib_name.lib*
+El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.
+El archivo debe estar en la misma carpeta que el código abierto, además de estar nombrado únicamente en mayúsculas.
 - ***NEW*** **Indicador Visual de `IP` (PIns) en editor**: Se agregó en el editor el resaltado de la línea actual de código en ejecución, para un mejor control del proceso.
 - ***NEW*** **Archivo de Listado adjunto al programa**: Al compilar un código, se abrirá automáticamente el archivo de listado respectivo al mismo, eliminando la necesidad de abrirlo con un lector de texto externo.
 - ***NEW*** **Drag&Drop**: Añadida funcionalidad de arrastrar y soltar archivos al emulador; esta acción funciona con archivos *.txt* y *.asm* y da como resultado la apertura de dichos archivos.
