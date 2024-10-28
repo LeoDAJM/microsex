@@ -7,14 +7,10 @@ from FUN.CC.Listado import *
 
 def verificacion_codigo(DATOS):
 
-    # Convierte todo a mayúsculas
-    for i in range(len(DATOS)):
-        DATOS[i] = DATOS[i].upper()
 
     # Elimina los saltos de línea al final de cada línea
     for i in range(len(DATOS)):
         DATOS[i] = str(DATOS[i][:-1])
-
     # Elimina tabulaciones y espacios al inicio de cada línea
     for i in range(len(DATOS)):
         cont = DATOS[i].count("\t")
@@ -33,6 +29,16 @@ def verificacion_codigo(DATOS):
         DATOS[i] = DATOS[i].split(" ")
         for _ in range(DATOS[i].count("")):
             DATOS[i].remove("")
+    
+    for i in range(len(DATOS)):
+        for ix in range(len(DATOS[i])):
+            if len(DATOS[i]) > 1 and ix == len(DATOS[i])-1 and (DATOS[i][-1][0] == '"' or DATOS[i][-1][0] == "'") and (DATOS[i][-1][-1] == DATOS[i][-1][0]):
+                DATOS[i][ix] = DATOS[i][ix]
+            else:
+                DATOS[i][ix] = DATOS[i][ix].upper()
+
+
+
 
     #------------------------------ VERIFICAR ERRORES ------------------------------
     mensaje = ''
