@@ -39,8 +39,6 @@ styles_cs = {
                 padding-top: 0px;}"""
 }
 
-total_w = 800
-total_h = 600
 cs_initial = "0"
 def styles_fun():
         return dict(styles_cs)

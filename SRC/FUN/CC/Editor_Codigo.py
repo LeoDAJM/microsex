@@ -70,6 +70,13 @@ class Resaltador(QSyntaxHighlighter):
         self.reglas_resaltado.append(regla)
 
 
+        formato_ascii = QTextCharFormat()
+        formato_ascii.setForeground(config.color_ascii)
+        patron = QRegExp(r'"[^"]*"|\'[^\']*\'')
+        regla = (patron, formato_ascii)
+        self.reglas_resaltado.append(regla)
+
+
     def highlightBlock(self, text):
         for patron, formato in self.reglas_resaltado:
             expresion = QRegExp(patron)

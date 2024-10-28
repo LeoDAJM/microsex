@@ -52,6 +52,7 @@ color_directivas = QColor(255, 142, 0)        # rgb(250, 180, 120) rgb(255, 142,
 color_instrucciones = QColor(57, 186, 230)       # rgb(0, 230, 250)  D2A6FF rgb(210, 166, 255)
 color_comentarios = QColor(210, 166, 255)       # rgb(100, 100, 150) rgb(57, 186, 230)
 color_etiquetas = QColor(170, 217, 76)           # rgb(0, 230, 125) rgb(170, 217, 76)
+color_ascii = QColor(200, 1, 120)             #rgb(200, 1, 120)
 
 
 nemonicos_may = list(argumentos_instrucciones().keys())

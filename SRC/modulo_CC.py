@@ -4,7 +4,7 @@ import csv
 from openpyxl import Workbook, load_workbook
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
 from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy, QToolButton
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QFontDatabase
 import os
 import io
 import FUN.CONF.config_custom as config2
@@ -29,20 +29,27 @@ letras_numeros = letras + numeros
 class ComputadorCompleto(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.fuente = QFont("mononoki NF", 10)
+        f_reg = QFontDatabase.addApplicationFont(":/MononokiNerdFontMono-Regular.ttf")
+        self.families = QFontDatabase.applicationFontFamilies(f_reg)
+        self.fuente = QFont(self.families[0], 10)
         self.initUI()
 
     def resizeEvent(self, event: 'QResizeEvent'): # type: ignore
-        self.fuente = QFont("mononoki NF", min(max(event.size().height()//80, 8),13))
-        self.fuente_mid = QFont("mononoki NF", min(max(event.size().height()//85, 7),12))
-        self.fuente_min = QFont("mononoki NF", min(max(event.size().height()//100, 6),10))
+        self.fuente = QFont(self.families[0], min(max(event.size().height()//80, 10),14))
+        self.fuente_mid = QFont(self.families[0], min(max(event.size().height()//85, 7),12))
+        self.fuente_min = QFont(self.families[0], min(max(event.size().height()//100, 6),10))
         for _, i in self.mem.items():
             i.table.setFont(self.fuente_mid)
             i.table.horizontalHeader().setFont(self.fuente)
             i.table.verticalHeader().setFont(self.fuente)
-            
+        
+        ed_font = self.fuente
+        ed_font.setLetterSpacing(QFont.PercentageSpacing, 110)
         self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_min)
-        self.editor_codigo.editor.setFont(self.fuente)
+        self.editor_codigo.editor.setFont(ed_font)
+        fontMetrics = QFontMetricsF(ed_font)
+        spaceWidth = fontMetrics.width(' ')
+        self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
         
         for child in self.registros.findChildren(QWidget):
             child.setFont(self.fuente_mid)
@@ -98,9 +105,9 @@ class ComputadorCompleto(QMainWindow):
 
         self.registros = EditorRegistros()
 
-        self.mem = {"s": memory(16,0,"stack"),
-                    "c": memory(0,16,"code"),
-                    "d": memory(0,16,"data")}
+        self.mem = {"s": memory(16,0,"stack","Segmento de Pila"),
+                    "c": memory(0,16,"code","Segmento de Código"),
+                    "d": memory(0,16,"data","Segmento de Datos")}
         for i in self.mem.values():
             i.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             i.table.setEnabled(False)
@@ -277,12 +284,16 @@ class ComputadorCompleto(QMainWindow):
         self.run_with_bp = QAction('Ejecutar con Breakpoints', self)
         self.run_with_bp.triggered.connect(self.run_for_bpoint)
 
+        self.show_ls = QAction('Mostrar Archivo LST', self)
+        self.show_ls.triggered.connect(lambda: self.lst.show())
 
         menu_Ejecutar.addAction(self.Ejecutar_cargar)
         menu_Ejecutar.addAction(self.Ejecutar_sobreescribir)
         menu_Ejecutar.addAction(self.Ejecutar_ejecutar)
         menu_Ejecutar.addAction(self.Ejecutar_ejecutar_instruccion)
         menu_Ejecutar.addAction(self.run_with_bp)
+        menu_Ejecutar.addSeparator()
+        menu_Ejecutar.addAction(self.show_ls)
 
         self.setMinimumSize(600, 400)
         self.setMaximumSize(19200, 10800)
@@ -573,6 +584,8 @@ class ComputadorCompleto(QMainWindow):
     def borrar_cargar(self):
         if self.nombre_archivo == False:
             self.dialogo_guardar_como()
+        else:
+            self.dialogo_guardar()
         nombre_archivo = self.nombre_archivo
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
@@ -599,6 +612,7 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.actions()[9].setEnabled(st_cnt)
 
         self.run_with_bp.setEnabled(st_cnt_bkp)
+        self.show_ls.setEnabled(st_cnt_bkp)
         self.toolbar.actions()[8].setEnabled(st_cnt_bkp)
         self.editor_codigo.editor.setReadOnly(not st_edit)
     
@@ -623,7 +637,8 @@ class ComputadorCompleto(QMainWindow):
     def cargar(self):
         if self.nombre_archivo == False:
             self.dialogo_guardar_como()
-
+        else:
+            self.dialogo_guardar()
         self.regen_all()
         self.enable_tables()
         nombre_archivo = self.nombre_archivo
@@ -635,6 +650,7 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.load(nombre_archivo, cod, ls, ts)
+            self.state_def(True,True,True,True)
             
 
     def load(self, nombre_archivo, cod, ls, ts):

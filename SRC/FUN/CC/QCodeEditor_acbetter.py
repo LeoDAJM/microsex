@@ -4,7 +4,7 @@
 
 from PyQt5.QtCore import Qt, QRect, QSize
 from PyQt5.QtWidgets import QWidget, QPlainTextEdit, QTextEdit
-from PyQt5.QtGui import QColor, QPainter, QTextFormat, QTextCursor, QTextCharFormat
+from PyQt5.QtGui import QColor, QPainter, QTextFormat, QTextCursor, QTextCharFormat, QFontMetricsF, QFont
 
 
 class QLineNumberArea(QWidget):
@@ -17,7 +17,6 @@ class QLineNumberArea(QWidget):
 
     def paintEvent(self, event):
         self.codeEditor.lineNumberAreaPaintEvent(event)
-
 
 class QCodeEditor(QPlainTextEdit):
     def __init__(self, parent=None):
@@ -70,6 +69,7 @@ class QCodeEditor(QPlainTextEdit):
         if not self.isReadOnly():
             selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(225, 121, 121))
+            selection.format.setForeground(QColor(1, 0, 25))
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()

@@ -20,7 +20,7 @@ class lst_table(QWidget):
     def initUI(self, lst_data: list):
         self.table = QTableWidget(self)
         self.table.setStyleSheet(config.estilo["estilo_celdas"])
-        lbl_rows, mem_pos, cod_op, txt = [x[0] for x in lst_data], [x[1] for x in lst_data], [x[2] for x in lst_data], [x[3] for x in lst_data]
+        lbl_rows = [x[0] for x in lst_data]
         h_header = ["Mem.", "Op.", "Cod.Original"]
         self.table.setColumnCount(3)
         self.table.setRowCount(len(lbl_rows))
@@ -50,8 +50,3 @@ class lst_table(QWidget):
         vb2.addWidget(label)
         vb2.addWidget(self.table)
         self.setLayout(vb2)
-
-    def reset(self):
-        for i, j in itertools.product(range(self.table.rowCount()), range(self.table.columnCount())):
-            self.table.setItem(i,j,QTableWidgetItem(" "))
-            self.table.item(i,j).setTextAlignment(Qt.AlignCenter)

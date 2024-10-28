@@ -31,16 +31,15 @@ class Validador2(QItemDelegate):
         a = self.rxval.validate(cadena, 0)
         if a[0] == 1:
             self.edt_rx.setText(self.edt_rx.text().zfill(2))
-            #self.finalizado()
 
 class memory(QWidget):
 
-    def __init__(self, rows: int, cols: int, type: str):
+    def __init__(self, rows: int, cols: int, type: str, title: str):
         super().__init__()
 
-        self.initUI(rows, cols, type)
+        self.initUI(rows, cols, type, title)
 
-    def initUI(self, rows: int, cols: int, type: str):
+    def initUI(self, rows: int, cols: int, type: str, title: str):
         self.table = QTableWidget(self)
         self.table.setStyleSheet(config.estilo["estilo_celdas"])
         self.table.setColumnCount(cols)
@@ -76,6 +75,8 @@ class memory(QWidget):
             self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
         self.table.cellChanged.connect(self.on_change)
         vb2 = QVBoxLayout()
+        self.lbl = QLabel(title, self)
+        vb2.addWidget(self.lbl)
         vb2.addWidget(self.table)
         self.setLayout(vb2)
 

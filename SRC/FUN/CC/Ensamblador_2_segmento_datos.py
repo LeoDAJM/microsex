@@ -11,6 +11,7 @@ from re import search
 from FUN.CONF.nemonicos import argumentos_instrucciones
 import re
 import math
+from collections import Counter
 
 directivas_dseg = [
 '.ORG',     # Define una dirección desde donde se contará en la MDAT
@@ -120,7 +121,7 @@ def verificar_segmento_datos(DATOS, origen):
             else:
                 direccion = origen[i+1]
 
-        elif len(DATOS[i]) == 3 or len(DATOS[i]) == 2:
+        elif len(DATOS[i]) == 3:
             simbolo_correcto = 0
             simbolo   = DATOS[i][0]
             directiva = DATOS[i][1]
@@ -213,7 +214,13 @@ def verificar_segmento_datos(DATOS, origen):
                     simbolos.append(simbolo)
                     valores.update({simbolo: direccion})
                     direccion += contenido
-
+    #cont_sym = {}
+    #cont_sym = Counter([i[0] for i in tabla_simbolos])
+    #print(cont_sym)
+    #cont_sym = {k: v for k,v in cont_sym.items()}
+    #print(cont_sym)
+    #if len(cont_sym) > 0:
+    #    err_simbolo_dup
 
     if errores == 0:
         mensaje = mensaje + str('\n ** OK **: todo correcto en segmento de datos')
@@ -230,7 +237,7 @@ def err_directiva_desconocida(errores_previos, mensaje, indice):
     errores = errores_previos + 1
     mensaje = mensaje + str('\nError en línea {}: directiva desconocida'.format(indice+1))
     return errores, mensaje
-
+    
 def err_sintaxis(errores_previos, mensaje, indice):
     errores = errores_previos + 1
     mensaje = mensaje + str('\nError en línea {}: sintaxis incorrecta'.format(indice+1))
