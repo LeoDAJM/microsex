@@ -3,7 +3,7 @@ import string
 import csv
 from openpyxl import Workbook, load_workbook
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
-from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy
+from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy, QToolButton
 from PyQt5.QtGui import QFont, QIcon
 import os
 import io
@@ -36,8 +36,6 @@ class ComputadorCompleto(QMainWindow):
         self.fuente = QFont("mononoki NF", min(max(event.size().height()//80, 8),13))
         self.fuente_mid = QFont("mononoki NF", min(max(event.size().height()//85, 7),12))
         self.fuente_min = QFont("mononoki NF", min(max(event.size().height()//100, 6),10))
-        
-        self.chkbx = [QCheckBox(text=" ")]*3
         for _, i in self.mem.items():
             i.table.setFont(self.fuente_mid)
             i.table.horizontalHeader().setFont(self.fuente)
@@ -53,12 +51,36 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.setFont(self.fuente_min)
         super().resizeEvent(event)
 
+#region Drag Drop
+    def dragEnterEvent(self, event):
+        self.editor_codigo.editor.setAcceptDrops(False)
+        if event.mimeData().hasUrls():
+            for url in event.mimeData().urls():
+                if url.toLocalFile().lower().endswith('.asm') or url.toLocalFile().lower().endswith('.txt'):
+                    event.accept()
+                    return
+        event.ignore()
+
+    def dropEvent(self, event):
+        self.editor_codigo.editor.setAcceptDrops(True)
+        if event.mimeData().hasUrls():
+            for url in event.mimeData().urls():
+                file_path = url.toLocalFile()
+                if file_path.endswith('.asm') or url.toLocalFile().lower().endswith('.txt'):
+                    self.nombre_archivo = file_path
+                    self.open_proc()
+                    return
+#endregion
     def initUI(self):
+        self.mode = "start"       # "edit" "run" "loaded"
         self.misc = []
         self.detected_past = None
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
         self.direccion_inicio = '0000'
+        self.chkbx = {'s':QCheckBox(text=" "),
+                    'c':QCheckBox(text=" "),
+                    'd':QCheckBox(text=" ")}
 
         self.editor_codigo = EditorCodigo()
         self.bpoints = self.editor_codigo.editor.breakline
@@ -120,7 +142,7 @@ class ComputadorCompleto(QMainWindow):
         self.Reg_monitor()
         self.setCentralWidget(area_trabajo)
         self.barra_estado = self.statusBar()
-
+        self.setAcceptDrops(True)
 
 #region     Menus
 # Barra de menús ---------------------------------------------------------------
@@ -137,9 +159,9 @@ class ComputadorCompleto(QMainWindow):
         spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         spacer2 = QWidget()
         spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        edit_tool = QAction(QIcon(f':IMG/edit.png'), "Edit", self)
-        edit_tool.triggered.connect(self.disablerun)
+
+        edit_tool = QAction(QIcon(':IMG/edit.png'), "Edit", self)
+        edit_tool.triggered.connect(lambda: self.state_def(True,False,False,True))
         self.toolbar.addAction(edit_tool)
         im_tools = ["open","save", "ld","clr_ld","back", "step", "next", "run", "power"]
         txt = ["Open","Save","Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
@@ -237,13 +259,11 @@ class ComputadorCompleto(QMainWindow):
         self.Ejecutar_cargar = QAction('Ensamblar, borrar memoria y cargar', self)
         self.Ejecutar_cargar.setToolTip('Borra la memoria y carga el nuevo ensamblado')
         self.Ejecutar_cargar.setShortcut('Ctrl+U')
-        self.Ejecutar_cargar.setEnabled(False)
         self.Ejecutar_cargar.triggered.connect(self.borrar_cargar)
 
         self.Ejecutar_sobreescribir = QAction('Ensamblar y cargar en memoria', self)
         self.Ejecutar_sobreescribir.setToolTip('Carga el nuevo ensamblado\nsin borrar el contenido anterior de la memoria')
         self.Ejecutar_sobreescribir.setShortcut('Ctrl+J')
-        self.Ejecutar_sobreescribir.setEnabled(False)
         self.Ejecutar_sobreescribir.triggered.connect(self.cargar)
 
         self.Ejecutar_ejecutar = QAction('Ejecutar código Ensamblado', self)
@@ -288,12 +308,12 @@ class ComputadorCompleto(QMainWindow):
         self.Save_Mem.setShortcut('Alt+M')
         self.Save_Mem.setEnabled(True)
         self.Save_Mem.triggered.connect(self.save_csv)
-
         menu_Memoria.addAction(self.Load_Mem)
         menu_Memoria.addAction(self.Save_Mem)
+        
 # endregion
 # region ToolBar
-
+        self.state_def(st_comp = True, st_cnt = False, st_cnt_bkp = False, st_edit = True)
 # endregion
 # region FUN Extras
     def enable_tables(self):
@@ -364,7 +384,6 @@ class ComputadorCompleto(QMainWindow):
                     v.table.item(i, j).setBackground(QColor(20, 20, 20))
                     if k == "c":
                         v.table.item(i, j).setForeground(QColor(120, 150, 175))
-                    
 
     def F_monitor(self):
         bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
@@ -409,12 +428,13 @@ class ComputadorCompleto(QMainWindow):
         nombre_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo')
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
-            f = open(nombre_archivo[0], 'r', encoding = 'utf-8')
-            with f:
-                datos_archivo = f.read()
-                self.editor_codigo.editor.setPlainText(datos_archivo)
-                self.Ejecutar_cargar.setEnabled(True)
-                self.Ejecutar_sobreescribir.setEnabled(True)
+            self.open_proc()
+    
+    def open_proc(self):
+        f = open(self.nombre_archivo, 'r', encoding = 'utf-8')
+        with f:
+            datos_archivo = f.read()
+            self.editor_codigo.editor.setPlainText(datos_archivo)
 
     def dialogo_guardar(self):
         cursor = self.editor_codigo.editor.textCursor()
@@ -551,8 +571,8 @@ class ComputadorCompleto(QMainWindow):
         config.PIns = int(self.registros.edit_PIns.text(),16)
         config2.cs_initial = int(self.registros.edit_PIns.text(),16)
     def borrar_cargar(self):
-        self.regen_all()
-        self.enable_tables()
+        if self.nombre_archivo == False:
+            self.dialogo_guardar_como()
         nombre_archivo = self.nombre_archivo
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
@@ -561,30 +581,33 @@ class ComputadorCompleto(QMainWindow):
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:
+            self.regen_all()
+            self.enable_tables()
             self.clr_ld(nombre_archivo, cod, ls, ts)
-        self.editor_codigo.editor.setReadOnly(True)
+            self.state_def(True,True,True,True)
+            self.mode = "coding"
     
-    def state_edit(self, state: bool):
-        self.editor_codigo.editor.setReadOnly(state)
-        self.Ejecutar_ejecutar.setDisabled(not state)
-        self.Ejecutar_ejecutar_instruccion.setDisabled(not state)
-        self.run_with_bp.setDisabled(not state)
-        self.tools[5].setDisabled(not state)
-        self.tools[6].setDisabled(not state)
-        self.tools[7].setDisabled(not state)
+    def state_def(self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool):
+        self.Ejecutar_cargar.setEnabled(st_comp)
+        self.Ejecutar_sobreescribir.setEnabled(st_comp)
+        self.toolbar.actions()[3].setEnabled(st_comp)
+        self.toolbar.actions()[4].setEnabled(st_comp)
+
+        self.Ejecutar_ejecutar_instruccion.setEnabled(st_cnt)
+        self.Ejecutar_ejecutar.setEnabled(st_cnt)
+        self.toolbar.actions()[7].setEnabled(st_cnt)
+        self.toolbar.actions()[9].setEnabled(st_cnt)
+
+        self.run_with_bp.setEnabled(st_cnt_bkp)
+        self.toolbar.actions()[8].setEnabled(st_cnt_bkp)
+        self.editor_codigo.editor.setReadOnly(not st_edit)
     
-    def disablerun(self):
-        self.state_edit(False)
-    
-    def enablerun(self):
-        self.state_edit(True)
 
     def clr_ld(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
         self.Ejecutar_ejecutar.setEnabled(True)
         self.lst = lst_table(self.datalst)
-        self.lst.show()
         for i in config.m_prog:
             config.m_prog.update({i: '00'})
         self.extraer_valores()
@@ -595,8 +618,12 @@ class ComputadorCompleto(QMainWindow):
         self.set_Pins()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.draw_ip()
+        self.lst.show()
 
     def cargar(self):
+        if self.nombre_archivo == False:
+            self.dialogo_guardar_como()
+
         self.regen_all()
         self.enable_tables()
         nombre_archivo = self.nombre_archivo
@@ -608,18 +635,20 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setText(msj)
         if err == 0:
             self.load(nombre_archivo, cod, ls, ts)
+            
 
     def load(self, nombre_archivo, cod, ls, ts):
         self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
         self.Ejecutar_ejecutar.setEnabled(True)
         self.lst = lst_table(self.datalst)
-        self.lst.show()
         config.m_prog.update(self.mp)
         self.trim_mem(self.mp)
         self.set_Pins()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         self.draw_ip()
+        self.lst.show()
+        self.mode = "coding"
 
 
     def ejecutar(self):
@@ -645,15 +674,15 @@ class ComputadorCompleto(QMainWindow):
             self.registros.actualizar_registros()
             if config.PIns != 'FIN':
                 pre_ins = f'{int(config.PIns):04X}'
+            else:
+                self.barra_estado.showMessage('Fin de Programa (HLT)')
             if pre_ins in vtmp:
-                print("breaking")
                 msg_bk = f'Breakpoint alcanzado (Fila: {str(ktmp[vtmp.index(pre_ins)])})'
                 self.barra_estado.showMessage(msg_bk)
                 break
         self.color_Regs()
         self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
-        self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.draw_ip()
 
     def ejecutar_instruccion(self):
@@ -670,19 +699,21 @@ class ComputadorCompleto(QMainWindow):
     def draw_ip(self):
         self.mem["c"].table.item(self.post//16,self.post%16).setBackground(QColor(0,255,100))
         self.mem["c"].table.item(self.post//16,self.post%16).setForeground(QColor(20, 60, 134))
-        for ix,elm in enumerate(self.mem_place):
-            if elm == f'{int(config.PIns):04X}':
-                detected = ix
-                break
-        self.editor_codigo.editor.highl_IP(detected)
-        for i in range(self.lst.table.columnCount()):
-            if self.detected_past is not None:
-                self.lst.table.item(self.detected_past,i).setBackground(QColor(20, 20, 20))
-                self.lst.table.item(self.detected_past,i).setForeground(QColor(120, 150, 175))
-            self.lst.table.item(detected,i).setBackground(QColor(0,255,100))
-            self.lst.table.item(detected,i).setForeground(QColor(20, 60, 134))
-        self.detected_past = detected
-        
+        if self.mode != "loaded":
+            if config.PIns != 'FIN':
+                detected = max(i for i, v in enumerate(self.mem_place) if v == f'{int(config.PIns):04X}')
+            else :
+                detected = max(i for i, v in enumerate(self.mem_place) if v == self.registros.edit_PIns.text())
+            if self.mode != "coding-pend":
+                self.editor_codigo.editor.highl_IP(detected)
+            for i in range(self.lst.table.columnCount()):
+                if self.detected_past is not None:
+                    self.lst.table.item(self.detected_past,i).setBackground(QColor(20, 20, 20))
+                    self.lst.table.item(self.detected_past,i).setForeground(QColor(120, 150, 175))
+                self.lst.table.item(detected,i).setBackground(QColor(0,255,100))
+                self.lst.table.item(detected,i).setForeground(QColor(20, 60, 134))
+            self.detected_past = detected
+
 # endregion
 # region FUNCIONES DEL MENÚ MEMORIA --------------------------------------------------
     def ex2csv(self,f,sh):
@@ -695,13 +726,13 @@ class ComputadorCompleto(QMainWindow):
     def csv_gen(self, f, strs, chk):
         writer = csv.writer(f)
         # Guardado de ORG
-        org_data = ["ORG leaps CS,SS,DS"]
+        org_data = ["ORG leaps SS,CS,DS"]
         org_data.extend(str(i) for i in self._ds.values())
         writer.writerow(org_data)
-        for ix, x in enumerate(self.mem):
-            if not chk[ix].isChecked():
+        for k,x in self.mem.items():
+            if not self.chkbx[k].isChecked():
                 continue
-            writer.writerow([strs[ix]])
+            writer.writerow([strs[k]])
             for i in range(x.table.rowCount()):
                 if (any(x.table.item(i, v).text() != '00' for v in range(x.table.columnCount()))
                 or self.response_clear != QMessageBox.Yes):
@@ -710,7 +741,7 @@ class ComputadorCompleto(QMainWindow):
                     writer.writerow(row_data)
 
     def save_fun(self,chk):  # sourcery skip: extract-method
-        strs = ["Stack Segment", "Data Segment", "Code Segment"]
+        strs = {'s': "Stack Segment", 'c': "Code Segment", 'd': "Data Segment"}
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
         buffer = io.StringIO()
         self.csv_gen(buffer,strs,chk)
@@ -738,20 +769,18 @@ class ComputadorCompleto(QMainWindow):
         lbl = QLabel(f"Selecciona los segmentos a {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
-        self.chkbx[0] = QCheckBox(text="Stack Segment")
-        self.chkbx[1] = QCheckBox(text="Code Segment")
-        self.chkbx[2] = QCheckBox(text="Data Segment")
+        self.chkbx["s"] = QCheckBox(text="Stack Segment")
+        self.chkbx["c"] = QCheckBox(text="Code Segment")
+        self.chkbx["d"] = QCheckBox(text="Data Segment")
         if msg_str.upper() == "IMPORTAR":
             self.msg.setWindowTitle("Load")
             self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
-            self.state = [True]*3
         else:
             self.msg.setWindowTitle("Dump")
             self.btt_dialog.clicked.connect(lambda: self.save_fun(self.chkbx))
-            self.state = [True]*3
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
-        for x,i in enumerate(self.chkbx):
+        for x,i in self.chkbx.items():
             i.stateChanged.connect(lambda: self.stt_chk(self.chkbx))
             i.setEnabled(self.state[x])
             i.setChecked(self.state[x])
@@ -761,9 +790,14 @@ class ComputadorCompleto(QMainWindow):
         self.msg.exec_()
 
     def stt_chk (self, chkbx):
-        self.btt_dialog.setEnabled(chkbx[0].isChecked() or chkbx[1].isChecked() or chkbx[2].isChecked())
+        self.btt_dialog.setEnabled(chkbx['s'].isChecked() or chkbx['d'].isChecked() or chkbx['c'].isChecked())
 
     def save_csv(self):
+        self.state = {
+            's' : True, 'c' : True, 'd' : True
+        }
+        for k, v in self.mem.items():
+            self.state[k] = v.table.rowCount() != 0 and v.table.columnCount() != 0
         self.response_clear = None
         mensaje = QMessageBox()
         mensaje.setIcon(QMessageBox.Question)  # Icono de pregunta
@@ -779,11 +813,11 @@ class ComputadorCompleto(QMainWindow):
         for u in rows:
             for v in range(max(1,len(u)-1)):
                 if u[v].lower() == "stack segment":
-                    self.state[0] = True
+                    self.state['s'] = True
                 elif u[v].lower() == "code segment":
-                    self.state[1] = True
+                    self.state['c'] = True
                 elif u[v].lower() == "data segment":
-                    self.state[2] = True
+                    self.state['d'] = True
 
         return rows
 
@@ -791,32 +825,40 @@ class ComputadorCompleto(QMainWindow):
         chk_imp = self.chkbx
         mem = None
         for u in rows:
-            key = [u[0].lower()[0] if u[0].lower()[0] in {"s", "c", "d"} else None]
             for v in range(max(1,len(u)-1)):
                 if u[v].lower() == "stack segment":
-                    mem = self.mem[key].table if chk_imp[0].isChecked() else None
+                    mem = self.mem['s'].table if chk_imp['s'].isChecked() else None
                 elif u[v].lower() == "code segment":
-                    mem = self.mem[key].table if chk_imp[1].isChecked() else None
+                    mem = self.mem['c'].table if chk_imp['c'].isChecked() else None
                 elif u[v].lower() == "data segment":
-                    mem = self.mem[key].table if chk_imp[2].isChecked() else None
-                elif u[0].lower() == "org leaps cs,ss,ds":
-                    self._ds['c'] = int(u[1])
-                    self._ds['s'] = int(u[2])
-                    self._ds['d'] = int(u[3])
+                    mem = self.mem['d'].table if chk_imp['d'].isChecked() else None
+                elif u[0].lower() == "org leaps ss,cs,ds":
+                    for k, val in self.state.items():
+                        if val:
+                            if k ==  's':
+                                self._ds[k] = int(u[1])
+                            elif k ==  'c':
+                                self._ds[k] = int(u[2])
+                            elif k ==  'd':
+                                self._ds[k] = int(u[3])
                     self.ds_op()
                     self.regen_all()
                     break
                     #v = max(1,len(u)-1)
                 elif mem != None:
-                    data = u[v+1]
-                    data = data.zfill(2)
-                    data = data.upper()
+                    data = u[v+1].zfill(2).upper()
                     mem.item(int(u[0]),v).setText(data)
+        QMessageBox.information(self, 'Carga Completa', 'El archivo se ha cargado correctamente.')
+        self.barra_estado.showMessage('Carga de Memoria Completa.')
+        self.state_def(True,True,False,True)
+        self.mode = "loaded"
         self.msg.accept()
 
 
     def open_file(self):  # sourcery skip: extract-method
-        self.state = [False]*3
+        self.state = {
+            's' : False, 'c' : False, 'd' : False
+        }
         nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(self, 'Abrir Archivo', '', 'CSV, XLSX Files (*.csv *.xlsx);;All Files (*)')
         for _, i in self.mem.items():
             i.table.setEnabled(True)
@@ -837,16 +879,13 @@ class ComputadorCompleto(QMainWindow):
                 os.remove("tmp.$csv")
                 buffer2.close()
             self.set_Pins()
-            QMessageBox.information(self, 'Carga Completa', 'El archivo se ha cargado correctamente.')
-            self.barra_estado.showMessage('Carga de Memoria Completa.')
         except PermissionError:
             QMessageBox.critical(self, 'Error', 'No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.')
             return
 # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------
 
     def texto_modificado(self):
-        self.Ejecutar_cargar.setEnabled(False)
-        self.Ejecutar_sobreescribir.setEnabled(False)
+        self.mode = "coding-pend"
         self.barra_estado.showMessage('Archivo no guardado')
 
 

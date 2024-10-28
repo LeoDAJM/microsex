@@ -15,6 +15,10 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ### **Nuevas Funcionalidades**
 - ***NEW*** **Indicador Visual de `IP` (PIns) en editor**: Se agregó en el editor el resaltado de la línea actual de código en ejecución, para un mejor control del proceso.
 - ***NEW*** **Archivo de Listado adjunto al programa**: Al compilar un código, se abrirá automáticamente el archivo de listado respectivo al mismo, eliminando la necesidad de abrirlo con un lector de texto externo.
+- ***NEW*** **Drag&Drop**: Añadida funcionalidad de arrastrar y soltar archivos al emulador; esta acción funciona con archivos *.txt* y *.asm* y da como resultado la apertura de dichos archivos.
+- ***NEW*** **Definición y Reserva con ASCII**: Añadida la opción de ensamblar ASCII en el segmento de datos, se debe poner el texto entre comillas simples o dobles.
+- ***NEW*** **`.db` y `.rb` directivas sin nombre**: Ahora se pueden definir o reservar bytes en memoria sin necesidad de nombrar el espacio.
+- ***NEW*** **Definición de cadena de datos con `.db`**: Ahora es posible definir cadenas de datos de más de un byte (decimal, binario, hexadecimal o ASCII), se colocarán en memoria de forma correlativa.
 - **Soporte de Breakpoints**: Añade y elimina breakpoints mediante la tecla F2, con una opción adicional en el menú "Ejecutar".
 - **Optimización de Memoria**: Una única clase de memoria gestiona de manera eficiente los diferentes segmentos, manteniendo una memoria unificada en el archivo de configuración.
 - **Mejora en Archivos Listados**: Generación optimizada del archivo `.lst` que refleja mejor los resultados de la compilación, e interacción con los Breakpoints.
@@ -36,8 +40,8 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Errores Conocidos
 
 - **Python >= 3.13.x**: Si bien el programa se ejecuta, se han reportado errores en la asignación de segmentos en el CS durante el ensamblado (*unknown*).
-- **Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria (*pending*).
-- **Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.
+- ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~ (*SOLVED*)
+- ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~ (*SOLVED*)
 
 ## Pendiente Fork:
 
@@ -47,15 +51,15 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 - [ ] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
 - [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
-- [ ] Agregar todas +300 instrucciones del proyecto referido. (*largo plazo*)
+- [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:
 
 - [X] ~~Mostrar archivo de listado en la interfaz gráfica.~~
 - [ ] Mapear un puerto de entrada en el computador completo.
 - [ ] Tabla de símbolos debe mostrar error si hay nombres repetidos.
-- [ ] Admitir definición de cadena de datos y sin nombre.
-- [ ] Ensamblar ASCII.
+- [X] ~~Admitir definición de cadena de datos y sin nombre.~~
+- [X] ~~Ensamblar ASCII.~~
 
 ## Compatibilidad
 

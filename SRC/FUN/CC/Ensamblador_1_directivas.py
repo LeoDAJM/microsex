@@ -52,7 +52,7 @@ def verificar_directivas(DATOS):
                     else:
                         errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
 
-                elif directiva.startswith('.'):
+                elif directiva.startswith('.') and directiva.replace(" ", "") not in [".DB", ".RB"]:
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
 
         except ValueError:

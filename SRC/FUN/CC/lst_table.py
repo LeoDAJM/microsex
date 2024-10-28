@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
 from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
 from PyQt5.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QAbstractItemView
-from PyQt5.QtGui import QRegExpValidator, QPalette, QColor
+from PyQt5.QtGui import QRegExpValidator, QPalette, QColor, QIcon
 from PyQt5.QtCore import Qt, QRegExp, QSize
 from PyQt5.QtCore import QAbstractTableModel, QModelIndex
 
@@ -21,7 +21,7 @@ class lst_table(QWidget):
         self.table = QTableWidget(self)
         self.table.setStyleSheet(config.estilo["estilo_celdas"])
         lbl_rows, mem_pos, cod_op, txt = [x[0] for x in lst_data], [x[1] for x in lst_data], [x[2] for x in lst_data], [x[3] for x in lst_data]
-        h_header = ["Pos.Mem.", "Cod.Op.", "Cod.Original"]
+        h_header = ["Mem.", "Op.", "Cod.Original"]
         self.table.setColumnCount(3)
         self.table.setRowCount(len(lbl_rows))
         self.table.setMinimumWidth(150)
@@ -32,6 +32,7 @@ class lst_table(QWidget):
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         label = QLabel("Archivo LST")
         self.setWindowTitle("LST")
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
         self.setGeometry(200, 200, 600, 400)
 
         for i in range(self.table.rowCount()):
@@ -54,10 +55,3 @@ class lst_table(QWidget):
         for i, j in itertools.product(range(self.table.rowCount()), range(self.table.columnCount())):
             self.table.setItem(i,j,QTableWidgetItem(" "))
             self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    ex = memory()
-    ex.show()
-    sys.exit(app.exec_())

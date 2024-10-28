@@ -9,6 +9,8 @@ Los símbolos son guardados en la tabla de símbolos:
 import string
 from re import search
 from FUN.CONF.nemonicos import argumentos_instrucciones
+import re
+import math
 
 directivas_dseg = [
 '.ORG',     # Define una dirección desde donde se contará en la MDAT
@@ -23,6 +25,7 @@ reservados = ['A', 'B', 'C', 'IX', 'IY', 'X', 'Y']
 op_validas = '[\+\-\*\%]'
 
 palabras_reservadas = list(nemonicos)
+new_reserved_word = ["__" + chr(219), chr(219)]
 palabras_reservadas.extend(reservados)
 
 numeros = tuple(str(i) for i in string.digits)
@@ -36,6 +39,7 @@ def verificar_segmento_datos(DATOS, origen):
     simbolos = []
     valores = {}
     direccion = 0
+    phantom_vars_ct = 0
 
     Indice_Datos  = DATOS.index(['.DSEG'])
     Indice_Codigo = DATOS.index(['.CSEG'])
@@ -51,7 +55,64 @@ def verificar_segmento_datos(DATOS, origen):
 
         if len(DATOS[i]) == 2:
             directiva = DATOS[i][0]
-            if directiva != '.ORG':
+            if directiva == ".DB" or directiva == ".RB":
+                simbolo = "_ghost" + str(phantom_vars_ct)
+                simbolo_correcto = 1
+                contenido = DATOS[i][1]
+                if directiva not in directivas_dseg:
+                    if directiva.startswith('.'):
+                        errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
+                    else:
+                        errores, mensaje = err_sintaxis(errores, mensaje, i)
+                else:
+                    simbolo_correcto += 1
+
+                if contenido.isalnum() or ('_' in contenido) or search(op_validas, contenido) or re.findall(r'(["\'])(.*?)\1', contenido) is not None:
+                    try:
+                        if contenido.startswith('0X'):
+                            contenido = int(contenido,16)
+                            simbolo_correcto += 1
+                        elif contenido.startswith('0B'):
+                            contenido = int(contenido,2)
+                            simbolo_correcto += 1
+                        elif contenido.isdecimal():
+                            contenido = int(contenido)
+                            simbolo_correcto += 1
+                        elif re.findall(r'(["\'])(.*?)\1', contenido) is not None:
+                            contenido = ord(contenido[1])
+                            simbolo_correcto += 1
+                        elif search(op_validas, contenido):
+                            for v in valores:
+                                contenido = contenido.replace(v, str(valores[v]))
+                            contenido = eval(contenido)
+                            simbolo_correcto +=1
+                        elif contenido in simbolos:
+                            j = simbolos.index(contenido)
+                            contenido = int(tabla_simbolos[j][1])
+                            simbolo_correcto += 1
+                        else:
+                            errores, mensaje = err_contenido_invalido(errores, mensaje, contenido, i)
+                    except ValueError:
+                        errores += 1
+                        mensaje = mensaje + str('\nError en linea {}: contenido inválido "{}"'.format(i+1,contenido))
+                        pass
+                if simbolo_correcto == 3:
+                    if directiva == '.DB':
+                        lista_simbolos.update({i+1: [hex(direccion), [hex(contenido)]]})
+                        for k in range(math.ceil(len(hex(contenido))/2) - 1):
+                            if k != 0:
+                                simbolo = "__" + chr(219) + simbolo
+                            tabla_simbolos.append([simbolo, direccion, int(hex(contenido)[2+2*k:4+2*k] ,16)])
+                            simbolos.append(simbolo)
+                            valores.update({simbolo: direccion})
+                            direccion += 1
+                    elif directiva == '.RB':
+                        tabla_simbolos.append([simbolo, direccion, 'NC'])
+                        lista_simbolos.update({i+1: [hex(direccion)]})
+                        simbolos.append(simbolo)
+                        valores.update({simbolo: direccion})
+                        direccion += contenido
+            elif directiva != '.ORG':
                 if directiva.startswith('.'):
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
                 else:
@@ -59,7 +120,7 @@ def verificar_segmento_datos(DATOS, origen):
             else:
                 direccion = origen[i+1]
 
-        elif len(DATOS[i]) == 3:
+        elif len(DATOS[i]) == 3 or len(DATOS[i]) == 2:
             simbolo_correcto = 0
             simbolo   = DATOS[i][0]
             directiva = DATOS[i][1]
@@ -69,6 +130,8 @@ def verificar_segmento_datos(DATOS, origen):
                 errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
             elif simbolo in palabras_reservadas:
                 errores, mensaje = err_simbolo_palabra_reservada(errores, mensaje, simbolo, i)
+            elif simbolo in new_reserved_word:
+                errores, mensaje = err_simbolo_exp_reservada(errores, mensaje, chr(219), i)
             elif simbolo in simbolos:
                 errores, mensaje = err_simbolo_definido_antes(errores, mensaje, simbolo, i)
             elif simbolo.isalnum() or ('_' in simbolo):
@@ -85,18 +148,26 @@ def verificar_segmento_datos(DATOS, origen):
             else:
                 simbolo_correcto += 1
 
-            if contenido.isalnum() or ('_' in contenido) or search(op_validas, contenido):
+            if contenido.isalnum() or ('_' in contenido) or search(op_validas, contenido) or re.findall(r'(["\'])(.*?)\1', contenido) is not None:
                 try:
                     if contenido.startswith('0X'):
                         contenido = int(contenido,16)
+                        len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
 
                     elif contenido.startswith('0B'):
                         contenido = int(contenido,2)
+                        len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
 
                     elif contenido.isdecimal():
                         contenido = int(contenido)
+                        len_cont = len(hex(contenido)) - 2
+                        simbolo_correcto += 1
+                    
+                    elif re.findall(r'(["\'])(.*?)\1', contenido) is not None:
+                        len_cont = len(contenido.replace('"', '').replace("'", ""))
+                        contenido = int(contenido.replace('"', '').replace("'", "").encode("utf-8").hex(), 16)
                         simbolo_correcto += 1
 
                     elif search(op_validas, contenido):
@@ -128,11 +199,14 @@ def verificar_segmento_datos(DATOS, origen):
                     simbolos.append(simbolo)
                     valores.update({simbolo: contenido})
                 elif directiva == '.DB':
-                    tabla_simbolos.append([simbolo, direccion, contenido])
                     lista_simbolos.update({i+1: [hex(direccion), [hex(contenido)]]})
-                    simbolos.append(simbolo)
-                    valores.update({simbolo: direccion})
-                    direccion += 1
+                    for k in range(math.ceil(len(hex(contenido))/2) - 1):
+                        if k != 0:
+                            simbolo = chr(219) + simbolo + "_" + str(k)
+                        tabla_simbolos.append([simbolo, direccion, int(hex(contenido)[2+2*k:4+2*k] ,16)])
+                        simbolos.append(simbolo)
+                        valores.update({simbolo: direccion})
+                        direccion += 1
                 elif directiva == '.RB':
                     tabla_simbolos.append([simbolo, direccion, 'NC'])
                     lista_simbolos.update({i+1: [hex(direccion)]})
@@ -150,7 +224,6 @@ def verificar_segmento_datos(DATOS, origen):
         # print('\nDIRECCIÓN ACTUAL',hex(direccion))
     else:
         mensaje = mensaje + str('\n ** Total errores en segmento de datos: {}'.format(errores))
-
     return errores, mensaje, tabla_simbolos, lista_simbolos, direccion
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):
@@ -176,6 +249,11 @@ def err_simbolo_definido_antes(errores_previos, mensaje, simbolo, indice):
 def err_simbolo_palabra_reservada(errores_previos, mensaje, simbolo, indice):
     errores = errores_previos + 1
     mensaje = mensaje + str('\nError en línea {}: símbolo no admite palabra reservada {}'.format(indice+1,simbolo))
+    return errores, mensaje
+
+def err_simbolo_exp_reservada(errores_previos, mensaje, simbolo, indice):
+    errores = errores_previos + 1
+    mensaje = mensaje + str('\nError en línea {}: símbolo no admite expresión reservada {}'.format(indice+1,simbolo))
     return errores, mensaje
 
 def err_contenido_invalido(errores_previos, mensaje, contenido, indice):

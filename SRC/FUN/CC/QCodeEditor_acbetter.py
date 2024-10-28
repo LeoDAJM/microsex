@@ -29,6 +29,7 @@ class QCodeEditor(QPlainTextEdit):
         self.updateRequest.connect(self.updateLineNumberArea)
         self.cursorPositionChanged.connect(self.highlightCurrentLine)
         self.updateLineNumberAreaWidth(0)
+        self.setAcceptDrops(False)
 
     def keyPressEvent(self, event):
         if event.key() == 16777265:  # El código de la tecla F2
@@ -83,18 +84,17 @@ class QCodeEditor(QPlainTextEdit):
     def highl_IP(self, block_num: int):
         if hasattr(self, "past_ip"):
             self.xtra.remove(self.past_ip)
-        if self.isReadOnly():
-            selection = QTextEdit.ExtraSelection()
-            selection.format.setBackground(QColor(0,255,100))
-            selection.format.setForeground(QColor(20, 60, 134))
-            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
-            selection.cursor = self.textCursor()
-            selection.cursor.movePosition(QTextCursor.Start)
-            for _ in range(block_num):
-                selection.cursor.movePosition(QTextCursor.Down)
-            selection.cursor.clearSelection()
-            self.past_ip = selection
-            self.xtra.append(selection)
+        selection = QTextEdit.ExtraSelection()
+        selection.format.setBackground(QColor(0,255,100))
+        selection.format.setForeground(QColor(20, 60, 134))
+        selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+        selection.cursor = self.textCursor()
+        selection.cursor.movePosition(QTextCursor.Start)
+        for _ in range(block_num):
+            selection.cursor.movePosition(QTextCursor.Down)
+        selection.cursor.clearSelection()
+        self.past_ip = selection
+        self.xtra.append(selection)
         self.setExtraSelections(self.xtra)
         
     def highlightCurrentLine(self):
