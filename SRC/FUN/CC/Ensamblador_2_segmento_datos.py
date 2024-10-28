@@ -78,7 +78,7 @@ def verificar_segmento_datos(DATOS, origen):
                         elif contenido.isdecimal():
                             contenido = int(contenido)
                             simbolo_correcto += 1
-                        elif re.findall(r'(["\'])(.*?)\1', contenido) is not None:
+                        elif (contenido[0] == '"' or contenido[0] == "'") and (contenido[-1] == contenido[0]):
                             contenido = ord(contenido[1])
                             simbolo_correcto += 1
                         elif search(op_validas, contenido):
@@ -165,7 +165,7 @@ def verificar_segmento_datos(DATOS, origen):
                         len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
                     
-                    elif re.findall(r'(["\'])(.*?)\1', contenido) is not None:
+                    elif (contenido[0] == '"' or contenido[0] == "'") and (contenido[-1] == contenido[0]):
                         len_cont = len(contenido.replace('"', '').replace("'", ""))
                         contenido = int(contenido.replace('"', '').replace("'", "").encode("utf-8").hex(), 16)
                         simbolo_correcto += 1

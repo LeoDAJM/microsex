@@ -16,7 +16,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 - ***NEW*** **Indicador Visual de `IP` (PIns) en editor**: Se agregó en el editor el resaltado de la línea actual de código en ejecución, para un mejor control del proceso.
 - ***NEW*** **Archivo de Listado adjunto al programa**: Al compilar un código, se abrirá automáticamente el archivo de listado respectivo al mismo, eliminando la necesidad de abrirlo con un lector de texto externo.
 - ***NEW*** **Drag&Drop**: Añadida funcionalidad de arrastrar y soltar archivos al emulador; esta acción funciona con archivos *.txt* y *.asm* y da como resultado la apertura de dichos archivos.
-- ***NEW*** **Definición y Reserva con ASCII**: Añadida la opción de ensamblar ASCII en el segmento de datos, se debe poner el texto entre comillas simples o dobles.
+- ***NEW*** **Definición y Reserva con ASCII**: Añadida la opción de ensamblar ASCII en el segmento de datos, se debe poner el texto entre comillas simples o dobles. (falta añadir con minúsculas)
 - ***NEW*** **`.db` y `.rb` directivas sin nombre**: Ahora se pueden definir o reservar bytes en memoria sin necesidad de nombrar el espacio.
 - ***NEW*** **Definición de cadena de datos con `.db`**: Ahora es posible definir cadenas de datos de más de un byte (decimal, binario, hexadecimal o ASCII), se colocarán en memoria de forma correlativa.
 - **Soporte de Breakpoints**: Añade y elimina breakpoints mediante la tecla F2, con una opción adicional en el menú "Ejecutar".
@@ -40,6 +40,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Errores Conocidos
 
 - **Python >= 3.13.x**: Si bien el programa se ejecuta, se han reportado errores en la asignación de segmentos en el CS durante el ensamblado (*unknown*).
+- ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ (*SOLVED*)
 - ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~ (*SOLVED*)
 - ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~ (*SOLVED*)
 
