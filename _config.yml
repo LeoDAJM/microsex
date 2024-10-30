@@ -10,26 +10,10 @@ plugins:
 # Configuraciones adicionales
 markdown: kramdown
 permalink: pretty # Define las URL amigables
-
-# Configuración de la navegación
-nav:
-  - title: "Microsex Home Page"
-    url: "/"
-  - title: "Sobre mí"
-    url: "/sobre.html"
-  - title: "Contacto"
-    url: "/contacto.html"
-
 # Plugins a utilizar (si los necesitas)
 plugins:
   - jekyll-feed # Para el RSS feed
   - jekyll-seo-tag # Para SEO
-
-# Opciones de personalización
-paginate: 5 # Número de entradas por página
-exclude: # Archivos o directorios a excluir del sitio
-  - README.md
-  - LICENSE
 
 # Parámetros adicionales (opcional)
 social:
