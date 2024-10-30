@@ -1,12 +1,12 @@
 import itertools
 import sys
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
-from PyQt5.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QAbstractItemView
-from PyQt5.QtGui import QRegExpValidator, QPalette, QColor, QIcon
-from PyQt5.QtCore import Qt, QRegExp, QSize
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex
+from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
+from PyQt6.QtWidgets import QLineEdit, QPushButton, QLabel
+from PyQt6.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
+from PyQt6.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QAbstractItemView
+from PyQt6.QtGui import QRegularExpressionValidator, QPalette, QColor, QIcon
+from PyQt6.QtCore import Qt, QRegularExpression, QSize
+from PyQt6.QtCore import QAbstractTableModel, QModelIndex
 
 import FUN.CONF.configCC as config
 
@@ -29,7 +29,7 @@ class lst_table(QWidget):
         #self.table.setItemDelegate(Validador2())
         self.table.setHorizontalHeaderLabels(h_header)
         self.table.setVerticalHeaderLabels(lbl_rows)
-        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         label = QLabel("Archivo LST")
         self.setWindowTitle("LST")
         self.setWindowIcon(QIcon(':IMG/icono.png'))
@@ -41,10 +41,10 @@ class lst_table(QWidget):
         for i, fila in enumerate(lst_data):
             for j, valor in enumerate(fila[1:]):
                 self.table.setItem(i, j, QTableWidgetItem(str(valor).strip()))
-                self.table.item(i, j).setTextAlignment(Qt.AlignLeft)
+                self.table.item(i, j).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.table.resizeColumnsToContents()
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
         vb2 = QVBoxLayout()
         vb2.addWidget(label)

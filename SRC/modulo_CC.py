@@ -2,9 +2,9 @@ import sys
 import string
 import csv
 from openpyxl import Workbook, load_workbook
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
-from PyQt5.QtWidgets import QAction, QFileDialog, QApplication, QTextEdit, QSizePolicy, QToolButton
-from PyQt5.QtGui import QFont, QIcon, QFontDatabase
+from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
+from PyQt6.QtWidgets import QFileDialog, QApplication, QTextEdit, QSizePolicy, QToolButton
+from PyQt6.QtGui import QFont, QIcon, QFontDatabase, QAction
 import os
 import io
 import FUN.CONF.config_custom as config2
@@ -35,11 +35,11 @@ class ComputadorCompleto(QMainWindow):
         self.setMinimumSize(600, 400)
         self.setMaximumSize(19200, 10800)
         flags = self.windowFlags()
-        flags |= Qt.CustomizeWindowHint
-        flags |= Qt.WindowTitleHint
-        flags |= Qt.WindowSystemMenuHint
-        flags |= Qt.WindowCloseButtonHint
-        flags |= Qt.WindowMaximizeButtonHint
+        flags |= Qt.WindowType.CustomizeWindowHint
+        flags |= Qt.WindowType.WindowTitleHint
+        flags |= Qt.WindowType.WindowSystemMenuHint
+        flags |= Qt.WindowType.WindowCloseButtonHint
+        flags |= Qt.WindowType.WindowMaximizeButtonHint
         self.setWindowFlags(flags)
         self.setWindowTitle('Microsex - Computador Completo')
         app_icon = QIcon()
@@ -57,11 +57,11 @@ class ComputadorCompleto(QMainWindow):
             i.table.verticalHeader().setFont(self.fuente)
         
         ed_font = self.fuente
-        ed_font.setLetterSpacing(QFont.PercentageSpacing, 110)
+        ed_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 110)
         self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_min)
         self.editor_codigo.editor.setFont(ed_font)
         fontMetrics = QFontMetricsF(ed_font)
-        spaceWidth = fontMetrics.width(' ')
+        spaceWidth = fontMetrics.horizontalAdvance(' ')
         self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
         
         for child in self.registros.findChildren(QWidget):
@@ -95,7 +95,7 @@ class ComputadorCompleto(QMainWindow):
         self.mode = "start"       # "edit" "run" "loaded"
         self.misc = []
         self.detected_past = None
-        self.setWindowFlag(Qt.WindowMaximizeButtonHint, True)
+        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
         self.direccion_inicio = '0000'
         self.chkbx = {'s':QCheckBox(text=" "),
@@ -122,10 +122,10 @@ class ComputadorCompleto(QMainWindow):
                     "c": memory(0,16,"code","Segmento de Código"),
                     "d": memory(0,16,"data","Segmento de Datos")}
         for i in self.mem.values():
-            i.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            i.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             i.table.setEnabled(False)
 
-        self.editor_codigo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.editor_codigo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
@@ -170,9 +170,9 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar = QToolBar("Main Toolbar")
         self.toolbar.setIconSize(QSize(16,16))
         spacer = QWidget()
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         spacer2 = QWidget()
-        spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        spacer2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         edit_tool = QAction(QIcon(':IMG/edit.png'), "Edit", self)
         edit_tool.triggered.connect(lambda: self.state_def(True,False,False,True))
@@ -191,7 +191,8 @@ class ComputadorCompleto(QMainWindow):
             elif k == 7:
                 self.toolbar.addWidget(spacer2)
         self.addToolBar(self.toolbar)
-        self.toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+        #Qt.ToolButtonStyle.ToolButtonTextBesideIcon
 
 # region Menú -----------------------------------------------------------------
         self.nombre_archivo = False
@@ -284,7 +285,7 @@ class ComputadorCompleto(QMainWindow):
                 for j in range(v.table.columnCount()):
                     if v.table.item(i, j) is None:
                         v.table.setItem(i,j,QTableWidgetItem("00"))
-                        v.table.item(i,j).setTextAlignment(Qt.AlignCenter)
+                        v.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
     def update_segments(self, mp_el: dict):
         _ds_ordered = dict(sorted(self._ds.items(), key=lambda item: (item[1] is None, item[1]), reverse=True))
         _ds_ordered = [[k, v * 16] for k, v in _ds_ordered.items() if v is not None]
@@ -354,14 +355,14 @@ class ComputadorCompleto(QMainWindow):
 
     def save_fcn(self, save_type: str):
         cursor = self.editor_codigo.editor.textCursor()
-        cursor.movePosition(cursor.End, cursor.MoveAnchor)
-        cursor.movePosition(cursor.Left, cursor.KeepAnchor)
+        cursor.movePosition(cursor.MoveOperation.End, cursor.MoveMode.MoveAnchor)
+        cursor.movePosition(cursor.MoveOperation.Left, cursor.MoveMode.KeepAnchor)
         if cursor.selectedText() in letras_numeros:
-            cursor.movePosition(cursor.End)
+            cursor.movePosition(cursor.MoveOperation.End)
             linea_nueva = "\n"
             cursor.insertText(linea_nueva)
         if save_type == "como":
-            nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.Options())
+            nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.options())
             if nombre_archivo[0]:
                 self.nombre_archivo = nombre_archivo[0]
                 self.setWindowTitle(f'Microsex - Computador Completo - {nombre_archivo[0]}')
@@ -437,10 +438,10 @@ class ComputadorCompleto(QMainWindow):
         for _ in range(linea_inicial, linea_final + 1):
             self.movpos(cursor, punto_coma)
 
-    def movpos(self, cursor, arg1):
-        cursor.movePosition(cursor.StartOfLine)
+    def movpos(self, cursor: QTextCursor, arg1):
+        cursor.movePosition(cursor.movePosition.StartOfLine)
         cursor.insertText(arg1)
-        cursor.movePosition(cursor.Down)
+        cursor.movePosition(cursor.movePosition.Down)
 
     def descomentar(self):
         punto_coma = ";"
@@ -457,12 +458,12 @@ class ComputadorCompleto(QMainWindow):
         for _ in range(linea_inicial, linea_final + 1):
             self.set_curs(cursor, punto_coma)
 
-    def set_curs(self, cursor, arg1):
-        cursor.movePosition(cursor.StartOfLine, cursor.MoveAnchor)
-        cursor.movePosition(cursor.NextCharacter, cursor.KeepAnchor)
+    def set_curs(self, cursor: QTextCursor, arg1):
+        cursor.movePosition(cursor.movePosition.StartOfLine, cursor.MoveMode.MoveAnchor)
+        cursor.movePosition(cursor.movePosition.NextCharacter, cursor.MoveMode.KeepAnchor)
         if cursor.selectedText() == arg1:
             cursor.deleteChar()
-        cursor.movePosition(cursor.Down)
+        cursor.movePosition(cursor.movePosition.Down)
 # endregion
 # region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
@@ -636,7 +637,7 @@ class ComputadorCompleto(QMainWindow):
             writer.writerow([strs[k]])
             for i in range(x.table.rowCount()):
                 if (any(x.table.item(i, v).text() != '00' for v in range(x.table.columnCount()))
-                or self.response_clear != QMessageBox.Yes):
+                or self.response_clear != QMessageBox.StandardButton.Yes):
                     row_data = [str(i)]
                     row_data.extend(x.table.item(i,j).text() for j in range(x.table.columnCount()))
                     writer.writerow(row_data)
@@ -665,8 +666,8 @@ class ComputadorCompleto(QMainWindow):
 
     def dialog_save(self, msg_str: str, row = None):
         self.msg = QDialog(self)
-        self.msg.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint | Qt.CustomizeWindowHint)
-        self.msg.setWindowFlags(self.msg.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.msg.setWindowFlags(Qt.WindowType.CustomizeWindowHint | Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint)
+        self.msg.setWindowFlags(self.msg.windowFlags() & ~Qt.WindowType.WindowCloseButtonHint)
         lbl = QLabel(f"Selecciona los segmentos a {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
@@ -688,7 +689,7 @@ class ComputadorCompleto(QMainWindow):
             layout.addWidget(i, stretch=1)
         layout.addWidget(self.btt_dialog, stretch=1)
         self.msg.setLayout(layout)
-        self.msg.exec_()
+        self.msg.exec()
 
     def stt_chk (self, chkbx):
         self.btt_dialog.setEnabled(chkbx['s'].isChecked() or chkbx['d'].isChecked() or chkbx['c'].isChecked())
@@ -701,11 +702,11 @@ class ComputadorCompleto(QMainWindow):
             self.state[k] = v.table.rowCount() != 0 and v.table.columnCount() != 0
         self.response_clear = None
         mensaje = QMessageBox()
-        mensaje.setIcon(QMessageBox.Question)  # Icono de pregunta
+        mensaje.setIcon(QMessageBox.Icon.Question)  # Icono de pregunta
         mensaje.setText("¿Deseas omitir las columnas cuyos valores sean 0?")
         mensaje.setWindowTitle("Confirmar Omitir Columnas")
-        mensaje.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        mensaje.setDefaultButton(QMessageBox.Yes)
+        mensaje.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        mensaje.setDefaultButton(QMessageBox.StandardButton.Yes)
         self.response_clear = mensaje.exec()
         self.dialog_save("exportar")
 
@@ -795,4 +796,4 @@ if __name__ == '__main__':
     ex = ComputadorCompleto()
     
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

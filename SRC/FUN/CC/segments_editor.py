@@ -1,12 +1,12 @@
 import itertools
 import sys
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
-from PyQt5.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QTableView
-from PyQt5.QtGui import QRegExpValidator, QPalette, QColor
-from PyQt5.QtCore import Qt, QRegExp, QSize
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex
+from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
+from PyQt6.QtWidgets import QLineEdit, QPushButton, QLabel
+from PyQt6.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
+from PyQt6.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QTableView
+from PyQt6.QtGui import QRegularExpressionValidator, QPalette, QColor
+from PyQt6.QtCore import Qt, QRegularExpression, QSize
+from PyQt6.QtCore import QAbstractTableModel, QModelIndex
 
 import FUN.CONF.configCC as config
 
@@ -15,8 +15,8 @@ class Validador2(QItemDelegate):
         super().__init__()
 
     def createEditor(self,parent,option,index):
-        regex = QRegExp("[0-9a-fA-F]{2}")
-        self.rxval = QRegExpValidator(regex, self)
+        regex = QRegularExpression("[0-9a-fA-F]{2}")
+        self.rxval = QRegularExpressionValidator(regex, self)
         self.edt_rx = QLineEdit(parent)
         self.edt_rx.textChanged[str].connect(self.verificar)
         self.edt_rx.editingFinished.connect(self.finalizado)
@@ -54,10 +54,10 @@ class memory(QWidget):
         self.table.setVerticalHeaderLabels(v_header)
         
         if type.lower() == "stack":      # Para Stack
-            self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-            self.table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+            self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         elif type.lower() in {"code", "data"}:  # Para Data, Code
-            self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         self.type = type
         
@@ -71,7 +71,7 @@ class memory(QWidget):
 
         for i, j in itertools.product(range(rows), range(cols)):
             self.table.setItem(i,j,QTableWidgetItem('00'))
-            self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
+            self.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.table.cellChanged.connect(self.on_change)
         vb2 = QVBoxLayout()
         self.lbl = QLabel(title, self)
@@ -95,11 +95,11 @@ class memory(QWidget):
         for i, j in itertools.product(range(self.table.rowCount()), range(self.table.columnCount())):
             if self.table.item(i,j) is None or self.table.item(i,j) != "00":
                 self.table.setItem(i,j,QTableWidgetItem('00'))
-                self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
+                self.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = memory()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

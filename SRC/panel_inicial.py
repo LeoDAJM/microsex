@@ -1,11 +1,11 @@
 import sys
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QComboBox
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QLabel, QPushButton, QComboBox
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from PyQt5.QtGui import QPixmap, QColor, QFont
-from PyQt5.QtCore import Qt
+from PyQt6.QtGui import QPixmap, QColor, QFont
+from PyQt6.QtCore import Qt
 
 from FUN.CONF.HojaEstilos import stylesheet
 
@@ -28,7 +28,7 @@ class PanelInicialWidget(QWidget):
 
         self.logo_inicial = QLabel(self)
         self.logo_inicial.setPixmap(Logo)
-        self.logo_inicial.setAlignment(Qt.AlignCenter)
+        self.logo_inicial.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.boton_seleccion = QPushButton("Módulos de entrenamiento", self)    # Debe tener formato de botón
         self.boton_seleccion.clicked.connect(self.seleccion_modulos)
@@ -69,7 +69,7 @@ https://github.com/korvec/microsex
 
         # DMRJ = QLabel('Por: Diego Marcelo Ramírez Jove\n2019\n', self)
         DMRJ = QLabel(txtDMRJ,self)
-        DMRJ.setAlignment(Qt.AlignCenter)
+        DMRJ.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         bloque_inicial = QVBoxLayout()
         bloque_inicial.addWidget(self.logo_inicial)

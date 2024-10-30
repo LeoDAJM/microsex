@@ -2,3 +2,16 @@ SRC/__pycache__
 SRC/FUN/__pycache__
 SRC/FUN/CONF/__pycache__
 SRC/FUN/CC/__pycache__
+/SRC/font
+SRC/IMG/back.png
+SRC/IMG/clr_ld.png
+SRC/IMG/edit.png
+SRC/IMG/ld.png
+SRC/IMG/next.png
+SRC/IMG/open.png
+SRC/IMG/power.png
+SRC/IMG/run.png
+SRC/IMG/save.png
+SRC/IMG/step.png
+SRC/rsc.qrc
+SRC/IMG/icon32.png

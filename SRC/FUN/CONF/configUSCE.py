@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFont
+from PyQt6.QtGui import QFont
 from FUN.CONF.HojaEstilos import stylesheet
 from FUN.CONF.descodUSCE import nemonicosUSCE
 from FUN.CONF.descodUSCE import descodificadorUSCE

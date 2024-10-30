@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtWidgets import QPushButton, QRadioButton, QGroupBox
-from PyQt5.QtWidgets import QLineEdit, QLabel
-from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtWidgets import QPushButton, QRadioButton, QGroupBox
+from PyQt6.QtWidgets import QLineEdit, QLabel
+from PyQt6.QtCore import Qt, QPointF
+from PyQt6.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 
 from FUN.util import *
 from FUN.alu import unidad_aritmetica_logica
@@ -48,14 +48,14 @@ class ALU(QWidget):
         for i in range(0,2):
             self.lbl_valor_hex[i] = QLabel("00",self)
             self.lbl_valor_hex[i].setGeometry(200, 50 + i*20, 60, 20)
-            self.lbl_valor_hex[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_hex[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_valor_hex[i].setFont(config.fuente_num)
             self.lbl_valor_hex[i].setVisible(False)
 
             self.edit_hex[i] = QLineEdit("00",self)
             self.edit_hex[i].setInputMask("HH")
             self.edit_hex[i].setGeometry(200, 50 + i*20, 60, 20)
-            self.edit_hex[i].setAlignment(Qt.AlignCenter)
+            self.edit_hex[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.edit_hex[i].setFont(config.fuente_num)
             self.edit_hex[i].setStyleSheet(config.estilo["estilo_edit"])
             self.edit_hex[i].textEdited[str].connect(self.asignacion_variables)
@@ -72,13 +72,13 @@ class ALU(QWidget):
         for i in range(0,2):
             self.lbl_valor_bin[i] = QLabel("00000000",self)
             self.lbl_valor_bin[i].setGeometry(300, 50 + i*20, 120, 20)
-            self.lbl_valor_bin[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_bin[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_valor_bin[i].setFont(config.fuente_num)
 
             self.edit_bin[i] = QLineEdit("00000000",self)
             self.edit_bin[i].setInputMask("BBBBBBBB")
             self.edit_bin[i].setGeometry(300, 50 + i*20, 120, 20)
-            self.edit_bin[i].setAlignment(Qt.AlignCenter)
+            self.edit_bin[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.edit_bin[i].setFont(config.fuente_num)
             self.edit_bin[i].setStyleSheet(config.estilo["estilo_edit"])
             self.edit_bin[i].setVisible(False)
@@ -93,7 +93,7 @@ class ALU(QWidget):
         for i in range(0,2):
             self.lbl_valor_dec[i] = QLabel("0",self)
             self.lbl_valor_dec[i].setGeometry(460,50 + i*20,60,20)
-            self.lbl_valor_dec[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_dec[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_valor_dec[i].setFont(config.fuente_num)
 
         # GRUPO DECIMAL SIGNADO
@@ -105,7 +105,7 @@ class ALU(QWidget):
         for i in range(0,2):
             self.lbl_valor_sig[i] = QLabel("0",self)
             self.lbl_valor_sig[i].setGeometry(560,50 + i*20,80,20)
-            self.lbl_valor_sig[i].setAlignment(Qt.AlignCenter)
+            self.lbl_valor_sig[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_valor_sig[i].setFont(config.fuente_num)
 
         # GRUPO SEÑALES DE CONTROL
@@ -114,13 +114,13 @@ class ALU(QWidget):
             lbl_s[i] = QLabel(self)
             lbl_s[i].setText('S<sub>' + str(i) +'</sub>')
             lbl_s[i].setGeometry(200 + (6-i)*20, 100, 20, 25)
-            lbl_s[i].setAlignment(Qt.AlignCenter)
+            lbl_s[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_s[i].setFont(config.fuente_grande)
 
         self.lbl_senales = [0]*7
         for i in range(7):
             self.lbl_senales[6-i] = QLabel("0", self)
-            self.lbl_senales[6-i].setAlignment(Qt.AlignCenter)
+            self.lbl_senales[6-i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_senales[6-i].setGeometry(200 + i*20, 125, 20, 25)
             self.lbl_senales[6-i].setFont(config.fuente_num)
             self.lbl_senales[6-i].setStyleSheet("QLabel { color: rgb(255, 255, 255);}")
@@ -162,7 +162,7 @@ class ALU(QWidget):
             n = 140 + i*250
             lbl_s[i] = QLabel(self)
             lbl_s[i].setGeometry(n, 440, 60, 25)
-            lbl_s[i].setAlignment(Qt.AlignCenter)
+            lbl_s[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_s[i].setFont(config.fuente_grande)
         lbl_s[0].setText('S<sub>4:0</sub>')
         lbl_s[1].setText('S<sub>6:5</sub>')
@@ -182,23 +182,23 @@ class ALU(QWidget):
 
         self.lbl_in_a = QLabel("00", self)
         self.lbl_in_a.setGeometry(40, 200, 40, 20)
-        self.lbl_in_a.setAlignment(Qt.AlignCenter)
+        self.lbl_in_a.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_in_a.setFont(config.fuente_num)
 
         self.lbl_in_b = QLabel("00", self)
         self.lbl_in_b.setGeometry(40, 370, 40, 20)
-        self.lbl_in_b.setAlignment(Qt.AlignCenter)
+        self.lbl_in_b.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_in_b.setFont(config.fuente_num)
         self.lbl_in_b.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
         self.lbl_resultado = QLabel("00", self)
         self.lbl_resultado.setGeometry(620, 290, 40, 20)
-        self.lbl_resultado.setAlignment(Qt.AlignCenter)
+        self.lbl_resultado.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_resultado.setFont(config.fuente_num)
 
         self.lbl_carry_out = QLabel("0", self)
         self.lbl_carry_out.setGeometry(620, 250, 40, 20)
-        self.lbl_carry_out.setAlignment(Qt.AlignCenter)
+        self.lbl_carry_out.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_carry_out.setFont(config.fuente_num)
         self.lbl_carry_out.setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
@@ -387,4 +387,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = ALU()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

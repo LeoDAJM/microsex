@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtGui import QIcon
+from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtGui import QIcon
 
 from panel_inicial import *
 
@@ -107,4 +107,4 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Principal()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

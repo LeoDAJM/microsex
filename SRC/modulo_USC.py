@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtWidgets import QPushButton, QRadioButton, QGroupBox
-from PyQt5.QtWidgets import QLineEdit, QLabel
-from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtWidgets import QPushButton, QRadioButton, QGroupBox
+from PyQt6.QtWidgets import QLineEdit, QLabel
+from PyQt6.QtCore import Qt, QPointF
+from PyQt6.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 
 from FUN.util import *
 from FUN.alu import unidad_aritmetica_logica
@@ -42,14 +42,14 @@ class USC(QWidget):
 
         self.lbl_valor_hex = QLabel("00",self)
         self.lbl_valor_hex.setGeometry(180, 50, 60, 20)
-        self.lbl_valor_hex.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_hex.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_hex.setFont(config.fuente_num)
         self.lbl_valor_hex.setVisible(False)
 
         self.edit_hex = QLineEdit("00",self)
         self.edit_hex.setInputMask("HH")
         self.edit_hex.setGeometry(180, 50, 60, 20)
-        self.edit_hex.setAlignment(Qt.AlignCenter)
+        self.edit_hex.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_hex.setFont(config.fuente_num)
         self.edit_hex.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_hex.textEdited[str].connect(self.asignacion_variables)
@@ -63,13 +63,13 @@ class USC(QWidget):
 
         self.lbl_valor_bin = QLabel("00000000",self)
         self.lbl_valor_bin.setGeometry(280, 50, 120, 20)
-        self.lbl_valor_bin.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_bin.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_bin.setFont(config.fuente_num)
 
         self.edit_bin = QLineEdit("00000000",self)
         self.edit_bin.setInputMask("BBBBBBBB")
         self.edit_bin.setGeometry(280, 50, 120, 20)
-        self.edit_bin.setAlignment(Qt.AlignCenter)
+        self.edit_bin.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_bin.setFont(config.fuente_num)
         self.edit_bin.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_bin.setVisible(False)
@@ -82,7 +82,7 @@ class USC(QWidget):
 
         self.lbl_valor_dec = QLabel("0",self)
         self.lbl_valor_dec.setGeometry(440, 50, 60, 20)
-        self.lbl_valor_dec.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_dec.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_dec.setFont(config.fuente_num)
 
         # GRUPO DECIMAL SIGNADO
@@ -92,7 +92,7 @@ class USC(QWidget):
 
         self.lbl_valor_sig = QLabel("0",self)
         self.lbl_valor_sig.setGeometry(540, 50, 80, 20)
-        self.lbl_valor_sig.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_sig.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_sig.setFont(config.fuente_num)
 
         # GRUPO SEÑALES DE CONTROL
@@ -115,7 +115,7 @@ class USC(QWidget):
         lbl_s=[0]*4
         for i in range(4):
             lbl_s[i] = QLabel(self)
-            lbl_s[i].setAlignment(Qt.AlignCenter)
+            lbl_s[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_s[i].setFont(config.fuente_grande)
         lbl_s[0].setText('S <sub>19:12</sub>')
         lbl_s[0].setGeometry(180, 100, 160, 25)
@@ -129,13 +129,13 @@ class USC(QWidget):
         self.lbl_senales = [0]*20
         for i in range(20):
             self.lbl_senales[19-i] = QLabel("0", self)
-            self.lbl_senales[19-i].setAlignment(Qt.AlignCenter)
+            self.lbl_senales[19-i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_senales[19-i].setGeometry(180 + i*20, 125, 20, 25)
             self.lbl_senales[19-i].setFont(config.fuente_num)
             self.lbl_senales[19-i].setStyleSheet("QLabel { color: rgb(255, 255, 255);}")
 
         self.lbl_instruccion = QLabel("NOP", self)
-        self.lbl_instruccion.setAlignment(Qt.AlignCenter)
+        self.lbl_instruccion.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_instruccion.setGeometry(610, 100, 60, 25)
         self.lbl_instruccion.setFont(config.fuente_num)
         self.lbl_instruccion.setStyleSheet("QLabel { color: rgb(70,170,255);}")
@@ -170,7 +170,7 @@ class USC(QWidget):
 
         lbl_do = QLabel(self)
         lbl_do.setGeometry(180, 480, 60, 25)
-        lbl_do.setAlignment(Qt.AlignCenter)
+        lbl_do.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl_do.setFont(config.fuente_grande)
         lbl_do.setText('DO<sub>4:0</sub>')
 
@@ -204,18 +204,18 @@ class USC(QWidget):
 
         self.lbl_in_b = QLabel("00", self)
         self.lbl_in_b.setGeometry(60, 330, 40, 20)
-        self.lbl_in_b.setAlignment(Qt.AlignCenter)
+        self.lbl_in_b.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_in_b.setFont(config.fuente_num)
         self.lbl_in_b.setStyleSheet("QLabel { color: rgb(0, 230, 125);}")
 
         self.lbl_resultado = QLabel("00", self)
         self.lbl_resultado.setGeometry(275, 280, 40, 20)
-        self.lbl_resultado.setAlignment(Qt.AlignCenter)
+        self.lbl_resultado.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_resultado.setFont(config.fuente_num)
 
         self.lbl_acumulador = QLabel("00", self)
         self.lbl_acumulador.setGeometry(520, 300, 40, 20)
-        self.lbl_acumulador.setAlignment(Qt.AlignCenter)
+        self.lbl_acumulador.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_acumulador.setFont(config.fuente_num)
 
         lbl_f = [0]*6
@@ -223,7 +223,7 @@ class USC(QWidget):
         for i in range(6):
             lbl_f[i] = QLabel(txt_f[i], self)
             lbl_f[i].setGeometry(520 + i*20, 220, 20, 20)
-            lbl_f[i].setAlignment(Qt.AlignCenter)
+            lbl_f[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_f[i].setFont(config.fuente_num)
             lbl_f[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
@@ -231,7 +231,7 @@ class USC(QWidget):
         for i in range(6):
             self.lbl_banderas[i] = QLabel("0", self)
             self.lbl_banderas[i].setGeometry(520 + i*20, 240, 20, 20)
-            self.lbl_banderas[i].setAlignment(Qt.AlignCenter)
+            self.lbl_banderas[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_banderas[i].setFont(config.fuente_num)
             self.lbl_banderas[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
@@ -431,4 +431,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = USC()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
