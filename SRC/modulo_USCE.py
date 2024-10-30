@@ -136,14 +136,14 @@ class USCE(QWidget):
 
     def grupo_grafico(self):
 
-        pix_lct = QPixmap("IMG/LCT.png")
-        pix_alu = QPixmap("IMG/USCE alu.png")
-        pix_acu = QPixmap("IMG/USCE acum.png")
-        pix_mux = QPixmap("IMG/USCE mux.png")
-        pix_do  = QPixmap("IMG/USCE descod.png")
-        pix_md  = QPixmap("IMG/USCE mdat.png")
-        pix_flecha_arr = QPixmap("IMG/USCE flecha arr.png")
-        pix_flecha_izq = QPixmap("IMG/USCE flecha izq.png")
+        pix_lct = QPixmap(":IMG/LCT.png")
+        pix_alu = QPixmap(":IMG/USCE alu.png")
+        pix_acu = QPixmap(":IMG/USCE acum.png")
+        pix_mux = QPixmap(":IMG/USCE mux.png")
+        pix_do  = QPixmap(":IMG/USCE descod.png")
+        pix_md  = QPixmap(":IMG/USCE mdat.png")
+        pix_flecha_arr = QPixmap(":IMG/USCE flecha arr.png")
+        pix_flecha_izq = QPixmap(":IMG/USCE flecha izq.png")
 
         grp_graf = QGroupBox("Prueba gráfica", self)
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
@@ -270,7 +270,7 @@ class USCE(QWidget):
         pl_resultado = [[340, 290], [340, 380], [220, 380], [220, 400]]
         pl_banderas  = [[290, 240], [360, 240], [360, 250], [380, 250]]
 
-        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_acumulador)
         # Entradas a la ALU
         qp.drawLine(180, 250, 250, 250)
@@ -290,7 +290,7 @@ class USCE(QWidget):
         qp.drawLine(130, 250, 160, 250)
         qp.drawLine(120, 260, 160, 260)
         # Puntos de conexión
-        qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,230,230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         # Conexiones antes del mux A
         qp.drawPoint(140, 240)
         qp.drawPoint(130, 250)
@@ -302,7 +302,7 @@ class USCE(QWidget):
         # Conexion a Interfaz de memoria
         qp.drawPoint(340, 290)
 
-        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)                 #rgb(0,230,125)
+        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.PenStyle.SolidLine)                 #rgb(0,230,125)
         qp.setPen(linea_dato_b)
         qp.drawLine(80, 310, 160, 310)
         # Dato de memoria hacia entrada B de la ALU
@@ -314,20 +314,20 @@ class USCE(QWidget):
         # Operación a ser descodificada
         qp.drawLine(370, 440, 370, 460)
 
-        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)           #rgb(140, 125, 230)
+        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.PenStyle.SolidLine)           #rgb(140, 125, 230)
         qp.setPen(linea_banderas)
         qp.drawLine(440, 250, 520, 250)
         qp.drawPolyline(self.poly(pl_realim_f))
         # qp.drawPolyline(self.poly(pl_banderas))
         qp.drawLine(290, 240, 380, 240)
-        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(460, 250)
 
-        linea_reloj_usc = QPen(QColor(0,100,200), 2, Qt.SolidLine)                 #rgb(0,100,200)
+        linea_reloj_usc = QPen(QColor(0,100,200), 2, Qt.PenStyle.SolidLine)                 #rgb(0,100,200)
         qp.setPen(linea_reloj_usc)
         qp.drawLine(360, 260, 380, 260)
         qp.drawLine(360, 350, 380, 350)
-        qp.setPen(QPen(QColor(0,100,200), 12, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,100,200), 12, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(360, 260)
         qp.drawPoint(360, 350)
 
@@ -454,13 +454,13 @@ class USCE(QWidget):
         self.etiquetas_resultados()
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 
 
 if __name__ == '__main__':

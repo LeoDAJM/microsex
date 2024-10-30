@@ -11,10 +11,26 @@
     <file>IMG/save.png</file>
     <file>IMG/icono.png</file>
     <file>IMG/edit.png</file>
-    <file>IMG/icon32.png</file>
+    <file>IMG/AND.png</file>
+    <file>IMG/OR.png</file>
+    <file>IMG/XOR.png</file>
+    <file>IMG/ALU ubc.png</file>
+    <file>IMG/ALU mux.png</file>
+    <file>IMG/Sumador.png</file>
+    <file>IMG/LCT.png</file>
+    <file>IMG/USC alu.png</file>
+    <file>IMG/USC acum.png</file>
+    <file>IMG/USC descod.png</file>
+    <file>IMG/USC flecha.png</file>
+    <file>IMG/USCE alu.png</file>
+    <file>IMG/USCE acum.png</file>
+    <file>IMG/USCE mux.png</file>
+    <file>IMG/USCE descod.png</file>
+    <file>IMG/USCE mdat.png</file>
+    <file>IMG/USCE flecha arr.png</file>
+    <file>IMG/USCE flecha izq.png</file>
+    <file>IMG/LOGO_GRANDE.png</file>
     <file alias="MononokiNerdFontMono-Regular.ttf">font/MononokiNerdFontMono-Regular.ttf</file>
-    <file alias="MononokiNerdFontMono-Bold.ttf">font/MononokiNerdFontMono-Bold.ttf</file>
-    <file alias="MononokiNerdFontMono-Italic.ttf">font/MononokiNerdFontMono-Italic.ttf</file>
-    <file alias="MononokiNerdFontMono-BoldItalic.ttf">font/MononokiNerdFontMono-BoldItalic.ttf</file>
+    <file>IMG/icon32.png</file>
 </qresource>
 </RCC>

@@ -24,7 +24,7 @@ class PanelInicialWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        Logo = QPixmap("IMG/LOGO_GRANDE.png")
+        Logo = QPixmap(":IMG/LOGO_GRANDE.png")
 
         self.logo_inicial = QLabel(self)
         self.logo_inicial.setPixmap(Logo)

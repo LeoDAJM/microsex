@@ -126,9 +126,9 @@ class UBC(QWidget):
 
     def grupo_grafico(self):
 
-        pix_and = QPixmap("IMG/AND.png")
-        pix_xor = QPixmap("IMG/XOR.png")
-        pix_sum = QPixmap("IMG/Sumador.png")
+        pix_and = QPixmap(":IMG/AND.png")
+        pix_xor = QPixmap(":IMG/XOR.png")
+        pix_sum = QPixmap(":IMG/Sumador.png")
 
         grp_graf = QGroupBox("Prueba gráfica",self)
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
@@ -220,13 +220,13 @@ class UBC(QWidget):
 
         for i in range(0,5):                # Señales de control
             if config.S[i] == 1:
-                linea_control = QPen(QColor(70,170,255), 2, Qt.SolidLine)  #rgb(70,170,255)
+                linea_control = QPen(QColor(70,170,255), 2, Qt.PenStyle.SolidLine)  #rgb(70,170,255)
             else:
-                linea_control = QPen(QColor(0,50,130), 3, Qt.SolidLine)    #rgb(0,50,130)
+                linea_control = QPen(QColor(0,50,130), 3, Qt.PenStyle.SolidLine)    #rgb(0,50,130)
             qp.setPen(linea_control)
             qp.drawPolyline(self.poly(s_con[i]))
 
-        linea_datos = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        linea_datos = QPen(QColor(0,230,230), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_datos)
         qp.drawLine(40, 250, 140, 250)      # Línea de A
         qp.drawLine(200, 260, 310, 260)
@@ -237,9 +237,9 @@ class UBC(QWidget):
         qp.drawLine(555, 320, 620, 320)     # Línea de R
 
         if config.C[8] == 1:
-            linea_datos = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)          #rgb(140, 125, 230)
+            linea_datos = QPen(QColor(140, 125, 230), 2, Qt.PenStyle.SolidLine)          #rgb(140, 125, 230)
         else:
-            linea_datos = QPen(QColor(70, 63, 200), 3, Qt.SolidLine)          #rgb(70, 63, 200)
+            linea_datos = QPen(QColor(70, 63, 200), 3, Qt.PenStyle.SolidLine)          #rgb(70, 63, 200)
         qp.setPen(linea_datos)
         qp.drawLine(555, 280, 620, 280)     # Línea de C_out
 
@@ -347,13 +347,13 @@ class UBC(QWidget):
         self.etiquetas_resultados()
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(700, 500)
         self.setWindowTitle('Unidad Básica de Cálculo')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 
 
 if __name__ == '__main__':

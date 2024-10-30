@@ -127,11 +127,11 @@ class ALU(QWidget):
 
     def grupo_grafico(self):
 
-        pix_and = QPixmap("IMG/AND.png")
-        pix_or  = QPixmap("IMG/OR.png")
-        pix_xor = QPixmap("IMG/XOR.png")
-        pix_ubc = QPixmap("IMG/ALU ubc.png")
-        pix_mux = QPixmap("IMG/ALU mux.png")
+        pix_and = QPixmap(":IMG/AND.png")
+        pix_or  = QPixmap(":IMG/OR.png")
+        pix_xor = QPixmap(":IMG/XOR.png")
+        pix_ubc = QPixmap(":IMG/ALU ubc.png")
+        pix_mux = QPixmap(":IMG/ALU mux.png")
 
         grp_graf = QGroupBox("Prueba gráfica",self)
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
@@ -231,35 +231,35 @@ class ALU(QWidget):
 
         for i in range(7):                # Señales de control
             if config.S[config.S_alu_simple[i]] == 1:
-                linea_control = QPen(QColor(70,170,255), 2, Qt.SolidLine)  #rgb(70,170,255)
+                linea_control = QPen(QColor(70,170,255), 2, Qt.PenStyle.SolidLine)  #rgb(70,170,255)
             else:
-                linea_control = QPen(QColor(0,50,130), 3, Qt.SolidLine)    #rgb(0,50,130)
+                linea_control = QPen(QColor(0,50,130), 3, Qt.PenStyle.SolidLine)    #rgb(0,50,130)
             qp.setPen(linea_control)
             qp.drawPolyline(self.poly(s_con[i]))
 
 
-        linea_datos_a = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        linea_datos_a = QPen(QColor(0,230,230), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_datos_a)
         qp.drawLine(100, 210, 200, 210)
         qp.drawPolyline(self.poly(intrcnx_a))
         qp.drawLine(170, 260, 200, 260)
         qp.drawLine(170, 310, 200, 310)
 
-        linea_datos_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)              #rgb(0,230,125)
+        linea_datos_b = QPen(QColor(0,230,125), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,125)
         qp.setPen(linea_datos_b)
         qp.drawLine(100, 380, 200, 380)
         qp.drawPolyline(self.poly(intrcnx_b))
         qp.drawLine(140, 330, 200, 330)
         qp.drawLine(140, 280, 200, 280)
 
-        linea_resultados = QPen(QColor(0, 120, 120), 2, Qt.SolidLine)              #rgb(0, 120, 120)
+        linea_resultados = QPen(QColor(0, 120, 120), 2, Qt.PenStyle.SolidLine)              #rgb(0, 120, 120)
         qp.setPen(linea_resultados)
         qp.drawLine(260, 220, 440, 220)
         qp.drawLine(260, 270, 440, 270)
         qp.drawLine(260, 320, 440, 320)
         qp.drawLine(300, 380, 440, 380)
 
-        linea_seleccion = QPen(QColor(0, 230, 230), 2, Qt.SolidLine)              #rgb(0, 230, 230)
+        linea_seleccion = QPen(QColor(0, 230, 230), 2, Qt.PenStyle.SolidLine)              #rgb(0, 230, 230)
         qp.setPen(linea_seleccion)
         qp.drawLine(500, 300, 600, 300)
         if config.S[10] == 0:
@@ -274,9 +274,9 @@ class ALU(QWidget):
                 qp.drawLine(300, 380, 440, 380)
 
         if config.F[0] == 1:
-            linea_datos = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)          #rgb(140, 125, 230)
+            linea_datos = QPen(QColor(140, 125, 230), 2, Qt.PenStyle.SolidLine)          #rgb(140, 125, 230)
         else:
-            linea_datos = QPen(QColor(70, 63, 200), 3, Qt.SolidLine)          #rgb(70, 63, 200)
+            linea_datos = QPen(QColor(70, 63, 200), 3, Qt.PenStyle.SolidLine)          #rgb(70, 63, 200)
         qp.setPen(linea_datos)
         qp.drawPolyline(self.poly(band_c))
 
@@ -373,13 +373,13 @@ class ALU(QWidget):
         self.etiquetas_resultados()
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(700, 500)
         self.setWindowTitle('Unidad Aritmética Lógica')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 
 
 if __name__ == '__main__':

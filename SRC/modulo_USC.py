@@ -142,11 +142,11 @@ class USC(QWidget):
 
     def grupo_grafico(self):
 
-        pix_lct = QPixmap("IMG/LCT.png")
-        pix_alu = QPixmap("IMG/USC alu.png")
-        pix_acu = QPixmap("IMG/USC acum.png")
-        pix_do  = QPixmap("IMG/USC descod.png")
-        pix_flecha  = QPixmap("IMG/USC flecha.png")
+        pix_lct = QPixmap(":IMG/LCT.png")
+        pix_alu = QPixmap(":IMG/USC alu.png")
+        pix_acu = QPixmap(":IMG/USC acum.png")
+        pix_do  = QPixmap(":IMG/USC descod.png")
+        pix_flecha  = QPixmap(":IMG/USC flecha.png")
 
         grp_graf = QGroupBox("Prueba gráfica", self)
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
@@ -259,37 +259,37 @@ class USC(QWidget):
 
         for i in range(5):                # Señales de control
             if config.descod_op[i] == 1:
-                linea_control = QPen(QColor(70,170,255), 2, Qt.SolidLine)  #rgb(70,170,255)
+                linea_control = QPen(QColor(70,170,255), 2, Qt.PenStyle.SolidLine)  #rgb(70,170,255)
             else:
-                linea_control = QPen(QColor(0,50,130), 3, Qt.SolidLine)    #rgb(0,50,130)
+                linea_control = QPen(QColor(0,50,130), 3, Qt.PenStyle.SolidLine)    #rgb(0,50,130)
             qp.setPen(linea_control)
             qp.drawPolyline(self.poly(sen_con[i]))
 
-        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)                 #rgb(0,230,125)
+        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.PenStyle.SolidLine)                 #rgb(0,230,125)
         qp.setPen(linea_dato_b)
         qp.drawLine(120, 340, 200, 340)
 
-        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)           #rgb(140, 125, 230)
+        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.PenStyle.SolidLine)           #rgb(140, 125, 230)
         qp.setPen(linea_banderas)
         qp.drawLine(240, 250, 350, 250)
         qp.drawLine(410, 250, 500, 250)
         qp.drawPolyline(self.poly(realim_c))
-        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(440, 250)
 
-        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_acumulador)
         qp.drawLine(280, 310, 360, 310)
         qp.drawLine(400, 310, 500, 310)
         qp.drawPolyline(self.poly(realim_a))
-        qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,230,230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(460, 310)
 
-        linea_reloj = QPen(QColor(0,100,200), 2, Qt.SolidLine)                 #rgb(0,100,200)
+        linea_reloj = QPen(QColor(0,100,200), 2, Qt.PenStyle.SolidLine)                 #rgb(0,100,200)
         qp.setPen(linea_reloj)
         qp.drawLine(320, 270, 360, 270)
         qp.drawLine(320, 330, 360, 330)
-        qp.setPen(QPen(QColor(0,0,122), 12, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,0,122), 12, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(320, 270)
         qp.drawPoint(320, 330)
 
@@ -417,13 +417,13 @@ class USC(QWidget):
         self.etiquetas_resultados()
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 
 
 if __name__ == '__main__':
