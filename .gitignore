@@ -2,3 +2,7 @@ SRC/__pycache__
 SRC/FUN/__pycache__
 SRC/FUN/CONF/__pycache__
 SRC/FUN/CC/__pycache__
+/SRC/font
+SRC/rsc.qrc
+/SRC/IMG
+*.qrc

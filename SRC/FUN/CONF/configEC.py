@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFont, QColor
+from PyQt6.QtGui import QFont, QColor
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
 

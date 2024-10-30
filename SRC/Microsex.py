@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtGui import QIcon
+from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtGui import QIcon
 
 from panel_inicial import *
 
@@ -23,7 +23,8 @@ class Principal(QMainWindow):
         self.modulo = "Unidad Básica de Cálculo"
 
         self.panel_inicial = PanelInicialWidget()
-        self.panel_inicial.combo_seleccion.activated[str].connect(self.modulo_seleccionado)
+        self.panel_inicial.combo_seleccion.currentTextChanged.connect(self.modulo_seleccionado)
+        #self.panel_inicial.combo_seleccion.activated[str].connect(self.modulo_seleccionado)
         self.panel_inicial.boton_aceptar.clicked.connect(self.abrir_modulo)
         self.panel_inicial.boton_cc.clicked.connect(self.abrir_cc)
 
@@ -37,13 +38,13 @@ class Principal(QMainWindow):
         self.setCentralWidget(self.panel_inicial)
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(350, 550)
         self.setWindowTitle('Emulador Microsex')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
         self.show()
 
     def modulo_seleccionado(self, modo):
@@ -107,4 +108,4 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Principal()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtWidgets import QPushButton, QRadioButton, QGroupBox
-from PyQt5.QtWidgets import QLineEdit, QLabel
-from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtWidgets import QPushButton, QRadioButton, QGroupBox
+from PyQt6.QtWidgets import QLineEdit, QLabel
+from PyQt6.QtCore import Qt, QPointF
+from PyQt6.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 
 from FUN.util import *
 from FUN.usce import unidad_secuencial_calculo
@@ -41,14 +41,14 @@ class USCE(QWidget):
 
         self.lbl_valor_hex = QLabel("00",self)
         self.lbl_valor_hex.setGeometry(180, 50, 60, 20)
-        self.lbl_valor_hex.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_hex.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_hex.setFont(config.fuente_num)
         self.lbl_valor_hex.setVisible(False)
 
         self.edit_hex = QLineEdit("00",self)
         self.edit_hex.setInputMask("HH")
         self.edit_hex.setGeometry(180, 50, 60, 20)
-        self.edit_hex.setAlignment(Qt.AlignCenter)
+        self.edit_hex.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_hex.setFont(config.fuente_num)
         self.edit_hex.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_hex.textEdited[str].connect(self.asignacion_variables)
@@ -62,13 +62,13 @@ class USCE(QWidget):
 
         self.lbl_valor_bin = QLabel("00000000",self)
         self.lbl_valor_bin.setGeometry(280, 50, 120, 20)
-        self.lbl_valor_bin.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_bin.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_bin.setFont(config.fuente_num)
 
         self.edit_bin = QLineEdit("00000000",self)
         self.edit_bin.setInputMask("BBBBBBBB")
         self.edit_bin.setGeometry(280, 50, 120, 20)
-        self.edit_bin.setAlignment(Qt.AlignCenter)
+        self.edit_bin.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_bin.setFont(config.fuente_num)
         self.edit_bin.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_bin.setVisible(False)
@@ -81,7 +81,7 @@ class USCE(QWidget):
 
         self.lbl_valor_dec = QLabel("0",self)
         self.lbl_valor_dec.setGeometry(440, 50, 60, 20)
-        self.lbl_valor_dec.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_dec.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_dec.setFont(config.fuente_num)
 
         # GRUPO DECIMAL SIGNADO
@@ -91,7 +91,7 @@ class USCE(QWidget):
 
         self.lbl_valor_sig = QLabel("0",self)
         self.lbl_valor_sig.setGeometry(540, 50, 80, 20)
-        self.lbl_valor_sig.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_sig.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_sig.setFont(config.fuente_num)
 
         # GRUPO PALABRA DE CONTROL
@@ -110,7 +110,7 @@ class USCE(QWidget):
         self.edit_cod_op = QLineEdit("00",self)
         self.edit_cod_op.setInputMask("HH")
         self.edit_cod_op.setGeometry(180, 120, 60, 20)
-        self.edit_cod_op.setAlignment(Qt.AlignCenter)
+        self.edit_cod_op.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_cod_op.setFont(config.fuente_num)
         self.edit_cod_op.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_cod_op.textEdited[str].connect(self.asignacion_variables)
@@ -118,32 +118,32 @@ class USCE(QWidget):
         self.edit_cod_arg = QLineEdit("00",self)
         self.edit_cod_arg.setInputMask("HH")
         self.edit_cod_arg.setGeometry(260, 120, 60, 20)
-        self.edit_cod_arg.setAlignment(Qt.AlignCenter)
+        self.edit_cod_arg.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_cod_arg.setFont(config.fuente_num)
         self.edit_cod_arg.setStyleSheet(config.estilo["estilo_edit"])
         self.edit_cod_arg.textEdited[str].connect(self.asignacion_variables)
 
         self.lbl_valor_dato = QLabel("XX",self)
         self.lbl_valor_dato.setGeometry(340, 120, 60, 20)
-        self.lbl_valor_dato.setAlignment(Qt.AlignCenter)
+        self.lbl_valor_dato.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_valor_dato.setFont(config.fuente_num)
 
         self.lbl_instruccion = QLabel("CLR", self)
-        self.lbl_instruccion.setAlignment(Qt.AlignCenter)
+        self.lbl_instruccion.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_instruccion.setGeometry(440, 100, 80, 25)
         self.lbl_instruccion.setFont(config.fuente_num)
         self.lbl_instruccion.setStyleSheet("QLabel { color: rgb(70,170,255);}")
 
     def grupo_grafico(self):
 
-        pix_lct = QPixmap("IMG/LCT.png")
-        pix_alu = QPixmap("IMG/USCE alu.png")
-        pix_acu = QPixmap("IMG/USCE acum.png")
-        pix_mux = QPixmap("IMG/USCE mux.png")
-        pix_do  = QPixmap("IMG/USCE descod.png")
-        pix_md  = QPixmap("IMG/USCE mdat.png")
-        pix_flecha_arr = QPixmap("IMG/USCE flecha arr.png")
-        pix_flecha_izq = QPixmap("IMG/USCE flecha izq.png")
+        pix_lct = QPixmap(":IMG/LCT.png")
+        pix_alu = QPixmap(":IMG/USCE alu.png")
+        pix_acu = QPixmap(":IMG/USCE acum.png")
+        pix_mux = QPixmap(":IMG/USCE mux.png")
+        pix_do  = QPixmap(":IMG/USCE descod.png")
+        pix_md  = QPixmap(":IMG/USCE mdat.png")
+        pix_flecha_arr = QPixmap(":IMG/USCE flecha arr.png")
+        pix_flecha_izq = QPixmap(":IMG/USCE flecha izq.png")
 
         grp_graf = QGroupBox("Prueba gráfica", self)
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
@@ -215,7 +215,7 @@ class USCE(QWidget):
         for i in range(6):
             lbl_f[i] = QLabel(txt_f[i], self)
             lbl_f[i].setGeometry(540 + i*20, 210, 20, 20)
-            lbl_f[i].setAlignment(Qt.AlignCenter)
+            lbl_f[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_f[i].setFont(config.fuente_num)
             lbl_f[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
@@ -229,24 +229,24 @@ class USCE(QWidget):
 
         self.lbl_acumulador_A = QLabel("00", self)
         self.lbl_acumulador_A.setGeometry(540, 280, 40, 20)
-        self.lbl_acumulador_A.setAlignment(Qt.AlignCenter)
+        self.lbl_acumulador_A.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_acumulador_A.setFont(config.fuente_num)
 
         self.lbl_acumulador_B = QLabel("00", self)
         self.lbl_acumulador_B.setGeometry(540, 310, 40, 20)
-        self.lbl_acumulador_B.setAlignment(Qt.AlignCenter)
+        self.lbl_acumulador_B.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_acumulador_B.setFont(config.fuente_num)
 
         self.lbl_acumulador_C = QLabel("00", self)
         self.lbl_acumulador_C.setGeometry(540, 340, 40, 20)
-        self.lbl_acumulador_C.setAlignment(Qt.AlignCenter)
+        self.lbl_acumulador_C.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_acumulador_C.setFont(config.fuente_num)
 
         self.lbl_banderas = [0]*6
         for i in range(6):
             self.lbl_banderas[i] = QLabel("0", self)
             self.lbl_banderas[i].setGeometry(540 + i*20, 240, 20, 20)
-            self.lbl_banderas[i].setAlignment(Qt.AlignCenter)
+            self.lbl_banderas[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_banderas[i].setFont(config.fuente_num)
             self.lbl_banderas[i].setStyleSheet("QLabel { color: rgb(140, 125, 230);}")
 
@@ -270,7 +270,7 @@ class USCE(QWidget):
         pl_resultado = [[340, 290], [340, 380], [220, 380], [220, 400]]
         pl_banderas  = [[290, 240], [360, 240], [360, 250], [380, 250]]
 
-        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.SolidLine)              #rgb(0,230,230)
+        linea_acumulador = QPen(QColor(0,230,230), 2, Qt.PenStyle.SolidLine)              #rgb(0,230,230)
         qp.setPen(linea_acumulador)
         # Entradas a la ALU
         qp.drawLine(180, 250, 250, 250)
@@ -290,7 +290,7 @@ class USCE(QWidget):
         qp.drawLine(130, 250, 160, 250)
         qp.drawLine(120, 260, 160, 260)
         # Puntos de conexión
-        qp.setPen(QPen(QColor(0,230,230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,230,230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         # Conexiones antes del mux A
         qp.drawPoint(140, 240)
         qp.drawPoint(130, 250)
@@ -302,7 +302,7 @@ class USCE(QWidget):
         # Conexion a Interfaz de memoria
         qp.drawPoint(340, 290)
 
-        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.SolidLine)                 #rgb(0,230,125)
+        linea_dato_b = QPen(QColor(0,230,125), 2, Qt.PenStyle.SolidLine)                 #rgb(0,230,125)
         qp.setPen(linea_dato_b)
         qp.drawLine(80, 310, 160, 310)
         # Dato de memoria hacia entrada B de la ALU
@@ -314,20 +314,20 @@ class USCE(QWidget):
         # Operación a ser descodificada
         qp.drawLine(370, 440, 370, 460)
 
-        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.SolidLine)           #rgb(140, 125, 230)
+        linea_banderas = QPen(QColor(140, 125, 230), 2, Qt.PenStyle.SolidLine)           #rgb(140, 125, 230)
         qp.setPen(linea_banderas)
         qp.drawLine(440, 250, 520, 250)
         qp.drawPolyline(self.poly(pl_realim_f))
         # qp.drawPolyline(self.poly(pl_banderas))
         qp.drawLine(290, 240, 380, 240)
-        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(140, 125, 230), 6, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(460, 250)
 
-        linea_reloj_usc = QPen(QColor(0,100,200), 2, Qt.SolidLine)                 #rgb(0,100,200)
+        linea_reloj_usc = QPen(QColor(0,100,200), 2, Qt.PenStyle.SolidLine)                 #rgb(0,100,200)
         qp.setPen(linea_reloj_usc)
         qp.drawLine(360, 260, 380, 260)
         qp.drawLine(360, 350, 380, 350)
-        qp.setPen(QPen(QColor(0,100,200), 12, Qt.SolidLine, Qt.RoundCap))
+        qp.setPen(QPen(QColor(0,100,200), 12, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap))
         qp.drawPoint(360, 260)
         qp.drawPoint(360, 350)
 
@@ -454,13 +454,13 @@ class USCE(QWidget):
         self.etiquetas_resultados()
 
         p = self.palette()
-        p.setColor(p.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
         self.setPalette(p)
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon('IMG/icono.png'))
+        self.setWindowIcon(QIcon(':IMG/icono.png'))
 
 
 if __name__ == '__main__':
@@ -468,4 +468,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = USCE()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

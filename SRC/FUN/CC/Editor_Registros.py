@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QLineEdit, QLabel, QPushButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QStyle
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QLineEdit, QLabel, QPushButton
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QStyle
+from PyQt6.QtCore import Qt
 
-from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QRegExpValidator
+from PyQt6.QtCore import QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 
 from FUN.util import *
 import FUN.CONF.configCC as config
@@ -15,10 +15,10 @@ class LineEditHex(QLineEdit):
 
         self.cant = cantDigitos
 
-        regex = QRegExp("[0-9a-fA-F]{"+ str(cantDigitos) +"}")
-        self.rxval = QRegExpValidator(regex, self)
+        regex = QRegularExpression("[0-9a-fA-F]{"+ str(cantDigitos) +"}")
+        self.rxval = QRegularExpressionValidator(regex, self)
 
-        self.setAlignment(Qt.AlignCenter)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.textChanged[str].connect(self.verificar)
         self.editingFinished.connect(self.finalizado)
 
@@ -47,7 +47,7 @@ class EditorRegistros(QWidget):
     def initUI(self):
 
         self.lbl_Acumuladores = QLabel('Accum.', self)
-        self.lbl_Acumuladores.setAlignment(Qt.AlignCenter)
+        self.lbl_Acumuladores.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_Acumuladores.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_acumulador_A = QLabel('AX:', self)
         self.lbl_acumulador_B = QLabel('BX:', self)
@@ -58,7 +58,7 @@ class EditorRegistros(QWidget):
         self.lbl_Registro_F = QLabel('Flags', self)
         
         self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
-        self.lbl_Registro_F.setAlignment(Qt.AlignCenter)
+        self.lbl_Registro_F.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_banderas = [0]*6
         for i in range(6):
             self.lbl_banderas[i] = QLabel(banderas[i],self)
@@ -66,19 +66,17 @@ class EditorRegistros(QWidget):
 
         self.lbl_Punteros = QLabel('Pointers', self)
         self.lbl_Punteros.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
-        self.lbl_Punteros.setAlignment(Qt.AlignCenter)
+        self.lbl_Punteros.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_puntero_IX = QLabel('IX:', self)
         self.lbl_puntero_IY = QLabel('IY:', self)
         self.lbl_puntero_PP = QLabel('PP:', self)
         self.lbl_puntero_PI = QLabel('IP', self)
         self.lbl_puntero_PI.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
-        self.lbl_puntero_PI.setAlignment(Qt.AlignCenter)
+        self.lbl_puntero_PI.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
 #Clear All Button
-        self.CA_button = QPushButton(self.style().standardIcon(QStyle.SP_DialogDiscardButton),"Clear", self)
-        #self.CA_button.setGeometry(200, 150, 100, 30)
-        #self.CA_button.setFixedSize(70, 40)
+        self.CA_button = QPushButton(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogDiscardButton),"Clear", self)
         self.CA_button.clicked.connect(self.clear_all)
         self.CA_button.setStyleSheet(config2.styles_cs["clc_button"])
         
@@ -94,7 +92,7 @@ class EditorRegistros(QWidget):
         for i in range(6):
             self.edit_banderas[i] = QLineEdit(self)
             self.edit_banderas[i].setInputMask('B')
-            self.edit_banderas[i].setAlignment(Qt.AlignCenter)
+            self.edit_banderas[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             #self.edit_banderas[i].setFixedWidth(t_w // 15)
             self.edit_banderas[i].setStyleSheet("border: 2px solid rgb(0,60,140);")   # Si es False
             self.edit_banderas[i].editingFinished.connect(self.editar_banderas)

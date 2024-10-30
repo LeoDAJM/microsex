@@ -1,8 +1,15 @@
-# Microsex - v1.0 rev2 (Ale-V)
+# Microsex - v1.1 (Ale-V)
+
+![Static Badge](https://img.shields.io/badge/VERSION-v1.1_rev2-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml?branch=pyqt6&style=for-the-badge&logo=python&logoColor=white&label=Python%203.8%2B&labelColor=101010)](https://www.python.org/downloads/)
+![GitHub License](https://img.shields.io/github/license/LeoDAJM/microsex?style=for-the-badge&logo=conventionalcommits&logoColor=white&label=Licence&labelColor=101010&color=orange)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex/pyqt6?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
+![GitHub repo size](https://img.shields.io/github/repo-size/LeoDAJM/microsex?style=for-the-badge&logo=files&logoColor=white&label=SIZE&labelColor=101010)
+![PyPI - Version](https://img.shields.io/pypi/v/pyqt6?style=for-the-badge&logo=qt&logoColor=white&label=PyQt6&labelColor=101010)
 
 # Interfaz
 
-![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+![Poster_UI](__img/poster.png?raw=true)
 
 ## Descripción Modulo Computador Completo
 
@@ -13,6 +20,8 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Características
 
 ### **Nuevas Funcionalidades**
+
+- ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 en lugar de PyQt5, aplicado a cada una de las unidades, módulos y librerías del proyecto. 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
 El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.
@@ -38,7 +47,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - **Interfaz Oscura**: Se ha implementado un esquema de colores oscuros para facilitar el trabajo prolongado.
 - **Ventana Responsive**: El contenido de la interfaz (fuentes y cajas) es ahora redimensionable, lo que permite maximizar la ventana sin comprometer la visibilidad.
 - **Refactorización del Código**: Reescritura de funciones clave y optimización de ciclos para mejorar la eficiencia del simulador.
-- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución (modulo_CC.py).
+- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución.
 
 ## Compatibilidad
 
@@ -57,7 +66,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - [X] ~~Seguimiento de IP en el código.~~
 - [X] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
-- [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
+- [X] ~~Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.~~
 - [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:

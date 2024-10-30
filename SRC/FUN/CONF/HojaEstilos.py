@@ -28,10 +28,10 @@ estilos_gui = {
                 height: 15px;
                 }
         QRadioButton::indicator::checked {
-                image: url(IMG/SS checked.png);
+                image: url(:IMG/SS checked.png);
                 }
         QRadioButton::indicator::unchecked {
-                image: url(IMG/SS unchecked.png);}""",
+                image: url(:IMG/SS unchecked.png);}""",
 
 "estilo_boton" : """
         QPushButton {
@@ -67,7 +67,7 @@ estilos_gui = {
                 background-color: rgb(0, 230, 250);
         }
         QComboBox::down-arrow {
-                image: url(IMG/SS down-arrow.png);
+                image: url(:IMG/SS down-arrow.png);
                 padding-right: 15px;
         }
         QComboBox::drop-down {
