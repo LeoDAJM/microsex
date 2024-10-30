@@ -1,4 +1,4 @@
-# Microsex - v1.0 rev2 (Ale-V)
+# Microsex - v1.1 (Ale-V)
 
 # Interfaz
 
@@ -14,7 +14,7 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 ### **Nuevas Funcionalidades**
 
-- ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 ne vez del 5.
+- ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 en lugar de PyQt5, aplicado a cada una de las unidades, módulos y librerías del proyecto. 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
 El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.
@@ -40,7 +40,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - **Interfaz Oscura**: Se ha implementado un esquema de colores oscuros para facilitar el trabajo prolongado.
 - **Ventana Responsive**: El contenido de la interfaz (fuentes y cajas) es ahora redimensionable, lo que permite maximizar la ventana sin comprometer la visibilidad.
 - **Refactorización del Código**: Reescritura de funciones clave y optimización de ciclos para mejorar la eficiencia del simulador.
-- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución (modulo_CC.py).
+- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución.
 
 ## Compatibilidad
 
@@ -59,7 +59,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - [X] ~~Seguimiento de IP en el código.~~
 - [X] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
-- [X] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
+- [X] ~~Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.~~
 - [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:
