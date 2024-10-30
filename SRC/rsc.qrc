@@ -30,6 +30,9 @@
     <file>IMG/USCE flecha arr.png</file>
     <file>IMG/USCE flecha izq.png</file>
     <file>IMG/LOGO_GRANDE.png</file>
+    <file>IMG/SS checked.png</file>
+    <file>IMG/SS unchecked.png</file>
+    <file>IMG/SS down-arrow.png</file>
     <file alias="MononokiNerdFontMono-Regular.ttf">font/MononokiNerdFontMono-Regular.ttf</file>
     <file>IMG/icon32.png</file>
 </qresource>
