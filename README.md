@@ -9,7 +9,7 @@
 
 # Interfaz
 
-![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
+![Poster_UI](__img/poster.png?raw=true)
 
 ## Descripción Modulo Computador Completo
 
