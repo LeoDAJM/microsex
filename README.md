@@ -1,4 +1,5 @@
 # Microsex - v1.1 (Ale-V)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml?branch=pyqt6&style=for-the-badge&label=Python%203.8%2B&link=https%3A%2F%2Fwww.python.org%2Fdownloads%2F)
 
 # Interfaz
 
