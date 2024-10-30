@@ -10,6 +10,7 @@ import io
 import FUN.CONF.config_custom as config2
 import rc_icons
 import re
+from tabulate import tabulate
 
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
@@ -17,7 +18,7 @@ from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
 from FUN.CC.lst_table import *
-
+from time import time
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
 
@@ -32,6 +33,19 @@ class ComputadorCompleto(QMainWindow):
         f_reg = QFontDatabase.addApplicationFont(":/MononokiNerdFontMono-Regular.ttf")
         self.families = QFontDatabase.applicationFontFamilies(f_reg)
         self.fuente = QFont(self.families[0], 10)
+        self.setMinimumSize(600, 400)
+        self.setMaximumSize(19200, 10800)
+        flags = self.windowFlags()
+        flags |= Qt.CustomizeWindowHint
+        flags |= Qt.WindowTitleHint
+        flags |= Qt.WindowSystemMenuHint
+        flags |= Qt.WindowCloseButtonHint
+        flags |= Qt.WindowMaximizeButtonHint
+        self.setWindowFlags(flags)
+        self.setWindowTitle('Microsex - Computador Completo')
+        app_icon = QIcon()
+        app_icon.addFile(':IMG/icon32.png', QSize(50,50))
+        self.setWindowIcon(app_icon)
         self.initUI()
 
     def resizeEvent(self, event: 'QResizeEvent'): # type: ignore
@@ -93,7 +107,7 @@ class ComputadorCompleto(QMainWindow):
         self.bpoints = self.editor_codigo.editor.breakline
 
         self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
-
+        self.state_lib = False
         txt_monitor = 'Monitor de errores'
 
         self.monitor = QTextEdit(self)
@@ -154,12 +168,6 @@ class ComputadorCompleto(QMainWindow):
 #region     Menus
 # Barra de menús ---------------------------------------------------------------
 
-        barra_menus   = self.menuBar()
-        menu_Archivo  = barra_menus.addMenu('&Archivo')
-        menu_Editar   = barra_menus.addMenu('&Editar')
-        menu_Ejecutar = barra_menus.addMenu('&Ejecutar')
-        menu_Memoria = barra_menus.addMenu('&Memoria')
-
         self.toolbar = QToolBar("Main Toolbar")
         self.toolbar.setIconSize(QSize(16,16))
         spacer = QWidget()
@@ -173,7 +181,7 @@ class ComputadorCompleto(QMainWindow):
         im_tools = ["open","save", "ld","clr_ld","back", "step", "next", "run", "power"]
         txt = ["Open","Save","Compile","Comp/CLR","Reset", "Step", "Next-BKP", "Run", "Quit"]
         self.tools = [QAction()]*len(im_tools)
-        fcns = [self.dialogo_abrir, self.dialogo_guardar, self.cargar, self.borrar_cargar, self.registros.clear_all,
+        fcns = [self.dialogo_abrir, self.save_fcn, self.cargar, self.borrar_cargar, self.registros.clear_all,
                 self.ejecutar_instruccion, self.run_for_bpoint, self.ejecutar, QApplication.instance().quit]
         for k,i in enumerate(self.tools):
             i = QAction(QIcon(f':IMG/{im_tools[k]}.png'), txt[k], self)
@@ -186,150 +194,50 @@ class ComputadorCompleto(QMainWindow):
         self.addToolBar(self.toolbar)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-# region Menú Archivo -----------------------------------------------------------------
+# region Menú -----------------------------------------------------------------
         self.nombre_archivo = False
-
-        Archivo_abrir = QAction('Abrir', self)
-        Archivo_abrir.setShortcut('Ctrl+A')
-        Archivo_abrir.triggered.connect(self.dialogo_abrir)
-
-        Archivo_guardar = QAction('Guardar', self)
-        Archivo_guardar.setShortcut('Ctrl+G')
-        Archivo_guardar.triggered.connect(self.dialogo_guardar)
-
-        Archivo_guardar_como = QAction('Guardar como...', self)
-        Archivo_guardar_como.setShortcut('Ctrl+Shift+G')
-        Archivo_guardar_como.triggered.connect(self.dialogo_guardar_como)
-
-        Archivo_salir = QAction('Salir del editor', self)
-        Archivo_salir.triggered.connect(QApplication.instance().quit)
-
-        menu_Archivo.addAction(Archivo_abrir)
-        menu_Archivo.addAction(Archivo_guardar)
-        menu_Archivo.addAction(Archivo_guardar_como)
-        menu_Archivo.addSeparator()
-        menu_Archivo.addAction(Archivo_salir)
+        menu_bar   = self.menuBar()
+        self.menu_dict = {"&Archivo" : [["Abrir", "Ctrl+A", self.dialogo_abrir],
+                                ["Guardar", "Ctrl+G", lambda: self.save_fcn("save")],
+                                ["Guardar como...", "Ctrl+Shift+G", lambda: self.save_fcn("como")],
+                                ["separator"], ["Salir", "", QApplication.instance().quit]],
+                    "&Editar": [["Deshacer", "Ctrl+Z", self.deshacer_accion],
+                                ["Rehacer", "Ctrl+Y", self.rehacer_accion],
+                                ["separator"], ["Cortar", "Ctrl+X", self.cortar],
+                                ["Copiar", "Ctrl+C", self.copiar],
+                                ["Pegar", "Ctrl+V", self.pegar], ["separator"],
+                                ["Agregar Sangría", "Ctrl+Tab", self.agregar_sangria],
+                                ["Quitar Sangría", "Shift+Tab", self.quitar_sangria], ["separator"],
+                                ["Comentar Selección", "Ctrl+B", self.comentar],
+                                ["Descomentar Selección", "Ctrl+N", self.descomentar]],
+                    "&Ejecutar": [["Ensamblar, Borrar memoria y Cargar", "Ctrl+U", self.borrar_cargar],
+                                ["Ensamblar y Cargar", "Ctrl+J", self.cargar],
+                                ["Ejecutar Ensamblado", "Ctrl+K", self.ejecutar],
+                                ["Siguiente Inst.", "Ctrl+L", self.ejecutar_instruccion],
+                                ["Ejecutar con Breakpoints", "", self.run_for_bpoint], ["separator"],
+                                ["Mostrar Archivo LST", "Ctrl+Tab", lambda: self.lst.show()]],
+                    "&Memoria": [["Memory Load", "", self.open_file],
+                                ["Memory Dump", "", self.save_csv]]
+        }
+        menu = {}
+        self.menu_elems = {}
+        for k, v in self.menu_dict.items():
+            menu[k] = menu_bar.addMenu(k)
+            for i in v:
+                if i == ["separator"]:
+                    menu[k].addSeparator()
+                else:
+                    self.menu_elems[i[0]] = QAction(i[0], self)
+                    if i[1] != "":
+                        self.menu_elems[i[0]].setShortcut(i[1])
+                    self.menu_elems[i[0]].triggered.connect(i[2])
+                    menu[k].addAction(self.menu_elems[i[0]])
 # endregion
 
-# region Menú Editar ------------------------------------------------------------------
-        Editar_deshacer = QAction('Deshacer', self)
-        Editar_deshacer.setShortcut('Ctrl+Z')
-        Editar_deshacer.triggered.connect(self.deshacer_accion)
-
-        Editar_rehacer = QAction('Rehacer', self)
-        Editar_rehacer.setShortcut('Ctrl+Y')
-        Editar_rehacer.triggered.connect(self.rehacer_accion)
-
-        Editar_cortar = QAction('Cortar', self)
-        Editar_cortar.setShortcut('Ctrl+X')
-        Editar_cortar.triggered.connect(self.cortar)
-
-        Editar_copiar = QAction('Copiar', self)
-        Editar_copiar.setShortcut('Ctrl+C')
-        Editar_copiar.triggered.connect(self.copiar)
-
-        Editar_pegar = QAction('Pegar', self)
-        Editar_pegar.setShortcut('Ctrl+V')
-        Editar_pegar.triggered.connect(self.pegar)
-
-        Editar_agregar_sangria = QAction('Agregar Sangría', self)
-        Editar_agregar_sangria.setShortcut('Ctrl+Tab')
-        Editar_agregar_sangria.triggered.connect(self.agregar_sangria)
-
-        Editar_quitar_sangria = QAction('Quitar Sangría', self)
-        Editar_quitar_sangria.setShortcut('Shift+Tab')
-        Editar_quitar_sangria.triggered.connect(self.quitar_sangria)
-
-        Editar_comentar = QAction('Comentar Selección', self)
-        Editar_comentar.setShortcut('Ctrl+B')
-        Editar_comentar.triggered.connect(self.comentar)
-
-        Editar_descomentar = QAction('Descomentar Selección', self)
-        Editar_descomentar.setShortcut('Ctrl+N')
-        Editar_descomentar.triggered.connect(self.descomentar)
-
-        menu_Editar.addAction(Editar_deshacer)
-        menu_Editar.addAction(Editar_rehacer)
-        menu_Editar.addSeparator()
-        menu_Editar.addAction(Editar_cortar)
-        menu_Editar.addAction(Editar_copiar)
-        menu_Editar.addAction(Editar_pegar)
-        menu_Editar.addSeparator()
-        menu_Editar.addAction(Editar_agregar_sangria)
-        menu_Editar.addAction(Editar_quitar_sangria)
-        menu_Editar.addSeparator()
-        menu_Editar.addAction(Editar_comentar)
-        menu_Editar.addAction(Editar_descomentar)
-# endregion
-# region Menú Ejecutar ----------------------------------------------------------------
-
-        self.Ejecutar_cargar = QAction('Ensamblar, borrar memoria y cargar', self)
-        self.Ejecutar_cargar.setToolTip('Borra la memoria y carga el nuevo ensamblado')
-        self.Ejecutar_cargar.setShortcut('Ctrl+U')
-        self.Ejecutar_cargar.triggered.connect(self.borrar_cargar)
-
-        self.Ejecutar_sobreescribir = QAction('Ensamblar y cargar en memoria', self)
-        self.Ejecutar_sobreescribir.setToolTip('Carga el nuevo ensamblado\nsin borrar el contenido anterior de la memoria')
-        self.Ejecutar_sobreescribir.setShortcut('Ctrl+J')
-        self.Ejecutar_sobreescribir.triggered.connect(self.cargar)
-
-        self.Ejecutar_ejecutar = QAction('Ejecutar código Ensamblado', self)
-        self.Ejecutar_ejecutar.setShortcut('Ctrl+K')
-        self.Ejecutar_ejecutar.triggered.connect(self.ejecutar)
-
-        self.Ejecutar_ejecutar_instruccion = QAction('Ejecutar siguiente Instrucción', self)
-        self.Ejecutar_ejecutar_instruccion.setShortcut('Ctrl+L')
-        self.Ejecutar_ejecutar_instruccion.triggered.connect(self.ejecutar_instruccion)
-
-        self.run_with_bp = QAction('Ejecutar con Breakpoints', self)
-        self.run_with_bp.triggered.connect(self.run_for_bpoint)
-
-        self.show_ls = QAction('Mostrar Archivo LST', self)
-        self.show_ls.triggered.connect(lambda: self.lst.show())
-
-        menu_Ejecutar.addAction(self.Ejecutar_cargar)
-        menu_Ejecutar.addAction(self.Ejecutar_sobreescribir)
-        menu_Ejecutar.addAction(self.Ejecutar_ejecutar)
-        menu_Ejecutar.addAction(self.Ejecutar_ejecutar_instruccion)
-        menu_Ejecutar.addAction(self.run_with_bp)
-        menu_Ejecutar.addSeparator()
-        menu_Ejecutar.addAction(self.show_ls)
-
-        self.setMinimumSize(600, 400)
-        self.setMaximumSize(19200, 10800)
-        flags = self.windowFlags()
-        flags |= Qt.CustomizeWindowHint
-        flags |= Qt.WindowTitleHint
-        flags |= Qt.WindowSystemMenuHint
-        flags |= Qt.WindowCloseButtonHint
-        flags |= Qt.WindowMaximizeButtonHint
-        self.setWindowFlags(flags)
-        self.setWindowTitle('Microsex - Computador Completo')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
-# endregion
-# region Menú Memoria ----------------------------------------------------------------
-        self.Load_Mem = QAction('Memory Load', self)
-        self.Load_Mem.setToolTip('Carga un archivo de memoria.')
-        self.Load_Mem.setShortcut('Ctrl+M')
-        self.Load_Mem.setEnabled(True)
-        self.Load_Mem.triggered.connect(self.open_file)
-
-        self.Save_Mem = QAction('Memory Dump', self)
-        self.Save_Mem.setToolTip('Guarda el contenido de la memoria en un archivo.')
-        self.Save_Mem.setShortcut('Alt+M')
-        self.Save_Mem.setEnabled(True)
-        self.Save_Mem.triggered.connect(self.save_csv)
-        menu_Memoria.addAction(self.Load_Mem)
-        menu_Memoria.addAction(self.Save_Mem)
-        
-# endregion
 # region ToolBar
         self.state_def(st_comp = True, st_cnt = False, st_cnt_bkp = False, st_edit = True)
 # endregion
 # region FUN Extras
-    def enable_tables(self):
-        for i in self.mem.values():
-            i.table.setEnabled(bool(self.Ejecutar_sobreescribir.isEnabled()))
 
     def extraer_valores(self):  # Detecta las direcciones y directivas ORG
         regex_org = r"\.org\s+0x?([0-9A-Fa-f]*|0)"
@@ -346,12 +254,6 @@ class ComputadorCompleto(QMainWindow):
                 else:
                     secc = "s"
                 self._ds[secc] = valor_hex
-
-    def trim_mem(self, mp_prog):
-        self.extraer_valores()
-        self.ds_op()
-        self.regen_all()
-        self.update_segments(mp_prog)
 
     def ds_op(self):
         _ds_ordered = dict(sorted(self._ds.items(), key=lambda item: (item[1] is None, item[1]), reverse=True))
@@ -379,23 +281,26 @@ class ComputadorCompleto(QMainWindow):
     def regen_all(self):
         for _, v in self.mem.items():
             for i in range(v.table.rowCount()):
+                v.table.setRowHeight(i,8)
                 for j in range(v.table.columnCount()):
                     if v.table.item(i, j) is None:
                         v.table.setItem(i,j,QTableWidgetItem("00"))
-                        v.table.setRowHeight(i,8)
                         v.table.item(i,j).setTextAlignment(Qt.AlignCenter)
-    def update_segments(self, mp_el):
-        for k, v in self.mem.items():
-            for i, j in itertools.product(range(v.table.rowCount()), range(v.table.columnCount())):
-                pos = self._ds[k]*16+(j*16)+i if k == "s" else self._ds[k]*16+(i*16)+j
-                if pos in mp_el and v.table.item(i, j).text() != mp_el[pos]:
-                    v.table.item(i,j).setText(mp_el[pos])
-                    v.table.item(i,j).setBackground(QColor(255, 75, 75, 90))
-                else:
-                    v.table.item(i, j).setBackground(QColor(20, 20, 20))
-                    if k == "c":
-                        v.table.item(i, j).setForeground(QColor(120, 150, 175))
-
+    def update_segments(self, mp_el: dict):
+        _ds_ordered = dict(sorted(self._ds.items(), key=lambda item: (item[1] is None, item[1]), reverse=True))
+        _ds_ordered = [[k, v * 16] for k, v in _ds_ordered.items() if v is not None]
+        for ix, val in mp_el.items():
+            for qty in _ds_ordered:
+                if ix >= qty[1]:
+                    i, j = (ix % 16, ix // 16 - qty[1]//16) if qty[0] == "s" else (ix // 16 - qty[1]//16, ix % 16)
+                    if (self.mem[qty[0]].table.item(i, j).text() != val):
+                        self.mem[qty[0]].table.item(i,j).setText(val)
+                        self.mem[qty[0]].table.item(i,j).setBackground(QColor(255, 75, 75, 90))
+                    else:
+                        self.mem[qty[0]].table.item(i, j).setBackground(QColor(20, 20, 20))
+                        if qty[0] == "c":
+                            self.mem[qty[0]].table.item(i, j).setForeground(QColor(120, 150, 175))
+                    break
     def F_monitor(self):
         bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
         for i, flag in enumerate(bool_flags):
@@ -440,6 +345,7 @@ class ComputadorCompleto(QMainWindow):
         if nombre_archivo[0]:
             self.nombre_archivo = nombre_archivo[0]
             self.open_proc()
+            self.setWindowTitle(f'Microsex - Computador Completo - {nombre_archivo[0]}')
     
     def open_proc(self):
         f = open(self.nombre_archivo, 'r', encoding = 'utf-8')
@@ -447,7 +353,7 @@ class ComputadorCompleto(QMainWindow):
             datos_archivo = f.read()
             self.editor_codigo.editor.setPlainText(datos_archivo)
 
-    def dialogo_guardar(self):
+    def save_fcn(self, save_type: str):
         cursor = self.editor_codigo.editor.textCursor()
         cursor.movePosition(cursor.End, cursor.MoveAnchor)
         cursor.movePosition(cursor.Left, cursor.KeepAnchor)
@@ -455,35 +361,19 @@ class ComputadorCompleto(QMainWindow):
             cursor.movePosition(cursor.End)
             linea_nueva = "\n"
             cursor.insertText(linea_nueva)
-
+        if save_type == "como":
+            nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.Options())
+            if nombre_archivo[0]:
+                self.nombre_archivo = nombre_archivo[0]
+                self.setWindowTitle(f'Microsex - Computador Completo - {nombre_archivo[0]}')
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
             with open(nombre_archivo, 'w', encoding = 'utf-8') as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
-            self.Ejecutar_cargar.setEnabled(True)
-            self.Ejecutar_sobreescribir.setEnabled(True)
             self.barra_estado.showMessage('Archivo guardado :D')
         else:
-            self.dialogo_guardar_como()
-
-    def dialogo_guardar_como(self):
-        cursor = self.editor_codigo.editor.textCursor()
-        cursor.movePosition(cursor.End, cursor.MoveAnchor)
-        cursor.movePosition(cursor.Left, cursor.KeepAnchor)
-        if cursor.selectedText() in letras_numeros:
-            cursor.movePosition(cursor.End)
-            linea_nueva = "\n"
-            cursor.insertText(linea_nueva)
-        nombre_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo',"","Archivos ASM (*.asm);;Todos los archivos (*)",options=QFileDialog.Options())
-        if nombre_archivo[0]:
-            self.nombre_archivo = nombre_archivo[0]
-            with open(nombre_archivo[0], 'w', encoding = 'utf-8') as f:
-                datos_archivo = self.editor_codigo.editor.toPlainText()
-                f.write(datos_archivo)
-            self.Ejecutar_cargar.setEnabled(True)
-            self.Ejecutar_sobreescribir.setEnabled(True)
-            self.barra_estado.showMessage('Archivo guardado :D')
+            self.save_fcn("como")
 # endregion
 
 # region FUNCIONES DEL MENÚ EDITAR-----------------------------------------------------
@@ -583,88 +473,79 @@ class ComputadorCompleto(QMainWindow):
         config2.cs_initial = int(self.registros.edit_PIns.text(),16)
     def borrar_cargar(self):
         if self.nombre_archivo == False:
-            self.dialogo_guardar_como()
+            self.save_fcn("como")
         else:
-            self.dialogo_guardar()
+            self.save_fcn("save")
         nombre_archivo = self.nombre_archivo
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
             cod = list(programa)
-        err, msj, mp, ls, ts = verificacion_codigo(programa, self.nombre_archivo)
+        err, msj, mp, ls, ts, libs = verificacion_codigo(programa, self.nombre_archivo)
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:
-            self.regen_all()
-            self.enable_tables()
-            self.clr_ld(nombre_archivo, cod, ls, ts)
+            for i in config.m_prog:
+                config.m_prog.update({i: '00'})
+            for tab in self.mem.values():
+                tab.reset()
+            self.load(nombre_archivo, cod, ls, ts, libs)
             self.state_def(True,True,True,True)
-            self.mode = "coding"
     
-    def state_def(self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool):
-        self.Ejecutar_cargar.setEnabled(st_comp)
-        self.Ejecutar_sobreescribir.setEnabled(st_comp)
-        self.toolbar.actions()[3].setEnabled(st_comp)
+    def state_def(self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool, mems = True):
+        self.change_menu(
+            "Ensamblar, Borrar memoria y Cargar", st_comp, "Ensamblar y Cargar", 3
+        )
         self.toolbar.actions()[4].setEnabled(st_comp)
 
-        self.Ejecutar_ejecutar_instruccion.setEnabled(st_cnt)
-        self.Ejecutar_ejecutar.setEnabled(st_cnt)
-        self.toolbar.actions()[7].setEnabled(st_cnt)
+
+        self.change_menu(
+            "Ejecutar Ensamblado", st_cnt, "Siguiente Inst.", 7
+        )
         self.toolbar.actions()[9].setEnabled(st_cnt)
 
-        self.run_with_bp.setEnabled(st_cnt_bkp)
-        self.show_ls.setEnabled(st_cnt_bkp)
-        self.toolbar.actions()[8].setEnabled(st_cnt_bkp)
+        self.change_menu(
+            "Mostrar Archivo LST", st_cnt_bkp, "Ejecutar con Breakpoints", 8
+        )
         self.editor_codigo.editor.setReadOnly(not st_edit)
-    
+        for i in self.mem.values():
+                i.table.setEnabled(mems)
 
-    def clr_ld(self, nombre_archivo, cod, ls, ts):
-        self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
-        self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
-        self.Ejecutar_ejecutar.setEnabled(True)
-        self.lst = lst_table(self.datalst)
-        for i in config.m_prog:
-            config.m_prog.update({i: '00'})
-        self.extraer_valores()
-        self.ds_op()
-        self.regen_all()
-        config.m_prog.update(self.mp)
-        self.update_segments(config.m_prog)
-        self.set_Pins()
-        self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
-        self.draw_ip()
-        self.lst.show()
+    def change_menu(self, arg0, arg1, arg2, arg3):
+        self.menu_elems[arg0].setEnabled(arg1)
+        self.menu_elems[arg2].setEnabled(arg1)
+        self.toolbar.actions()[arg3].setEnabled(arg1)
 
     def cargar(self):
         if self.nombre_archivo == False:
-            self.dialogo_guardar_como()
+            self.save_fcn("como")
         else:
-            self.dialogo_guardar()
-        self.regen_all()
-        self.enable_tables()
+            self.save_fcn("save")
         nombre_archivo = self.nombre_archivo
         with open(nombre_archivo) as archivo:
             programa = archivo.readlines()
             cod = list(programa)
-        err, msj, mp, ls, ts = verificacion_codigo(programa, self.nombre_archivo)
+        err, msj, mp, ls, ts, libs = verificacion_codigo(programa, self.nombre_archivo)
         self.mp = mp.copy()
         self.monitor.setText(msj)
         if err == 0:
-            self.load(nombre_archivo, cod, ls, ts)
+            self.load(nombre_archivo, cod, ls, ts, libs)
             self.state_def(True,True,True,True)
             
 
-    def load(self, nombre_archivo, cod, ls, ts):
-        self.datalst = crear_archivo_listado(nombre_archivo, cod, ls, ts)
+    def load(self, nombre_archivo, cod, ls, ts, libs):
+        self.datalst, _ = crear_archivo_listado(nombre_archivo, cod, ls, ts, libs)
         self.rows, self.mem_place = [x[0] for x in self.datalst], [x[1] for x in self.datalst]
-        self.Ejecutar_ejecutar.setEnabled(True)
         self.lst = lst_table(self.datalst)
         config.m_prog.update(self.mp)
-        self.trim_mem(self.mp)
+        self.extraer_valores()
+        self.ds_op()
+        self.regen_all()
+        self.update_segments(self.mp)
         self.set_Pins()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
+        self.mode = "coding"
         self.draw_ip()
         self.lst.show()
-        self.mode = "coding"
 
 
     def ejecutar(self):
@@ -672,8 +553,8 @@ class ComputadorCompleto(QMainWindow):
         while config.PIns != 'FIN':
             isd += 1
             ciclo_instruccion()
-            self.color_Regs()
-            self.registros.actualizar_registros()
+        self.color_Regs()
+        self.registros.actualizar_registros()
         self.post = int(self.registros.edit_PIns.text(),16) - self._ds["c"]*16
         if config.PIns == 'FIN': self.barra_estado.showMessage('Fin de Programa (HLT)')
         self.update_segments(config.m_prog)
@@ -682,8 +563,7 @@ class ComputadorCompleto(QMainWindow):
     
     def run_for_bpoint(self):
         bp_dict = dict(zip(self.rows, self.mem_place))
-        to_fill = len(self.rows[-1])
-        to_break = {key: bp_dict[str(key).rjust(to_fill)] for key in self.bpoints}
+        to_break = {key: bp_dict[str(key)] for key in self.bpoints}
         ktmp, vtmp = list(to_break.keys()), list(to_break.values())
         while config.PIns != 'FIN':
             ciclo_instruccion()
@@ -720,8 +600,14 @@ class ComputadorCompleto(QMainWindow):
                 detected = max(i for i, v in enumerate(self.mem_place) if v == f'{int(config.PIns):04X}')
             else :
                 detected = max(i for i, v in enumerate(self.mem_place) if v == self.registros.edit_PIns.text())
+            if self.rows[detected] == "lib" and not self.state_lib:
+                self.state_lib = True
+                self.detected_2 += 2
+            elif self.rows[detected] != "lib":
+                self.state_lib = False
+                self.detected_2 = int(self.rows[detected])-1
             if self.mode != "coding-pend":
-                self.editor_codigo.editor.highl_IP(detected)
+                self.editor_codigo.editor.highl_IP(self.detected_2)
             for i in range(self.lst.table.columnCount()):
                 if self.detected_past is not None:
                     self.lst.table.item(self.detected_past,i).setBackground(QColor(20, 20, 20))
@@ -760,7 +646,7 @@ class ComputadorCompleto(QMainWindow):
         strs = {'s': "Stack Segment", 'c': "Code Segment", 'd': "Data Segment"}
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
         buffer = io.StringIO()
-        self.csv_gen(buffer,strs,chk)
+        self.csv_gen(buffer,strs)
         with open(nombre_archivo, 'w', newline='', encoding='utf-8') as f:
             if tipo_archivo == 'CSV Files (*.csv)' or nombre_archivo.endswith('.csv'):
                 contenido = buffer.getvalue()
@@ -834,7 +720,6 @@ class ComputadorCompleto(QMainWindow):
                     self.state['c'] = True
                 elif u[v].lower() == "data segment":
                     self.state['d'] = True
-
         return rows
 
     def csv2mem(self,rows):

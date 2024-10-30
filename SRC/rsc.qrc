@@ -11,6 +11,7 @@
     <file>IMG/save.png</file>
     <file>IMG/icono.png</file>
     <file>IMG/edit.png</file>
+    <file>IMG/icon32.png</file>
     <file alias="MononokiNerdFontMono-Regular.ttf">font/MononokiNerdFontMono-Regular.ttf</file>
     <file alias="MononokiNerdFontMono-Bold.ttf">font/MononokiNerdFontMono-Bold.ttf</file>
     <file alias="MononokiNerdFontMono-Italic.ttf">font/MononokiNerdFontMono-Italic.ttf</file>

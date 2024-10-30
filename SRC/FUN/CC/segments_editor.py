@@ -65,7 +65,6 @@ class memory(QWidget):
         corner_b.setToolTip("Clear")
         corner_b.clicked.disconnect()
         corner_b.clicked.connect(lambda: self.reset())
-        
 
         for i in range(rows):
             self.table.setRowHeight(i,8)
@@ -87,14 +86,16 @@ class memory(QWidget):
         pos_ini = int(self.table.horizontalHeaderItem(0).text(),16) if seg else int(self.table.verticalHeaderItem(0).text(),16)
         pos_ini += pos
         if data != config.m_prog.get(pos_ini, None):
+            if pos_ini in config.m_prog:
+                self.table.item(r, c).setBackground(QColor(255, 75, 75, 90))
             config.m_prog.update({pos_ini: data})
-            self.table.item(r, c).setBackground(QColor(255, 75, 75, 90))
-        self.table.item(r, c).setText(data)
+        self.table.item(r, c).setText(data)        
 
     def reset(self):
         for i, j in itertools.product(range(self.table.rowCount()), range(self.table.columnCount())):
-            self.table.setItem(i,j,QTableWidgetItem('00'))
-            self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
+            if self.table.item(i,j) is None or self.table.item(i,j) != "00":
+                self.table.setItem(i,j,QTableWidgetItem('00'))
+                self.table.item(i,j).setTextAlignment(Qt.AlignCenter)
 
 if __name__ == '__main__':
 

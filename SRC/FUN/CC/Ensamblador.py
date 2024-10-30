@@ -6,66 +6,11 @@ from FUN.CC.Listado import *
 import os
 
 
-def verificacion_codigo(DATOS: list, name):
+def verificacion_codigo(DATOS: list, name: str):
     data_fin = []
-    for i in range(len(DATOS)):
-        DATOS[i] = DATOS[i][:-1]
-        cont = DATOS[i].count("\t")
-        DATOS[i] = DATOS[i].replace("\t", " ", cont).lstrip()
-        posicionComentario = DATOS[i].find(";")
-        if posicionComentario == 0:
-            DATOS[i] = ""
-        if posicionComentario > 0:
-            DATOS[i] = i.split(";")[0]
-        DATOS[i] = DATOS[i].split(" ")
-        for _ in range(DATOS[i].count("")):
-            DATOS[i].remove("")
-        for ix in range(len(DATOS[i])):
-            if len(DATOS[i]) > 1 and ix == len(DATOS[i])-1 and (DATOS[i][-1][0] == '"' or DATOS[i][-1][0] == "'") and (DATOS[i][-1][-1] == DATOS[i][-1][0]):
-                DATOS[i][ix] = DATOS[i][ix]
-            else:
-                DATOS[i][ix] = DATOS[i][ix].upper()
-        if len(DATOS[i]) == 2 and DATOS[i][0].upper() == ".LIB":
-            lib_name = DATOS[i][1]
-            # Crear la nueva ruta con el nuevo nombre
-            with open(os.path.join(os.path.dirname(name), lib_name)) as archivo:
-                prog = archivo.readlines()
-                for i in range(len(prog)):
-                    prog[i] = prog[i][:-1]
-                    cont = prog[i].count("\t")
-                    prog[i] = prog[i].replace("\t", " ", cont).lstrip()
-                    posicionComentario = prog[i].find(";")
-                    if posicionComentario == 0:
-                        prog[i] = ""
-                    if posicionComentario > 0:
-                        prog[i] = i.split(";")[0]
-                    prog[i] = prog[i].split(" ")
-                    for _ in range(prog[i].count("")):
-                        prog[i].remove("")
-                    for ix in range(len(prog[i])):
-                        if len(prog[i]) > 1 and ix == len(prog[i])-1 and (prog[i][-1][0] == '"' or prog[i][-1][0] == "'") and (prog[i][-1][-1] == prog[i][-1][0]):
-                            prog[i][ix] = prog[i][ix]
-                        else:
-                            prog[i][ix] = prog[i][ix].upper()
-                    data_fin.append(prog[i])
-        else:
-            data_fin.append(DATOS[i])
-    """         for x in i:
-            if len(i) > 1 and x == len(i)-1 and (i[-1][0] == '"' or i[-1][0] == "'") and (i[-1][-1] == i[-1][0]):
-                i[x] = i[x]
-            else:
-                i[x] = i[x].upper()
-    for i in range(len(DATOS)):
-        for ix in range(len(DATOS[i])):
-            if len(DATOS[i]) > 1 and ix == len(DATOS[i])-1 and (DATOS[i][-1][0] == '"' or DATOS[i][-1][0] == "'") and (DATOS[i][-1][-1] == DATOS[i][-1][0]):
-                DATOS[i][ix] = DATOS[i][ix]
-            else:
-                DATOS[i][ix] = DATOS[i][ix].upper()"""
-
-
+    lib_info = []
+    expand_data(DATOS, data_fin, name, lib_info)
     DATOS = data_fin
-
-
     #------------------------------ VERIFICAR ERRORES ------------------------------
     mensaje = ''
     m_prog = {}
@@ -119,28 +64,26 @@ def verificacion_codigo(DATOS: list, name):
             listado_prog[i][1] = ' '.join(listado_prog[i][1])
         listado |= listado_prog
 
-    return errores, mensaje, m_prog, listado, tabla_simbolos
+    return errores, mensaje, m_prog, listado, tabla_simbolos, lib_info
 
-
-
-# if __name__ == '__main__':
-#
-#     archivo = "E:/Escritorio/ejemplos_microsex/fibonacci_msex2.asm"
-#     f = open(archivo)
-#     DATOS = f.readlines()
-#     codigo = list(DATOS)
-#     f.close()
-# 
-#     listado, TS = verificacion_codigo(DATOS)[3:5]
-#     archlist = crear_archivo_listado(archivo, codigo, listado, TS)
-
-
-
-
-
-
-
-
-
-
-#
+def expand_data(DATOS: list, data_fin: list, dir: str, lib_info : list):
+    for i in range(len(DATOS)):
+        DATOS[i] = DATOS[i][:-1]
+        DATOS[i] = DATOS[i].replace("\t", " ", DATOS[i].count("\t")).lstrip()
+        DATOS[i] = "" if DATOS[i].find(";") == 0 else DATOS[i].split(";")[0]
+        DATOS[i] = DATOS[i].split(" ")
+        for _ in range(DATOS[i].count("")):
+            DATOS[i].remove("")
+        if len(DATOS[i]) > 1 and (DATOS[i][-1][0] in ['"', "'"] and DATOS[i][-1][-1] == DATOS[i][-1][0]):
+            DATOS[i] = [elem.upper() for elem in DATOS[i][:-1]] + [DATOS[i][-1]]
+            data_fin.append(DATOS[i])
+        elif len(DATOS[i]) == 2 and DATOS[i][0].upper() == ".LIB":
+            lib_fin = []
+            with open(os.path.join(os.path.dirname(dir), DATOS[i][1])) as archivo:
+                lib_data = archivo.readlines()
+                lib_info.append([i, DATOS[i][1], os.path.join(os.path.dirname(dir), DATOS[i][1])])
+            expand_data(lib_data, lib_fin, dir, lib_info)
+            data_fin.extend(lib_fin)
+        else:
+            DATOS[i] = [elem.upper() for elem in DATOS[i]]
+            data_fin.append(DATOS[i])

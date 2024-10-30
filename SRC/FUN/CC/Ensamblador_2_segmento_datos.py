@@ -6,6 +6,7 @@ Los símbolos son guardados en la tabla de símbolos:
    rb, db     :    nombre   | dirección |  contenido
 """
 
+
 import string
 from re import search
 from FUN.CONF.nemonicos import argumentos_instrucciones
@@ -26,7 +27,7 @@ reservados = ['A', 'B', 'C', 'IX', 'IY', 'X', 'Y']
 op_validas = '[\+\-\*\%]'
 
 palabras_reservadas = list(nemonicos)
-new_reserved_word = ["__" + chr(219), chr(219)]
+new_reserved_word = [f"__{chr(219)}", chr(219)]
 palabras_reservadas.extend(reservados)
 
 numeros = tuple(str(i) for i in string.digits)
@@ -96,7 +97,6 @@ def verificar_segmento_datos(DATOS, origen):
                     except ValueError:
                         errores += 1
                         mensaje = mensaje + str('\nError en linea {}: contenido inválido "{}"'.format(i+1,contenido))
-                        pass
                 if simbolo_correcto == 3:
                     if directiva == '.DB':
                         lista_simbolos.update({i+1: [hex(direccion), [hex(contenido)]]})
@@ -153,29 +153,23 @@ def verificar_segmento_datos(DATOS, origen):
                 try:
                     if contenido.startswith('0X'):
                         contenido = int(contenido,16)
-                        len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
 
                     elif contenido.startswith('0B'):
                         contenido = int(contenido,2)
-                        len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
 
                     elif contenido.isdecimal():
                         contenido = int(contenido)
-                        len_cont = len(hex(contenido)) - 2
                         simbolo_correcto += 1
-                    
+
                     elif (contenido[0] == '"' or contenido[0] == "'") and (contenido[-1] == contenido[0]):
-                        len_cont = len(contenido.replace('"', '').replace("'", ""))
                         contenido = int(contenido.replace('"', '').replace("'", "").encode("utf-8").hex(), 16)
                         simbolo_correcto += 1
 
                     elif search(op_validas, contenido):
-                        # print("codigo", contenido)
                         for v in valores:
                             contenido = contenido.replace(v, str(valores[v]))
-                        # print("valores", contenido)
                         contenido = eval(contenido)
                         simbolo_correcto +=1
 
@@ -189,7 +183,6 @@ def verificar_segmento_datos(DATOS, origen):
                 except ValueError:
                     errores += 1
                     mensaje = mensaje + str('\nError en linea {}: contenido inválido "{}"'.format(i+1,contenido))
-                    pass
             else:
                 errores, mensaje = err_contenido_invalido(errores, mensaje, contenido, i)
 
@@ -235,35 +228,37 @@ def verificar_segmento_datos(DATOS, origen):
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: directiva desconocida'.format(indice+1))
+    mensaje = f'{mensaje}\nError en línea {indice + 1}: directiva desconocida'
     return errores, mensaje
     
 def err_sintaxis(errores_previos, mensaje, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: sintaxis incorrecta'.format(indice+1))
+    mensaje = f'{mensaje}\nError en línea {indice + 1}: sintaxis incorrecta'
     return errores, mensaje
 
 def err_simbolo_invalido(errores_previos, mensaje, simbolo, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en linea {}: símbolo inválido "{}"'.format(indice+1,simbolo))
+    mensaje = (
+        f'{mensaje}\nError en linea {indice + 1}: símbolo inválido "{simbolo}"'
+    )
     return errores, mensaje
 
 def err_simbolo_definido_antes(errores_previos, mensaje, simbolo, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en linea {}: símbolo definido previamente "{}"'.format(indice+1,simbolo))
+    mensaje = f'{mensaje}\nError en linea {indice + 1}: símbolo definido previamente "{simbolo}"'
     return errores, mensaje
 
 def err_simbolo_palabra_reservada(errores_previos, mensaje, simbolo, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: símbolo no admite palabra reservada {}'.format(indice+1,simbolo))
+    mensaje = f'{mensaje}\nError en línea {indice + 1}: símbolo no admite palabra reservada {simbolo}'
     return errores, mensaje
 
 def err_simbolo_exp_reservada(errores_previos, mensaje, simbolo, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: símbolo no admite expresión reservada {}'.format(indice+1,simbolo))
+    mensaje = f'{mensaje}\nError en línea {indice + 1}: símbolo no admite expresión reservada {simbolo}'
     return errores, mensaje
 
 def err_contenido_invalido(errores_previos, mensaje, contenido, indice):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en linea {}: contenido inválido "{}"'.format(indice+1,contenido))
+    mensaje = f'{mensaje}\nError en linea {indice + 1}: contenido inválido "{contenido}"'
     return errores, mensaje

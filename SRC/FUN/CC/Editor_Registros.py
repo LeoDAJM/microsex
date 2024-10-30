@@ -26,7 +26,7 @@ class LineEditHex(QLineEdit):
         a = self.rxval.validate(cadena, 0)
         if a[0] == 0:
             c = self.text()
-            c = c[0:len(c)-1]
+            c = c[:-1]
             self.setText(c)
 
     def finalizado(self):
@@ -60,7 +60,7 @@ class EditorRegistros(QWidget):
         self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_Registro_F.setAlignment(Qt.AlignCenter)
         self.lbl_banderas = [0]*6
-        for i in range(0,6):
+        for i in range(6):
             self.lbl_banderas[i] = QLabel(banderas[i],self)
 
 
@@ -84,14 +84,14 @@ class EditorRegistros(QWidget):
         
 # Edición de Registros
         self.edit_acumuladores = [0]*3
-        for i in range(0,3):
+        for i in range(3):
             self.edit_acumuladores[i] = LineEditHex(2)
             #self.edit_acumuladores[i].setFixedWidth(t_w // 15)
             self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
         
-        for i in range(0,6):
+        for i in range(6):
             self.edit_banderas[i] = QLineEdit(self)
             self.edit_banderas[i].setInputMask('B')
             self.edit_banderas[i].setAlignment(Qt.AlignCenter)
@@ -100,7 +100,7 @@ class EditorRegistros(QWidget):
             self.edit_banderas[i].editingFinished.connect(self.editar_banderas)
 
         self.edit_punteros = [0]*3
-        for i in range(0,3):
+        for i in range(3):
             self.edit_punteros[i] = LineEditHex(4)
             #self.edit_punteros[i].setFixedWidth(t_w // 15)
             self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
@@ -142,13 +142,13 @@ class EditorRegistros(QWidget):
         bloque_banderas = QVBoxLayout()
 
         bloque_bandera = [0]*6
-        for i in range(0,6):
+        for i in range(6):
             bloque_bandera[i] = QHBoxLayout()
             bloque_bandera[i].addWidget(self.lbl_banderas[i], stretch=1)
             bloque_bandera[i].addWidget(self.edit_banderas[i], stretch=2)
 
         registro_F = QVBoxLayout()
-        for i in range(0,6):
+        for i in range(6):
             registro_F.addLayout(bloque_bandera[i])
         bloque_banderas.addStretch(1)
         bloque_banderas.addWidget(self.lbl_Registro_F)

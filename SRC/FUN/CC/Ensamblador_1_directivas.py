@@ -22,7 +22,7 @@ def verificar_directivas(DATOS):
         errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, nfin, '.FIN')
 
     origen = {}
-    for i in range (0,len(DATOS)):
+    for i in range(len(DATOS)):
         try:
             if len(DATOS[i]) == 1:
                 if DATOS[i][0] == '.ORG':
@@ -38,13 +38,13 @@ def verificar_directivas(DATOS):
                 if directiva == '.ORG':
                     if contenido.isalnum():
                         if contenido.startswith('0X'):
-                            origen.update({i+1: int(contenido,16)})
+                            origen[i+1] = int(contenido,16)
 
                         elif contenido.startswith('0B'):
-                            origen.update({i+1: int(contenido,2)})
+                            origen[i+1] = int(contenido,2)
 
                         elif contenido.isnumeric():
-                            origen.update({i+1: int(contenido)})
+                            origen[i+1] = int(contenido)
 
                         else:
                             errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
@@ -57,44 +57,42 @@ def verificar_directivas(DATOS):
 
         except ValueError:
             errores += 1
-            mensaje = mensaje + str('Error en linea {}: número inválido "{}"'.format(i+1,contenido))
-            pass
-
+            mensaje = f'{mensaje}Error en linea {i + 1}: número inválido "{contenido}"'
     if errores == 0:
-        mensaje = str(' ** OK **: todo correcto en directivas de segmentos')
-        # print('ORIGENES')
-        # for i in origen:
-        #     print(i, hex(origen[i]))
+        mensaje = ' ** OK **: todo correcto en directivas de segmentos'
+            # print('ORIGENES')
+            # for i in origen:
+            #     print(i, hex(origen[i]))
     else:
-        mensaje = mensaje + str(' ** Total errores en directivas: {}'.format(errores))
+        mensaje = f'{mensaje} ** Total errores en directivas: {errores}'
 
     return errores, mensaje, origen
 
 def err_inexistencia_directivas(errores_previos, mensaje, seg):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError de Código: falta directiva de {}'.format(seg))
+    mensaje = f'{mensaje}\nError de Código: falta directiva de {seg}'
     return errores, mensaje
 
 def err_duplicidad_directivas(errores_previos, mensaje, datos, conteo, directiva):
     errores = errores_previos + conteo - 1
     linea_error = -1
-    mensaje = mensaje + str('\nError (x{}): directiva repetida "{}"'.format(conteo-1, directiva))
-    for i in range(0,conteo):
+    mensaje = f'{mensaje}\nError (x{conteo - 1}): directiva repetida "{directiva}"'
+    for _ in range(conteo):
         linea_error = datos.index([directiva], linea_error + 1)
-        mensaje = mensaje + str('\n -> línea {}'.format(linea_error + 1))
+        mensaje = f'{mensaje}\n -> línea {linea_error + 1}'
     return errores, mensaje
 
 def err_numero_invalido(errores_previos, mensaje, contenido, linea_error):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en linea {}: número inválido "{}"'.format(linea_error+1,contenido))
+    mensaje = f'{mensaje}\nError en linea {linea_error + 1}: número inválido "{contenido}"'
     return errores, mensaje
 
 def err_directiva_desconocida(errores_previos, mensaje, linea_error):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: directiva desconocida'.format(linea_error+1))
+    mensaje = f'{mensaje}\nError en línea {linea_error + 1}: directiva desconocida'
     return errores, mensaje
 
 def err_sintaxis(errores_previos, mensaje, linea_error):
     errores = errores_previos + 1
-    mensaje = mensaje + str('\nError en línea {}: sintaxis incorrecta'.format(linea_error+1))
+    mensaje = f'{mensaje}\nError en línea {linea_error + 1}: sintaxis incorrecta'
     return errores, mensaje
