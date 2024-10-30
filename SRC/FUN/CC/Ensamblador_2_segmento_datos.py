@@ -12,7 +12,6 @@ from re import search
 from FUN.CONF.nemonicos import argumentos_instrucciones
 import re
 import math
-from collections import Counter
 
 directivas_dseg = [
 '.ORG',     # Define una dirección desde donde se contará en la MDAT

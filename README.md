@@ -1,4 +1,4 @@
-# Microsex - v0.98b (Ale-V)
+# Microsex - v1.0 rev2 (Ale-V)
 
 # Interfaz
 
@@ -16,7 +16,6 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
 El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.
-El archivo debe estar en la misma carpeta que el código abierto, además de estar nombrado únicamente en mayúsculas.
 - ***NEW*** **Indicador Visual de `IP` (PIns) en editor**: Se agregó en el editor el resaltado de la línea actual de código en ejecución, para un mejor control del proceso.
 - ***NEW*** **Archivo de Listado adjunto al programa**: Al compilar un código, se abrirá automáticamente el archivo de listado respectivo al mismo, eliminando la necesidad de abrirlo con un lector de texto externo.
 - ***NEW*** **Drag&Drop**: Añadida funcionalidad de arrastrar y soltar archivos al emulador; esta acción funciona con archivos *.txt* y *.asm* y da como resultado la apertura de dichos archivos.
@@ -41,9 +40,12 @@ El archivo debe estar en la misma carpeta que el código abierto, además de est
 - **Refactorización del Código**: Reescritura de funciones clave y optimización de ciclos para mejorar la eficiencia del simulador.
 - **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución (modulo_CC.py).
 
+## Compatibilidad
+
+- Requiere una versión de *Python 3.8* o superior.
+
 ## Errores Conocidos
 
-- **Python >= 3.13.x**: Si bien el programa se ejecuta, se han reportado errores en la asignación de segmentos en el CS durante el ensamblado (*unknown*).
 - ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ (*SOLVED*)
 - ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~ (*SOLVED*)
 - ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~ (*SOLVED*)
@@ -53,7 +55,7 @@ El archivo debe estar en la misma carpeta que el código abierto, además de est
 - **Optimización del Código**: Todavía se requiere una mayor optimización de varios aspectos del código. :´3
 - [X] ~~Seguimiento de IP en el archivo de listado.~~
 - [X] ~~Seguimiento de IP en el código.~~
-- [ ] Añadir el uso de librerías.
+- [X] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
 - [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
 - [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)

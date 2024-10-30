@@ -10,7 +10,6 @@ import io
 import FUN.CONF.config_custom as config2
 import rc_icons
 import re
-from tabulate import tabulate
 
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
