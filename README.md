@@ -13,6 +13,8 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 ## Características
 
 ### **Nuevas Funcionalidades**
+
+- ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 ne vez del 5.
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
 El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.
@@ -57,7 +59,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - [X] ~~Seguimiento de IP en el código.~~
 - [X] Añadir el uso de librerías.
 - [ ] Añadir interacción con puertos físicos.
-- [ ] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
+- [X] Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.
 - [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:
