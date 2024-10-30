@@ -1,6 +1,6 @@
 {
   "name": "microsex",
-  "version": "v1.1",
+  "version": "1.1",
   "description": "Proyecto de simulación de arquitectura de computador basado en Microsex utilizando PyQt6.",
   "main": "Microsex.py",
   "repository": {
