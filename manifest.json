@@ -1,0 +1,25 @@
+{
+  "name": "microsex",
+  "version": "v1.1",
+  "description": "Proyecto de simulación de arquitectura de computador basado en Microsex utilizando PyQt6.",
+  "main": "Microsex.py",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeoDAJM/microsex.git"
+  },
+  "author": "LeoDAJM",
+  "license": "MIT",
+  "keywords": [
+    "simulador",
+    "Microsex",
+    "PyQt6",
+    "computer"
+  ],
+  "scripts": {
+    "start": "python Microsex.py",
+  },
+  "dependencies": {
+    "PyQt6": "^6.0.0",
+    "openpyxl": "^3.0.0"
+  }
+}
