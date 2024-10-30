@@ -1,7 +1,7 @@
 # Microsex - v1.1 (Ale-V)
 
 ![Static Badge](https://img.shields.io/badge/VERSION-v1.1_rev2-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml?branch=pyqt6&style=for-the-badge&logo=python&logoColor=white&label=Python%203.8%2B&labelColor=101010)](https://www.python.org/downloads/)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml&style=for-the-badge&logo=python&logoColor=white&label=Python%203.8%2B&labelColor=101010)](https://www.python.org/downloads/)
 ![GitHub License](https://img.shields.io/github/license/LeoDAJM/microsex?style=for-the-badge&logo=conventionalcommits&logoColor=white&label=Licence&labelColor=101010&color=orange)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex/pyqt6?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LeoDAJM/microsex?style=for-the-badge&logo=files&logoColor=white&label=SIZE&labelColor=101010)
