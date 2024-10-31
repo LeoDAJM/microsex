@@ -18,7 +18,7 @@ url: https://leodajm.github.io/microsex/
 
 aux_links: # remove if you don't want this link to appear on your pages
   Repository:
-    - https://leodajm.github.io/microsex/
+    - https://github.com/LeoDAJM/microsex/
 
 
 # Makes Aux links open in a new tab. Default is false

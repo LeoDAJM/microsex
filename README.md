@@ -80,15 +80,14 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 
 ## Errores Conocidos
 
-- ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ 
-(*SOLVED*)
-{: .label .label-green }
+- ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ {(*SOLVED*)
+{: .label .label-green }}
 - ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~
-(*SOLVED*)
-{: .label .label-green }
+{(*SOLVED*)
+{: .label .label-green }}
 - ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~
-(*SOLVED*)
-{: .label .label-green }
+{(*SOLVED*)
+{: .label .label-green }}
 
 ## Pendiente Fork:
 
