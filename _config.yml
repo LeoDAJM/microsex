@@ -1,7 +1,6 @@
 # Configuración básica del sitio
 title: "LeoDAJM - GH"
 description: "Personal GH Page"
-author: "DAlejandroJM"
 repository: LeoDAJM/microsex
 #remote_theme: b2a3e8/jekyll-theme-console
 #heiswayi/thinkspace
@@ -15,9 +14,6 @@ repository: LeoDAJM/microsex
 #kitian616/jekyll-TeXt-theme
 
 layout: article
-aside:
-  toc: true
-
 author: DAJM
 
 header:
@@ -27,7 +23,6 @@ header:
     url:        https://github.com/LeoDAJM/microsex
 
 
-color_scheme: dark
 text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 remote_theme: kitian616/jekyll-TeXt-theme
