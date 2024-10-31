@@ -14,17 +14,20 @@ repository: LeoDAJM/microsex
 #kitian616/jekyll-TeXt-theme
 
 author: DAJM
+url: https://leodajm.github.io/microsex/
 
-header:
-  - title:      Docs
-    url:        /docs
-  - title:      GitHub
-    url:        https://github.com/LeoDAJM/microsex
+aux_links: # remove if you don't want this link to appear on your pages
+  Repository:
+    - https://leodajm.github.io/microsex/
 
 
-text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-remote_theme: kitian616/jekyll-TeXt-theme
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: false
+nav_enabled: true
+
+
+color_scheme: dark
+remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
 
