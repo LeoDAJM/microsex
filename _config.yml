@@ -21,21 +21,6 @@ aux_links: # remove if you don't want this link to appear on your pages
   Repository:
     - https://github.com/LeoDAJM/microsex/
 
-title: Project Info.
-nav_order: 1
-
-title: Changelog
-parent: Project Info.
-nav_order: 2
-
-title: Quick Start
-parent: Project Info.
-nav_order: 2
-
-title: Features
-parent: Project Info.
-nav_order: 2
-
 
 back_to_top_text: "Volver al inicio" # Texto del botón "Volver al inicio"
 back_to_top: true                    # Habilita el botón "Volver al inicio"
