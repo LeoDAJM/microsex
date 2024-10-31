@@ -8,6 +8,15 @@ permalink: /
 
 
 # Microsex - v1.1 (Ale-V)
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ![Static Badge](https://img.shields.io/badge/VERSION-v1.1_rev2-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml?branch=master&style=for-the-badge&logo=python&logoColor=white&label=Python%203.8%2B&labelColor=101010)](https://www.python.org/downloads/)
