@@ -10,8 +10,8 @@ author: "DAlejandroJM"
 #hydecorp/hydejack
 #nielsenramon/chalk
 #riggraz/no-style-please
-
-remote_theme: nielsenramon/chalk
+#TolgaTatli/Moonrise/
+remote_theme: TolgaTatli/Moonrise/
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
 
