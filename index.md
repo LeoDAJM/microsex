@@ -58,12 +58,15 @@ Para instalar y utilizar Microsex, sigue estos pasos:
    ```bash
    git clone https://github.com/LeoDAJM/microsex.git
    cd microsex
+   ```
 2. Instala las dependencias:
     ```bash
     pip install -r requirements.txt
+    ```
 3. Ejecuta el proyecto:
-    '''bash
+    ```bash
     python Microsex.py
+    ```
 
 
 # Guía de Uso
