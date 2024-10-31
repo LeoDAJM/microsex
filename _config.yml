@@ -3,7 +3,8 @@ title: "LeoDAJM - GH"
 description: "Personal GH Page"
 author: "DAlejandroJM"
 
-remote_theme: b2a3e8/jekyll-theme-console
+#remote_theme: b2a3e8/jekyll-theme-console
+remote_theme: riggraz/no-style-please
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
 
