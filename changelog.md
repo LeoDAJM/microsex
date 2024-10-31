@@ -1,6 +1,9 @@
 ---
 title: ChangeLog
 layout: default
+parent: Main
+nav_order: 2
+has_toc: true
 ---
 
 # microsex

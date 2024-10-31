@@ -1,6 +1,9 @@
 ---
 title: Features
 layout: default
+parent: Main
+nav_order: 2
+has_toc: true
 ---
 ## Indicador Visual de `IP` (PIns) en editor
 Ahora durante la ejecución del programa, se resalta de color verde la instrucción actual a punto de ser ejecutada, en el apartado de edición de código.

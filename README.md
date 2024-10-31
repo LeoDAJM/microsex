@@ -1,6 +1,10 @@
 ---
 title: Quick Start
 layout: default
+parent: Main
+nav_order: 2
+permalink: /
+has_toc: true
 ---
 
 # Microsex - v1.1 (Ale-V)
