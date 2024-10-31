@@ -12,10 +12,11 @@ author: "DAlejandroJM"
 #riggraz/no-style-please
 #TolgaTatli/Moonrise/
 #just-the-docs/just-the-docs
+color_scheme: dark
 remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
-color_scheme: dark
+
 # Configuraciones adicionales
 markdown: kramdown
 permalink: pretty # Define las URL amigables
