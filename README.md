@@ -1,3 +1,8 @@
+---
+title: Quick Start
+layout: default
+---
+
 # Microsex - v1.1 (Ale-V)
 
 ![Static Badge](https://img.shields.io/badge/VERSION-v1.1_rev2-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)

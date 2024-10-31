@@ -1,3 +1,8 @@
+---
+title: ChangeLog
+layout: default
+---
+
 # microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
