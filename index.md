@@ -57,7 +57,7 @@ Para instalar y utilizar Microsex, sigue estos pasos:
 
    ```bash
    git clone https://github.com/LeoDAJM/microsex.git
-   cd microsex
+   cd microsex/SRC
    ```
 2. Instala las dependencias:
     ```bash
@@ -71,10 +71,10 @@ Para instalar y utilizar Microsex, sigue estos pasos:
 
 # Guía de Uso
 
-    - Abrir el Programa: Ejecuta main.py para abrir la interfaz gráfica.
-    - Cargar Archivo ASM: Puedes cargar programas en ensamblador escrito en Microsex.
-    - Ejecutar Programa: Usa el botón de ejecución para simular el programa en la USCE.
-    - Inspeccionar la Memoria: Verifica y modifica el estado de la memoria durante la ejecución.
+1. Abrir el Programa: Ejecuta Microsex.py para abrir la interfaz gráfica.
+2. Cargar Archivo ASM: Puedes cargar programas en ensamblador escrito en Microsex, módulo_CC.
+3. Ejecutar Programa: Usa el botón de ejecución para simular el programa en la USCE.
+4. Inspeccionar la Memoria: Verifica y modifica el estado de la memoria durante la ejecución.
 
 Para una guía completa, revisa la documentación.
 
@@ -82,9 +82,9 @@ Para una guía completa, revisa la documentación.
 
 ¿Quieres contribuir al proyecto? Sigue estos pasos:
 
-    - Haz un fork del repositorio y crea una nueva rama para tu feature o bugfix.
-    - Haz un pull request con una descripción detallada de tus cambios.
-    - Asegúrate de seguir los lineamientos del proyecto.
+- Haz un fork del repositorio y crea una nueva rama para tu feature o bugfix.
+- Haz un pull request con una descripción detallada de tus cambios.
+- Asegúrate de seguir los lineamientos del proyecto.
 
 # Contacto
 
