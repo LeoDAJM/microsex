@@ -4,7 +4,14 @@ description: "Personal GH Page"
 author: "DAlejandroJM"
 
 #remote_theme: b2a3e8/jekyll-theme-console
-remote_theme: riggraz/no-style-please
+#heiswayi/thinkspace
+#ankitsultana/researcher
+#piharpi/jekyll-klise
+#hydecorp/hydejack
+#nielsenramon/chalk
+#riggraz/no-style-please
+
+remote_theme: nielsenramon/chalk
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
 
