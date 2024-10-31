@@ -2,7 +2,7 @@
 title: "LeoDAJM - GH"
 description: "Personal GH Page"
 author: "DAlejandroJM"
-
+repository: LeoDAJM/microsex
 #remote_theme: b2a3e8/jekyll-theme-console
 #heiswayi/thinkspace
 #ankitsultana/researcher
@@ -12,8 +12,28 @@ author: "DAlejandroJM"
 #riggraz/no-style-please
 #TolgaTatli/Moonrise/
 #just-the-docs/just-the-docs
+#kitian616/jekyll-TeXt-theme
+
+layout: article
+aside:
+  toc: true
+
+Page Layout:
+  mode: immersive
+
+author: DAJM
+
+header:
+  - title:      Docs
+    url:        /docs
+  - title:      GitHub
+    url:        https://github.com/LeoDAJM/microsex
+
+
 color_scheme: dark
-remote_theme: just-the-docs/just-the-docs
+text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+remote_theme: kitian616/jekyll-TeXt-theme
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
 

@@ -70,7 +70,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - **Interfaz Oscura**: Se ha implementado un esquema de colores oscuros para facilitar el trabajo prolongado.
 - **Ventana Responsive**: El contenido de la interfaz (fuentes y cajas) es ahora redimensionable, lo que permite maximizar la ventana sin comprometer la visibilidad.
 - **Refactorización del Código**: Reescritura de funciones clave y optimización de ciclos para mejorar la eficiencia del simulador.
-- **Solución Despliegue de Iconos**: Se agregó un recurso qrc|py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución.
+- **Solución Despliegue de Iconos**: Se agregó un recurso qrc-py que permite desplegar de manera correcta los iconos independientemente del directorio de ejecución.
 
 ## Compatibilidad
 
@@ -78,7 +78,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 
 ## Errores Conocidos
 
-- ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ (*SOLVED*)
+- ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ `(*SOLVED*)`{:.success}
 - ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~ (*SOLVED*)
 - ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~ (*SOLVED*)
 
