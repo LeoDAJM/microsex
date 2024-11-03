@@ -60,30 +60,30 @@ PyQt6
             - N cantidad de pasos a ejecutar (número entero positivo), si no se introduce arg4, se asume N = 1.
         
     - Ejemplos:
-            ```bash
+            ```console
             Microsex.py E:\path\to\file\L9_1.txt
-            ```
-            ```bash
+            ``` \
+            ```console
             Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
-            ```
-            ```bash
+            ``` \
+            ```console
             Microsex.py E:\path\to\file\L9_1.txt -ld -r 
-            ```
-            ```bash
+            ``` \
+            ```console
             Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
-            ```
-            ```bash
+            ``` \
+            ```console
             modulo_CC.py E:\path\to\file\L9_1.txt
-            ```
-            ```bash
+            ``` \
+            ```console
             modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
-            ```
-            ```bash
+            ``` \
+            ```console
             modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
-            ```
-            ```bash
+            ``` \
+            ```console
             modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
-            ```
+            ``` \
 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
