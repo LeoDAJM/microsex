@@ -65,19 +65,19 @@ D:\> cd D:\Microsex\SRC
 
 D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt
 
-D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
+D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -cld         & REM o -ld
 
 D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -ld -r 
 
-D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -ld -st      & REM o -st 5
 
 D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt
 
-D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
+D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -cld        & REM o -ld
 
 D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
 
-D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -ld -st     & REM o -st 5
 
 ```
 
