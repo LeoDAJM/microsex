@@ -61,10 +61,10 @@ PyQt6
         
     - Ejemplos:
 
-            ```console
-            foo@bar:~$ whoami
-            foo
-            ```
+```console
+foo@bar:~$ whoami
+foo
+```
 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
