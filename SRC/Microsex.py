@@ -13,12 +13,17 @@ from modulo_CC import *
 
 class Principal(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, args = None):
         super().__init__()
 
-        self.initUI()
+        self.initUI(args)
+        #args = args[1:]
+        if args is not None and len(args) > 0:
+            print("Introducidos Argumentos para módulo CC")
+            self.modulo_cc.show()
+            self.close()
 
-    def initUI(self):
+    def initUI(self, args = None):
 
         self.modulo = "Unidad Básica de Cálculo"
 
@@ -33,7 +38,7 @@ class Principal(QMainWindow):
         self.modulo_alu = mod_ALU()
         self.modulo_usc = mod_USC()
         self.modulo_uscMem = mod_USCE()
-        self.modulo_cc = mod_CC()
+        self.modulo_cc = mod_CC(args)
 
         self.setCentralWidget(self.panel_inicial)
 
@@ -46,6 +51,7 @@ class Principal(QMainWindow):
         self.setWindowTitle('Emulador Microsex')
         self.setWindowIcon(QIcon(':IMG/icono.png'))
         self.show()
+
 
     def modulo_seleccionado(self, modo):
         self.modulo = str(modo)
@@ -107,5 +113,5 @@ class mod_USCE(USCE):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
-    ex = Principal()
+    ex = Principal(sys.argv)
     sys.exit(app.exec())

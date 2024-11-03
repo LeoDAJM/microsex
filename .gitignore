@@ -7,3 +7,7 @@ SRC/rsc.qrc
 /SRC/IMG
 *.qrc
 SRC/test.py
+.sourcery.yaml
+.vscode/settings.json
+.trunk/.gitignore
+.trunk/trunk.yaml

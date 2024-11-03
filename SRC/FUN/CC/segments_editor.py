@@ -1,5 +1,4 @@
 import itertools
-import sys
 from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
 from PyQt6.QtWidgets import QLineEdit, QLabel
 from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QAbstractButton
@@ -10,10 +9,7 @@ from PyQt6.QtCore import Qt, QRegularExpression
 import FUN.CONF.configCC as config
 
 class Validador2(QItemDelegate):
-    def __init__(self):
-        super().__init__()
-
-    def createEditor(self,parent):
+    def createEditor(self,parent,option,index):
         regex = QRegularExpression("[0-9a-fA-F]{2}")
         self.rxval = QRegularExpressionValidator(regex, self)
         self.edt_rx = QLineEdit(parent)
@@ -21,14 +17,12 @@ class Validador2(QItemDelegate):
         self.edt_rx.editingFinished.connect(self.finalizado)
         return self.edt_rx
     def verificar(self, cadena):
-        a = self.rxval.validate(cadena, 0)
-        if a[0] == 0:
+        state, _, _ = self.rxval.validate(cadena, 0)
+        if state == QRegularExpressionValidator.State.Invalid:
             self.edt_rx.setText(self.edt_rx.text()[:-1])
-
     def finalizado(self):
-        cadena = self.edt_rx.text()
-        a = self.rxval.validate(cadena, 0)
-        if a[0] == 1:
+        state, _, _ = self.rxval.validate(self.edt_rx.text(), 0)
+        if state == QRegularExpressionValidator.State.Acceptable:
             self.edt_rx.setText(self.edt_rx.text().zfill(2))
 
 class memory(QWidget):
@@ -50,7 +44,7 @@ class memory(QWidget):
         v_header = [format(i,'X') for i in range(rows)]
         self.table.setHorizontalHeaderLabels(h_header)
         self.table.setVerticalHeaderLabels(v_header)
-        
+
         if type.lower() == "stack":      # Para Stack
             self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
@@ -58,7 +52,7 @@ class memory(QWidget):
             self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         self.type = type
-        
+
         corner_b = self.table.findChild(QAbstractButton)
         corner_b.setToolTip("Clear")
         corner_b.clicked.disconnect()
@@ -94,10 +88,3 @@ class memory(QWidget):
             if self.table.item(i,j) is None or self.table.item(i,j) != "00":
                 self.table.setItem(i,j,QTableWidgetItem('00'))
                 self.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    ex = memory()
-    ex.show()
-    sys.exit(app.exec())

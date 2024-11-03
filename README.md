@@ -47,6 +47,44 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 - ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 en lugar de PyQt5, aplicado a cada una de las unidades, módulos y librerías del proyecto.
 PyQt6
 {: .label .label-purple }
+
+- ***NEW*** **Añadida la posibilidad para interactuar mediante comandos por consola**: Se pueden pasar argumentos a través de `Microsex.py` y `modulo_CC.py`:
+        - `arg1`: La ubicación relativa o absoluta del archivo a abrir. (***Obligatorio**)
+        - `arg2`: Método de ensamblado: (*Opcional*)
+            - "-ld": Cargar en memoria.
+            - "-cld": Borrar memoria y cargar.
+        - `arg3`: Tipo de Ejecución: (*Opcional*)
+            - "-r": Ejecutar todo el programa ensamblado.
+            - "-st": Ejecutar cierta cantidad de instrucciones.
+        - `arg4`: **Solo para "-st"**: (*Opcional*)
+            - N cantidad de pasos a ejecutar (número entero positivo), si no se introduce arg4, se asume N = 1.
+        
+    - Ejemplos:
+            ```bash
+            Microsex.py E:\path\to\file\L9_1.txt
+            ```
+            ```bash
+            Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
+            ```
+            ```bash
+            Microsex.py E:\path\to\file\L9_1.txt -ld -r 
+            ```
+            ```bash
+            Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+            ```
+            ```bash
+            modulo_CC.py E:\path\to\file\L9_1.txt
+            ```
+            ```bash
+            modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
+            ```
+            ```bash
+            modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
+            ```
+            ```bash
+            modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+            ```
+
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
             `.lib` lib_name.lib*
 El método es de reemplazo directo, así que deben importarse de forma ordenada en cada segmento.

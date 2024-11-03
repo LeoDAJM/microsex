@@ -10,7 +10,6 @@ class lst_table(QWidget):
 
     def __init__(self, lst_data: list):
         super().__init__()
-
         self.initUI(lst_data)
 
     def initUI(self, lst_data: list):

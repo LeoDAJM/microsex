@@ -60,9 +60,6 @@ def verificar_directivas(DATOS):
             mensaje = f'{mensaje}Error en linea {i + 1}: número inválido "{contenido}"'
     if errores == 0:
         mensaje = ' ** OK **: todo correcto en directivas de segmentos'
-            # print('ORIGENES')
-            # for i in origen:
-            #     print(i, hex(origen[i]))
     else:
         mensaje = f'{mensaje} ** Total errores en directivas: {errores}'
 
