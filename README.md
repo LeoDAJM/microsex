@@ -60,16 +60,10 @@ PyQt6
             - N cantidad de pasos a ejecutar (número entero positivo), si no se introduce arg4, se asume N = 1.
         
     - Ejemplos:
-            ```shell
-            D:\> cd D:\Microsex\SRC
-            D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt
-            D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
-            D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -ld -r 
-            D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
-            D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt
-            D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
-            D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
-            D:\Microsex\SRC\> modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+
+            ```console
+            foo@bar:~$ whoami
+            foo
             ```
 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
