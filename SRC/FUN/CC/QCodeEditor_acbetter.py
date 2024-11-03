@@ -4,7 +4,7 @@
 
 from PyQt6.QtCore import Qt, QRect, QSize
 from PyQt6.QtWidgets import QWidget, QPlainTextEdit, QTextEdit
-from PyQt6.QtGui import QColor, QPainter, QTextFormat, QTextCursor, QTextCharFormat, QFontMetricsF, QFont
+from PyQt6.QtGui import QColor, QPainter, QTextFormat, QTextCursor
 
 
 class QLineNumberArea(QWidget):
@@ -130,7 +130,6 @@ class QCodeEditor(QPlainTextEdit):
                 number = str(blockNumber + 1)
                 painter.setPen(QColor(120, 124, 132))
                 painter.drawText(0, int(top), self.lineNumberArea.width(), height, Qt.AlignmentFlag.AlignRight, number)
-
             block = block.next()
             top = bottom
             bottom = top + self.blockBoundingRect(block).height()

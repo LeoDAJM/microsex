@@ -6,3 +6,4 @@ SRC/FUN/CC/__pycache__
 SRC/rsc.qrc
 /SRC/IMG
 *.qrc
+SRC/test.py

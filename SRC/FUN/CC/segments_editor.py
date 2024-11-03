@@ -1,12 +1,11 @@
 import itertools
 import sys
 from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
-from PyQt6.QtWidgets import QLineEdit, QPushButton, QLabel
-from PyQt6.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
-from PyQt6.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QTableView
-from PyQt6.QtGui import QRegularExpressionValidator, QPalette, QColor
-from PyQt6.QtCore import Qt, QRegularExpression, QSize
-from PyQt6.QtCore import QAbstractTableModel, QModelIndex
+from PyQt6.QtWidgets import QLineEdit, QLabel
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QAbstractButton
+from PyQt6.QtWidgets import QItemDelegate, QHeaderView
+from PyQt6.QtGui import QRegularExpressionValidator, QColor
+from PyQt6.QtCore import Qt, QRegularExpression
 
 import FUN.CONF.configCC as config
 
@@ -14,7 +13,7 @@ class Validador2(QItemDelegate):
     def __init__(self):
         super().__init__()
 
-    def createEditor(self,parent,option,index):
+    def createEditor(self,parent):
         regex = QRegularExpression("[0-9a-fA-F]{2}")
         self.rxval = QRegularExpressionValidator(regex, self)
         self.edt_rx = QLineEdit(parent)
@@ -36,7 +35,6 @@ class memory(QWidget):
 
     def __init__(self, rows: int, cols: int, type: str, title: str):
         super().__init__()
-
         self.initUI(rows, cols, type, title)
 
     def initUI(self, rows: int, cols: int, type: str, title: str):

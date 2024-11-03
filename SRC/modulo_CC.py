@@ -3,8 +3,8 @@ import string
 import csv
 from openpyxl import Workbook, load_workbook
 from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QCheckBox, QDialog, QMessageBox, QToolBar
-from PyQt6.QtWidgets import QFileDialog, QApplication, QTextEdit, QSizePolicy, QToolButton
-from PyQt6.QtGui import QFont, QIcon, QFontDatabase, QAction
+from PyQt6.QtWidgets import QFileDialog, QApplication, QTextEdit, QSizePolicy
+from PyQt6.QtGui import QFont, QIcon, QFontDatabase, QAction, QFontMetricsF
 import os
 import io
 import FUN.CONF.config_custom as config2
@@ -17,7 +17,6 @@ from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
 from FUN.CC.Unidad_Control import *
 from FUN.CC.lst_table import *
-from time import time
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
 
@@ -192,7 +191,6 @@ class ComputadorCompleto(QMainWindow):
                 self.toolbar.addWidget(spacer2)
         self.addToolBar(self.toolbar)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
-        #Qt.ToolButtonStyle.ToolButtonTextBesideIcon
 
 # region Menú -----------------------------------------------------------------
         self.nombre_archivo = False
@@ -642,7 +640,7 @@ class ComputadorCompleto(QMainWindow):
                     row_data.extend(x.table.item(i,j).text() for j in range(x.table.columnCount()))
                     writer.writerow(row_data)
 
-    def save_fun(self,chk):  # sourcery skip: extract-method
+    def save_fun(self):
         strs = {'s': "Stack Segment", 'c': "Code Segment", 'd': "Data Segment"}
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(self, 'Guardar Archivo', '','CSV Files (*.csv);;Excel Files (*.xlsx)')
         buffer = io.StringIO()
@@ -679,7 +677,7 @@ class ComputadorCompleto(QMainWindow):
             self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
         else:
             self.msg.setWindowTitle("Dump")
-            self.btt_dialog.clicked.connect(lambda: self.save_fun(self.chkbx))
+            self.btt_dialog.clicked.connect(lambda: self.save_fun)
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
         for x,i in self.chkbx.items():
@@ -745,7 +743,6 @@ class ComputadorCompleto(QMainWindow):
                     self.ds_op()
                     self.regen_all()
                     break
-                    #v = max(1,len(u)-1)
                 elif mem != None:
                     data = u[v+1].zfill(2).upper()
                     mem.item(int(u[0]),v).setText(data)
@@ -756,7 +753,7 @@ class ComputadorCompleto(QMainWindow):
         self.msg.accept()
 
 
-    def open_file(self):  # sourcery skip: extract-method
+    def open_file(self):
         self.state = {
             's' : False, 'c' : False, 'd' : False
         }

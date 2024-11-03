@@ -1,4 +1,3 @@
-import math
 def crear_archivo_listado(ARCHIVO, DATOS, LISTADO, TS, data_lib: list[list]):
     archlst = []
     data_fin = []

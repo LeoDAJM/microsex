@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
 from PyQt6.QtGui import QSyntaxHighlighter, QTextCharFormat, QFont
-from PyQt6.QtCore import Qt, QRegularExpression
+from PyQt6.QtCore import QRegularExpression
 
 from FUN.CC.QCodeEditor_acbetter import *
 

@@ -1,12 +1,8 @@
-import itertools
-import sys
 from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
-from PyQt6.QtWidgets import QLineEdit, QPushButton, QLabel
-from PyQt6.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QAbstractButton
-from PyQt6.QtWidgets import QItemDelegate, QStyleFactory, QStyle, QHeaderView, QAbstractItemView
-from PyQt6.QtGui import QRegularExpressionValidator, QPalette, QColor, QIcon
-from PyQt6.QtCore import Qt, QRegularExpression, QSize
-from PyQt6.QtCore import QAbstractTableModel, QModelIndex
+from PyQt6.QtWidgets import QLabel, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QHeaderView, QAbstractItemView
+from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt
 
 import FUN.CONF.configCC as config
 
@@ -26,7 +22,6 @@ class lst_table(QWidget):
         self.table.setRowCount(len(lbl_rows))
         self.table.setMinimumWidth(150)
         self.table.horizontalHeader().setMinimumSectionSize(20)
-        #self.table.setItemDelegate(Validador2())
         self.table.setHorizontalHeaderLabels(h_header)
         self.table.setVerticalHeaderLabels(lbl_rows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
