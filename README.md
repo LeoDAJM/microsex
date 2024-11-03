@@ -60,7 +60,7 @@ PyQt6
             - N cantidad de pasos a ejecutar (número entero positivo), si no se introduce arg4, se asume N = 1.
         
     - Ejemplos:
-``` console
+``` cmd
 D:\> cd D:\Microsex\SRC
 
 D:\Microsex\SRC\> Microsex.py E:\path\to\file\L9_1.txt
