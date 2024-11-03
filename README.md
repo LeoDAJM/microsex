@@ -61,7 +61,7 @@ PyQt6
         
     - Ejemplos:
 
-            ```console
+            ``` sh
             D:\ cd D:\Microsex\SRC
             D:\Microsex\SRC> Microsex.py E:\path\to\file\L9_1.txt
 
