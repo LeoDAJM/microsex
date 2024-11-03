@@ -59,27 +59,25 @@ PyQt6
         - `arg4`: **Solo para "-st"**: (*Opcional*)
             - N cantidad de pasos a ejecutar (número entero positivo), si no se introduce arg4, se asume N = 1.
         
-    - Ejemplos: \
-            
+    - Ejemplos:
 
-            ```sh
+            ```console
+            D:\ cd D:\Microsex\SRC
+            D:\Microsex\SRC> Microsex.py E:\path\to\file\L9_1.txt
 
-            Microsex.py E:\path\to\file\L9_1.txt
+            D:\Microsex\SRC> Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
 
-            Microsex.py E:\path\to\file\L9_1.txt -cld   # o -ld
+            D:\Microsex\SRC> Microsex.py E:\path\to\file\L9_1.txt -ld -r 
 
-            Microsex.py E:\path\to\file\L9_1.txt -ld -r 
+            D:\Microsex\SRC> Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
 
-            Microsex.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
+            D:\Microsex\SRC> modulo_CC.py E:\path\to\file\L9_1.txt
 
-            modulo_CC.py E:\path\to\file\L9_1.txt
+            D:\Microsex\SRC> modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
 
-            modulo_CC.py E:\path\to\file\L9_1.txt -cld   # o -ld
+            D:\Microsex\SRC> modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
 
-            modulo_CC.py E:\path\to\file\L9_1.txt -ld -r 
-
-            modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
-
+            D:\Microsex\SRC> modulo_CC.py E:\path\to\file\L9_1.txt -ld -st # o -st 5
             ```
 
 - ***NEW*** **Soporte básico para librerías**: Ahora el emulador soporta librerías mediante la sintaxis:
