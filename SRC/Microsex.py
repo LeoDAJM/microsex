@@ -18,7 +18,7 @@ class Principal(QMainWindow):
 
         self.initUI(args)
         #args = args[1:]
-        if args is not None and len(args) > 0:
+        if args is not None and len(args) > 1:
             print("Introducidos Argumentos para módulo CC")
             self.modulo_cc.show()
             self.close()

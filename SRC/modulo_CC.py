@@ -14,7 +14,6 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtWidgets import QFileDialog, QApplication, QTextEdit, QSizePolicy
 from PyQt6.QtGui import QFont, QIcon, QFontDatabase, QAction, QFontMetricsF
-from time import sleep
 import os
 import io
 import FUN.CONF.config_custom as config2
@@ -55,7 +54,7 @@ class ComputadorCompleto(QMainWindow):
         app_icon.addFile(":IMG/icon32.png", QSize(50, 50))
         self.setWindowIcon(app_icon)
         self.initUI()
-        if args is not None and len(args) > 0:       # Acción
+        if args is not None and len(args) > 1:       # Acción
             args = args[1:]
             try:
                 self.dialogo_abrir(args[0])
