@@ -32,529 +32,346 @@ Yada yada
 <table border="1">
     <thead>
         <tr>
-            <th>Operación</th>
-            <th>MNEUMÓNICO</th>
-            <th>Inmediato</th>
-            <th>Inherente</th>
-            <th>Acumuladores</th>
-            <th>Directo</th>
-            <th>Indexado</th>
+            <th rowspan=2 colspan=2>Operación</th>
+            <th rowspan=2>MNEUMÓNICO</th>
+            <th rowspan=2>Inmediato</th>
+            <th rowspan=2>Inherente</th>
+            <th colspan=3>Acumuladores</th>
+            <th rowspan=2>Directo</th>
+            <th colspan=2>Indexado</th>
         </tr>
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>
-                <table>
-                    <tr>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
-                    </tr>
-                </table>
-            </th>
-            <th></th>
-            <th>
-                <table>
-                    <tr>
-                        <th>IX</th>
-                        <th>IY</th>
-                    </tr>
-                </table>
-            </th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>IX</th>
+            <th>IY</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">Suma</td>
-            <td>ADD A</td>
-            <td>48</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>98</td>
-                        <td>58</td>
-                        <td>68</td>
-                    </tr>
-                </table>
-            </td>
-            <td>78</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>08</td>
-                        <td>88</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>ADD B</td>
-            <td>88</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>A8</td>
-                        <td>B8</td>
-                    </tr>
-                </table>
-            </td>
-            <td>18</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>98</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>ADD C</td>
-            <td>C8</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>D8</td>
-                        <td>E8</td>
-                        <td>69</td>
-                    </tr>
-                </table>
-            </td>
-            <td>F8</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>28</td>
-                        <td>A8</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="3">Resta</td>
-            <td>SUB A</td>
-            <td>49</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>99</td>
-                        <td>59</td>
-                        <td>69</td>
-                    </tr>
-                </table>
-            </td>
-            <td>79</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>09</td>
-                        <td>89</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>SUB B</td>
-            <td>89</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>AB</td>
-                        <td>BB</td>
-                    </tr>
-                </table>
-            </td>
-            <td>1B</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>9B</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>SUB C</td>
-            <td>CB</td>
-            <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>DB</td>
-                        <td>EB</td>
-                        <td>6C</td>
-                    </tr>
-                </table>
-            </td>
-            <td>FB</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>2B</td>
-                        <td>AB</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="3">Inverso</td>
-            <td>NEG A</td>
+            <td colspan=2>Negativo</td>
+            <td>neg</td>
             <td>-</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>03</td>
-                        <td>13</td>
-                        <td>23</td>
-                    </tr>
-                </table>
-            </td>
+            <td>03</td>
+            <td>13</td>
+            <td>23</td>
             <td>33</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>43</td>
-                        <td>IY</td>
-                    </tr>
-                </table>
-            </td>
+            <td>43</td>
+            <td>IY</td>
+            <td>C3</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>NEG B</td>
+            <td colspan=2>Inverso</td>
+            <td>not</td>
             <td>-</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>04</td>
-                        <td>14</td>
-                        <td>24</td>
-                    </tr>
-                </table>
-            </td>
+            <td>04</td>
+            <td>14</td>
+            <td>24</td>
             <td>34</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>44</td>
-                        <td>C3</td>
-                    </tr>
-                </table>
-            </td>
+            <td>44</td>
+            <td>C3</td>
+            <td>C4</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>NEG C</td>
+            <td colspan=2>Incremento</td>
+            <td>inc</td>
             <td>-</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>05</td>
-                        <td>15</td>
-                        <td>25</td>
-                    </tr>
-                </table>
-            </td>
-            <td>35</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>45</td>
-                        <td>C4</td>
-                    </tr>
-                </table>
-            </td>
+            <td>43</td>
+            <td>53</td>
+            <td>63</td>
+            <td>73</td>
+            <td>53</td>
+            <td>D3</td>
         </tr>
         <tr>
-            <td rowspan="3">AND</td>
-            <td>AND A</td>
+            <td colspan=2>Decremento</td>
+            <td>dec</td>
+            <td>-</td>
+            <td>-</td>
+            <td>44</td>
+            <td>54</td>
+            <td>64</td>
+            <td>74</td>
+            <td>54</td>
+            <td>D4</td>
+        </tr>
+        <tr>
+            <td rowspan=3>AND</td>
+            <td>and a</td>
             <td>45</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>95</td>
-                        <td>55</td>
-                        <td>65</td>
-                    </tr>
-                </table>
-            </td>
+            <td>95</td>
+            <td>55</td>
+            <td>65</td>
             <td>75</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>05</td>
-                        <td>85</td>
-                    </tr>
-                </table>
-            </td>
+            <td>05</td>
+            <td>85</td>
         </tr>
         <tr>
-            <td>AND B</td>
+            <td>and b</td>
             <td>85</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>A5</td>
-                        <td>B5</td>
-                    </tr>
-                </table>
-            </td>
+            <td>-</td>
+            <td>A5</td>
+            <td>B5</td>
             <td>15</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>95</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
+            <td>95</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>AND C</td>
+            <td>and c</td>
             <td>C5</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>D5</td>
-                        <td>E5</td>
-                        <td>66</td>
-                    </tr>
-                </table>
-            </td>
+            <td>D5</td>
+            <td>E5</td>
+            <td>66</td>
             <td>76</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>25</td>
-                        <td>A5</td>
-                    </tr>
-                </table>
-            </td>
+            <td>25</td>
+            <td>A5</td>
         </tr>
         <tr>
-            <td rowspan="3">OR</td>
-            <td>OR A</td>
+            <td rowspan=3>OR</td>
+            <td>or a</td>
             <td>46</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>96</td>
-                        <td>56</td>
-                        <td>66</td>
-                    </tr>
-                </table>
-            </td>
+            <td>96</td>
+            <td>56</td>
+            <td>66</td>
             <td>76</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>06</td>
-                        <td>86</td>
-                    </tr>
-                </table>
-            </td>
+            <td>06</td>
+            <td>86</td>
         </tr>
         <tr>
-            <td>OR B</td>
+            <td>or b</td>
             <td>86</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>A6</td>
-                        <td>B6</td>
-                    </tr>
-                </table>
-            </td>
+            <td>-</td>
+            <td>A6</td>
+            <td>B6</td>
             <td>16</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>96</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
+            <td>96</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>OR C</td>
+            <td>or c</td>
             <td>C6</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>D6</td>
-                        <td>E6</td>
-                        <td>67</td>
-                    </tr>
-                </table>
-            </td>
-            <td>77</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>26</td>
-                        <td>A6</td>
-                    </tr>
-                </table>
-            </td>
+            <td>D6</td>
+            <td>E6</td>
+            <td>67</td>
+            <td>F6</td>
+            <td>26</td>
+            <td>A6</td>
         </tr>
         <tr>
-            <td rowspan="3">XOR</td>
-            <td>XOR A</td>
+            <td rowspan=3>XOR</td>
+            <td>xor a</td>
             <td>47</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>97</td>
-                        <td>57</td>
-                        <td>67</td>
-                    </tr>
-                </table>
-            </td>
+            <td>97</td>
+            <td>57</td>
+            <td>67</td>
             <td>77</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>07</td>
-                        <td>87</td>
-                    </tr>
-                </table>
-            </td>
+            <td>07</td>
+            <td>87</td>
         </tr>
         <tr>
-            <td>XOR B</td>
+            <td>xor b</td>
             <td>87</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>A7</td>
-                        <td>B7</td>
-                    </tr>
-                </table>
-            </td>
+            <td>-</td>
+            <td>A7</td>
+            <td>B7</td>
             <td>17</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>97</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
+            <td>97</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>XOR C</td>
+            <td>xor c</td>
             <td>C7</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>D7</td>
-                        <td>E7</td>
-                        <td>68</td>
-                    </tr>
-                </table>
-            </td>
-            <td>78</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>27</td>
-                        <td>A7</td>
-                    </tr>
-                </table>
-            </td>
+            <td>D7</td>
+            <td>E7</td>
+            <td>67</td>
+            <td>F7</td>
+            <td>27</td>
+            <td>A7</td>
         </tr>
         <tr>
-            <td rowspan="3">Comparación</td>
-            <td>CMP A</td>
+            <td rowspan=3>Suma</td>
+            <td>add a</td>
+            <td>48</td>
+            <td>-</td>
+            <td>98</td>
+            <td>58</td>
+            <td>68</td>
+            <td>78</td>
+            <td>08</td>
+            <td>88</td>
+        </tr>
+        <tr>
+            <td>add b</td>
+            <td>88</td>
+            <td>-</td>
+            <td>-</td>
+            <td>A8</td>
+            <td>B8</td>
+            <td>18</td>
+            <td>98</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>add c</td>
+            <td>C8</td>
+            <td>-</td>
+            <td>D8</td>
+            <td>E8</td>
+            <td>69</td>
+            <td>F8</td>
+            <td>28</td>
+            <td>A8</td>
+        </tr>
+        <tr>
+            <td rowspan=3>Resta</td>
+            <td>sub a</td>
+            <td>49</td>
+            <td>-</td>
+            <td>99</td>
+            <td>59</td>
+            <td>69</td>
+            <td>79</td>
+            <td>09</td>
+            <td>89</td>
+        </tr>
+        <tr>
+            <td>sub b</td>
+            <td>89</td>
+            <td>-</td>
+            <td>-</td>
+            <td>A9</td>
+            <td>B9</td>
+            <td>19</td>
+            <td>99</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>sub c</td>
+            <td>C9</td>
+            <td>-</td>
+            <td>D9</td>
+            <td>E9</td>
+            <td>6A</td>
+            <td>F9</td>
+            <td>29</td>
+            <td>A9</td>
+        </tr>
+        <tr>
+            <td rowspan=3>Suma con acarreo</td>
+            <td>adc a</td>
+            <td>4A</td>
+            <td>-</td>
+            <td>9A</td>
+            <td>5A</td>
+            <td>6A</td>
+            <td>7A</td>
+            <td>0A</td>
+            <td>8A</td>
+        </tr>
+        <tr>
+            <td>adc b</td>
+            <td>BA</td>
+            <td>-</td>
+            <td>-</td>
+            <td>AA</td>
+            <td>BA</td>
+            <td>1A</td>
+            <td>9A</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>adc c</td>
+            <td>CA</td>
+            <td>-</td>
+            <td>DA</td>
+            <td>EA</td>
+            <td>6A</td>
+            <td>FA</td>
+            <td>2A</td>
+            <td>AA</td>
+        </tr>
+        <tr>
+            <td rowspan=3>Resta con préstamo</td>
+            <td>sbc a</td>
+            <td>4B</td>
+            <td>-</td>
+            <td>9B</td>
+            <td>5B</td>
+            <td>6B</td>
+            <td>7B</td>
+            <td>0B</td>
+            <td>8B</td>
+        </tr>
+        <tr>
+            <td>sbc b</td>
+            <td>8B</td>
+            <td>-</td>
+            <td>-</td>
+            <td>AB</td>
+            <td>BB</td>
+            <td>1B</td>
+            <td>9B</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>sbc c</td>
+            <td>CB</td>
+            <td>-</td>
+            <td>DB</td>
+            <td>EB</td>
+            <td>6C</td>
+            <td>FB</td>
+            <td>2B</td>
+            <td>AB</td>
+        </tr>
+        <tr>
+            <td rowspan=3>Comparación</td>
+            <td>cmp a</td>
             <td>4C</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>9C</td>
-                        <td>5C</td>
-                        <td>6C</td>
-                    </tr>
-                </table>
-            </td>
+            <td>9C</td>
+            <td>5C</td>
+            <td>6C</td>
             <td>7C</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>0C</td>
-                        <td>8C</td>
-                    </tr>
-                </table>
-            </td>
+            <td>0C</td>
+            <td>8C</td>
         </tr>
         <tr>
-            <td>CMP B</td>
+            <td>cmp b</td>
             <td>8C</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>-</td>
-                        <td>AC</td>
-                        <td>BC</td>
-                    </tr>
-                </table>
-            </td>
+            <td>-</td>
+            <td>AC</td>
+            <td>BC</td>
             <td>1C</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>9C</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </td>
+            <td>9C</td>
+            <td>-</td>
         </tr>
         <tr>
-            <td>CMP C</td>
+            <td>cmp c</td>
             <td>CC</td>
             <td>-</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>DC</td>
-                        <td>EC</td>
-                        <td>6C</td>
-                    </tr>
-                </table>
-            </td>
+            <td>DC</td>
+            <td>EC</td>
+            <td>6C</td>
             <td>FC</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>2C</td>
-                        <td>AC</td>
-                    </tr>
-                </table>
-            </td>
+            <td>2C</td>
+            <td>AC</td>
         </tr>
     </tbody>
 </table>
