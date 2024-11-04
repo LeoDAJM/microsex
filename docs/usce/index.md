@@ -5,7 +5,7 @@ permalink: /docs/USCE/
 parent: Documentación del Proyecto
 ---
 
-## Descripción Unidad Básica de Cálculo Expandido
+# Descripción Unidad Básica de Cálculo Expandido
 
 Yada yada
 

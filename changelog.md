@@ -6,7 +6,7 @@ nav_order: 2
 has_toc: true
 ---
 
-## microsex
+# microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
 

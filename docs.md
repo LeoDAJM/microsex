@@ -4,6 +4,6 @@ nav_order: 2
 permalink: /docs/
 ---
 
-## Documentación (no) Oficial
+# Documentación (no) Oficial
 
 Yada yada

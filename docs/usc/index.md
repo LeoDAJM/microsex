@@ -5,6 +5,6 @@ permalink: /docs/USC/
 parent: Documentación del Proyecto
 ---
 
-## Descripción Unidad Secuencial de Cálculo
+# Descripción Unidad Secuencial de Cálculo
 
 Yada yada

@@ -5,6 +5,9 @@ parent: Microsex - HomePage
 nav_order: 2
 has_toc: true
 ---
+
+# Características del Emulador
+
 ## Indicador Visual de `IP` (PIns) en editor
 Ahora durante la ejecución del programa, se resalta de color verde la instrucción actual a punto de ser ejecutada, en el apartado de edición de código.
     ![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/features/ip_code.png?raw=true)
