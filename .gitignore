@@ -27,3 +27,4 @@ dist/Microsex.exe
 .sourcery.yaml
 Microsex.spec
 requirements.txt
+/SRC
