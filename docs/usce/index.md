@@ -41,11 +41,11 @@ Yada yada
             <th colspan=2 style="text-align: center;">Indexado</th>
         </tr>
         <tr>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
-            <th>IX</th>
-            <th>IY</th>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+            <th style="text-align: center;">IX</th>
+            <th style="text-align: center;">IY</th>
         </tr>
     </thead>
     <tbody>
@@ -60,7 +60,6 @@ Yada yada
             <td style="text-align: center;">33</td>
             <td style="text-align: center;">43</td>
             <td style="text-align: center;">C3</td>
-            <td style="text-align: center;">-</td>
         </tr>
         <tr>
             <td style="text-align: left;">Inverso</td>
@@ -73,7 +72,6 @@ Yada yada
             <td style="text-align: center;">34</td>
             <td style="text-align: center;">44</td>
             <td style="text-align: center;">C4</td>
-            <td style="text-align: center;">-</td>
         </tr>
         <tr>
             <td style="text-align: left;">Incremento</td>
@@ -112,7 +110,7 @@ Yada yada
             <td style="text-align: center;">85</td>
         </tr>
         <tr>
-            <td style="text-align: left;">and b</td>
+            <td style="text-align: center;">and b</td>
             <td style="text-align: center;">85</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -123,7 +121,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">and c</td>
+            <td style="text-align: center;">and c</td>
             <td style="text-align: center;">C5</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">D5</td>
@@ -146,7 +144,7 @@ Yada yada
             <td style="text-align: center;">86</td>
         </tr>
         <tr>
-            <td style="text-align: left;">or b</td>
+            <td style="text-align: center;">or b</td>
             <td style="text-align: center;">86</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -157,7 +155,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">or c</td>
+            <td style="text-align: center;">or c</td>
             <td style="text-align: center;">C6</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">D6</td>
@@ -180,7 +178,7 @@ Yada yada
             <td style="text-align: center;">87</td>
         </tr>
         <tr>
-            <td style="text-align: left;">xor b</td>
+            <td style="text-align: center;">xor b</td>
             <td style="text-align: center;">87</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -191,7 +189,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">xor c</td>
+            <td style="text-align: center;">xor c</td>
             <td style="text-align: center;">C7</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">D7</td>
@@ -214,7 +212,7 @@ Yada yada
             <td style="text-align: center;">88</td>
         </tr>
         <tr>
-            <td style="text-align: left;">add b</td>
+            <td style="text-align: center;">add b</td>
             <td style="text-align: center;">88</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -225,7 +223,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">add c</td>
+            <td style="text-align: center;">add c</td>
             <td style="text-align: center;">C8</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">D8</td>
@@ -248,7 +246,7 @@ Yada yada
             <td style="text-align: center;">89</td>
         </tr>
         <tr>
-            <td style="text-align: left;">sub b</td>
+            <td style="text-align: center;">sub b</td>
             <td style="text-align: center;">89</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -259,7 +257,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">sub c</td>
+            <td style="text-align: center;">sub c</td>
             <td style="text-align: center;">C9</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">D9</td>
@@ -282,7 +280,7 @@ Yada yada
             <td style="text-align: center;">8A</td>
         </tr>
         <tr>
-            <td style="text-align: left;">adc b</td>
+            <td style="text-align: center;">adc b</td>
             <td style="text-align: center;">BA</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -293,7 +291,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">adc c</td>
+            <td style="text-align: center;">adc c</td>
             <td style="text-align: center;">CA</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">DA</td>
@@ -316,7 +314,7 @@ Yada yada
             <td style="text-align: center;">8B</td>
         </tr>
         <tr>
-            <td style="text-align: left;">sbc b</td>
+            <td style="text-align: center;">sbc b</td>
             <td style="text-align: center;">8B</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -327,7 +325,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">sbc c</td>
+            <td style="text-align: center;">sbc c</td>
             <td style="text-align: center;">CB</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">DB</td>
@@ -350,7 +348,7 @@ Yada yada
             <td style="text-align: center;">8C</td>
         </tr>
         <tr>
-            <td style="text-align: left;">cmp b</td>
+            <td style="text-align: center;">cmp b</td>
             <td style="text-align: center;">8C</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -361,7 +359,7 @@ Yada yada
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td style="text-align: left;">cmp c</td>
+            <td style="text-align: center;">cmp c</td>
             <td style="text-align: center;">CC</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">DC</td>
