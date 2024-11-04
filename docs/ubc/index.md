@@ -50,16 +50,3 @@ Yada yada
 | -A-1             | 1  | 0  | 1  | 1  | 0  |   -A-1   |  22   |
 | -A-B-2           | 1  | 1  | 1  | 1  | 0  | -A-B-2  |  30   |
 | -A-B-1           | 1  | 1  | 1  | 1  | 1  | -A-B-1  |  31   |
-
-<script>
-
-</script>
-<style>
-    th,
-    td {
-    min-width:0;
-    padding:.5rem .75rem;
-    padding-top: 0;
-    padding-bottom: 0;
-    }
-</style>
