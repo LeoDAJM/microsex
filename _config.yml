@@ -63,6 +63,7 @@ permalink: pretty # Define las URL amigables
 plugins:
   - jekyll-feed # Para el RSS feed
   - jekyll-seo-tag # Para SEO
+  - jekyll-sitemap
 
 # Parámetros adicionales (opcional)
 social:
