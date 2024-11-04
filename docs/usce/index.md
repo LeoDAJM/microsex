@@ -32,13 +32,13 @@ Yada yada
 <table border="1">
     <thead>
         <tr>
-            <th rowspan=2 colspan=2>Operación</th>
-            <th rowspan=2>MNEUMÓNICO</th>
-            <th rowspan=2>Inmediato</th>
-            <th rowspan=2>Inherente</th>
-            <th colspan=3>Acumuladores</th>
-            <th rowspan=2>Directo</th>
-            <th colspan=2>Indexado</th>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inmediato</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+            <th rowspan=2 style="text-align: center;">Directo</th>
+            <th colspan=2 style="text-align: center;">Indexado</th>
         </tr>
         <tr>
             <th>A</th>
@@ -50,328 +50,326 @@ Yada yada
     </thead>
     <tbody>
         <tr>
-            <td colspan=2>Negativo</td>
-            <td>neg</td>
-            <td>-</td>
-            <td>-</td>
-            <td>03</td>
-            <td>13</td>
-            <td>23</td>
-            <td>33</td>
-            <td>43</td>
-            <td>IY</td>
-            <td>C3</td>
-            <td>-</td>
+            <td style="text-align: left;">Negativo</td>
+            <td style="text-align: center;">neg</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">03</td>
+            <td style="text-align: center;">13</td>
+            <td style="text-align: center;">23</td>
+            <td style="text-align: center;">33</td>
+            <td style="text-align: center;">43</td>
+            <td style="text-align: center;">C3</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td colspan=2>Inverso</td>
-            <td>not</td>
-            <td>-</td>
-            <td>-</td>
-            <td>04</td>
-            <td>14</td>
-            <td>24</td>
-            <td>34</td>
-            <td>44</td>
-            <td>C3</td>
-            <td>C4</td>
-            <td>-</td>
+            <td style="text-align: left;">Inverso</td>
+            <td style="text-align: center;">not</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">04</td>
+            <td style="text-align: center;">14</td>
+            <td style="text-align: center;">24</td>
+            <td style="text-align: center;">34</td>
+            <td style="text-align: center;">44</td>
+            <td style="text-align: center;">C4</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td colspan=2>Incremento</td>
-            <td>inc</td>
-            <td>-</td>
-            <td>-</td>
-            <td>43</td>
-            <td>53</td>
-            <td>63</td>
-            <td>73</td>
-            <td>53</td>
-            <td>D3</td>
+            <td style="text-align: left;">Incremento</td>
+            <td style="text-align: center;">inc</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">43</td>
+            <td style="text-align: center;">53</td>
+            <td style="text-align: center;">63</td>
+            <td style="text-align: center;">73</td>
+            <td style="text-align: center;">53</td>
+            <td style="text-align: center;">D3</td>
         </tr>
         <tr>
-            <td colspan=2>Decremento</td>
-            <td>dec</td>
-            <td>-</td>
-            <td>-</td>
-            <td>44</td>
-            <td>54</td>
-            <td>64</td>
-            <td>74</td>
-            <td>54</td>
-            <td>D4</td>
+            <td style="text-align: left;">Decremento</td>
+            <td style="text-align: center;">dec</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">44</td>
+            <td style="text-align: center;">54</td>
+            <td style="text-align: center;">64</td>
+            <td style="text-align: center;">74</td>
+            <td style="text-align: center;">54</td>
+            <td style="text-align: center;">D4</td>
         </tr>
         <tr>
             <td rowspan=3>AND</td>
-            <td>and a</td>
-            <td>45</td>
-            <td>-</td>
-            <td>95</td>
-            <td>55</td>
-            <td>65</td>
-            <td>75</td>
-            <td>05</td>
-            <td>85</td>
+            <td style="text-align: center;">and a</td>
+            <td style="text-align: center;">45</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">95</td>
+            <td style="text-align: center;">55</td>
+            <td style="text-align: center;">65</td>
+            <td style="text-align: center;">75</td>
+            <td style="text-align: center;">05</td>
+            <td style="text-align: center;">85</td>
         </tr>
         <tr>
-            <td>and b</td>
-            <td>85</td>
-            <td>-</td>
-            <td>-</td>
-            <td>A5</td>
-            <td>B5</td>
-            <td>15</td>
-            <td>95</td>
-            <td>-</td>
+            <td style="text-align: left;">and b</td>
+            <td style="text-align: center;">85</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A5</td>
+            <td style="text-align: center;">B5</td>
+            <td style="text-align: center;">15</td>
+            <td style="text-align: center;">95</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>and c</td>
-            <td>C5</td>
-            <td>-</td>
-            <td>D5</td>
-            <td>E5</td>
-            <td>66</td>
-            <td>76</td>
-            <td>25</td>
-            <td>A5</td>
+            <td style="text-align: left;">and c</td>
+            <td style="text-align: center;">C5</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">D5</td>
+            <td style="text-align: center;">E5</td>
+            <td style="text-align: center;">66</td>
+            <td style="text-align: center;">76</td>
+            <td style="text-align: center;">25</td>
+            <td style="text-align: center;">A5</td>
         </tr>
         <tr>
             <td rowspan=3>OR</td>
-            <td>or a</td>
-            <td>46</td>
-            <td>-</td>
-            <td>96</td>
-            <td>56</td>
-            <td>66</td>
-            <td>76</td>
-            <td>06</td>
-            <td>86</td>
+            <td style="text-align: center;">or a</td>
+            <td style="text-align: center;">46</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">96</td>
+            <td style="text-align: center;">56</td>
+            <td style="text-align: center;">66</td>
+            <td style="text-align: center;">76</td>
+            <td style="text-align: center;">06</td>
+            <td style="text-align: center;">86</td>
         </tr>
         <tr>
-            <td>or b</td>
-            <td>86</td>
-            <td>-</td>
-            <td>-</td>
-            <td>A6</td>
-            <td>B6</td>
-            <td>16</td>
-            <td>96</td>
-            <td>-</td>
+            <td style="text-align: left;">or b</td>
+            <td style="text-align: center;">86</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A6</td>
+            <td style="text-align: center;">B6</td>
+            <td style="text-align: center;">16</td>
+            <td style="text-align: center;">96</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>or c</td>
-            <td>C6</td>
-            <td>-</td>
-            <td>D6</td>
-            <td>E6</td>
-            <td>67</td>
-            <td>F6</td>
-            <td>26</td>
-            <td>A6</td>
+            <td style="text-align: left;">or c</td>
+            <td style="text-align: center;">C6</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">D6</td>
+            <td style="text-align: center;">E6</td>
+            <td style="text-align: center;">67</td>
+            <td style="text-align: center;">F6</td>
+            <td style="text-align: center;">26</td>
+            <td style="text-align: center;">A6</td>
         </tr>
         <tr>
             <td rowspan=3>XOR</td>
-            <td>xor a</td>
-            <td>47</td>
-            <td>-</td>
-            <td>97</td>
-            <td>57</td>
-            <td>67</td>
-            <td>77</td>
-            <td>07</td>
-            <td>87</td>
+            <td style="text-align: center;">xor a</td>
+            <td style="text-align: center;">47</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">97</td>
+            <td style="text-align: center;">57</td>
+            <td style="text-align: center;">67</td>
+            <td style="text-align: center;">77</td>
+            <td style="text-align: center;">07</td>
+            <td style="text-align: center;">87</td>
         </tr>
         <tr>
-            <td>xor b</td>
-            <td>87</td>
-            <td>-</td>
-            <td>-</td>
-            <td>A7</td>
-            <td>B7</td>
-            <td>17</td>
-            <td>97</td>
-            <td>-</td>
+            <td style="text-align: left;">xor b</td>
+            <td style="text-align: center;">87</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A7</td>
+            <td style="text-align: center;">B7</td>
+            <td style="text-align: center;">17</td>
+            <td style="text-align: center;">97</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>xor c</td>
-            <td>C7</td>
-            <td>-</td>
-            <td>D7</td>
-            <td>E7</td>
-            <td>67</td>
-            <td>F7</td>
-            <td>27</td>
-            <td>A7</td>
+            <td style="text-align: left;">xor c</td>
+            <td style="text-align: center;">C7</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">D7</td>
+            <td style="text-align: center;">E7</td>
+            <td style="text-align: center;">67</td>
+            <td style="text-align: center;">F7</td>
+            <td style="text-align: center;">27</td>
+            <td style="text-align: center;">A7</td>
         </tr>
         <tr>
             <td rowspan=3>Suma</td>
-            <td>add a</td>
-            <td>48</td>
-            <td>-</td>
-            <td>98</td>
-            <td>58</td>
-            <td>68</td>
-            <td>78</td>
-            <td>08</td>
-            <td>88</td>
+            <td style="text-align: center;">add a</td>
+            <td style="text-align: center;">48</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">98</td>
+            <td style="text-align: center;">58</td>
+            <td style="text-align: center;">68</td>
+            <td style="text-align: center;">78</td>
+            <td style="text-align: center;">08</td>
+            <td style="text-align: center;">88</td>
         </tr>
         <tr>
-            <td>add b</td>
-            <td>88</td>
-            <td>-</td>
-            <td>-</td>
-            <td>A8</td>
-            <td>B8</td>
-            <td>18</td>
-            <td>98</td>
-            <td>-</td>
+            <td style="text-align: left;">add b</td>
+            <td style="text-align: center;">88</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A8</td>
+            <td style="text-align: center;">B8</td>
+            <td style="text-align: center;">18</td>
+            <td style="text-align: center;">98</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>add c</td>
-            <td>C8</td>
-            <td>-</td>
-            <td>D8</td>
-            <td>E8</td>
-            <td>69</td>
-            <td>F8</td>
-            <td>28</td>
-            <td>A8</td>
+            <td style="text-align: left;">add c</td>
+            <td style="text-align: center;">C8</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">D8</td>
+            <td style="text-align: center;">E8</td>
+            <td style="text-align: center;">69</td>
+            <td style="text-align: center;">F8</td>
+            <td style="text-align: center;">28</td>
+            <td style="text-align: center;">A8</td>
         </tr>
         <tr>
             <td rowspan=3>Resta</td>
-            <td>sub a</td>
-            <td>49</td>
-            <td>-</td>
-            <td>99</td>
-            <td>59</td>
-            <td>69</td>
-            <td>79</td>
-            <td>09</td>
-            <td>89</td>
+            <td style="text-align: center;">sub a</td>
+            <td style="text-align: center;">49</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">99</td>
+            <td style="text-align: center;">59</td>
+            <td style="text-align: center;">69</td>
+            <td style="text-align: center;">79</td>
+            <td style="text-align: center;">09</td>
+            <td style="text-align: center;">89</td>
         </tr>
         <tr>
-            <td>sub b</td>
-            <td>89</td>
-            <td>-</td>
-            <td>-</td>
-            <td>A9</td>
-            <td>B9</td>
-            <td>19</td>
-            <td>99</td>
-            <td>-</td>
+            <td style="text-align: left;">sub b</td>
+            <td style="text-align: center;">89</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A9</td>
+            <td style="text-align: center;">B9</td>
+            <td style="text-align: center;">19</td>
+            <td style="text-align: center;">99</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>sub c</td>
-            <td>C9</td>
-            <td>-</td>
-            <td>D9</td>
-            <td>E9</td>
-            <td>6A</td>
-            <td>F9</td>
-            <td>29</td>
-            <td>A9</td>
+            <td style="text-align: left;">sub c</td>
+            <td style="text-align: center;">C9</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">D9</td>
+            <td style="text-align: center;">E9</td>
+            <td style="text-align: center;">6A</td>
+            <td style="text-align: center;">F9</td>
+            <td style="text-align: center;">29</td>
+            <td style="text-align: center;">A9</td>
         </tr>
         <tr>
             <td rowspan=3>Suma con acarreo</td>
-            <td>adc a</td>
-            <td>4A</td>
-            <td>-</td>
-            <td>9A</td>
-            <td>5A</td>
-            <td>6A</td>
-            <td>7A</td>
-            <td>0A</td>
-            <td>8A</td>
+            <td style="text-align: center;">adc a</td>
+            <td style="text-align: center;">4A</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">9A</td>
+            <td style="text-align: center;">5A</td>
+            <td style="text-align: center;">6A</td>
+            <td style="text-align: center;">7A</td>
+            <td style="text-align: center;">0A</td>
+            <td style="text-align: center;">8A</td>
         </tr>
         <tr>
-            <td>adc b</td>
-            <td>BA</td>
-            <td>-</td>
-            <td>-</td>
-            <td>AA</td>
-            <td>BA</td>
-            <td>1A</td>
-            <td>9A</td>
-            <td>-</td>
+            <td style="text-align: left;">adc b</td>
+            <td style="text-align: center;">BA</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">AA</td>
+            <td style="text-align: center;">BA</td>
+            <td style="text-align: center;">1A</td>
+            <td style="text-align: center;">9A</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>adc c</td>
-            <td>CA</td>
-            <td>-</td>
-            <td>DA</td>
-            <td>EA</td>
-            <td>6A</td>
-            <td>FA</td>
-            <td>2A</td>
-            <td>AA</td>
+            <td style="text-align: left;">adc c</td>
+            <td style="text-align: center;">CA</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">DA</td>
+            <td style="text-align: center;">EA</td>
+            <td style="text-align: center;">6A</td>
+            <td style="text-align: center;">FA</td>
+            <td style="text-align: center;">2A</td>
+            <td style="text-align: center;">AA</td>
         </tr>
         <tr>
             <td rowspan=3>Resta con préstamo</td>
-            <td>sbc a</td>
-            <td>4B</td>
-            <td>-</td>
-            <td>9B</td>
-            <td>5B</td>
-            <td>6B</td>
-            <td>7B</td>
-            <td>0B</td>
-            <td>8B</td>
+            <td style="text-align: center;">sbc a</td>
+            <td style="text-align: center;">4B</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">9B</td>
+            <td style="text-align: center;">5B</td>
+            <td style="text-align: center;">6B</td>
+            <td style="text-align: center;">7B</td>
+            <td style="text-align: center;">0B</td>
+            <td style="text-align: center;">8B</td>
         </tr>
         <tr>
-            <td>sbc b</td>
-            <td>8B</td>
-            <td>-</td>
-            <td>-</td>
-            <td>AB</td>
-            <td>BB</td>
-            <td>1B</td>
-            <td>9B</td>
-            <td>-</td>
+            <td style="text-align: left;">sbc b</td>
+            <td style="text-align: center;">8B</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">AB</td>
+            <td style="text-align: center;">BB</td>
+            <td style="text-align: center;">1B</td>
+            <td style="text-align: center;">9B</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>sbc c</td>
-            <td>CB</td>
-            <td>-</td>
-            <td>DB</td>
-            <td>EB</td>
-            <td>6C</td>
-            <td>FB</td>
-            <td>2B</td>
-            <td>AB</td>
+            <td style="text-align: left;">sbc c</td>
+            <td style="text-align: center;">CB</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">DB</td>
+            <td style="text-align: center;">EB</td>
+            <td style="text-align: center;">6C</td>
+            <td style="text-align: center;">FB</td>
+            <td style="text-align: center;">2B</td>
+            <td style="text-align: center;">AB</td>
         </tr>
         <tr>
             <td rowspan=3>Comparación</td>
-            <td>cmp a</td>
-            <td>4C</td>
-            <td>-</td>
-            <td>9C</td>
-            <td>5C</td>
-            <td>6C</td>
-            <td>7C</td>
-            <td>0C</td>
-            <td>8C</td>
+            <td style="text-align: center;">cmp a</td>
+            <td style="text-align: center;">4C</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">9C</td>
+            <td style="text-align: center;">5C</td>
+            <td style="text-align: center;">6C</td>
+            <td style="text-align: center;">7C</td>
+            <td style="text-align: center;">0C</td>
+            <td style="text-align: center;">8C</td>
         </tr>
         <tr>
-            <td>cmp b</td>
-            <td>8C</td>
-            <td>-</td>
-            <td>-</td>
-            <td>AC</td>
-            <td>BC</td>
-            <td>1C</td>
-            <td>9C</td>
-            <td>-</td>
+            <td style="text-align: left;">cmp b</td>
+            <td style="text-align: center;">8C</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">AC</td>
+            <td style="text-align: center;">BC</td>
+            <td style="text-align: center;">1C</td>
+            <td style="text-align: center;">9C</td>
+            <td style="text-align: center;">-</td>
         </tr>
         <tr>
-            <td>cmp c</td>
-            <td>CC</td>
-            <td>-</td>
-            <td>DC</td>
-            <td>EC</td>
-            <td>6C</td>
-            <td>FC</td>
-            <td>2C</td>
-            <td>AC</td>
+            <td style="text-align: left;">cmp c</td>
+            <td style="text-align: center;">CC</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">DC</td>
+            <td style="text-align: center;">EC</td>
+            <td style="text-align: center;">6C</td>
+            <td style="text-align: center;">FC</td>
+            <td style="text-align: center;">2C</td>
+            <td style="text-align: center;">AC</td>
         </tr>
     </tbody>
 </table>
