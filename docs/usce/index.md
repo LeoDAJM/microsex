@@ -1,6 +1,6 @@
 ---
 title: U.S.C. Expandido
-nav_order: 2
+nav_order: 4
 permalink: /docs/USCE/
 parent: Documentación del Proyecto
 ---

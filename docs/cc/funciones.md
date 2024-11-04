@@ -1,6 +1,6 @@
 ---
 title: Funciones del Computador Completo
-nav_order: 1
+nav_order: 3
 parent: Computador Completo
 ---
 

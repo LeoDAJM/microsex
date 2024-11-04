@@ -1,7 +1,7 @@
 ---
 title: Computador Completo
-nav_order: 2
-permalink: /docs/cc/
+nav_order: 5
+permalink: /docs/CC/
 parent: Documentación del Proyecto
 ---
 
