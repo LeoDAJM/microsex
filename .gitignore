@@ -26,3 +26,4 @@ build/Microsex/localpycs/struct.pyc
 dist/Microsex.exe
 .sourcery.yaml
 Microsex.spec
+requirements.txt

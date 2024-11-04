@@ -1,7 +1,8 @@
 ---
 title: Computador Completo
 nav_order: 2
-permalink: /docs/
+permalink: /docs/cc/
+parent: Documentación del Proyecto
 ---
 
 ## Descripción Modulo Computador Completo
