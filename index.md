@@ -2,7 +2,7 @@
 title: Microsex - HomePage
 layout: home
 nav_order: 1
-description: "Microsex Emu. Site."
+description: "Microsex Site"
 permalink: /
 ---
 
