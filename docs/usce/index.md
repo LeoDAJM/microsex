@@ -9,57 +9,560 @@ parent: Documentación del Proyecto
 
 Yada yada
 
-----------------------------------------------------------------------------------
-| Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| No operar                         | NOP  |       |           |       |       |      00      |
-| Detener                           | HLT  |       |           |       |       |      10      |
-| Cero al acarreo                  | CLC  |       |           |       |       |      20      |
-| Cero al desborde                 | CLV  |       |           |       |       |      30      |
-| Establecer acarreo               | SEC  |       |           |       |       |      90      |
-| Establecer desborde              | SEV  |       |           |       |       |      A0      |
-| Cero al resultado                 | CLR  | 01 11 | 21        | 31    | 41    |      C1      |
+## Control
 
-----------------------------------------------------------------------------------
-| Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| ENTRADA-SALIDA                   |      |       |           |       |       |               |
-| Ingresar dato*                   | IN   | 02 12 | 22        |       |       |               |
+| Operación           | Mnem | INMED | INHER | AX | BX | CX | DIREC | INDEX (80_) |
+|:--------------------|:----:|:-----:|:-----:|:-:|:-:|:-:|:-----:|:-----------:|
+| No operar           | NOP |       | 00 | | | | | | |
+| Detener             | HLT |       | 10 | | | | | | |
+| Cero al acarreo     | CLC |       | 20 | | | | | | |
+| Cero al desborde    | CLV |       | 30 | | | | | | |
+| Establecer acarreo  | SEC |       | 90 | | | | | | |
+| Establecer desborde | SEV |       | A0 | | | | | | |
+| Cero al resultado   | CLR |       | | 01 | 11 | 21 | 31 | 41 | C1 |
 
-----------------------------------------------------------------------------------
-| Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| LÓGICAS-ARITMÉTICAS              |      |       |           |       |       |               |
-| Negativo (comp2)                 | NEG  | 03 13 | 23        | 33    | 43    |      C3      |
-| Inversión (comp1)                | NOT  | 04 14 | 24        | 34    | 44    |      C4      |
-| Incremento                        | INC  | 43 53 | 63        | 73    | 53    |      D3      |
-| Decremento                       | DEC  | 44 54 | 64        | 74    | 54    |      D4      |
-| AND A                            | AND  | 45    | -         | 55    | 65    | 75  05  85   |
-| AND B                            |      | 85    | 95 -      | A5    | B5    | 15  95       |
-| AND C                            | C5   | D5    | E5 -      | F5    |       | 25  A5       |
-| OR A                             | OR   | 46    | -         | 56    | 66    | 76  06  86   |
-| OR B                             |      | 86    | 96 -      | A6    | B6    | 16  96       |
-| OR C                             | C6   | D6    | E6 -      | F6    |       | 26  A6       |
-| XOR A                            | XOR  | 47    | -         | 57    | 67    | 77  07  87   |
-| XOR B                            |      | 87    | 97 -      | A7    | B7    | 17  97       |
-| XOR C                            | C7   | D7    | E7 -      | F7    |       | 27  A7       |
-| Suma                             | ADD  | 48    | -         | 58    | 68    | 78  08  88   |
-| ADD B                            |      | 88    | 98 -      | A8    | B8    | 18  98       |
-| ADD C                            | C8   | D8    | E8 -      | F8    |       | 28  A8       |
-| Resta                            | SUB  | 49    | -         | 59    | 69    | 79  09  89   |
-| SUB B                            |      | 89    | 99 -      | A9    | B9    | 19  99       |
-| SUB C                            | C9   | D9    | E9 -      | F9    |       | 29  A9       |
-| Suma con acarreo                | ADC  | 4A    | -         | 5A    | 6A    | 7A  0A  8A   |
-| ADC B                            |      | 8A    | 9A -      | AA    | BA    | 1A  9A       |
-| ADC C                            | CA   | DA    | EA -      | FA    |       | 2A  AA       |
-| Resta con acarreo               | SBC  | 4B    | -         | 5B    | 6B    | 7B  0B  8B   |
-| SBC B                            |      | 8B    | 9B -      | AB    | BB    | 1B  9B       |
-| SBC C                            | CB   | DB    | EB -      | FB    |       | 2B  AB       |
-| Comparación                      | CMP  | 4C    | -         | 5C    | 6C    | 7C  0C  8C   |
-| CMP B                            |      | 8C    | 9C -      | AC    | BC    | 1C  9C       |
-| CMP C                            | CC   | DC    | EC -      | FC    |       | 2C  AC       |
+## Entrada-Salida
 
-----------------------------------------------------------------------------------
+| Operación      | Mnem | INMED | INHER | AX | BX | CX | DIREC | INDEX (80_) |
+|:---------------|:----:|:-----:|:-----:|:-:|:-:|:-:|:-----:|:-----------:|
+| Ingresar dato* | IN | | | 02 | 12 | 22 | | |
+
+## Lógicas-Aritméticas
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Operación</th>
+            <th>MNEUMÓNICO</th>
+            <th>Inmediato</th>
+            <th>Inherente</th>
+            <th>Acumuladores</th>
+            <th>Directo</th>
+            <th>Indexado</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>
+                <table>
+                    <tr>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                </table>
+            </th>
+            <th></th>
+            <th>
+                <table>
+                    <tr>
+                        <th>IX</th>
+                        <th>IY</th>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">Suma</td>
+            <td>ADD A</td>
+            <td>48</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>98</td>
+                        <td>58</td>
+                        <td>68</td>
+                    </tr>
+                </table>
+            </td>
+            <td>78</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>08</td>
+                        <td>88</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>ADD B</td>
+            <td>88</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>A8</td>
+                        <td>B8</td>
+                    </tr>
+                </table>
+            </td>
+            <td>18</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>98</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>ADD C</td>
+            <td>C8</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>D8</td>
+                        <td>E8</td>
+                        <td>69</td>
+                    </tr>
+                </table>
+            </td>
+            <td>F8</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>28</td>
+                        <td>A8</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">Resta</td>
+            <td>SUB A</td>
+            <td>49</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>99</td>
+                        <td>59</td>
+                        <td>69</td>
+                    </tr>
+                </table>
+            </td>
+            <td>79</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>09</td>
+                        <td>89</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>SUB B</td>
+            <td>89</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>AB</td>
+                        <td>BB</td>
+                    </tr>
+                </table>
+            </td>
+            <td>1B</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>9B</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>SUB C</td>
+            <td>CB</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>DB</td>
+                        <td>EB</td>
+                        <td>6C</td>
+                    </tr>
+                </table>
+            </td>
+            <td>FB</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>2B</td>
+                        <td>AB</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">Inverso</td>
+            <td>NEG A</td>
+            <td>-</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>03</td>
+                        <td>13</td>
+                        <td>23</td>
+                    </tr>
+                </table>
+            </td>
+            <td>33</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>43</td>
+                        <td>IY</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>NEG B</td>
+            <td>-</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>04</td>
+                        <td>14</td>
+                        <td>24</td>
+                    </tr>
+                </table>
+            </td>
+            <td>34</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>44</td>
+                        <td>C3</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>NEG C</td>
+            <td>-</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>05</td>
+                        <td>15</td>
+                        <td>25</td>
+                    </tr>
+                </table>
+            </td>
+            <td>35</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>45</td>
+                        <td>C4</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">AND</td>
+            <td>AND A</td>
+            <td>45</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>95</td>
+                        <td>55</td>
+                        <td>65</td>
+                    </tr>
+                </table>
+            </td>
+            <td>75</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>05</td>
+                        <td>85</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>AND B</td>
+            <td>85</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>A5</td>
+                        <td>B5</td>
+                    </tr>
+                </table>
+            </td>
+            <td>15</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>95</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>AND C</td>
+            <td>C5</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>D5</td>
+                        <td>E5</td>
+                        <td>66</td>
+                    </tr>
+                </table>
+            </td>
+            <td>76</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>25</td>
+                        <td>A5</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">OR</td>
+            <td>OR A</td>
+            <td>46</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>96</td>
+                        <td>56</td>
+                        <td>66</td>
+                    </tr>
+                </table>
+            </td>
+            <td>76</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>06</td>
+                        <td>86</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>OR B</td>
+            <td>86</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>A6</td>
+                        <td>B6</td>
+                    </tr>
+                </table>
+            </td>
+            <td>16</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>96</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>OR C</td>
+            <td>C6</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>D6</td>
+                        <td>E6</td>
+                        <td>67</td>
+                    </tr>
+                </table>
+            </td>
+            <td>77</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>26</td>
+                        <td>A6</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">XOR</td>
+            <td>XOR A</td>
+            <td>47</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>97</td>
+                        <td>57</td>
+                        <td>67</td>
+                    </tr>
+                </table>
+            </td>
+            <td>77</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>07</td>
+                        <td>87</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>XOR B</td>
+            <td>87</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>A7</td>
+                        <td>B7</td>
+                    </tr>
+                </table>
+            </td>
+            <td>17</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>97</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>XOR C</td>
+            <td>C7</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>D7</td>
+                        <td>E7</td>
+                        <td>68</td>
+                    </tr>
+                </table>
+            </td>
+            <td>78</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>27</td>
+                        <td>A7</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">Comparación</td>
+            <td>CMP A</td>
+            <td>4C</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>9C</td>
+                        <td>5C</td>
+                        <td>6C</td>
+                    </tr>
+                </table>
+            </td>
+            <td>7C</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>0C</td>
+                        <td>8C</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>CMP B</td>
+            <td>8C</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>-</td>
+                        <td>AC</td>
+                        <td>BC</td>
+                    </tr>
+                </table>
+            </td>
+            <td>1C</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>9C</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>CMP C</td>
+            <td>CC</td>
+            <td>-</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>DC</td>
+                        <td>EC</td>
+                        <td>6C</td>
+                    </tr>
+                </table>
+            </td>
+            <td>FC</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>2C</td>
+                        <td>AC</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
 | Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
 |:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
 | TRANSFERENCIA                    |      |       |           |       |       |               |
@@ -70,7 +573,7 @@ Yada yada
 | STA B                            |      |  B2    |           |       | 12    | 92           |
 | STA C                            | F2   |           |           |       | 22    | A2           |
 
-----------------------------------------------------------------------------------
+
 | Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
 |:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
 | ROTACIÓN-DESPLAZAMIENTO          |      |       |           |       |       |               |
@@ -82,7 +585,7 @@ Yada yada
 | Desp.aritm.a izquierda            | DAI  | 8E    | 9E AE    | BE    | 6E    | EE           |
 | Desp.lógico a derecha             | DLD  | CD    | DD ED    | FD    | 7D    | FD           |
 
-----------------------------------------------------------------------------------
+
 | Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
 |:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
 | PUNTEROS IX/IY/PP                |      |       |           |       |       |               |
@@ -101,7 +604,7 @@ Yada yada
 | Guardar IY                       | STA Y|       |           | F0    |       |               |
 | Guardar PP                       | STA P|       |           | F4    |       |               |
 
-----------------------------------------------------------------------------------
+
 | Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
 |:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
 | RAMIFICACIÓN                     |      |       |           |       |       |               |
@@ -125,7 +628,7 @@ Yada yada
 | Llamada a subrutina               | BSR  |       |           | 36    |       |               |
 | Retorno de subrutina              | RET  |       |           | 37    |       |               |
 
-----------------------------------------------------------------------------------
+
 | Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
 |:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
 | PILA                              |      |       |           |       |       |               |

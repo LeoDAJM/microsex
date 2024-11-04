@@ -31,9 +31,8 @@ Yada yada
 
 ## Selección en TD
 
-| S8<br>Mux2 | S7<br>Mux1 | S6<br>Mux0 | Operación | Descripción                            |
+| S8<br>Mux2<br>TD | S7<br>Mux1<br>TD | S6<br>Mux0<br>TD | Operación | Descripción                            |
 |:----:|:----:|:----:|:---------:|----------------------------------------|
-| TD   | TD   | TD   |           |                                        |
 | 0    | 0    | 0    | ROD       | Rotación de registro a Derecha         |
 | 0    | 0    | 1    | RCD       | Rotación con acarreo a Derecha         |
 | 0    | 1    | 0    | ROI       | Rotación de registro a Izquierda       |
