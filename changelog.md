@@ -6,70 +6,70 @@ nav_order: 2
 has_toc: true
 ---
 
-# microsex
+## microsex
 Emulador del microprocesador de arquitectura microsex de memoria común
 
 
-## FORK DAJM v0.9b
-  # Interfaz
+### FORK DAJM v0.9b
+  ## Interfaz
 
   ![Poster_UI](https://github.com/LeoDAJM/microsex/blob/master/SRC/IMG/poster.png?raw=true)
 
-  # **NEW!**
+  ## **NEW!**
   - Añadida la carácterística de colocar breakpoint en el código, mediante la tecla F2 (toggle switch). Tiene su respectiva opción en el menú "Ejecutar".
   - Memoria oprimizada, ahora se usa solo una clase de memoria, más versátil para cada segmento, pero amnteniendo pa memoria unificada en el archivo de configuración.
   - Mejoras en la generación del archivo listado ".lst".
   - Refactorización de funciones y optimización de ciclos.
 
-  # QoL
+  ## QoL
   - Ahora el botón de Clear reinicia el IP al inicio del CS.
   - Añadido nuevo ToolBar para acceso rápido de funciones.
 
-  # Pendiente
+  ## Pendiente
   - Pendiente (todavía) de MUCHA optimización de código :'3.
 
-  # Fixed
+  ## Fixed
   - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*FIXED*).
 
-  # BuGs
+  ## BuGs
   - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
   - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
 
-## FORK DAJM v0.8
+### FORK DAJM v0.8
 
-# **NEW!**
+## **NEW!**
   - Añadida caracterísica de Volcado y Carga de memoria, de forma selectiva, y conservando los paŕametros ORG desde el guardado, encuéntralo en el menú "*Memoria*"
       - Compatible con formatos XLSX/CSV (utf-8)
-# QoL
+## QoL
   - Agregados botones de borrado de tablas (memoria), en cada esquina superior izquierda de las tablas, de color rojo.
 
-# Bugs
+## Bugs
   - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
   - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
   - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
 
-# Pendiente
+## Pendiente
   - Pendiente (aun) de MUCHA optimización de código :'3.
 
 
-## FORK DAJM v0.7 II/2024
+### FORK DAJM v0.7 II/2024
   - Detección de Directivas .org para mostrar por separado segmentos de Pila, Datos y Código.
   - Implementado cambios de propiedades visuales, cuando cambian registros y contenido en memoria.
   - Implementado PIns visual en la tabla de CS.
 
-# QoL
+## QoL
   - Botón de borrado de registros.
   - Contenido (fontSize) y Boxes ahora son responsive, la ventana se puede redimensionar y maximizar.
   - Colores cambiados a modo Oscuro.
   - Añadido aviso al finalizar el CS (barra de reportes).
   - El PIns (IP) se carga automáticamente al inicio del CS después de ensamblar.
 
-# Bugs
+## Bugs
   - En muy raras ocasiones, al ensamblar varias veces, cambiando las ubicaciones de los segmentos, falla el programa al reasignar datos (*pending*).
   - En versiones de Python >= 3.13.x se ejecuta el programa pero ocurren errores en el CS al ensamblar (*unknown*).
   - Falla en operaciones de edición en tablas (desde la ver. original) (*pending*).
 
-# Otros
+## Otros
   - Probado hasta la versión Python 3.12.7 sin problema alguno.
   - Nombres de Registros Cambiados:
 	- **Ac.A** -> **AX**
@@ -78,12 +78,12 @@ Emulador del microprocesador de arquitectura microsex de memoria común
 	- **P INS** -> **IP**
 
 
-# Pendiente
+## Pendiente
   - Se implemento en el rep. original la alternativa de hacer Dump y Load de memoria, al transponer tablas y reestructurar la memoria, se debe corregir.
   - Pendiente de MUCHA optimización de código :'3.
 
-## ChangeLog Branch original korvec/microsex/
-## CAMBIOS EN LA VERSIÓN 1.4
+### ChangeLog Branch original korvec/microsex/
+### CAMBIOS EN LA VERSIÓN 1.4
 - Cambio en códigos de operación de las instrucciones:
   - **CLC** cambia de 40 a 20
   - **CLV** cambia de 50 a 30
@@ -113,7 +113,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
 
 - Para almacenar el registro de banderas en la memoria, se agrega la realimentación de este registro al mux de la entrada A de la ALU.
 
-## CAMBIOS EN LA VERSIÓN 1.3
+### CAMBIOS EN LA VERSIÓN 1.3
 - Cambio de sintaxis en instrucciones de carga de punteros
   - ~~LDX~~ -> **LDA X**
   - ~~LDY~~ -> **LDA Y**
@@ -124,7 +124,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
 
 - Corrección en Editor de Registros
 
-## CAMBIOS EN LA VERSIÓN 1.2
+### CAMBIOS EN LA VERSIÓN 1.2
 
 - Creación de un archivo de listado
   - Cuenta con número de línea, dirección de memoria y contenido
@@ -136,7 +136,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
   - Ensamblar y cargar en la memoria borrando los datos anteriores
   - Ensamblar y cargar sobreescribiendo sólo los datos generados en el ensamblado
 
-## CAMBIOS EN LA VERSIÓN 1.1
+### CAMBIOS EN LA VERSIÓN 1.1
 
 - Corrección de función *guardar como...* no habilitaba función de ensamblar
 - Corrección en el editor de memoria que permitía cualquier cadena
@@ -156,7 +156,7 @@ Emulador del microprocesador de arquitectura microsex de memoria común
   - CCC IY+**dat8**
   - CCC **dir16**
 
-## CARACTERÍSTICAS
+### CARACTERÍSTICAS
 Emulador con módulos que demuestran el desarrollo evolutivo de un computador.
 
 - Unidad Básica de Cálculo
@@ -176,7 +176,7 @@ El **Computador Completo** a su vez tiene módulos integrados a modo de *Entorno
 Require Python 3.5 o superior por el uso de la librería PyQt5
 (Yo utilizo Python 3.6.8)
 
-### 1. Instalar librería PyQt5
+#### 1. Instalar librería PyQt5
 
 Para agregar la librería PyQt5:
 
@@ -184,7 +184,7 @@ Para agregar la librería PyQt5:
 pip install pyqt5
 ```
 
-### 2. Ejecución de Módulos
+#### 2. Ejecución de Módulos
 
 En la línea de comandos o terminal, cambiar el directorio a la carpeta `microsex/SRC`
 
@@ -212,7 +212,7 @@ tabla de instrucciones USCE.txt
 tabla de instrucciones CC.txt
 ```
 
-## POR HACER:
+### POR HACER:
 
 - [ ] Mostrar archivo de listado en la interfaz gráfica.
 - [ ] Mapear un puerto de entrada en el computador completo.
@@ -220,5 +220,5 @@ tabla de instrucciones CC.txt
 - [ ] Admitir definición de cadena de datos y sin nombre.
 - [ ] Ensamblar ASCII.
 
-#### Contacto.
+##### Contacto.
 diego.ramirez.jove@gmail.com

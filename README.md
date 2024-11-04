@@ -76,7 +76,7 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - [X] ~~Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.~~
 - [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
-# Pendiente Original:
+## Pendiente Original:
 
 - [X] ~~Mostrar archivo de listado en la interfaz gráfica.~~
 - [ ] Mapear un puerto de entrada en el computador completo.

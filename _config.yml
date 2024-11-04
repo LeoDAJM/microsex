@@ -15,7 +15,8 @@ repository: LeoDAJM/microsex
 
 author: DAJM
 url: https://leodajm.github.io
-full_width: true
+locale: es_BO
+
 
 aux_links: # remove if you don't want this link to appear on your pages
   Repository:
@@ -51,11 +52,6 @@ aux_links_new_tab: false
 nav_enabled: true
 
 
-color_scheme: dark
-remote_theme: just-the-docs/just-the-docs
-plugins:
-  - jekyll-remote-theme # add this line to the plugins list if you already have one
-
 # Configuraciones adicionales
 markdown: kramdown
 permalink: pretty # Define las URL amigables
@@ -68,3 +64,10 @@ plugins:
 # Parámetros adicionales (opcional)
 social:
   github: "LeoDAJM"
+
+color_scheme: dark
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme # add this line to the plugins list if you already have one
+
+

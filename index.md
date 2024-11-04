@@ -78,7 +78,7 @@ Para instalar y utilizar Microsex, sigue estos pasos:
     ```
 
 
-# Guía de Uso
+## Guía de Uso
 
 1. Abrir el Programa: Ejecuta Microsex.py para abrir la interfaz gráfica.
 2. Cargar Archivo ASM: Puedes cargar programas en ensamblador escrito en Microsex, módulo_CC.
@@ -87,7 +87,7 @@ Para instalar y utilizar Microsex, sigue estos pasos:
 
 Para una guía completa, revisa la documentación.
 
-# Contribuir
+## Contribuir
 
 ¿Quieres contribuir al proyecto? Sigue estos pasos:
 
@@ -95,7 +95,7 @@ Para una guía completa, revisa la documentación.
 - Haz un pull request con una descripción detallada de tus cambios.
 - Asegúrate de seguir los lineamientos del proyecto.
 
-# Contacto
+## Contacto
 
 Para más información o dudas, contacta a LeoDAJM a través del repositorio en GitHub.
 
