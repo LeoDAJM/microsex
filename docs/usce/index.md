@@ -29,7 +29,7 @@ Yada yada
 
 ## Lógicas-Aritméticas
 
-<table border="1">
+<table>
     <thead>
         <tr>
             <th rowspan=2 style="text-align: left;">Operación</th>
@@ -372,88 +372,484 @@ Yada yada
     </tbody>
 </table>
 
+## Control
 
+<table>
+    <thead>
+        <tr>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inmediato</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+            <th rowspan=2 style="text-align: center;">Directo</th>
+            <th colspan=2 style="text-align: center;">Indexado</th>
+        </tr>
+        <tr>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+            <th style="text-align: center;">IX</th>
+            <th style="text-align: center;">IY</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">No operar</td>
+            <td style="text-align: center;">nop</td>
+            <td style="text-align: center;">00</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Hacer un alto al programa</td>
+            <td style="text-align: center;">hlt</td>
+            <td style="text-align: center;">10</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cero al acarreo</td>
+            <td style="text-align: center;">clc</td>
+            <td style="text-align: center;">20</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cero al desborde</td>
+            <td style="text-align: center;">clv</td>
+            <td style="text-align: center;">30</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Establecer acarreo</td>
+            <td style="text-align: center;">sec</td>
+            <td style="text-align: center;">90</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Establecer desborde</td>
+            <td style="text-align: center;">sev</td>
+            <td style="text-align: center;">A0</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cero al resultado</td>
+            <td style="text-align: center;">clr</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">61</td>
+            <td style="text-align: center;">11</td>
+            <td style="text-align: center;">21</td>
+            <td style="text-align: center;">31</td>
+            <td style="text-align: center;">41</td>
+            <td style="text-align: center;">C1</td>
+        </tr>
+    </tbody>
+</table>
 
+## Rotación y Desplazamiento
 
+<table>
+    <thead>
+        <tr>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inmediato</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+            <th rowspan=2 style="text-align: center;">Directo</th>
+            <th colspan=2 style="text-align: center;">Indexado</th>
+        </tr>
+        <tr>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+            <th style="text-align: center;">IX</th>
+            <th style="text-align: center;">IY</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">Rotación a derecha</td>
+            <td style="text-align: center;">rod</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">0E</td>
+            <td style="text-align: center;">1E</td>
+            <td style="text-align: center;">2E</td>
+            <td style="text-align: center;">3E</td>
+            <td style="text-align: center;">4E</td>
+            <td style="text-align: center;">CE</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Rotación a izquierda</td>
+            <td style="text-align: center;">roi</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">0D</td>
+            <td style="text-align: center;">1D</td>
+            <td style="text-align: center;">2D</td>
+            <td style="text-align: center;">3D</td>
+            <td style="text-align: center;">4D</td>
+            <td style="text-align: center;">CD</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Rot. con acarreo a der</td>
+            <td style="text-align: center;">rcd</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">4D</td>
+            <td style="text-align: center;">5D</td>
+            <td style="text-align: center;">6D</td>
+            <td style="text-align: center;">7D</td>
+            <td style="text-align: center;">5D</td>
+            <td style="text-align: center;">DD</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Rot. con acarreo a izq</td>
+            <td style="text-align: center;">rci</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">4E</td>
+            <td style="text-align: center;">5E</td>
+            <td style="text-align: center;">6E</td>
+            <td style="text-align: center;">7E</td>
+            <td style="text-align: center;">5E</td>
+            <td style="text-align: center;">DE</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Desp. aritmético a der</td>
+            <td style="text-align: center;">dad</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">80</td>
+            <td style="text-align: center;">90</td>
+            <td style="text-align: center;">AD</td>
+            <td style="text-align: center;">BD</td>
+            <td style="text-align: center;">60</td>
+            <td style="text-align: center;">ED</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Desp. aritmético a izq</td>
+            <td style="text-align: center;">dai</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">8E</td>
+            <td style="text-align: center;">9E</td>
+            <td style="text-align: center;">AE</td>
+            <td style="text-align: center;">BE</td>
+            <td style="text-align: center;">6E</td>
+            <td style="text-align: center;">EE</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Desp. lógico a derecha</td>
+            <td style="text-align: center;">dld</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">CD</td>
+            <td style="text-align: center;">DD</td>
+            <td style="text-align: center;">ED</td>
+            <td style="text-align: center;">FD</td>
+            <td style="text-align: center;">70</td>
+            <td style="text-align: center;">FD</td>
+        </tr>
+    </tbody>
+</table>
 
-| Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| TRANSFERENCIA                    |      |       |           |       |       |               |
-| Gargar acumulador                | LDA  | A    | -         | 51    | 61    | 71  01  81   |
-| LDA B                            |      | 81    | 91 -      | A1    | B1    | 11  91       |
-| LDA C                            | C1   | D1    | E1 -      | F1    |       | 21  A1       |
-| Guardar acumulador               | STA  | A    |           | 72    |       | 02  82       |
-| STA B                            |      |  B2    |           |       | 12    | 92           |
-| STA C                            | F2   |           |           |       | 22    | A2           |
+## Transferencia
 
+<table>
+    <thead>
+        <tr>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inmediato</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+            <th rowspan=2 style="text-align: center;">Directo</th>
+            <th colspan=2 style="text-align: center;">Indexado</th>
+        </tr>
+        <tr>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+            <th style="text-align: center;">IX</th>
+            <th style="text-align: center;">IY</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=3 style="text-align: left;">Cargar acumulador</td>
+            <td style="text-align: center;">lda a</td>
+            <td style="text-align: center;">41</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">51</td>
+            <td style="text-align: center;">61</td>
+            <td style="text-align: center;">71</td>
+            <td style="text-align: center;">01</td>
+            <td style="text-align: center;">81</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">lda b</td>
+            <td style="text-align: center;">81</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">91</td>
+            <td style="text-align: center;">A1</td>
+            <td style="text-align: center;">B1</td>
+            <td style="text-align: center;">11</td>
+            <td style="text-align: center;">91</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">lda c</td>
+            <td style="text-align: center;">C1</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">01</td>
+            <td style="text-align: center;">E1</td>
+            <td style="text-align: center;">F1</td>
+            <td style="text-align: center;">21</td>
+            <td style="text-align: center;">A1</td>
+        </tr>
+        <tr>
+            <td rowspan=3 style="text-align: left;">Guardar acumulador</td>
+            <td style="text-align: center;">sta a</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">72</td>
+            <td style="text-align: center;">02</td>
+            <td style="text-align: center;">82</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">sta b</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">B2</td>
+            <td style="text-align: center;">12</td>
+            <td style="text-align: center;">92</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">sta c</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">F2</td>
+            <td style="text-align: center;">22</td>
+            <td style="text-align: center;">A2</td>
+        </tr>
+    </tbody>
+</table>
 
-| Operación                         | Mnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| ROTACIÓN-DESPLAZAMIENTO          |      |       |           |       |       |               |
-| Rotación a derecha                | ROD  | 0D    | 1D 2D    | 3D    | 4D    | CD           |
-| Rotación a izquierda              | ROI  | 0E    | 1E 2E    | 3E    | 4E    | CE           |
-| Rot.con acarreo a der            | RCD  | 4D    | 5D 6D    | 7D    | 5D    | DD           |
-| Rot.con acarreo a izq           | RCI  | 4E    | 5E 6E    | 7E    | 5E    | DE           |
-| Desp.aritm.a derecha              | DAD  | 8D    | 9D AD    | BD    | 6D    | ED           |
-| Desp.aritm.a izquierda            | DAI  | 8E    | 9E AE    | BE    | 6E    | EE           |
-| Desp.lógico a derecha             | DLD  | CD    | DD ED    | FD    | 7D    | FD           |
+## Punteros de Datos
 
-
-| Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| PUNTEROS IX/IY/PP                |      |       |           |       |       |               |
-| Comparar Puntero IX              | CMP X| 3F    |           |       |       |               |
-| Comparar Puntero IY              | CMP Y| 7F    |           |       |       |               |
-| Incrementar PIX                  | INC X|       |           |       |       | 83            |
-| Incrementar PIY                  | INC Y|       |           |       |       | 93            |
-| Incrementar PP                   | INC P|       |           |       |       | A3            |
-| Decrementar PIX                  | DEC X|       |           |       |       | 84            |
-| Decrementar PIY                  | DEC Y|       |           |       |       | 94            |
-| Decrementar PP                   | DEC P|       |           |       |       | A4            |
-| Cargar IX                        | LDA X| 8F    |           | BF    |       |               |
-| Cargar IY                        | LDA Y| CF    |           | FF    |       |               |
-| Cargar PP                        | LDA P| C3    |           | F3    |       |               |
-| Guardar IX                       | STA X|       |           | B0    |       |               |
-| Guardar IY                       | STA Y|       |           | F0    |       |               |
-| Guardar PP                       | STA P|       |           | F4    |       |               |
-
-
-| Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| RAMIFICACIÓN                     |      |       |           |       |       |               |
-| Brinco si C = 1                   | BRC  |       |           | 15    |       |               |
-| Brinco si C = 0                   | BNC  |       |           | 25    |       |               |
-| Brinco si V = 1                   | BRV  |       |           | 16    |       |               |
-| Brinco si V = 0                   | BNV  |       |           | 26    |       |               |
-| Brinco si es positivo             | BRP  |       |           | 17    |       |               |
-| Brinco si es negativo             | BRN  |       |           | 27    |       |               |
-| Brinco si es cero                 | BRZ  |       |           | 18    |       |               |
-| Brinco si no es cero             | BNZ  |       |           | 28    |       |               |
-| Br si es mayor-s                  | BMA  |       |           | 19    |       |               |
-| Br si es superior-ns              | BSU  |       |           | 29    |       |               |
-| Br si es mayor/igual-s            | BMI  |       |           | 1A    |       |               |
-| Br si es super/igual-ns           | BSI  |       |           | 2A    |       |               |
-| Br si es menor-s                  | BME  |       |           | 1B    |       |               |
-| Br si es inferior-ns              | BIN  |       |           | 2B    |       |               |
-| Br si es menor/igual-s            | BNI  |       |           | 1C    |       |               |
-| Br si es infer/igual-ns           | BII  |       |           | 2C    |       |               |
-| Brinco incondicional              | BRI  |       |           | 35    |       |               |
-| Llamada a subrutina               | BSR  |       |           | 36    |       |               |
-| Retorno de subrutina              | RET  |       |           | 37    |       |               |
-
-
-| Operación                         | Pnem | INMED | ACUM      | DIREC | INHER | INDEX (80_)  |
-|:----------------------------------|:----:|:-----:|:---------:|:-----:|:-----:|:-------------:|
-| PILA                              |      |       |           |       |       |               |
-| Guardar en la pila               | GPI  | A     |           | 42    |       |               |
-|                                  | GPI  | B     |           | 52    |       |               |
-|                                  | GPI  | C     |           | 62    |       |               |
-|                                  | GPI  | X     |           | C2    |       |               |
-|                                  | GPI  | Y     |           | D2    |       |               |
-|                                  | GPI  | F     |           | E2    |       |               |
-| Recuperar de la pila             | RPI  | A     |           | 40    |       |               |
-|                                  | RPI  | B     |           | 50    |       |               |
-|                                  | RPI  | C     |           | 60    |       |               |
-|                                  | RPI  | X     |           | C0    |       |               |
-|                                  | RPI  | Y     |           | D0    |       |               |
-|                                  | RPI  | F     |           | E0    |       |               |
+<table>
+    <thead>
+        <tr>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inmediato</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+            <th rowspan=2 style="text-align: center;">Directo</th>
+            <th colspan=2 style="text-align: center;">Indexado</th>
+        </tr>
+        <tr>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+            <th style="text-align: center;">IX</th>
+            <th style="text-align: center;">IY</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">Comparar IX</td>
+            <td style="text-align: center;">cmp x</td>
+            <td style="text-align: center;">3F</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">A</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IX</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Comparar IY</td>
+            <td style="text-align: center;">cmp y</td>
+            <td style="text-align: center;">7F</td>
+            <td style="text-align: center;">83</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IY</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Incrementar IX</td>
+            <td style="text-align: center;">inc x</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IX</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Incrementar IY</td>
+            <td style="text-align: center;">inc y</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IY</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Incrementar PP</td>
+            <td style="text-align: center;">inc p</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Decrementar IX</td>
+            <td style="text-align: center;">dec x</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IX</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Decrementar IY</td>
+            <td style="text-align: center;">dec y</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">IY</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Decrementar PP</td>
+            <td style="text-align: center;">dec p</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cargar IX</td>
+            <td style="text-align: center;">lda x</td>
+            <td style="text-align: center;">8F</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">BF</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cargar IY</td>
+            <td style="text-align: center;">lda y</td>
+            <td style="text-align: center;">CF</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">FF</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Cargar PP</td>
+            <td style="text-align: center;">lda p</td>
+            <td style="text-align: center;">C3</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">F3</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Guardar IX</td>
+            <td style="text-align: center;">sta x</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">B0</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Guardar IY</td>
+            <td style="text-align: center;">sta y</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">F0</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Guardar PP</td>
+            <td style="text-align: center;">sta p</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">F4</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+    </tbody>
+</table>
