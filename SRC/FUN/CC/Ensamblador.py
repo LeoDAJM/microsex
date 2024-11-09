@@ -21,6 +21,7 @@ def verificacion_codigo(DATOS: list, name: str):
 
     if errores == 0:
         errores, mensaje_dseg, tabla_simbolos, listado_sim, cont_prog = verificar_segmento_datos(DATOS, origen)
+        print("end ds", errores)
     if errores == 0:
         tabla_simbolos, listado_etq = verificar_etiquetas(DATOS, origen, tabla_simbolos, cont_prog)
         errores, mensaje_cseg, m_prog, listado_prog = verificar_segmento_codigo(DATOS, origen, tabla_simbolos, cont_prog)

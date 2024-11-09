@@ -1,33 +1,36 @@
-import sys
-import string
 import csv
-from openpyxl import Workbook, load_workbook
-from PyQt6.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QHBoxLayout,
-    QVBoxLayout,
-    QCheckBox,
-    QDialog,
-    QMessageBox,
-    QToolBar,
-)
-from PyQt6.QtWidgets import QFileDialog, QApplication, QTextEdit, QSizePolicy
-from PyQt6.QtGui import QFont, QIcon, QFontDatabase, QAction, QFontMetricsF
-import os
 import io
+import os
+import re
+import string
+import sys
+
 import FUN.CONF.config_custom as config2
 import rc_icons
-import re
-
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
-from FUN.CC.segments_editor import *
 from FUN.CC.Ensamblador import *
-from FUN.CC.Unidad_Control import *
 from FUN.CC.lst_table import *
+from FUN.CC.segments_editor import *
+from FUN.CC.Unidad_Control import *
 from FUN.CONF.nemonicos import argumentos_instrucciones
-
+from openpyxl import Workbook, load_workbook
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction, QFont, QFontDatabase, QFontMetricsF, QIcon
+from PyQt6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QDialog,
+    QFileDialog,
+    QHBoxLayout,
+    QMainWindow,
+    QMessageBox,
+    QSizePolicy,
+    QTextEdit,
+    QToolBar,
+    QVBoxLayout,
+    QWidget,
+)
 
 numeros = tuple(str(i) for i in string.digits)
 letras = tuple(str(i) for i in string.ascii_letters)
@@ -35,7 +38,7 @@ letras_numeros = letras + numeros
 
 
 class ComputadorCompleto(QMainWindow):
-    def __init__(self, args = None):
+    def __init__(self, args=None):
         super().__init__()
         f_reg = QFontDatabase.addApplicationFont(":/MononokiNerdFontMono-Regular.ttf")
         self.families = QFontDatabase.applicationFontFamilies(f_reg)
@@ -54,13 +57,15 @@ class ComputadorCompleto(QMainWindow):
         app_icon.addFile(":IMG/icon32.png", QSize(50, 50))
         self.setWindowIcon(app_icon)
         self.initUI()
-        if args is not None and len(args) > 1:       # Acción
+        if args is not None and len(args) > 1:  # Acción
             args = args[1:]
             try:
                 self.dialogo_abrir(args[0])
                 print(f"Archivo abierto {args[0]}")
             except FileNotFoundError:
-                QMessageBox.warning(self, "Advertencia", f"El archivo no existe: {args[0]}.")
+                QMessageBox.warning(
+                    self, "Advertencia", f"El archivo no existe: {args[0]}."
+                )
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}.")
             if len(args) > 1:
@@ -73,8 +78,14 @@ class ComputadorCompleto(QMainWindow):
                     print("Código Ensamblado y Cargado.")
                     self.args_run(args)
                 else:
-                    QMessageBox.warning(self, "Advertencia", "El segundo argumento debe ser '-ld' o 'cld' para compilar el archivo.")
-                    print("El segundo argumento debe ser '-ld' o 'cld' para compilar el archivo.")
+                    QMessageBox.warning(
+                        self,
+                        "Advertencia",
+                        "El segundo argumento debe ser '-ld' o 'cld' para compilar el archivo.",
+                    )
+                    print(
+                        "El segundo argumento debe ser '-ld' o 'cld' para compilar el archivo."
+                    )
 
     def args_run(self, args):
         if len(args) <= 2:
@@ -82,20 +93,27 @@ class ComputadorCompleto(QMainWindow):
         if args[2] == "-r":
             self.ejecutar()
             print("Código ensamblado ejecutado.")
-        elif (args[2] == "-st"):
-            if len(args) > 3 and not(args[3].isdigit() and int(args[3]) != 0):
-                QMessageBox.warning(self, "Advertencia", f"Argumento inválido '{args[3]}' no es un número entero positivo.")
-                print(f"Argumento inválido '{args[3]}' no es un número entero positivo.")
+        elif args[2] == "-st":
+            if len(args) > 3 and not (args[3].isdigit() and int(args[3]) != 0):
+                QMessageBox.warning(
+                    self,
+                    "Advertencia",
+                    f"Argumento inválido '{args[3]}' no es un número entero positivo.",
+                )
+                print(
+                    f"Argumento inválido '{args[3]}' no es un número entero positivo."
+                )
                 return
             qty = 1 if len(args) == 3 else int(args[3])
             for _ in range(qty):
                 self.ejecutar_instruccion()
                 print(f"{_+1} paso(s) ejecutado(s).")
         else:
-            QMessageBox.warning(self, "Advertencia", f"Argumento inválido '{args[2]}', en posición {3}")
+            QMessageBox.warning(
+                self, "Advertencia", f"Argumento inválido '{args[2]}', en posición {3}"
+            )
             print(f"Argumento inválido '{args[2]}', en posición {3}")
             return
-
 
     def resizeEvent(self, event: "QResizeEvent"):  # type: ignore
         self.fuente = QFont(
@@ -236,10 +254,6 @@ class ComputadorCompleto(QMainWindow):
         spacer2.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
-
-        edit_tool = QAction(QIcon(":IMG/edit.png"), "Edit", self)
-        edit_tool.triggered.connect(lambda: self.state_def(True, False, False, True))
-        self.toolbar.addAction(edit_tool)
         im_tools = [
             "open",
             "save",
@@ -264,7 +278,7 @@ class ComputadorCompleto(QMainWindow):
         ]
         self.tools = [QAction()] * len(im_tools)
         fcns = [
-            self.dialogo_abrir,
+            lambda: self.dialogo_abrir(True),
             self.save_fcn,
             self.cargar,
             self.borrar_cargar,
@@ -290,7 +304,7 @@ class ComputadorCompleto(QMainWindow):
         menu_bar = self.menuBar()
         self.menu_dict = {
             "&Archivo": [
-                ["Abrir", "Ctrl+A", self.dialogo_abrir],
+                ["Abrir", "Ctrl+A", lambda: self.dialogo_abrir(True)],
                 ["Guardar", "Ctrl+G", lambda: self.save_fcn("save")],
                 ["Guardar como...", "Ctrl+Shift+G", lambda: self.save_fcn("como")],
                 ["separator"],
@@ -489,8 +503,13 @@ class ComputadorCompleto(QMainWindow):
 
     # region FUNCIONES DEL MENÚ ARCHIVO ---------------------------------------------------
 
-    def dialogo_abrir(self, cust_name = None):
-        nombre_archivo = cust_name if cust_name is not None else QFileDialog.getOpenFileName(self, "Abrir Archivo")[0]
+    def dialogo_abrir(self, cust_name=True):
+        print(cust_name)
+        nombre_archivo = (
+            QFileDialog.getOpenFileName(self, "Abrir Archivo")[0]
+            if cust_name
+            else cust_name
+        )
         if nombre_archivo:
             self.nombre_archivo = nombre_archivo
             self.open_proc()
@@ -520,9 +539,7 @@ class ComputadorCompleto(QMainWindow):
             if not nombre_archivo[0]:
                 return
             self.nombre_archivo = nombre_archivo[0]
-            self.setWindowTitle(
-                f"Microsex - Computador Completo - {nombre_archivo[0]}"
-            )
+            self.setWindowTitle(f"Microsex - Computador Completo - {nombre_archivo[0]}")
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
             with open(nombre_archivo, "w", encoding="utf-8") as f:
@@ -638,34 +655,36 @@ class ComputadorCompleto(QMainWindow):
             self.save_fcn("como")
         else:
             self.save_fcn("save")
-        nombre_archivo = self.nombre_archivo
-        with open(nombre_archivo) as archivo:
-            programa = archivo.readlines()
-            cod = list(programa)
-        err, msj, mp, ls, ts, libs = verificacion_codigo(programa, self.nombre_archivo)
-        self.mp = mp.copy()
-        self.monitor.setText(msj)
-        if err == 0:
-            for i in config.m_prog:
-                config.m_prog.update({i: "00"})
-            for tab in self.mem.values():
-                tab.reset()
-            self.load(nombre_archivo, cod, ls, ts, libs)
-            self.state_def(True, True, True, True)
+        if self.nombre_archivo:
+            with open(self.nombre_archivo) as archivo:
+                programa = archivo.readlines()
+                cod = list(programa)
+            err, msj, mp, ls, ts, libs = verificacion_codigo(
+                programa, self.nombre_archivo
+            )
+            self.mp = mp.copy()
+            self.monitor.setText(msj)
+            if err == 0:
+                for i in config.m_prog:
+                    config.m_prog.update({i: "00"})
+                for tab in self.mem.values():
+                    tab.reset()
+                self.load(self.nombre_archivo, cod, ls, ts, libs)
+                self.state_def(True, True, True, True)
 
     def state_def(
         self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool, mems=True
     ):
         self.change_menu(
-            "Ensamblar, Borrar memoria y Cargar", st_comp, "Ensamblar y Cargar", 3
+            "Ensamblar, Borrar memoria y Cargar", st_comp, "Ensamblar y Cargar", 2
         )
-        self.toolbar.actions()[4].setEnabled(st_comp)
+        self.toolbar.actions()[3].setEnabled(st_comp)
 
-        self.change_menu("Ejecutar Ensamblado", st_cnt, "Siguiente Inst.", 7)
-        self.toolbar.actions()[9].setEnabled(st_cnt)
+        self.change_menu("Ejecutar Ensamblado", st_cnt, "Siguiente Inst.", 6)
+        self.toolbar.actions()[8].setEnabled(st_cnt)
 
         self.change_menu(
-            "Mostrar Archivo LST", st_cnt_bkp, "Ejecutar con Breakpoints", 8
+            "Mostrar Archivo LST", st_cnt_bkp, "Ejecutar con Breakpoints", 7
         )
         self.editor_codigo.editor.setReadOnly(not st_edit)
         for i in self.mem.values():
@@ -681,16 +700,18 @@ class ComputadorCompleto(QMainWindow):
             self.save_fcn("como")
         else:
             self.save_fcn("save")
-        nombre_archivo = self.nombre_archivo
-        with open(nombre_archivo) as archivo:
-            programa = archivo.readlines()
-            cod = list(programa)
-        err, msj, mp, ls, ts, libs = verificacion_codigo(programa, self.nombre_archivo)
-        self.mp = mp.copy()
-        self.monitor.setText(msj)
-        if err == 0:
-            self.load(nombre_archivo, cod, ls, ts, libs)
-            self.state_def(True, True, True, True)
+        if self.nombre_archivo:
+            with open(self.nombre_archivo) as archivo:
+                programa = archivo.readlines()
+                cod = list(programa)
+            err, msj, mp, ls, ts, libs = verificacion_codigo(
+                programa, self.nombre_archivo
+            )
+            self.mp = mp.copy()
+            self.monitor.setText(msj)
+            if err == 0:
+                self.load(self.nombre_archivo, cod, ls, ts, libs)
+                self.state_def(True, True, True, True)
 
     def load(self, nombre_archivo, cod, ls, ts, libs):
         self.datalst, _ = crear_archivo_listado(nombre_archivo, cod, ls, ts, libs)
@@ -918,6 +939,7 @@ class ComputadorCompleto(QMainWindow):
         mensaje.setDefaultButton(QMessageBox.StandardButton.Yes)
         self.response_clear = mensaje.exec()
         self.dialog_save("exportar")
+
     def recon_seg(self, csv):
         rows = list(csv)
         for u in rows:
