@@ -504,7 +504,6 @@ class ComputadorCompleto(QMainWindow):
     # region FUNCIONES DEL MENÚ ARCHIVO ---------------------------------------------------
 
     def dialogo_abrir(self, cust_name=True):
-        print(cust_name)
         nombre_archivo = (
             QFileDialog.getOpenFileName(self, "Abrir Archivo")[0]
             if cust_name

@@ -58,32 +58,28 @@ def verificar_segmento_datos(DATOS, origen):
         if len(DATOS[i]) == 2:
             simbolo_correcto = 1
             directiva = DATOS[i][0]
-            print(DATOS[i], errores)
             if directiva in [".DB", ".RB"]:
-                simbolo = f"_ghost{phantom_vars_ct}"
+                simbolo = f"_nc{phantom_vars_ct}"
                 contenido = DATOS[i][1]
                 if directiva in directivas_dseg:
                     simbolo_correcto += 1
                 elif directiva.startswith("."):
-                    errores, mensaje = err_directiva_desconocida(
-                        errores, mensaje, i
-                    )
+                    errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
                 else:
                     errores, mensaje = err_sintaxis(errores, mensaje, i)
-                errores, mensaje, contenido = insum_if(
-                    tabla_simbolos, simbolos, valores, i, simbolo_correcto, contenido, errores, mensaje
-                )
-                sim_all_good(
+                errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion = insum_if(
                     tabla_simbolos,
                     lista_simbolos,
                     simbolos,
-                    valores,
                     direccion,
-                    i,
                     directiva,
                     simbolo,
-                    contenido,
+                    valores,
+                    i,
                     simbolo_correcto,
+                    contenido,
+                    errores,
+                    mensaje,
                 )
             elif directiva != ".ORG":
                 if directiva.startswith("."):
@@ -98,7 +94,6 @@ def verificar_segmento_datos(DATOS, origen):
             simbolo = DATOS[i][0]
             directiva = DATOS[i][1]
             contenido = DATOS[i][2]
-            print(DATOS[i])
 
             if simbolo.startswith(numeros):
                 errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
@@ -126,23 +121,21 @@ def verificar_segmento_datos(DATOS, origen):
                 errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
             else:
                 errores, mensaje = err_sintaxis(errores, mensaje, i)
-            errores, mensaje, contenido = insum_if(
-                tabla_simbolos, simbolos, valores, i, simbolo_correcto, contenido, errores, mensaje
-            )
 
-            sim_all_good(
+            errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion = insum_if(
                 tabla_simbolos,
                 lista_simbolos,
                 simbolos,
-                valores,
                 direccion,
-                i,
                 directiva,
                 simbolo,
-                contenido,
+                valores,
+                i,
                 simbolo_correcto,
+                contenido,
+                errores,
+                mensaje,
             )
-
     if errores == 0:
         mensaje = mensaje + "\n ** OK **: todo correcto en segmento de datos"
     else:
@@ -172,7 +165,7 @@ def sim_all_good(
             lista_simbolos.update({i + 1: [hex(direccion), [hex(contenido)]]})
             for k in range(math.ceil(len(hex(contenido)) / 2) - 1):
                 if k != 0:
-                    simbolo = chr(219) + simbolo + "_" + str(k)
+                    simbolo = chr(219) + str(direccion) + "_" + str(k)
                 tabla_simbolos.append(
                     [
                         simbolo,
@@ -189,9 +182,23 @@ def sim_all_good(
             simbolos.append(simbolo)
             valores.update({simbolo: direccion})
             direccion += contenido
+    return tabla_simbolos, lista_simbolos, simbolos, valores, direccion
 
 
-def insum_if(tabla_simbolos, simbolos, valores, i, simbolo_correcto, contenido, errores, mensaje):
+def insum_if(
+    tabla_simbolos,
+    lista_simbolos,
+    simbolos,
+    direccion,
+    directiva,
+    simbolo,
+    valores,
+    i,
+    simbolo_correcto,
+    contenido,
+    errores,
+    mensaje,
+):
     if (
         contenido.isalnum()
         or ("_" in contenido)
@@ -232,14 +239,28 @@ def insum_if(tabla_simbolos, simbolos, valores, i, simbolo_correcto, contenido, 
                 errores, mensaje = err_contenido_invalido(
                     errores, mensaje, contenido, i
                 )
-
         except ValueError:
             errores += 1
-            mensaje = f'{mensaje}\nError en linea {i + 1}: contenido inválido "{contenido}"'
+            mensaje = (
+                f'{mensaje}\nError en linea {i + 1}: contenido inválido "{contenido}"'
+            )
     else:
         errores, mensaje = err_contenido_invalido(errores, mensaje, contenido, i)
 
-    return errores, mensaje, contenido
+    tabla_simbolos, lista_simbolos, simbolos, valores, direccion = sim_all_good(
+        tabla_simbolos,
+        lista_simbolos,
+        simbolos,
+        valores,
+        direccion,
+        i,
+        directiva,
+        simbolo,
+        contenido,
+        simbolo_correcto,
+    )
+
+    return errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion
 
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):
