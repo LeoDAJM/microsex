@@ -88,6 +88,12 @@ def verificar_argumento(argumento, permitidos):
                 return argumento
             else:
                 intento += 1
+        
+        elif perm == 'port_out':
+            if argumento in ['A']:
+                return argumento
+            else:
+                intento += 1
 
         elif perm == 'punteros':
             if argumento in ['X', 'Y']:

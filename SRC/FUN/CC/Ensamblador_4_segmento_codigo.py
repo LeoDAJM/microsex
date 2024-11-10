@@ -154,6 +154,12 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
             else:
                 intento += 1
 
+        elif perm == 'port_out':
+            if argumento in ['A']:
+                return errores_previos, mensaje, argumento, ['NA']
+            else:
+                intento += 1
+
         elif perm == 'punteros':
             if argumento in ['X', 'Y']:
                 return errores_previos, mensaje, argumento, ['NA']

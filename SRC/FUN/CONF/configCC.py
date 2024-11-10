@@ -38,7 +38,7 @@ N = 0
 Z = 0
 P = 0
 
-senal_control = [0]*67
+senal_control = [0]*68
 
 senal_control_USC = senal_control[:31]
 lectura_escritura     = senal_control[22]
@@ -50,5 +50,8 @@ guardado_punteros     = senal_control[61]
 senal_control_CP      = senal_control[62]
 mux_interfaz_memoria  = senal_control[63:66]
 uso_pila              = senal_control[66]
+uso_port              = senal_control[67]
+
+portA = [0]*8
 
 estilo = stylesheet()

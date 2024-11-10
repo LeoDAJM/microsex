@@ -50,11 +50,18 @@ multicanalizador de interfaz de memoria
 [1,0,1] parte baja de IY
 [0,1,1] parte alta de PP
 [1,1,1] parte baja de PP
+[1,0,0,0] res Flags
+[1,0,0,1] res ALU
 
 instrucciones de pila
 [uso_pila]                                          # S[66] CC
 [0] No se requiere la pila
 [1] Se usa la pila
+
+instrucciones de puerto bidir
+[uso_port]                                          # S[67] CC
+[0] Salida
+[1] Entrada
 """
 
 from FUN.CONF.descodUSC import expandir
@@ -70,6 +77,11 @@ ne_usce = nemonicosUSCE()
 for i in ne_usce:
     do_comp[i] = expandir(do_comp[i], [1,0,0,0])
 
+# Se agrega una función en modo inherente OUT A
+    #in 1 0 000 0 0 000 000 1 00 0000 0000 0 0000 0000 0001
+    do_comp[0x1F] = [0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1]
+# 0 0 000 0 0 000 000 1 00 0000 0000 0 0000 0000 1111
+# 0000 0000 100 00000 0000 11000010000
 
 # Se corrigen instrucciones en modo directo
 instrucciones_memoria_dir = [
@@ -396,6 +408,23 @@ instrucciones_guardar_punteros_pila = {
 do_comp.update(instrucciones_pila)
 do2_comp.update(instrucciones_guardar_punteros_pila)
 
+# Se expande guardando todo desde salida de acumuladores
+for i in do_comp:
+    #******************************** Port_IO
+    do_comp[i] = expandir(do_comp[i], [0])
+for i in do2_comp:
+    do2_comp[i] = expandir(do2_comp[i], [0])
+# IN A,B,C
+do_comp[0x12][67] = 1
+do_comp[0x02][67] = 1
+do_comp[0x22][67] = 1
+#print(f'{do_comp[0x02]}\n{do_comp[0x12]}\n{do_comp[0x22]}\n{do_comp[0x1F]}')
+
+'''
+[0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+[0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+[0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+[0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]'''
 def descodificadorCC():
     return dict(do_comp)
 

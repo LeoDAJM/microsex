@@ -3,7 +3,8 @@ nemonicos_computador_completo = {
 "CLC": [[0x20], 1], "CLV": [[0x30], 1],
 "SEC": [[0x90], 1], "SEV": [[0xA0], 1],
 
-# "IN A": [[0x02], 1], "IN B": [[0x12], 1], "IN C": [[0x22], 1],
+"IN A": [[0x02], 1], "IN B": [[0x12], 1], "IN C": [[0x22], 1],
+"OUT A": [[0x1F], 1],
 
 "CLR A": [[0x01], 1], "NEG A": [[0x03], 1], "NOT A": [[0x04], 1],
 "INC A": [[0x43], 1], "DEC A": [[0x44], 1],
@@ -145,7 +146,8 @@ instrucciones_arg = {
 'CLV' : [],
 'SEC' : [],
 'SEV' : [],
-# 'IN'  : [['acumuladores']],
+'IN'  : [['acumuladores']],
+'OUT' : [['port_out']],
 'NEG' : [['acumuladores', 'indexado', 'directo']],
 'NOT' : [['acumuladores', 'indexado', 'directo']],
 'INC' : [['acumuladores', 'punteros', 'ppila', 'indexado', 'directo']],

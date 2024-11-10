@@ -6,6 +6,7 @@ import string
 import sys
 
 import FUN.CONF.config_custom as config2
+from FUN.CC.portA import *
 import rc_icons
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
@@ -183,6 +184,9 @@ class ComputadorCompleto(QMainWindow):
             "d": QCheckBox(text=" "),
         }
 
+        self.portA = IOPortA()
+        
+
         self.editor_codigo = EditorCodigo()
         self.bpoints = self.editor_codigo.editor.breakline
 
@@ -215,6 +219,7 @@ class ComputadorCompleto(QMainWindow):
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
         bloque_ejecucion.addWidget(self.mem["c"], stretch=1)
+        bloque_ejecucion.addWidget(self.mem["d"], stretch=2)
 
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.mem["s"], stretch=1)
@@ -228,9 +233,9 @@ class ComputadorCompleto(QMainWindow):
         bloque_subprincipal.addLayout(bloque_ejecucion, stretch=3)
         bloque_subprincipal.addLayout(bloque_codigo, stretch=1)
 
-        bloque_principal = QVBoxLayout()
-        bloque_principal.addLayout(bloque_subprincipal, stretch=4)
-        bloque_principal.addWidget(self.mem["d"], stretch=4)
+        bloque_principal = QHBoxLayout()
+        bloque_principal.addLayout(bloque_subprincipal, stretch=10)
+        bloque_principal.addWidget(self.portA, stretch=1)
 
         area_trabajo = QWidget()
         styles = config2.styles_fun()
@@ -337,6 +342,9 @@ class ComputadorCompleto(QMainWindow):
                 ["Memory Load", "", self.open_file],
                 ["Memory Dump", "", self.save_csv],
             ],
+            "Puerto": [
+                ["Mostrar Puerto BiDir 8b", "", lambda: self.toggle()],
+            ]
         }
         menu = {}
         self.menu_elems = {}
@@ -736,6 +744,7 @@ class ComputadorCompleto(QMainWindow):
             isd += 1
             ciclo_instruccion()
         self.registros.actualizar_registros()
+        self.portA.update()
         self.color_Regs()
         self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(), 16) - self._ds["c"] * 16
@@ -750,6 +759,7 @@ class ComputadorCompleto(QMainWindow):
         while config.PIns != "FIN":
             ciclo_instruccion()
             self.registros.actualizar_registros()
+            self.portA.update()
             if config.PIns != "FIN":
                 pre_ins = f"{int(config.PIns):04X}"
             else:
@@ -770,6 +780,7 @@ class ComputadorCompleto(QMainWindow):
             ciclo_instruccion()
             self.color_Regs()
             self.registros.actualizar_registros()
+            self.portA.update()
             self.post = int(self.registros.edit_PIns.text(), 16) - self._ds["c"] * 16
         else:
             self.barra_estado.showMessage("Fin de Programa (HLT)")
@@ -1014,6 +1025,10 @@ class ComputadorCompleto(QMainWindow):
         self.dialog_save("importar", csv_reader)
         os.remove("tmp.$csv")
         buffer2.close()
+
+    def toggle(self):
+        self.portA.setVisible(not self.portA.isVisible())
+
 
     # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------
 

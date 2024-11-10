@@ -18,7 +18,7 @@ def ciclo_instruccion():
     direccionamiento_inm = config.modo_direccionamiento[1]
     direccionamiento_dir = config.modo_direccionamiento[2]
     direccionamiento_idx = config.modo_direccionamiento[3]
-
+    print(config.modo_direccionamiento, config.uso_pila, config.senal_control_LR[18])
     if direccionamiento_inh == 1 and config.uso_pila == 1:
         pila()
         return
@@ -199,6 +199,23 @@ def pila():
 
     return
 
+def port():
+    config.PIns += 1
+    config.RDir = config.PIns
+    config.RIns2 = int(config.m_prog[config.RDir],16)
+    config.senal_control = config.DO_CC[config.RIns2]
+    distribucion_senales()
+
+    salir()
+    '''
+    # OUT
+    if config.uso_port == 1:
+
+    # IN
+    else:
+'''
+    return
+
 def salir():
 
     computador_completo()
@@ -231,6 +248,7 @@ def distribucion_senales():
     config.senal_control_CP      = config.senal_control[62]
     config.mux_interfaz_memoria  = config.senal_control[63:66]
     config.uso_pila              = config.senal_control[66]
+    config.uso_port              = config.senal_control[67]
 
 
 def computador_completo():
@@ -245,7 +263,7 @@ def computador_completo():
 
     banderas_anterior = [config.C, config.V, config.H, config.N, config.Z, config.P]
     Res_Anterior = [config.AcA, config.AcB, config.AcC, banderas_anterior]
-    Res_Actual, Res_ALU = unidad_secuencial_calculo(Res_Anterior, [[0]*8, config.BMem], banderas_cp, config.senal_control_USC)
+    Res_Actual, Res_ALU = unidad_secuencial_calculo(Res_Anterior, [config.portA, config.BMem], banderas_cp, config.senal_control_USC)
     config.AcA = Res_Actual[0]
     config.AcB = Res_Actual[1]
     config.AcC = Res_Actual[2]
@@ -279,3 +297,6 @@ def computador_completo():
 
     if config.lectura_escritura == 1:
         config.m_prog[config.RDir] = Dato_a_memoria
+
+    if config.modo_direccionamiento == [1,1,1,1]:
+        config.portA = config.AcA
