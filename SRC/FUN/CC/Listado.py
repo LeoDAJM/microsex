@@ -26,15 +26,15 @@ def crear_archivo_listado(ARCHIVO, DATOS, LISTADO, TS, data_lib: list[list]):
         f.write("-----------------\n")
         f.write("SÍMBOLO\tVALOR\tCONTENIDO\n")
         for i in range(len(TS)):
-            f.write(TS[i][0] + '\t' + str(TS[i][1]) + '\t' + str(TS[i][2]) + '\n')
+            f.write((TS[i][0] if TS[i][0][0] != chr(219) else " "*4)  + '\t' + str(TS[i][1]) + '\t' + str(TS[i][2]) + '\n')
     return archlst, no_lib_listed
 
 def data_lst(DATOS, LISTADO, archlst, no_lib_listed):
     for i in range(len(DATOS)):
         row_nmb = DATOS[i][0]
         if i+1 in LISTADO:
-            mem = LISTADO[i+1][0]                                             # Col2: Dirección de mem
-            asm = norm_hex(LISTADO[i+1][1]) if len(LISTADO[i+1]) > 1 else " " # Col3: Cod Oper
+            mem = LISTADO[i+1][0]                                               # Col2: Dirección de mem
+            asm = norm_hex(LISTADO[i+1][1]) if len(LISTADO[i+1]) > 1 else " "*11 # Col3: Cod Oper
         else:
             mem = " "*4
             asm = " "*11

@@ -59,7 +59,8 @@ def verificar_segmento_datos(DATOS, origen):
             simbolo_correcto = 1
             directiva = DATOS[i][0]
             if directiva in [".DB", ".RB"]:
-                simbolo = f"_nc{phantom_vars_ct}"
+                simbolo = f"{chr(219)}_nc{phantom_vars_ct}"
+                #simbolo = " "
                 contenido = DATOS[i][1]
                 if directiva in directivas_dseg:
                     simbolo_correcto += 1
@@ -166,6 +167,7 @@ def sim_all_good(
             for k in range(math.ceil(len(hex(contenido)) / 2) - 1):
                 if k != 0:
                     simbolo = chr(219) + str(direccion) + "_" + str(k)
+                    #simbolo = " "
                 tabla_simbolos.append(
                     [
                         simbolo,
