@@ -2,54 +2,46 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSizePolicy, QLabel, QSpacerItem
 from PyQt6.QtCore import Qt
 import FUN.CONF.configCC as config
+import FUN.CONF.config_custom as config2
 
 class IOPortA(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.setVisible(False)
 
     def initUI(self):
         # Configuración de la ventana principal
-        self.setWindowTitle('Puerto BiDir CC')
-        spc = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-        # Crear layout horizontal para los botones
         h_layout = QVBoxLayout()
-        self.button = 8*[QPushButton]
-        # Crear 8 botones
-        for i in range(8):
-            bit_index = 7 - i
-            self.button[bit_index] = QPushButton(f'b{bit_index}')
-            self.button[bit_index].setCheckable(True)  # Hacer que los botones sean seleccionables (como un interruptor)
-            self.button[bit_index].clicked.connect(self.on_button_click)  # Conectar la acción al evento
-            self.button[bit_index].setChecked(config.portA[bit_index] == 1)  # Establecer el estado inicial según el valor de portA
-            self.button[bit_index].setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-            h_layout.addWidget(self.button[bit_index])
-        vb2 = QVBoxLayout()
-        vb2.addSpacerItem(spc)
+        h_layout.addStretch()
         lbl = QLabel("PortA", self)
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        vb2.addWidget(lbl)
-        vb2.addLayout(h_layout)
-        vb2.addSpacerItem(spc)
-        
+        h_layout.addWidget(lbl, stretch=1)
+        self.button = 8*[QPushButton]
+        for i in range(7,-1,-1):
+            self.prop_button(i)
+            h_layout.addWidget(self.button[i], 1, Qt.AlignmentFlag.AlignCenter)
+        h_layout.addStretch()
         # Establecer el layout principal
-        self.setLayout(vb2)
+        self.setLayout(h_layout)
+
+    def prop_button(self, i):
+        self.button[i] = QPushButton(f'b{i}')
+        self.button[i].setCheckable(True)  # Hacer que los botones sean seleccionables (como un interruptor)
+        self.button[i].clicked.connect(self.on_button_click)  # Conectar la acción al evento
+        self.button[i].setMinimumHeight(50)
+        self.button[i].setStyleSheet(config2.styles_cs["button_port"])
 
     def on_button_click(self):
         sender = self.sender()  # Obtener el botón que fue presionado
-        button_index = sender.text()[-1]  # Extraemos el número de bit (Bit 1, Bit 2, ...)
-        bit_index = 7 - int(button_index)  # Convertimos el texto a índice (0 a 7)
-
+        button_index = int(sender.text()[-1])  # Extraemos el número de bit (Bit 1, Bit 2, ...)
         # Actualizar el valor de portA según el estado del botón
-        config.portA[bit_index] = 1 if sender.isChecked() else 0
-        print(config.portA)
+        config.portA[button_index] = 1 if sender.isChecked() else 0
     
     def update(self):
         for i in range(8):
-            self.button[7-i].setChecked(True if config.portA[i] == 1 else False)
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = IOPortA()
-    window.show()
-    sys.exit(app.exec())
+            self.button[i].setChecked(config.portA[i] == 1)
+    
+    def reset(self):
+        for i in range(8):
+            self.button[i].setChecked(False)

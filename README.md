@@ -44,6 +44,18 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 ### **Nuevas Funcionalidades**
 
+- ***NEW*** **Añadidas Nuevas Instrucciones para un puerto BiDir**: Se agregó un Puerto A bidireccional, asociadas a las instrucciones:
+
+| Nmen. | Cod.Op. | Descripción |
+|:---------:|:---------:|-----------|
+| IN A    | 0x02   | El puerto se coloca como entrada, y carga su información en el ac. A |
+| IN B    | 0x12   | El puerto se coloca como entrada, y carga su información en el ac. B |
+| IN C    | 0x22   | El puerto se coloca como entrada, y carga su información en el ac. C |
+| OUT A   | 0x1F   | El puerto se coloca como salida, y se escrbie en él el byte del ac. A|
+
+Se puede interactuar con el puerto mediante el menú "Puerto".
+
+
 - ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 en lugar de PyQt5, aplicado a cada una de las unidades, módulos y librerías del proyecto.
 PyQt6
 {: .label .label-purple }

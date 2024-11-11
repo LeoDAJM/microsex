@@ -84,7 +84,6 @@ class EditorRegistros(QWidget):
         self.edit_acumuladores = [0]*3
         for i in range(3):
             self.edit_acumuladores[i] = LineEditHex(2)
-            #self.edit_acumuladores[i].setFixedWidth(t_w // 15)
             self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
@@ -93,18 +92,15 @@ class EditorRegistros(QWidget):
             self.edit_banderas[i] = QLineEdit(self)
             self.edit_banderas[i].setInputMask('B')
             self.edit_banderas[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
-            #self.edit_banderas[i].setFixedWidth(t_w // 15)
             self.edit_banderas[i].setStyleSheet("border: 2px solid rgb(0,60,140);")   # Si es False
             self.edit_banderas[i].editingFinished.connect(self.editar_banderas)
 
         self.edit_punteros = [0]*3
         for i in range(3):
             self.edit_punteros[i] = LineEditHex(4)
-            #self.edit_punteros[i].setFixedWidth(t_w // 15)
             self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
 
         self.edit_PIns = LineEditHex(4)
-        #self.edit_PIns.setFixedWidth(t_w // 15)
         self.edit_PIns.editingFinished.connect(self.editar_PIns)
 
         self.actualizar_registros()

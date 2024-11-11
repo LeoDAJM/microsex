@@ -184,9 +184,6 @@ class ComputadorCompleto(QMainWindow):
             "d": QCheckBox(text=" "),
         }
 
-        self.portA = IOPortA()
-        
-
         self.editor_codigo = EditorCodigo()
         self.bpoints = self.editor_codigo.editor.breakline
 
@@ -215,6 +212,7 @@ class ComputadorCompleto(QMainWindow):
         self.editor_codigo.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
+        self.portA = IOPortA()
 
         bloque_ejecucion = QVBoxLayout()
         bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
@@ -222,12 +220,14 @@ class ComputadorCompleto(QMainWindow):
         bloque_ejecucion.addWidget(self.mem["d"], stretch=2)
 
         self.bloque_regSS = QHBoxLayout()
-        self.bloque_regSS.addWidget(self.mem["s"], stretch=1)
-        self.bloque_regSS.addWidget(self.registros, stretch=1)
+        self.bloque_regSS.addWidget(self.mem["s"], stretch=2)
+        self.bloque_regSS.addWidget(self.registros, stretch=2)
+        self.bloque_regSS.addWidget(self.portA, stretch=1)
 
         bloque_codigo = QVBoxLayout()
         bloque_codigo.addLayout(self.bloque_regSS, stretch=3)
         bloque_codigo.addWidget(self.monitor, stretch=1)
+        
 
         bloque_subprincipal = QHBoxLayout()
         bloque_subprincipal.addLayout(bloque_ejecucion, stretch=3)
@@ -235,7 +235,7 @@ class ComputadorCompleto(QMainWindow):
 
         bloque_principal = QHBoxLayout()
         bloque_principal.addLayout(bloque_subprincipal, stretch=10)
-        bloque_principal.addWidget(self.portA, stretch=1)
+        
 
         area_trabajo = QWidget()
         styles = config2.styles_fun()
@@ -676,6 +676,7 @@ class ComputadorCompleto(QMainWindow):
                     config.m_prog.update({i: "00"})
                 for tab in self.mem.values():
                     tab.reset()
+                self.portA.reset()
                 self.load(self.nombre_archivo, cod, ls, ts, libs)
                 self.state_def(True, True, True, True)
 
@@ -809,7 +810,7 @@ class ComputadorCompleto(QMainWindow):
                 )
             if self.rows[detected] == "lib" and not self.state_lib:
                 self.state_lib = True
-                self.detected_2 += 2
+                self.detected_2 += 1
             elif self.rows[detected] != "lib":
                 self.state_lib = False
                 self.detected_2 = int(self.rows[detected]) - 1
@@ -1028,6 +1029,7 @@ class ComputadorCompleto(QMainWindow):
 
     def toggle(self):
         self.portA.setVisible(not self.portA.isVisible())
+        return
 
 
     # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------

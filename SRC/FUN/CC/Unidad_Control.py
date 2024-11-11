@@ -18,11 +18,12 @@ def ciclo_instruccion():
     direccionamiento_inm = config.modo_direccionamiento[1]
     direccionamiento_dir = config.modo_direccionamiento[2]
     direccionamiento_idx = config.modo_direccionamiento[3]
-    print(config.modo_direccionamiento, config.uso_pila, config.senal_control_LR[18])
     if direccionamiento_inh == 1 and config.uso_pila == 1:
         pila()
         return
-
+    if config.modo_direccionamiento == [1,1,1,1]:
+        port()
+        return
     elif direccionamiento_inh == 1 and config.senal_control_LR[18] == 0:
         salir()
         return
@@ -200,20 +201,12 @@ def pila():
     return
 
 def port():
-    config.PIns += 1
     config.RDir = config.PIns
     config.RIns2 = int(config.m_prog[config.RDir],16)
     config.senal_control = config.DO_CC[config.RIns2]
     distribucion_senales()
-
+    config.portA = config.AcA
     salir()
-    '''
-    # OUT
-    if config.uso_port == 1:
-
-    # IN
-    else:
-'''
     return
 
 def salir():
@@ -297,6 +290,3 @@ def computador_completo():
 
     if config.lectura_escritura == 1:
         config.m_prog[config.RDir] = Dato_a_memoria
-
-    if config.modo_direccionamiento == [1,1,1,1]:
-        config.portA = config.AcA

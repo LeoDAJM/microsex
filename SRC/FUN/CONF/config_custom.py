@@ -28,6 +28,25 @@ styles_cs = {
                 background-color: rgb(110,110,110);
                 border: 2px solid rgb(255, 40, 100);
         }""",
+        "button_port": """
+        QPushButton {
+                background-color: rgb(0,60,140);
+                color: white;
+                font-weight: bold;
+        }
+        QPushButton:hover {
+                border: 1px solid rgb(255, 255, 255);
+                background-color: rgb(255,60,140);
+        }
+        QPushButton:pressed {
+                background-color: rgb(255,60,140);
+                border: 2px solid rgb(255, 40, 80);
+        }
+        QPushButton:checked {
+                background-color: rgb(255,60,140);
+                border: 1px solid rgb(255, 255, 255);
+        }
+        """,
 "estilo_celdas":  """
         QTableWidget {
                 color: rgb(160, 190, 215);
