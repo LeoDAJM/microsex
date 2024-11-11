@@ -58,7 +58,6 @@ Se puede interactuar con el puerto mediante el menú "Puerto".
 
 - ***NEW*** **Migración Realizada a PyQt6**: Ahora el programa trabaja con PyQt6 en lugar de PyQt5, aplicado a cada una de las unidades, módulos y librerías del proyecto.
 PyQt6
-{: .label .label-purple }
 
 - ***NEW*** **Añadida la posibilidad para interactuar mediante comandos por consola**: Se pueden pasar argumentos a través de `Microsex.py` y `modulo_CC.py`:
         - `arg1`: La ubicación relativa o absoluta del archivo a abrir. (***Obligatorio**)
@@ -128,13 +127,10 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 
 - ~~**Incorrecto llenado en memoria del Cod. Op. para ciertas instrucciones**: Bug desconocido, probado para `lda	y,#destino`, es debido al reconocimiento de ASCII.~~ \
 (*SOLVED*)
-{: .label .label-green }
 - ~~**Edición en Tablas**: Persisten fallos al editar directamente los valores en las tablas de memoria.~~ \
 (*SOLVED*)
-{: .label .label-green }
 - ~~**Error al importar/exportar memoria**: Al cambiar el funcionamiento de la memoria, se originaron problemas con las funciones de Dump/Load.~~ \
 (*SOLVED*)
-{: .label .label-green }
 
 ## Pendiente Fork:
 
@@ -142,9 +138,9 @@ El método es de reemplazo directo, así que deben importarse de forma ordenada 
 - [X] ~~Seguimiento de IP en el archivo de listado.~~
 - [X] ~~Seguimiento de IP en el código.~~
 - [X] Añadir el uso de librerías.
+- [X] Añadida interacción con puerto virtual `A`.
 - [ ] Añadir interacción con puertos físicos.
 - [X] ~~Actualizar a PyQt6, garantizar compatibilidad con versiones de Python recientes.~~
-- [ ] Agregar todas las 301 instrucciones del proyecto referido. (*largo plazo*)
 
 # Pendiente Original:
 
