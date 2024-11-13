@@ -1,9 +1,9 @@
 # Microsex - v1.1 (Ale-V)
 
-![Static Badge](https://img.shields.io/badge/VERSION-v1.1_rev2-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)
+![Static Badge](https://img.shields.io/badge/VERSION-v1.2.0-brightgreen?style=for-the-badge&logo=json&logoColor=black&label=VERSION&labelColor=white&color=brightgreen)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LeoDAJM/microsex/.github%2Fworkflows%2Fpython-package.yml?branch=master&style=for-the-badge&logo=python&logoColor=white&label=Python%203.8%2B&labelColor=101010)](https://www.python.org/downloads/)
 ![GitHub License](https://img.shields.io/github/license/LeoDAJM/microsex?style=for-the-badge&logo=conventionalcommits&logoColor=white&label=Licence&labelColor=101010&color=orange)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex/pyqt6?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
 ![PyPI - Version](https://img.shields.io/pypi/v/pyqt6?style=for-the-badge&logo=qt&logoColor=white&label=PyQt6&labelColor=101010)
 
 <pre><font color="#2F69A2"><b>               =========</b></font>                  <font color="#2F69A2"><b>Project</b></font><b>:</b> microsex (4 branches)
