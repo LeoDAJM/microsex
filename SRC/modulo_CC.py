@@ -196,6 +196,12 @@ class ComputadorCompleto(QMainWindow):
         self.detected_past = None
         self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
+
+        to_en = 24 if config.composition == 1 else 23
+        to_dis = 23 if config.composition == 1 else 24
+        to_en2 = 22 if config.lang_init == "esp" else 21
+        to_dis2 = 21 if config.lang_init == "esp" else 22
+
         self.direccion_inicio = "0000"
         self.chkbx = {
             "s": QCheckBox(text=" "),
@@ -368,6 +374,10 @@ class ComputadorCompleto(QMainWindow):
                     self.menu_elems[cnt].triggered.connect(i[2])
                     self.menu[k].addAction(self.menu_elems[cnt])
                     cnt += 1
+        self.menu_elems[to_dis].setEnabled(False)
+        self.menu_elems[to_en].setEnabled(True)
+        self.menu_elems[to_dis2].setEnabled(False)
+        self.menu_elems[to_en2].setEnabled(True)
         # endregion
 
         # region ToolBar

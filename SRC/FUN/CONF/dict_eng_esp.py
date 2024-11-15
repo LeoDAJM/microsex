@@ -203,7 +203,7 @@ dict_CC = {
             },
             "dsg": {
                 "t": "Layout",
-                "new": "Nuw",
+                "new": "New",
                 "old": "Old"
             }
         },
