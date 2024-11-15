@@ -3,10 +3,13 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSi
 from PyQt6.QtCore import Qt
 import FUN.CONF.configCC as config
 import FUN.CONF.config_custom as config2
+from FUN.CONF.dict_eng_esp import dict_others
 
 class IOPortA(QWidget):
     def __init__(self):
         super().__init__()
+        self._lang = config.lang_init
+        self._dict_sel = dict_others[self._lang]
         self.initUI()
         self.setVisible(False)
 
@@ -14,13 +17,14 @@ class IOPortA(QWidget):
         # Configuración de la ventana principal
         h_layout = QVBoxLayout()
         h_layout.addStretch()
-        lbl = QLabel("PortA", self)
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        h_layout.addWidget(lbl, stretch=1)
+        self.lbl = QLabel(self._dict_sel["pA"], self)
+        self.lbl.setMinimumWidth(0)
+        self.lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        h_layout.addWidget(self.lbl)
         self.button = 8*[QPushButton]
         for i in range(7,-1,-1):
             self.prop_button(i)
-            h_layout.addWidget(self.button[i], 1, Qt.AlignmentFlag.AlignCenter)
+            h_layout.addWidget(self.button[i])
         h_layout.addStretch()
         # Establecer el layout principal
         self.setLayout(h_layout)
@@ -30,6 +34,7 @@ class IOPortA(QWidget):
         self.button[i].setCheckable(True)  # Hacer que los botones sean seleccionables (como un interruptor)
         self.button[i].clicked.connect(self.on_button_click)  # Conectar la acción al evento
         self.button[i].setMinimumHeight(50)
+        self.button[i].setMinimumWidth(0)
         self.button[i].setStyleSheet(config2.styles_cs["button_port"])
 
     def on_button_click(self):
@@ -45,3 +50,8 @@ class IOPortA(QWidget):
     def reset(self):
         for i in range(8):
             self.button[i].setChecked(False)
+
+    def upd_lang(self, lang: str):
+        self._lang = lang
+        self._dict_sel = dict_others[self._lang]
+        self.lbl.setText(self._dict_sel["pA"])

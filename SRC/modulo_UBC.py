@@ -44,7 +44,7 @@ class UBC(QWidget):
 
         self.lbl_valor_hex = [0]*2
         self.edit_hex = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_hex[i] = QLabel("00",self)
             self.lbl_valor_hex[i].setGeometry(200, 50 + i*20, 60, 20)
             self.lbl_valor_hex[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -68,7 +68,7 @@ class UBC(QWidget):
 
         self.lbl_valor_bin = [0]*2
         self.edit_bin = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_bin[i] = QLabel("00000000",self)
             self.lbl_valor_bin[i].setGeometry(300, 50 + i*20, 120, 20)
             self.lbl_valor_bin[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -89,7 +89,7 @@ class UBC(QWidget):
         lbl_dec.setFont(config.fuente_texto)
 
         self.lbl_valor_dec = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_dec[i] = QLabel("0",self)
             self.lbl_valor_dec[i].setGeometry(460,50 + i*20,60,20)
             self.lbl_valor_dec[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -101,7 +101,7 @@ class UBC(QWidget):
         lbl_dec.setFont(config.fuente_texto)
 
         self.lbl_valor_sig = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_sig[i] = QLabel("0",self)
             self.lbl_valor_sig[i].setGeometry(560,50 + i*20,80,20)
             self.lbl_valor_sig[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -111,13 +111,13 @@ class UBC(QWidget):
         lbl_s=[0]*5
         for i in range(5):
             lbl_s[i] = QLabel(self)
-            lbl_s[i].setText('S<sub>' + str(i) +'</sub>')
+            lbl_s[i].setText(f'S<sub>{str(i)}</sub>')
             lbl_s[i].setGeometry(200 + (4-i)*20, 100, 20, 25)
             lbl_s[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_s[i].setFont(config.fuente_texto)
 
         self.lbl_senales = [0]*5
-        for i in range(0,5):
+        for i in range(5):
             self.lbl_senales[4-i] = QLabel("0", self)
             self.lbl_senales[4-i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_senales[4-i].setGeometry(200 + i*20, 125, 20, 25)
@@ -134,37 +134,22 @@ class UBC(QWidget):
         grp_graf.setStyleSheet(config.estilo["estilo_grupo"])
         grp_graf.setGeometry(5,165,690,330)
 
-        lgc_paso_a = QLabel(self)
-        lgc_paso_a.setPixmap(pix_and)
-        lgc_paso_a.move(140,240)
-
-        lgc_paso_b = QLabel(self)
-        lgc_paso_b.setPixmap(pix_and)
-        lgc_paso_b.move(160,320)
-
-        lgc_invr_a = QLabel(self)
-        lgc_invr_a.setPixmap(pix_xor)
-        lgc_invr_a.move(300,250)
-
-        lgc_invr_b = QLabel(self)
-        lgc_invr_b.setPixmap(pix_xor)
-        lgc_invr_b.move(320,330)
-
-        lgc_sum_com = QLabel(self)
-        lgc_sum_com.setPixmap(pix_sum)
-        lgc_sum_com.move(440, 240)
-
+        self.setPix_lbl(pix_and, 140, 240)
+        self.setPix_lbl(pix_and, 160, 320)
+        self.setPix_lbl(pix_xor, 300, 250)
+        self.setPix_lbl(pix_xor, 320, 330)
+        self.setPix_lbl(pix_sum, 440, 240)
         lbl_s=[0]*5
-        for i in range(0,5):
+        for i in range(5):
             n = 110 + (i*20) + (i//2)*120 + (i//4)*60
             lbl_s[4-i] = QLabel(self)
-            lbl_s[4-i].setText('S<sub>' + str(4-i) +'</sub>')
+            lbl_s[4-i].setText(f'S<sub>{str(4 - i)}</sub>')
             lbl_s[4-i].setGeometry(n, 445, 20, 25)
             lbl_s[4-i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_s[4-i].setFont(config.fuente_texto)
 
         self.btn_senales = [0]*5
-        for i in range(0,5):
+        for i in range(5):
             n = 110 + (i*20) + (i//2)*120 + (i//4)*60
             self.btn_senales[4-i] = QPushButton("0",self)
             self.btn_senales[4-i].setFont(config.fuente_num)
@@ -173,17 +158,23 @@ class UBC(QWidget):
             self.btn_senales[4-i].setCheckable(True)
             self.btn_senales[4-i].setStyleSheet(config.estilo["estilo_boton"])
 
+    # TODO Rename this here and in `grupo_grafico`
+    def setPix_lbl(self, arg0, arg1, arg2):
+        lgc_paso_a = QLabel(self)
+        lgc_paso_a.setPixmap(arg0)
+        lgc_paso_a.move(arg1, arg2)
+
     def etiquetas_resultados(self):
 
         self.lbl_in_a = [0]*3
-        for i in range(0,3):
+        for i in range(3):
             self.lbl_in_a[i] = QLabel("00", self)
             self.lbl_in_a[i].setGeometry(50 + i*160, 220 + i*10, 40, 20)#
             self.lbl_in_a[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.lbl_in_a[i].setFont(config.fuente_num)
 
         self.lbl_in_b = [0]*3
-        for i in range(0,3):
+        for i in range(3):
             self.lbl_in_b[i] = QLabel("00", self)
             self.lbl_in_b[i].setGeometry(70 + i*160, 300 + i*10, 40, 20)#
             self.lbl_in_b[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -218,7 +209,7 @@ class UBC(QWidget):
         s_con[1] = [[300, 420], [300, 360], [330, 360]]
         s_con[0] = [[500, 420], [500, 375]]
 
-        for i in range(0,5):                # Señales de control
+        for i in range(5):                # Señales de control
             if config.S[i] == 1:
                 linea_control = QPen(QColor(70,170,255), 2, Qt.PenStyle.SolidLine)  #rgb(70,170,255)
             else:
@@ -246,25 +237,25 @@ class UBC(QWidget):
     def definir_sis_num(self):
         sistema_numerico = self.sender()
         if sistema_numerico.text() == "Binario":
-            for i in range(0,2):
-                self.lbl_valor_hex[i].setVisible(True)
-                self.lbl_valor_bin[i].setVisible(False)
-                self.edit_hex[i].setVisible(False)
-                self.edit_bin[i].setVisible(True)
-
+            for i in range(2):
+                self.setVis_lbl_edit(i, True, False)
         if sistema_numerico.text() == "Hex":
-            for i in range(0,2):
-                self.lbl_valor_hex[i].setVisible(False)
-                self.lbl_valor_bin[i].setVisible(True)
-                self.edit_hex[i].setVisible(True)
-                self.edit_bin[i].setVisible(False)
+            for i in range(2):
+                self.setVis_lbl_edit(i, False, True)
+
+    # TODO Rename this here and in `definir_sis_num`
+    def setVis_lbl_edit(self, i, arg1, arg2):
+        self.lbl_valor_hex[i].setVisible(arg1)
+        self.lbl_valor_bin[i].setVisible(arg2)
+        self.edit_hex[i].setVisible(arg2)
+        self.edit_bin[i].setVisible(arg1)
 
     def asignacion_variables(self, valor):
 
         edicion = self.sender()
 
         if edicion.inputMask() == "HH" and len(valor)==2:
-            for i in range(0,2):
+            for i in range(2):
                 if edicion == self.edit_hex[i]:
                     config.val_h[i] = valor
                     config.val_b[i] = hex_a_bin(config.val_h[i])
@@ -274,7 +265,7 @@ class UBC(QWidget):
                     self.edit_bin[i].setText(config.val_b[i])
 
         if edicion.inputMask() == "BBBBBBBB" and len(valor)==8:
-            for i in range(0,2):
+            for i in range(2):
                 if edicion == self.edit_bin[i]:
                     config.val_h[i] = bin_a_hex(valor)
                     config.val_b[i] = valor
@@ -286,7 +277,7 @@ class UBC(QWidget):
         config.A = config.var_op[0]
         config.B = config.var_op[1]
 
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_hex[i].setText(config.val_h[i])
             self.lbl_valor_bin[i].setText(config.val_b[i])
             self.lbl_valor_dec[i].setText(config.val_d[i])
@@ -299,20 +290,20 @@ class UBC(QWidget):
 
         control_variable = self.sender()
 
-        for i in range(0,5):
+        for i in range(5):
             if control_variable == self.btn_senales[i]:
                 if control_variable.text() == "0":
-                    control_variable.setText("1")
-                    self.lbl_senales[i].setText("1")
-                    config.S[i] = 1
-
+                    self.setText_to_var(control_variable, "1", i, 1)
                 elif control_variable.text() == "1":
-                    control_variable.setText("0")
-                    self.lbl_senales[i].setText("0")
-                    config.S[i] = 0
-
+                    self.setText_to_var(control_variable, "0", i, 0)
         config.R, config.C, config.intr = unidad_basica_calculo (config.A, config.B, 0, config.S)
         self.actualizar_cadenas()
+
+    # TODO Rename this here and in `control_UBC`
+    def setText_to_var(self, control_variable, arg1, i, arg3):
+        control_variable.setText(arg1)
+        self.lbl_senales[i].setText(arg1)
+        config.S[i] = arg3
 
     def actualizar_cadenas(self):
 

@@ -50,12 +50,12 @@ class EditorRegistros(QWidget):
         self.lbl_Acumuladores = QLabel(self._dict_sel["ac"], self)
         self.lbl_Acumuladores.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_Acumuladores.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
-        self.lbl_acumulador_A = QLabel('A:', self)
-        self.lbl_acumulador_B = QLabel('B:', self)
-        self.lbl_acumulador_C = QLabel('C:', self)
+        self.lbl_acumulador_A = QLabel('AX:', self)
+        self.lbl_acumulador_B = QLabel('BX:', self)
+        self.lbl_acumulador_C = QLabel('CX:', self)
 
 
-        banderas = ['C:', 'D:', 'H:', 'S:', 'Z:', 'P:']
+        banderas = ['C:', 'V:', 'H:', 'N:', 'Z:', 'P:']
         self.lbl_Registro_F = QLabel(self._dict_sel["flg"], self)
 
         self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
@@ -71,7 +71,7 @@ class EditorRegistros(QWidget):
         self.lbl_puntero_IX = QLabel('IX:', self)
         self.lbl_puntero_IY = QLabel('IY:', self)
         self.lbl_puntero_PP = QLabel('PP:', self)
-        self.lbl_puntero_PI = QLabel('PI', self)
+        self.lbl_puntero_PI = QLabel('IP', self)
         self.lbl_puntero_PI.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_puntero_PI.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -109,86 +109,84 @@ class EditorRegistros(QWidget):
 # Organización de los elementos
 
 # ---- bloque Puntero de instrucciones
-        self.bloque_PIns = QGridLayout()
-        self.bloque_PIns.addWidget(self.lbl_puntero_PI, 0,0,1,1)
-        self.bloque_PIns.addWidget(self.edit_PIns,0,1,1,2)
-        self.bloque_PIns.setColumnStretch(0,1)
-        self.bloque_PIns.setColumnStretch(1,1)
-        self.bloque_PIns.setColumnStretch(2,1)
-        self.bloque_PIns.setSpacing(5)
+        bloque_PIns = QGridLayout()
+        bloque_PIns.addWidget(self.lbl_puntero_PI, 0,0,1,1)
+        bloque_PIns.addWidget(self.edit_PIns,0,1,1,2)
+        bloque_PIns.setColumnStretch(0,1)
+        bloque_PIns.setColumnStretch(1,1)
+        bloque_PIns.setColumnStretch(2,1)
+        bloque_PIns.setSpacing(5)
 
 # ---- bloque acumuladores
-        self.bloque_acumuladores = QGridLayout()
-        self.bloque_acumuladores.addWidget(self.lbl_Acumuladores,0,0,1,3)
+        bloque_acumuladores = QGridLayout()
+        bloque_acumuladores.addWidget(self.lbl_Acumuladores,0,0,1,3)
         
-        self.bloque_acumuladores.addWidget(self.lbl_acumulador_A,1,0,1,1)
-        self.bloque_acumuladores.addWidget(self.edit_acumuladores[0],1,1,1,2)
-        self.bloque_acumuladores.addWidget(self.lbl_acumulador_B,2,0,1,1)
-        self.bloque_acumuladores.addWidget(self.edit_acumuladores[1],2,1,1,2)
-        self.bloque_acumuladores.addWidget(self.lbl_acumulador_C,3,0,1,1)
-        self.bloque_acumuladores.addWidget(self.edit_acumuladores[2],3,1,1,2)
-        self.bloque_acumuladores.setColumnStretch(0,1)
-        self.bloque_acumuladores.setColumnStretch(1,1)
-        self.bloque_acumuladores.setColumnStretch(2,1)
-        self.bloque_acumuladores.setVerticalSpacing(5)
+        bloque_acumuladores.addWidget(self.lbl_acumulador_A,1,0,1,1)
+        bloque_acumuladores.addWidget(self.edit_acumuladores[0],1,1,1,2)
+        bloque_acumuladores.addWidget(self.lbl_acumulador_B,2,0,1,1)
+        bloque_acumuladores.addWidget(self.edit_acumuladores[1],2,1,1,2)
+        bloque_acumuladores.addWidget(self.lbl_acumulador_C,3,0,1,1)
+        bloque_acumuladores.addWidget(self.edit_acumuladores[2],3,1,1,2)
+        bloque_acumuladores.setColumnStretch(0,1)
+        bloque_acumuladores.setColumnStretch(1,1)
+        bloque_acumuladores.setColumnStretch(2,1)
+        bloque_acumuladores.setVerticalSpacing(5)
+        for i in range(bloque_acumuladores.rowCount()):
+            bloque_acumuladores.setRowStretch(i,1)
 
 
 # ---- bloque banderas
-        self.bloque_banderas = QGridLayout()
-        if config.composition == 1:
-            self.bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,4)
-            for i in range(6):
-                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i%3,0+2*(i//3),1,1,Qt.AlignmentFlag.AlignHCenter)
-                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i%3,1+2*(i//3),1,1,Qt.AlignmentFlag.AlignHCenter)
-            
-        else:
-            self.bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,3)
-            for i in range(6):
-                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i,0,1,1)
-                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i,1,1,2)
-
-        for col in range(self.bloque_banderas.columnCount()):
-            self.bloque_banderas.setColumnStretch(col,1)
-        self.bloque_banderas.setSpacing(5)
+        '''bloque_banderas = QGridLayout()
+        bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,3)
+        for i in range(6):
+            bloque_banderas.addWidget(self.lbl_banderas[i],i+1,0,1,1)
+            bloque_banderas.addWidget(self.edit_banderas[i],i+1,1,1,2)
+            print(i)
+        bloque_banderas.setColumnStretch(0,1)
+        bloque_banderas.setColumnStretch(1,1)
+        bloque_banderas.setColumnStretch(2,1)
+        bloque_banderas.setSpacing(5)'''
 
 # ---- bloque punteros
-        self.bloque_punteros = QGridLayout()
-        self.bloque_punteros.addWidget(self.lbl_Punteros,0,0,1,3)
+        bloque_punteros = QGridLayout()
+        bloque_punteros.addWidget(self.lbl_Punteros,0,0,1,3)
 
-        self.bloque_punteros.addWidget(self.lbl_puntero_IX, 1,0,1,1)
-        self.bloque_punteros.addWidget(self.edit_punteros[0], 1,1,1,2)
+        bloque_punteros.addWidget(self.lbl_puntero_IX, 1,0,1,1)
+        bloque_punteros.addWidget(self.edit_punteros[0], 1,1,1,2)
 
-        self.bloque_punteros.addWidget(self.lbl_puntero_IY, 2,0,1,1)
-        self.bloque_punteros.addWidget(self.edit_punteros[1], 2,1,1,2)
+        bloque_punteros.addWidget(self.lbl_puntero_IY, 2,0,1,1)
+        bloque_punteros.addWidget(self.edit_punteros[1], 2,1,1,2)
 
-        self.bloque_punteros.addWidget(self.lbl_puntero_PP, 3,0,1,1)
-        self.bloque_punteros.addWidget(self.edit_punteros[2], 3,1,1,2)
+        bloque_punteros.addWidget(self.lbl_puntero_PP, 3,0,1,1)
+        bloque_punteros.addWidget(self.edit_punteros[2], 3,1,1,2)
 
-        self.bloque_punteros.setColumnStretch(0,1)
-        self.bloque_punteros.setColumnStretch(1,1)
-        self.bloque_punteros.setColumnStretch(2,1)
-        self.bloque_punteros.setSpacing(5)
+        bloque_punteros.setColumnStretch(0,1)
+        bloque_punteros.setColumnStretch(1,1)
+        bloque_punteros.setColumnStretch(2,1)
+        bloque_punteros.setSpacing(5)
 
 
 # BLOQUE PRINCIPAL
-        self.bloque_principal = QGridLayout()
-        if config.composition == 1:
-            self.bloque_principal.addLayout(self.bloque_PIns,0,1)
-            self.bloque_principal.addLayout(self.bloque_acumuladores,0,2)
-            self.bloque_principal.addLayout(self.bloque_punteros,0,3)
-            self.bloque_principal.addLayout(self.bloque_banderas,0,4)
-            self.bloque_principal.addWidget(self.CA_button,0,5)
-            self.bloque_principal.setHorizontalSpacing(30)
-        else:
-            self.bloque_principal.addLayout(self.bloque_PIns,1,0)
-            self.bloque_principal.addLayout(self.bloque_acumuladores,2,0)
-            self.bloque_principal.addLayout(self.bloque_punteros,3,0)
-            self.bloque_principal.addLayout(self.bloque_banderas,4,0)
-            self.bloque_principal.addWidget(self.CA_button,5,0)
-            self.bloque_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.bloque_principal.setVerticalSpacing(15)
 
-        self.setLayout(self.bloque_principal)
+        bloque_principal = QGridLayout()
+        if config.composition == 1:
+            #bloque_principal.addLayout(bloque_PIns,0,1)
+            #bloque_principal.addLayout(bloque_acumuladores,0,2)
+            #bloque_principal.addLayout(bloque_punteros,0,3)
+            #bloque_principal.addLayout(bloque_banderas,0,4)
+            #bloque_principal.addWidget(self.CA_button,0,5)
+            #bloque_principal.setHorizontalSpacing(30)
+            print()
+        else:
+            bloque_principal.addLayout(bloque_PIns,1,0)
+            bloque_principal.addLayout(bloque_acumuladores,2,0)
+            bloque_principal.addLayout(bloque_punteros,3,0)
+            bloque_principal.addLayout(bloque_banderas,4,0)
+            bloque_principal.addWidget(self.CA_button,5,0)
+            bloque_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        #bloque_principal.setVerticalSpacing(15)
+
+        self.setLayout(bloque_principal)
         #self.setMaximumWidth(int(t_w * 0.14))
         #self.setMaximumHeight(int(t_h * 0.8))
 
@@ -256,16 +254,22 @@ class EditorRegistros(QWidget):
                 self.sender().setStyleSheet("border: 2px solid rgb(0,60,140);")
             if self.sender() == self.edit_banderas[0]:
                 config.C = int(texto)
+                print("0")
             elif self.sender() == self.edit_banderas[1]:
                 config.V = int(texto)
+                print("1")
             elif self.sender() == self.edit_banderas[2]:
                 config.H = int(texto)
+                print("2")
             elif self.sender() == self.edit_banderas[3]:
                 config.N = int(texto)
+                print("3")
             elif self.sender() == self.edit_banderas[4]:
                 config.Z = int(texto)
+                print("4")
             elif self.sender() == self.edit_banderas[5]:
                 config.P = int(texto)
+                print("5")
 
     def editar_punteros(self):
         texto = self.sender().text()
@@ -309,39 +313,3 @@ class EditorRegistros(QWidget):
         self.lbl_Registro_F.setText(self._dict_sel["flg"])
         self.lbl_Punteros.setText(self._dict_sel["pnt"])
         self.CA_button.setText(self._dict_sel["clr"])
-    
-    def redraw(self):
-        while self.bloque_principal.count() > 0:
-            item = self.bloque_principal.takeAt(0)  # Tomar el primer elemento del layout
-            if widget := item.widget():
-                widget.setParent(None)   # Quitar el widget del layout sin destruirlo
-        while self.bloque_banderas.count() > 0:
-            item = self.bloque_banderas.takeAt(0)  # Tomar el primer elemento del layout
-            if widget := item.widget():
-                widget.setParent(None)   # Quitar el widget del layout sin destruirlo
-
-        if config.composition == 1:
-            self.bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,4)
-            for i in range(6):
-                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i%3,0+2*(i//3),1,1,Qt.AlignmentFlag.AlignHCenter)
-                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i%3,1+2*(i//3),1,1,Qt.AlignmentFlag.AlignHCenter)
-        else:
-            self.bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,3)
-            for i in range(6):
-                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i,0,1,2)
-                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i,2,1,2)
-    
-        if config.composition == 1:
-            self.bloque_principal.addLayout(self.bloque_PIns,0,1)
-            self.bloque_principal.addLayout(self.bloque_acumuladores,0,2)
-            self.bloque_principal.addLayout(self.bloque_punteros,0,3)
-            self.bloque_principal.addLayout(self.bloque_banderas,0,4)
-            self.bloque_principal.addWidget(self.CA_button,0,5)
-            self.bloque_principal.setHorizontalSpacing(30)
-        else:
-            self.bloque_principal.addLayout(self.bloque_PIns,1,0)
-            self.bloque_principal.addLayout(self.bloque_acumuladores,2,0)
-            self.bloque_principal.addLayout(self.bloque_punteros,3,0)
-            self.bloque_principal.addLayout(self.bloque_banderas,4,0)
-            self.bloque_principal.addWidget(self.CA_button,5,0)
-            self.bloque_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)

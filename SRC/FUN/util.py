@@ -25,28 +25,23 @@ def bin_a_hex(txt_bin):
 
 def op_a_bin(mat_bin):
     mat_txt_bin = reversed([str(i) for i in mat_bin])
-    txt_bin = "".join(mat_txt_bin)
-    return txt_bin
+    return "".join(mat_txt_bin)
 
 def bin_a_op(txt_bin):
-    mat_bin = [int(txt_bin[-1-i]) for i in range(0,8)]
-    return mat_bin
+    return [int(txt_bin[-1-i]) for i in range(8)]
 
 
 
 def hex_a_op(txt_hex):
-    mat_bin = bin_a_op(hex_a_bin(txt_hex))
-    return mat_bin
+    return bin_a_op(hex_a_bin(txt_hex))
 
 def op_a_hex(mat_bin):
-    txt_hex = bin_a_hex(op_a_bin(mat_bin))
-    return txt_hex
+    return bin_a_hex(op_a_bin(mat_bin))
 
 
 
 def hex_a_dec(txt_hex):
-    txt_dec = str(int(txt_hex,16))
-    return txt_dec
+    return str(int(txt_hex,16))
 
 def dec_a_hex(txt_dec):
     txt_hex = hex(int(txt_dec))
@@ -64,30 +59,23 @@ def dec_a_hex4(txt_dec):
 
 
 def dec_a_sig(txt_dec):
-    if int(txt_dec) > 127:
-        txt_sig = str(int(txt_dec) - 256)
-    else:
-        txt_sig = txt_dec
-    return txt_sig
+    return str(int(txt_dec) - 256) if int(txt_dec) > 127 else txt_dec
 
 
 def bin_a_dec(txt_bin):
-    txt_dec = str(int(txt_bin,2))
-    return txt_dec
+    return str(int(txt_bin,2))
 
 
 
 def op_a_dec(mat_bin):
-    txt_dec = bin_a_dec(op_a_bin(mat_bin))
-    return txt_dec
+    return bin_a_dec(op_a_bin(mat_bin))
 
 def dec_a_op(num_dec):
-    mat_bin = hex_a_op(dec_a_hex(num_dec))
-    return mat_bin
+    return hex_a_op(dec_a_hex(num_dec))
 
 def dec_a_op16(num_dec):
     mat_bin16 = bin(num_dec)
     mat_bin16 = mat_bin16.split('b')[1]
     mat_bin16 = mat_bin16.zfill(16)
-    mat_bin16 = [int(mat_bin16[-1-i]) for i in range(0,16)]
+    mat_bin16 = [int(mat_bin16[-1-i]) for i in range(16)]
     return mat_bin16

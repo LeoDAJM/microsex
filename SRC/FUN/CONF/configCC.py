@@ -55,3 +55,6 @@ uso_port              = senal_control[67]
 portA = [0]*8
 
 estilo = stylesheet()
+
+lang_init = "esp"
+composition = 1

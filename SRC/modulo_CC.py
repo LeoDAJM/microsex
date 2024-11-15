@@ -6,6 +6,7 @@ import string
 import sys
 
 import FUN.CONF.config_custom as config2
+from FUN.CONF.configCC import lang_init
 from FUN.CC.portA import *
 import rc_icons
 from FUN.CC.Editor_Codigo import *
@@ -16,7 +17,7 @@ from FUN.CC.segments_editor import *
 from FUN.CC.Unidad_Control import *
 from FUN.CONF.nemonicos import argumentos_instrucciones
 from openpyxl import Workbook, load_workbook
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QProcess
 from PyQt6.QtGui import QAction, QFont, QFontDatabase, QFontMetricsF, QIcon
 from PyQt6.QtWidgets import (
     QApplication,
@@ -31,16 +32,31 @@ from PyQt6.QtWidgets import (
     QToolBar,
     QVBoxLayout,
     QWidget,
+    QTabWidget,
+    QGridLayout,
 )
+from FUN.CONF.dict_eng_esp import CC_dict
 
 numeros = tuple(str(i) for i in string.digits)
 letras = tuple(str(i) for i in string.ascii_letters)
 letras_numeros = letras + numeros
-
+_dict = CC_dict()
 
 class ComputadorCompleto(QMainWindow):
+    @property
+    def lang_sel(self):
+        return self._lang_sel
+
+    @lang_sel.setter
+    def lang_sel(self, value):
+        self._lang_sel = value
+        self._dict_sel = _dict.get(self._lang_sel, {})  # Actualiza el diccionario
     def __init__(self, args=None):
         super().__init__()
+        self._lang_sel = lang_init
+        self._dict_sel = _dict[self._lang_sel]
+
+    # Uso de la clase
         f_reg = QFontDatabase.addApplicationFont(":/MononokiNerdFontMono-Regular.ttf")
         self.families = QFontDatabase.applicationFontFamilies(f_reg)
         self.fuente = QFont(self.families[0], 10)
@@ -53,7 +69,7 @@ class ComputadorCompleto(QMainWindow):
         flags |= Qt.WindowType.WindowCloseButtonHint
         flags |= Qt.WindowType.WindowMaximizeButtonHint
         self.setWindowFlags(flags)
-        self.setWindowTitle("Microsex - Computador Completo")
+        self.setWindowTitle(self._dict_sel["Title"])
         app_icon = QIcon()
         app_icon.addFile(":IMG/icon32.png", QSize(50, 50))
         self.setWindowIcon(app_icon)
@@ -62,17 +78,17 @@ class ComputadorCompleto(QMainWindow):
             args = args[1:]
             try:
                 self.dialogo_abrir(args[0])
-                print(f"Archivo abierto {args[0]}")
+                print(f"{self._dict_sel["open"]} {args[0]}")
             except FileNotFoundError:
                 QMessageBox.warning(
-                    self, "Advertencia", f"El archivo no existe: {args[0]}."
+                    self, f'{self._dict_sel["Warn"]}', f"{self._dict_sel["notExist"]} {args[0]}."
                 )
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}.")
             if len(args) > 1:
                 if args[1] == "-cld":
                     self.borrar_cargar()
-                    print("Código Ensamblado y Cargado en una memoria vacía.")
+                    print("Código Ensamblado y Cargado en una memoria vaciada.")
                     self.args_run(args)
                 elif args[1] == "-ld":
                     self.cargar()
@@ -146,6 +162,8 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.setFont(self.fuente_min)
         super().resizeEvent(event)
 
+
+        #setCentralWidget
     # region Drag Drop
     def dragEnterEvent(self, event):
         self.editor_codigo.editor.setAcceptDrops(False)
@@ -177,70 +195,67 @@ class ComputadorCompleto(QMainWindow):
         self.detected_past = None
         self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
+
+        to_en = 24 if config.composition == 1 else 23
+        to_dis = 23 if config.composition == 1 else 24
+        to_en2 = 22 if config.lang_init == "esp" else 21
+        to_dis2 = 21 if config.lang_init == "esp" else 22
+
         self.direccion_inicio = "0000"
         self.chkbx = {
             "s": QCheckBox(text=" "),
             "c": QCheckBox(text=" "),
             "d": QCheckBox(text=" "),
         }
+        self.datalst = [["","",""]]
 
+        self.lst = lst_table(self.datalst)
         self.editor_codigo = EditorCodigo()
-        self.bpoints = self.editor_codigo.editor.breakline
-
-        self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
-        self.state_lib = False
-        txt_monitor = "Monitor de errores"
+        self.registros = EditorRegistros()
+        self.mem = {
+            "s": memory(16, 0, "stack"),
+            "c": memory(0, 16, "code"),
+            "d": memory(0, 16, "data"),
+        }
+        self.portA = IOPortA()
 
         self.monitor = QTextEdit(self)
-        self.monitor.setText(txt_monitor)
+        self.bpoints = self.editor_codigo.editor.breakline
+        self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
+        self.state_lib = False
+        self.monitor.setText(self._dict_sel["txt_mon"])
         self.monitor.setMaximumHeight(100)
         self.monitor.setReadOnly(True)
         self.monitor.setFont(self.fuente)
         self.monitor.setStyleSheet(config.estilo["scrolled_monitor"])
+        
 
-        self.registros = EditorRegistros()
 
-        self.mem = {
-            "s": memory(16, 0, "stack", "Segmento de Pila"),
-            "c": memory(0, 16, "code", "Segmento de Código"),
-            "d": memory(0, 16, "data", "Segmento de Datos"),
-        }
-        for i in self.mem.values():
-            i.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-            i.table.setEnabled(False)
-
-        self.editor_codigo.setSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
-        self.portA = IOPortA()
-
-        bloque_ejecucion = QVBoxLayout()
-        bloque_ejecucion.addWidget(self.editor_codigo, stretch=3)
-        bloque_ejecucion.addWidget(self.mem["c"], stretch=1)
-        bloque_ejecucion.addWidget(self.mem["d"], stretch=2)
+        self.main_tab = QTabWidget(self, tabPosition=QTabWidget.TabPosition.West, movable=True)
+        self.main_tab.addTab(self.editor_codigo, self._dict_sel["editor_tab"])
+        self.main_tab.addTab(self.lst, self._dict_sel["lst_tab"])
 
         self.bloque_regSS = QHBoxLayout()
-        self.bloque_regSS.addWidget(self.mem["s"], stretch=2)
-        self.bloque_regSS.addWidget(self.registros, stretch=2)
-        self.bloque_regSS.addWidget(self.portA, stretch=1)
+        self.bloque_regSS.addWidget(self.mem["s"], 3)
+        self.bloque_regSS.addWidget(self.registros, 1)
+        self.bloque_regSS.addWidget(self.portA, 1)
 
-        bloque_codigo = QVBoxLayout()
-        bloque_codigo.addLayout(self.bloque_regSS, stretch=3)
-        bloque_codigo.addWidget(self.monitor, stretch=1)
-        
+        self.layout_grid = QGridLayout()
+        if config.composition == 0:
+            self.comp_0()
+        else:
+            self.comp_1()
+        for i in range(self.layout_grid.columnCount()):
+            self.layout_grid.setColumnStretch(i, 1)
+        for i in range(self.layout_grid.rowCount()):
+            self.layout_grid.setRowStretch(i, 1)
 
-        bloque_subprincipal = QHBoxLayout()
-        bloque_subprincipal.addLayout(bloque_ejecucion, stretch=3)
-        bloque_subprincipal.addLayout(bloque_codigo, stretch=1)
 
-        bloque_principal = QHBoxLayout()
-        bloque_principal.addLayout(bloque_subprincipal, stretch=10)
-        
 
         area_trabajo = QWidget()
         styles = config2.styles_fun()
         area_trabajo.setStyleSheet(styles["work_space"])
-        area_trabajo.setLayout(bloque_principal)
+        area_trabajo.setLayout(self.layout_grid)
         self._ds = {"s": None, "c": None, "d": None}
         self._size = {"s": None, "c": None, "d": None}
         self.Reg_monitor()
@@ -270,33 +285,23 @@ class ComputadorCompleto(QMainWindow):
             "run",
             "power",
         ]
-        txt = [
-            "Open",
-            "Save",
-            "Compile",
-            "Comp/CLR",
-            "Reset",
-            "Step",
-            "Next-BKP",
-            "Run",
-            "Quit",
-        ]
+        txt = self._dict_sel["toolb_txt"]
         self.tools = [QAction()] * len(im_tools)
         fcns = [
             lambda: self.dialogo_abrir(True),
             self.save_fcn,
             self.cargar,
             self.borrar_cargar,
-            self.registros.clear_all,
+            self.save_fcn,
             self.ejecutar_instruccion,
             self.run_for_bpoint,
             self.ejecutar,
             QApplication.instance().quit,
         ]
-        for k, i in enumerate(self.tools):
-            i = QAction(QIcon(f":IMG/{im_tools[k]}.png"), txt[k], self)
-            i.triggered.connect(fcns[k])
-            self.toolbar.addAction(i)
+        for k, _ in enumerate(self.tools):
+            self.tools[k] = QAction(QIcon(f":IMG/{im_tools[k]}.png"), txt[k], self)
+            self.tools[k].triggered.connect(fcns[k])
+            self.toolbar.addAction(self.tools[k])
             if k == 3:
                 self.toolbar.addWidget(spacer)
             elif k == 7:
@@ -308,61 +313,102 @@ class ComputadorCompleto(QMainWindow):
         self.nombre_archivo = False
         menu_bar = self.menuBar()
         self.menu_dict = {
-            "&Archivo": [
-                ["Abrir", "Ctrl+A", lambda: self.dialogo_abrir(True)],
-                ["Guardar", "Ctrl+G", lambda: self.save_fcn("save")],
-                ["Guardar como...", "Ctrl+Shift+G", lambda: self.save_fcn("como")],
+            self._dict_sel["menu_txt"]["fl"]["t"]: [
+                [self._dict_sel["menu_txt"]["fl"]["open"], "Ctrl+A", lambda: self.dialogo_abrir(True)],
+                [self._dict_sel["menu_txt"]["fl"]["save"], "Ctrl+G", lambda: self.save_fcn("save")],
+                [self._dict_sel["menu_txt"]["fl"]["save_as"], "Ctrl+Shift+G", lambda: self.save_fcn("como")],
                 ["separator"],
-                ["Salir", "", QApplication.instance().quit],
+                [self._dict_sel["menu_txt"]["fl"]["exit"], "", QApplication.instance().quit],
             ],
-            "&Editar": [
-                ["Deshacer", "Ctrl+Z", self.deshacer_accion],
-                ["Rehacer", "Ctrl+Y", self.rehacer_accion],
+            self._dict_sel["menu_txt"]["ed"]["t"]: [
+                [self._dict_sel["menu_txt"]["ed"]["undo"], "Ctrl+Z", self.deshacer_accion],
+                [self._dict_sel["menu_txt"]["ed"]["redo"], "Ctrl+Y", self.rehacer_accion],
                 ["separator"],
-                ["Cortar", "Ctrl+X", self.cortar],
-                ["Copiar", "Ctrl+C", self.copiar],
-                ["Pegar", "Ctrl+V", self.pegar],
+                [self._dict_sel["menu_txt"]["ed"]["cut"], "", self.cortar],
+                [self._dict_sel["menu_txt"]["ed"]["cpy"], "", self.copiar],
+                [self._dict_sel["menu_txt"]["ed"]["pst"], "", self.pegar],
                 ["separator"],
-                ["Agregar Sangría", "Ctrl+Tab", self.agregar_sangria],
-                ["Quitar Sangría", "Shift+Tab", self.quitar_sangria],
+                [self._dict_sel["menu_txt"]["ed"]["add_ind"], "Ctrl+Tab", self.agregar_sangria],
+                [self._dict_sel["menu_txt"]["ed"]["del_ind"], "Shift+Tab", self.quitar_sangria],
                 ["separator"],
-                ["Comentar Selección", "Ctrl+B", self.comentar],
-                ["Descomentar Selección", "Ctrl+N", self.descomentar],
+                [self._dict_sel["menu_txt"]["ed"]["comm"], "Ctrl+B", self.comentar],
+                [self._dict_sel["menu_txt"]["ed"]["uncomm"], "Ctrl+N", self.descomentar],
             ],
-            "&Ejecutar": [
-                ["Ensamblar, Borrar memoria y Cargar", "Ctrl+U", self.borrar_cargar],
-                ["Ensamblar y Cargar", "Ctrl+J", self.cargar],
-                ["Ejecutar Ensamblado", "Ctrl+K", self.ejecutar],
-                ["Siguiente Inst.", "Ctrl+L", self.ejecutar_instruccion],
-                ["Ejecutar con Breakpoints", "", self.run_for_bpoint],
+            self._dict_sel["menu_txt"]["ex"]["t"]: [
+                [self._dict_sel["menu_txt"]["ex"]["asm_clr_ld"], "Ctrl+U", self.borrar_cargar],
+                [self._dict_sel["menu_txt"]["ex"]["asm_ld"], "Ctrl+J", self.cargar],
+                [self._dict_sel["menu_txt"]["ex"]["exec"], "Ctrl+K", self.ejecutar],
+                [self._dict_sel["menu_txt"]["ex"]["stp"], "Ctrl+L", self.ejecutar_instruccion],
+                [self._dict_sel["menu_txt"]["ex"]["bkp"], "", self.run_for_bpoint],
                 ["separator"],
-                ["Mostrar Archivo LST", "Ctrl+Tab", lambda: self.lst.show()],
             ],
-            "&Memoria": [
-                ["Memory Load", "", self.open_file],
-                ["Memory Dump", "", self.save_csv],
+            self._dict_sel["menu_txt"]["mem"]["t"]: [
+                [self._dict_sel["menu_txt"]["mem"]["ld"], "", self.open_file],
+                [self._dict_sel["menu_txt"]["mem"]["dmp"], "", self.save_csv],
             ],
-            "Puerto": [
-                ["Mostrar Puerto BiDir 8b", "", lambda: self.toggle()],
+            self._dict_sel["menu_txt"]["port"]["t"]: [
+                [self._dict_sel["menu_txt"]["port"]["show"], "", lambda: self.toggle()],
+            ],
+            self._dict_sel["menu_txt"]["lang"]["t"]: [
+                [self._dict_sel["menu_txt"]["lang"]["esp"], "", lambda: self.chng_lang("esp")],
+                [self._dict_sel["menu_txt"]["lang"]["eng"], "", lambda: self.chng_lang("eng")],
+            ],
+            self._dict_sel["menu_txt"]["dsg"]["t"]: [
+                [self._dict_sel["menu_txt"]["dsg"]["new"], "", lambda: self.chng_dsg("new")],
+                [self._dict_sel["menu_txt"]["dsg"]["old"], "", lambda: self.chng_dsg("old")],
             ]
         }
-        menu = {}
-        self.menu_elems = {}
-        for k, v in self.menu_dict.items():
-            menu[k] = menu_bar.addMenu(k)
+        self.menu = {}
+        self.menu_elems = [QAction()]*25
+        cnt = 0
+        for k, (key, v) in enumerate(self.menu_dict.items()):
+            self.menu[k] = menu_bar.addMenu(key)
             for i in v:
                 if i == ["separator"]:
-                    menu[k].addSeparator()
+                    self.menu[k].addSeparator()
                 else:
-                    self.menu_elems[i[0]] = QAction(i[0], self)
+                    self.menu_elems[cnt] = QAction(i[0], self)
                     if i[1] != "":
-                        self.menu_elems[i[0]].setShortcut(i[1])
-                    self.menu_elems[i[0]].triggered.connect(i[2])
-                    menu[k].addAction(self.menu_elems[i[0]])
+                        self.menu_elems[cnt].setShortcut(i[1])
+                    self.menu_elems[cnt].triggered.connect(i[2])
+                    self.menu[k].addAction(self.menu_elems[cnt])
+                    cnt += 1
+        self.menu_elems[to_dis].setEnabled(False)
+        self.menu_elems[to_en].setEnabled(True)
+        self.menu_elems[to_dis2].setEnabled(False)
+        self.menu_elems[to_en2].setEnabled(True)
         # endregion
 
         # region ToolBar
         self.state_def(st_comp=True, st_cnt=False, st_cnt_bkp=False, st_edit=True)
+
+    def comp_1(self):
+        col1 = 3
+        col2 = 2
+        row1 = 2
+        row2 = 3
+        row3 = 1
+        self.layout_grid.addWidget(self.main_tab,0,0,row1+row2+row3,col1)
+        self.layout_grid.addWidget(self.registros,row1+row2+row3,0,row1,col1)
+
+        self.layout_grid.addWidget(self.mem["d"],0,col1,row1,col2)
+        self.layout_grid.addWidget(self.mem["c"],row1,col1,row2,col2)
+        self.layout_grid.addWidget(self.mem["s"],row1+row2,col1,row3,col2)
+        self.layout_grid.addWidget(self.monitor,row1+row2+row3,col1,row1,col2)
+        self.layout_grid.setVerticalSpacing(0)
+
+    def comp_0(self):
+        col1 = 4
+        self.layout_grid.addWidget(self.main_tab,0,0,4,col1)
+        self.layout_grid.addWidget(self.mem["c"],4,0,2,col1)
+        self.layout_grid.addWidget(self.mem["d"],6,0,2,col1)
+
+        self.layout_grid.addLayout(self.bloque_regSS,0,col1,6,1)
+        self.layout_grid.addWidget(self.monitor,6,col1,1,1)
+        for i in range(self.layout_grid.columnCount()):
+            self.layout_grid.setColumnStretch(i, 1)
+        for i in range(self.layout_grid.rowCount()):
+            self.layout_grid.setRowStretch(i, 1)
 
     # endregion
     # region FUN Extras
@@ -513,14 +559,14 @@ class ComputadorCompleto(QMainWindow):
 
     def dialogo_abrir(self, cust_name=True):
         nombre_archivo = (
-            QFileDialog.getOpenFileName(self, "Abrir Archivo")[0]
+            QFileDialog.getOpenFileName(self, self._dict_sel["open_wndw"])[0]
             if cust_name
             else cust_name
         )
         if nombre_archivo:
             self.nombre_archivo = nombre_archivo
             self.open_proc()
-            self.setWindowTitle(f"Microsex - Computador Completo - {nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo}")
 
     def open_proc(self):
         f = open(self.nombre_archivo, "r", encoding="utf-8")
@@ -539,20 +585,20 @@ class ComputadorCompleto(QMainWindow):
         if save_type == "como":
             nombre_archivo = QFileDialog.getSaveFileName(
                 self,
-                "Guardar Archivo",
+                self._dict_sel["save_wndw"],
                 "",
-                "Archivos ASM (*.asm);;Todos los archivos (*)",
+                self._dict_sel["asm,all"],
             )
             if not nombre_archivo[0]:
                 return
             self.nombre_archivo = nombre_archivo[0]
-            self.setWindowTitle(f"Microsex - Computador Completo - {nombre_archivo[0]}")
+            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo[0]}")
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
             with open(nombre_archivo, "w", encoding="utf-8") as f:
                 datos_archivo = self.editor_codigo.editor.toPlainText()
                 f.write(datos_archivo)
-            self.barra_estado.showMessage("Archivo guardado :D")
+            self.barra_estado.showMessage(self._dict_sel["saved_stt"])
         else:
             self.save_fcn("como")
 
@@ -658,6 +704,7 @@ class ComputadorCompleto(QMainWindow):
         config2.cs_initial = int(self.registros.edit_PIns.text(), 16)
 
     def borrar_cargar(self):
+        self.detected_past = None
         if self.nombre_archivo == False:
             self.save_fcn("como")
         else:
@@ -684,15 +731,15 @@ class ComputadorCompleto(QMainWindow):
         self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool, mems=True
     ):
         self.change_menu(
-            "Ensamblar, Borrar memoria y Cargar", st_comp, "Ensamblar y Cargar", 2
+            13, st_comp, 12, 2
         )
         self.toolbar.actions()[3].setEnabled(st_comp)
 
-        self.change_menu("Ejecutar Ensamblado", st_cnt, "Siguiente Inst.", 6)
+        self.change_menu(14, st_cnt, 15, 6)
         self.toolbar.actions()[8].setEnabled(st_cnt)
 
         self.change_menu(
-            "Mostrar Archivo LST", st_cnt_bkp, "Ejecutar con Breakpoints", 7
+            16, st_cnt_bkp, 16, 7
         )
         self.editor_codigo.editor.setReadOnly(not st_edit)
         for i in self.mem.values():
@@ -704,6 +751,8 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.actions()[arg3].setEnabled(arg1)
 
     def cargar(self):
+        self.lang_sel = "esp"
+        
         if self.nombre_archivo == False:
             self.save_fcn("como")
         else:
@@ -726,7 +775,7 @@ class ComputadorCompleto(QMainWindow):
         self.rows, self.mem_place = [x[0] for x in self.datalst], [
             x[1] for x in self.datalst
         ]
-        self.lst = lst_table(self.datalst)
+        self.lst.update(self.datalst)
         config.m_prog.update(self.mp)
         self.extraer_valores()
         self.ds_op()
@@ -736,7 +785,6 @@ class ComputadorCompleto(QMainWindow):
         self.post = int(self.registros.edit_PIns.text(), 16) - self._ds["c"] * 16
         self.mode = "coding"
         self.draw_ip()
-        self.lst.show()
 
     def ejecutar(self):
         isd = 0
@@ -750,7 +798,7 @@ class ComputadorCompleto(QMainWindow):
         self.update_segments(config.m_prog)
         self.post = int(self.registros.edit_PIns.text(), 16) - self._ds["c"] * 16
         if config.PIns == "FIN":
-            self.barra_estado.showMessage("Fin de Programa (HLT)")
+            self.barra_estado.showMessage(self._dict_sel["HLT_stt"])
         self.draw_ip()
 
     def run_for_bpoint(self):
@@ -764,10 +812,10 @@ class ComputadorCompleto(QMainWindow):
             if config.PIns != "FIN":
                 pre_ins = f"{int(config.PIns):04X}"
             else:
-                self.barra_estado.showMessage("Fin de Programa (HLT)")
+                self.barra_estado.showMessage(self._dict_sel["HLT_stt"])
             if pre_ins in vtmp:
                 msg_bk = (
-                    f"Breakpoint alcanzado (Fila: {str(ktmp[vtmp.index(pre_ins)])})"
+                    f"{self._dict_sel["brk_stt"]} {str(ktmp[vtmp.index(pre_ins)])})"
                 )
                 self.barra_estado.showMessage(msg_bk)
                 break
@@ -784,7 +832,7 @@ class ComputadorCompleto(QMainWindow):
             self.portA.update()
             self.post = int(self.registros.edit_PIns.text(), 16) - self._ds["c"] * 16
         else:
-            self.barra_estado.showMessage("Fin de Programa (HLT)")
+            self.barra_estado.showMessage(self._dict_sel["HLT_stt"])
         self.update_segments(config.m_prog)
         self.draw_ip()
 
@@ -869,24 +917,24 @@ class ComputadorCompleto(QMainWindow):
     def save_fun(self):
         strs = {"s": "Stack Segment", "c": "Code Segment", "d": "Data Segment"}
         nombre_archivo, tipo_archivo = QFileDialog.getSaveFileName(
-            self, "Guardar Archivo", "", "CSV Files (*.csv);;Excel Files (*.xlsx)"
+            self, self._dict_sel["save_wndw"], "", self._dict_sel["CSV_XLS"]
         )
         buffer = io.StringIO()
         self.csv_gen(buffer, strs)
         with open(nombre_archivo, "w", newline="", encoding="utf-8") as f:
-            if tipo_archivo == "CSV Files (*.csv)" or nombre_archivo.endswith(".csv"):
+            if tipo_archivo == self._dict_sel["CSV_file"] or nombre_archivo.endswith(".csv"):
                 contenido = buffer.getvalue()
                 f.write(contenido)
-            elif tipo_archivo == "Excel Files (*.xlsx)" or nombre_archivo.endswith(
+            elif tipo_archivo == self._dict_sel["XLS_file"] or nombre_archivo.endswith(
                 ".xlsx"
             ):
                 self.save_to_xlsx(buffer, nombre_archivo)
         buffer.close()
         self.msg.accept()
         QMessageBox.information(
-            self, "Volcado Completo", "El archivo se ha exportado correctamente."
+            self, self._dict_sel["dump_mssg_t"], self._dict_sel["dump_mssg"]
         )
-        self.barra_estado.showMessage("Volcado de Memoria Completa.")
+        self.barra_estado.showMessage(self._dict_sel["dump_stt"])
 
     def save_to_xlsx(self, buffer, nombre_archivo):
         wb = Workbook()
@@ -907,17 +955,17 @@ class ComputadorCompleto(QMainWindow):
         self.msg.setWindowFlags(
             self.msg.windowFlags() & ~Qt.WindowType.WindowCloseButtonHint
         )
-        lbl = QLabel(f"Selecciona los segmentos a {msg_str}:")
+        lbl = QLabel(f"{self._dict_sel["seg_select"]} {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
-        self.chkbx["s"] = QCheckBox(text="Stack Segment")
-        self.chkbx["c"] = QCheckBox(text="Code Segment")
-        self.chkbx["d"] = QCheckBox(text="Data Segment")
-        if msg_str.upper() == "IMPORTAR":
-            self.msg.setWindowTitle("Load")
+        self.chkbx["s"] = QCheckBox(text=self._dict_sel["SS"])
+        self.chkbx["c"] = QCheckBox(text=self._dict_sel["CS"])
+        self.chkbx["d"] = QCheckBox(text=self._dict_sel["DS"])
+        if msg_str.upper() == self._dict_sel["imp"].upper():
+            self.msg.setWindowTitle(self._dict_sel["ld"])
             self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
         else:
-            self.msg.setWindowTitle("Dump")
+            self.msg.setWindowTitle(self._dict_sel["dmp"])
             self.btt_dialog.clicked.connect(lambda: self.save_fun)
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
@@ -942,14 +990,14 @@ class ComputadorCompleto(QMainWindow):
         self.response_clear = None
         mensaje = QMessageBox()
         mensaje.setIcon(QMessageBox.Icon.Question)  # Icono de pregunta
-        mensaje.setText("¿Deseas omitir las columnas cuyos valores sean 0?")
-        mensaje.setWindowTitle("Confirmar Omitir Columnas")
+        mensaje.setText(self._dict_sel["omit_zeros"])
+        mensaje.setWindowTitle(self._dict_sel["omit_zeros_t"])
         mensaje.setStandardButtons(
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         mensaje.setDefaultButton(QMessageBox.StandardButton.Yes)
         self.response_clear = mensaje.exec()
-        self.dialog_save("exportar")
+        self.dialog_save(self._dict_sel["exp"])
 
     def recon_seg(self, csv):
         rows = list(csv)
@@ -983,9 +1031,9 @@ class ComputadorCompleto(QMainWindow):
                 elif mem is not None:
                     mem.item(int(u[0]), v).setText(u[v + 1].zfill(2).upper())
         QMessageBox.information(
-            self, "Carga Completa", "El archivo se ha cargado correctamente."
+            self, self._dict_sel["ld_mssg_t"], self._dict_sel["ld_mssg"]
         )
-        self.barra_estado.showMessage("Carga de Memoria Completa.")
+        self.barra_estado.showMessage(self._dict_sel["ld_stt"])
         self.state_def(True, True, False, True)
         self.mode = "loaded"
         self.msg.accept()
@@ -993,16 +1041,16 @@ class ComputadorCompleto(QMainWindow):
     def open_file(self):
         self.state = {"s": False, "c": False, "d": False}
         nombre_archivo, tipo_archivo = QFileDialog.getOpenFileName(
-            self, "Abrir Archivo", "", "CSV, XLSX Files (*.csv *.xlsx);;All Files (*)"
+            self, self._dict_sel["open_wndw"], "", self._dict_sel["csvxls_both"]
         )
         for _, i in self.mem.items():
             i.table.setEnabled(True)
         try:
-            if tipo_archivo == "CSV Files (*.csv)" or nombre_archivo.endswith(".csv"):
+            if tipo_archivo == self._dict_sel["CSV_file"] or nombre_archivo.endswith(".csv"):
                 csv_reader = csv.reader(open(nombre_archivo, "r", encoding="utf-8"))
                 rows = self.recon_seg(csv_reader)
-                self.dialog_save("importar", rows)
-            elif tipo_archivo == "Excel Files (*.xlsx)" or nombre_archivo.endswith(
+                self.dialog_save(self._dict_sel["imp"], rows)
+            elif tipo_archivo == self._dict_sel["XLS_file"] or nombre_archivo.endswith(
                 ".xlsx"
             ):
                 self.open_from_xlsx(nombre_archivo)
@@ -1011,7 +1059,7 @@ class ComputadorCompleto(QMainWindow):
             QMessageBox.critical(
                 self,
                 "Error",
-                "No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.",
+                self._dict_sel["read_eRR"],
             )
             return
 
@@ -1023,7 +1071,7 @@ class ComputadorCompleto(QMainWindow):
         open("tmp.$csv", "w", encoding="utf-8").write(content)
         csv_reader = csv.reader(open("tmp.$csv", "r", encoding="utf-8"))
         self.recon_seg(csv_reader)
-        self.dialog_save("importar", csv_reader)
+        self.dialog_save(self._dict_sel["imp"], csv_reader)
         os.remove("tmp.$csv")
         buffer2.close()
 
@@ -1031,12 +1079,91 @@ class ComputadorCompleto(QMainWindow):
         self.portA.setVisible(not self.portA.isVisible())
         return
 
+    def chng_lang(self, lang: str):
+        past = self.lang_sel
+        self.lang_sel = lang
+        if self.nombre_archivo:
+            self.setWindowTitle(f"{self._dict_sel["Title"]} - {self.nombre_archivo}")
+        else:
+            self.setWindowTitle(self._dict_sel["Title"])
+        to_en = 22 if lang == "esp" else 21
+        to_dis = 21 if lang == "esp" else 22
+        self.menu_elems[to_dis].setEnabled(False)
+        self.menu_elems[to_en].setEnabled(True)
+        if self.monitor.toPlainText() == _dict[past]["txt_mon"]:
+            self.monitor.setText(self._dict_sel["txt_mon"])
+        self.main_tab.setTabText(0, self._dict_sel["editor_tab"])
+        self.main_tab.setTabText(1, self._dict_sel["lst_tab"])
+        txt = self._dict_sel["toolb_txt"]
+        for k, _ in enumerate(self.tools):  # Recorremos del 1 al 10
+            self.tools[k].setText(txt[k])
+        men_txt = [self._dict_sel["menu_txt"]["fl"]["t"],
+                self._dict_sel["menu_txt"]["ed"]["t"],
+                self._dict_sel["menu_txt"]["ex"]["t"],
+                self._dict_sel["menu_txt"]["mem"]["t"],
+                self._dict_sel["menu_txt"]["port"]["t"],
+                self._dict_sel["menu_txt"]["lang"]["t"],
+                self._dict_sel["menu_txt"]["dsg"]["t"]]
+        menu_dict_txt = [
+                self._dict_sel["menu_txt"]["fl"]["open"],
+                self._dict_sel["menu_txt"]["fl"]["save"],
+                self._dict_sel["menu_txt"]["fl"]["save_as"],
+                self._dict_sel["menu_txt"]["fl"]["exit"],
+                self._dict_sel["menu_txt"]["ed"]["undo"],
+                self._dict_sel["menu_txt"]["ed"]["redo"],
+                self._dict_sel["menu_txt"]["ed"]["cut"],
+                self._dict_sel["menu_txt"]["ed"]["cpy"],
+                self._dict_sel["menu_txt"]["ed"]["pst"],
+                self._dict_sel["menu_txt"]["ed"]["add_ind"],
+                self._dict_sel["menu_txt"]["ed"]["del_ind"],
+                self._dict_sel["menu_txt"]["ed"]["comm"],
+                self._dict_sel["menu_txt"]["ed"]["uncomm"],
+                self._dict_sel["menu_txt"]["ex"]["asm_clr_ld"],
+                self._dict_sel["menu_txt"]["ex"]["asm_ld"],
+                self._dict_sel["menu_txt"]["ex"]["exec"],
+                self._dict_sel["menu_txt"]["ex"]["stp"],
+                self._dict_sel["menu_txt"]["ex"]["bkp"],
+                self._dict_sel["menu_txt"]["mem"]["ld"],
+                self._dict_sel["menu_txt"]["mem"]["dmp"],
+                self._dict_sel["menu_txt"]["port"]["show"],
+                self._dict_sel["menu_txt"]["lang"]["esp"],
+                self._dict_sel["menu_txt"]["lang"]["eng"],
+                self._dict_sel["menu_txt"]["dsg"]["new"],
+                self._dict_sel["menu_txt"]["dsg"]["old"]]
+        for k, _ in enumerate(self.menu):
+            self.menu[k].setTitle(men_txt[k])
+        for k, _ in enumerate(self.menu_elems):
+            self.menu_elems[k].setText(menu_dict_txt[k])
+        self.registros.upd_lang(self.lang_sel)
+        self.lst.upd_lang(self.lang_sel)
+        self.portA.upd_lang(self.lang_sel)
+        self.mem["s"].upd_lang(self.lang_sel)
+        self.mem["c"].upd_lang(self.lang_sel)
+        self.mem["d"].upd_lang(self.lang_sel)
+
+    def chng_dsg(self, dsg: str):
+        to_en = 24 if dsg == "new" else 23
+        to_dis = 23 if dsg == "new" else 24
+        self.menu_elems[to_dis].setEnabled(False)
+        self.menu_elems[to_en].setEnabled(True)
+        while self.layout_grid.count() > 0:
+            item = self.layout_grid.takeAt(0)  # Tomar el primer elemento del layout
+            if widget := item.widget():
+                widget.setParent(None)   # Quitar el widget del layout sin destruirlo
+        if dsg == "old":
+            self.comp_0()
+        else:
+            self.comp_1()
+        config.composition = 1 if dsg == "new" else 0
+        self.registros.redraw()
+        
+
 
     # FUNCIONES DEL EDITOR DE CÓDIGO -----------------------------------------------
 
     def texto_modificado(self):
         self.mode = "coding-pend"
-        self.barra_estado.showMessage("Archivo no guardado")
+        self.barra_estado.showMessage(self._dict_sel["not_saved_stt"])
 
 
 if __name__ == "__main__":
