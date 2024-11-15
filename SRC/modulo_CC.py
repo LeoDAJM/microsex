@@ -36,7 +36,6 @@ from PyQt6.QtWidgets import (
     QGridLayout,
 )
 from FUN.CONF.dict_eng_esp import CC_dict
-import Microsex as Ms
 
 numeros = tuple(str(i) for i in string.digits)
 letras = tuple(str(i) for i in string.ascii_letters)

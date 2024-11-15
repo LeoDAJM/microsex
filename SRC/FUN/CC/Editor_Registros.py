@@ -328,8 +328,8 @@ class EditorRegistros(QWidget):
         else:
             self.bloque_banderas.addWidget(self.lbl_Registro_F,0,0,1,3)
             for i in range(6):
-                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i,0,1,1)
-                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i,1,1,2)
+                self.bloque_banderas.addWidget(self.lbl_banderas[i],1+i,0,1,2)
+                self.bloque_banderas.addWidget(self.edit_banderas[i],1+i,2,1,2)
     
         if config.composition == 1:
             self.bloque_principal.addLayout(self.bloque_PIns,0,1)
