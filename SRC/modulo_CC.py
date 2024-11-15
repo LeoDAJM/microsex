@@ -78,10 +78,10 @@ class ComputadorCompleto(QMainWindow):
             args = args[1:]
             try:
                 self.dialogo_abrir(args[0])
-                print(f"{self._dict_sel["open"]} {args[0]}")
+                print(f'{self._dict_sel["open"]} {args[0]}')
             except FileNotFoundError:
                 QMessageBox.warning(
-                    self, f'{self._dict_sel["Warn"]}', f"{self._dict_sel["notExist"]} {args[0]}."
+                    self, f'{self._dict_sel["Warn"]}', f'{self._dict_sel["notExist"]} {args[0]}.'
                 )
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}.")
@@ -566,7 +566,7 @@ class ComputadorCompleto(QMainWindow):
         if nombre_archivo:
             self.nombre_archivo = nombre_archivo
             self.open_proc()
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {nombre_archivo}")
 
     def open_proc(self):
         f = open(self.nombre_archivo, "r", encoding="utf-8")
@@ -592,7 +592,7 @@ class ComputadorCompleto(QMainWindow):
             if not nombre_archivo[0]:
                 return
             self.nombre_archivo = nombre_archivo[0]
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo[0]}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {nombre_archivo[0]}")
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
             with open(nombre_archivo, "w", encoding="utf-8") as f:
@@ -815,7 +815,7 @@ class ComputadorCompleto(QMainWindow):
                 self.barra_estado.showMessage(self._dict_sel["HLT_stt"])
             if pre_ins in vtmp:
                 msg_bk = (
-                    f"{self._dict_sel["brk_stt"]} {str(ktmp[vtmp.index(pre_ins)])})"
+                    f"{self._dict_sel['brk_stt']} {str(ktmp[vtmp.index(pre_ins)])})"
                 )
                 self.barra_estado.showMessage(msg_bk)
                 break
@@ -955,7 +955,7 @@ class ComputadorCompleto(QMainWindow):
         self.msg.setWindowFlags(
             self.msg.windowFlags() & ~Qt.WindowType.WindowCloseButtonHint
         )
-        lbl = QLabel(f"{self._dict_sel["seg_select"]} {msg_str}:")
+        lbl = QLabel(f"{self._dict_sel['seg_select']} {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
         self.chkbx["s"] = QCheckBox(text=self._dict_sel["SS"])
@@ -1083,7 +1083,7 @@ class ComputadorCompleto(QMainWindow):
         past = self.lang_sel
         self.lang_sel = lang
         if self.nombre_archivo:
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {self.nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {self.nombre_archivo}")
         else:
             self.setWindowTitle(self._dict_sel["Title"])
         to_en = 22 if lang == "esp" else 21
