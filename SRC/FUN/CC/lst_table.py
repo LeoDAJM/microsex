@@ -39,6 +39,7 @@ class lst_table(QWidget):
             for j, valor in enumerate(fila[1:]):
                 self.table.setItem(i, j, QTableWidgetItem(str(valor).strip()))
                 self.table.item(i, j).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.table.resizeColumnsToContents()
 
     def upd_lang(self, lang: str):
         self._lang = lang
