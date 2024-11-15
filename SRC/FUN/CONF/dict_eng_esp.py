@@ -96,7 +96,7 @@ dict_CC = {
                 "eng": "English"
             },
             "dsg": {
-                "t": "Layout",
+                "t": "Disposición",
                 "new": "Nuevo",
                 "old": "Antiguo"
             }
