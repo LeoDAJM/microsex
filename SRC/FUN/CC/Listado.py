@@ -21,12 +21,12 @@ def crear_archivo_listado(ARCHIVO, DATOS, LISTADO, TS, data_lib: list[list]):
     with open(archivo, "w") as f:
         for item in archlst:
             line = '\t'.join(item)
-            f.write(f"{line}\n")
+            f.write(f"{line}")
         f.write("\nTABLA DE SÍMBOLOS\n")
         f.write("-----------------\n")
-        f.write("SÍMBOLO\tVALOR\tCONTENIDO\n")
+        f.write("SÍMBOLO\t\t\tVALOR\tCONTENIDO\n")
         for i in range(len(TS)):
-            f.write((TS[i][0] if TS[i][0][0] != chr(219) else " "*4)  + '\t' + str(TS[i][1]) + '\t' + str(TS[i][2]) + '\n')
+            f.write((TS[i][0] if TS[i][0][0] != chr(219) else " "*4)  + '\t\t\t' + str(TS[i][1]) + '\t' + str(TS[i][2]) + '\n')
     return archlst, no_lib_listed
 
 def data_lst(DATOS, LISTADO, archlst, no_lib_listed):
@@ -41,10 +41,10 @@ def data_lst(DATOS, LISTADO, archlst, no_lib_listed):
         orig_code = DATOS[i][1]             # Col4: Código original
         if isinstance(asm, list):
             for ix ,kj in enumerate(asm):
-                row_finish = [row_nmb, f"{int(mem, 16)+ix*4:04X}", kj, orig_code if ix == 0 else " "]
+                row_finish = [row_nmb, f"{int(mem, 16)+ix*4:04X}", kj.rjust(11), orig_code if ix == 0 else "\n"]
                 archlst.append(row_finish)
         else:
-            row_finish = [row_nmb, mem, asm, orig_code]
+            row_finish = [row_nmb, mem, asm.rjust(11), orig_code]
             archlst.append(row_finish)
         if row_nmb != "l":
             no_lib_listed.append(row_finish)
@@ -52,8 +52,4 @@ def data_lst(DATOS, LISTADO, archlst, no_lib_listed):
 def norm_hex(cadena_hex):
     cadena_hex = cadena_hex.replace(" ", "")
     pares = [cadena_hex[i:i+2] for i in range(0, len(cadena_hex), 2)]  # Divide en pares
-    resultado = []
-    for i in range(0, len(pares), 4):
-        linea = ' '.join(pares[i:i+4])  # Agrupa 4 pares con espacios
-        resultado.append(linea)
-    return resultado
+    return [' '.join(pares[i:i+4]) for i in range(0, len(pares), 4)]

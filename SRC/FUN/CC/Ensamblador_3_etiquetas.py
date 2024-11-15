@@ -23,9 +23,9 @@ def verificar_etiquetas(DATOS, origen, TS, direccion):
             instruccion = DATOS[i][0]
 
             if instruccion.endswith(':'):
-                etiqueta = DATOS[i][0][0:-1]
+                etiqueta = DATOS[i][0][:-1]
                 TS.append([etiqueta, direccion, 'NC'])
-                lista_etiquetas.update({i+1: direccion})
+                lista_etiquetas[i+1] = direccion
             else:
                 direccion += 1
 
@@ -45,33 +45,33 @@ def verificar_etiquetas(DATOS, origen, TS, direccion):
                 argumentos_permitidos = instrucciones_arg[instruccion]
                 argumentos = argumento.split(',')
 
-                if len(argumentos) != len(argumentos_permitidos):
+                if len(argumentos) != len(argumentos_permitidos) or len(
+                    argumentos
+                ) not in [1, 2]:
                     direccion += 3
 
                 elif len(argumentos) == 1:
                     argumento = argumentos[0]
                     simb = verificar_argumento(argumento, argumentos_permitidos[0])
 
-                    instruccion = instruccion + ' ' + simb
+                    instruccion = f'{instruccion} {simb}'
                     num_bytes_prog   = ne_usex[instruccion][1]
                     direccion += num_bytes_prog
 
 
-                elif len(argumentos) == 2:
+                else:
                     argumento1 = argumentos[0]
                     argumento2 = argumentos[1]
 
                     simb = verificar_argumento(argumento1, argumentos_permitidos[0])
-                    instruccion = instruccion + ' ' + simb
+                    instruccion = f'{instruccion} {simb}'
 
                     simb = verificar_argumento(argumento2, argumentos_permitidos[1])
-                    instruccion = instruccion + ',' + simb
+                    instruccion = f'{instruccion},{simb}'
 
                     if instruccion in ne_usex.keys():
                         num_bytes_prog   = ne_usex[instruccion][1]
                         direccion += num_bytes_prog
-                else:
-                    direccion += 3
             else:
                 direccion += 3
 

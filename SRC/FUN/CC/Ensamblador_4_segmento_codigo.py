@@ -240,7 +240,7 @@ def err_directiva_desconocida(errores_previos, mensaje, instruccion, indice):
 
 def err_no_alfanumero(errores_previos, mensaje, instruccion, indice):
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: símbolo no es alfanumérico'
+    mensaje = f'{mensaje}\nError en línea {indice + 1}: el símbolo no es alfanumérico'
     return errores, mensaje
 
 def err_instruccion_desconocida(errores_previos, mensaje, instruccion, indice):

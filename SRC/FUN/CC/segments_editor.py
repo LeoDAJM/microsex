@@ -7,6 +7,7 @@ from PyQt6.QtGui import QRegularExpressionValidator, QColor
 from PyQt6.QtCore import Qt, QRegularExpression
 
 import FUN.CONF.configCC as config
+from FUN.CONF.dict_eng_esp import dict_others
 
 class Validador2(QItemDelegate):
     def createEditor(self,parent,option,index):
@@ -27,24 +28,26 @@ class Validador2(QItemDelegate):
 
 class memory(QWidget):
 
-    def __init__(self, rows: int, cols: int, type: str, title: str):
+    def __init__(self, rows: int, cols: int, type: str):
         super().__init__()
-        self.initUI(rows, cols, type, title)
+        self._lang = config.lang_init
+        self._dict_sel = dict_others[self._lang]
+        self.initUI(rows, cols, type)
 
-    def initUI(self, rows: int, cols: int, type: str, title: str):
+    def initUI(self, rows: int, cols: int, type: str):
         self.table = QTableWidget(self)
         self.table.setStyleSheet(config.estilo["estilo_celdas"])
         self.table.setColumnCount(cols)
         self.table.setRowCount(rows)
-        self.table.setMinimumWidth(150)
-        self.table.horizontalHeader().setMinimumSectionSize(20)
+        #self.table.setMinimumWidth(150)
+        #self.table.horizontalHeader().setMinimumSectionSize(20)
         self.table.setItemDelegate(Validador2())
         self.tst = True
         h_header = [format(i,'X') for i in range(cols)]
         v_header = [format(i,'X') for i in range(rows)]
         self.table.setHorizontalHeaderLabels(h_header)
         self.table.setVerticalHeaderLabels(v_header)
-
+        self.table.setEnabled(False)
         if type.lower() == "stack":      # Para Stack
             self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
@@ -53,10 +56,10 @@ class memory(QWidget):
 
         self.type = type
 
-        corner_b = self.table.findChild(QAbstractButton)
-        corner_b.setToolTip("Clear")
-        corner_b.clicked.disconnect()
-        corner_b.clicked.connect(lambda: self.reset())
+        self.corner_b = self.table.findChild(QAbstractButton)
+        self.corner_b.setToolTip(self._dict_sel["tooltip_corner"])
+        self.corner_b.clicked.disconnect()
+        self.corner_b.clicked.connect(lambda: self.reset())
 
         for i in range(rows):
             self.table.setRowHeight(i,8)
@@ -66,7 +69,8 @@ class memory(QWidget):
             self.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.table.cellChanged.connect(self.on_change)
         vb2 = QVBoxLayout()
-        self.lbl = QLabel(title, self)
+        self.type = type
+        self.lbl = QLabel(self._dict_sel[type], self)
         vb2.addWidget(self.lbl)
         vb2.addWidget(self.table)
         self.setLayout(vb2)
@@ -88,3 +92,9 @@ class memory(QWidget):
             if self.table.item(i,j) is None or self.table.item(i,j) != "00":
                 self.table.setItem(i,j,QTableWidgetItem('00'))
                 self.table.item(i,j).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+    
+    def upd_lang(self, lang: str):
+        self._lang = lang
+        self._dict_sel = dict_others[self._lang]
+        self.corner_b.setToolTip(self._dict_sel["tooltip_corner"])
+        self.lbl.setText(self._dict_sel[self.type])

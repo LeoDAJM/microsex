@@ -45,7 +45,7 @@ class ALU(QWidget):
 
         self.lbl_valor_hex = [0]*2
         self.edit_hex = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_hex[i] = QLabel("00",self)
             self.lbl_valor_hex[i].setGeometry(200, 50 + i*20, 60, 20)
             self.lbl_valor_hex[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -69,7 +69,7 @@ class ALU(QWidget):
 
         self.lbl_valor_bin = [0]*2
         self.edit_bin = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_bin[i] = QLabel("00000000",self)
             self.lbl_valor_bin[i].setGeometry(300, 50 + i*20, 120, 20)
             self.lbl_valor_bin[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -90,7 +90,7 @@ class ALU(QWidget):
         lbl_dec.setFont(config.fuente_texto)
 
         self.lbl_valor_dec = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_dec[i] = QLabel("0",self)
             self.lbl_valor_dec[i].setGeometry(460,50 + i*20,60,20)
             self.lbl_valor_dec[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -102,7 +102,7 @@ class ALU(QWidget):
         lbl_dec.setFont(config.fuente_texto)
 
         self.lbl_valor_sig = [0]*2
-        for i in range(0,2):
+        for i in range(2):
             self.lbl_valor_sig[i] = QLabel("0",self)
             self.lbl_valor_sig[i].setGeometry(560,50 + i*20,80,20)
             self.lbl_valor_sig[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -283,14 +283,14 @@ class ALU(QWidget):
     def definir_sis_num(self):
         sistema_numerico = self.sender()
         if sistema_numerico.text() == "Binario":
-            for i in range(0,2):
+            for i in range(2):
                 self.lbl_valor_hex[i].setVisible(True)
                 self.lbl_valor_bin[i].setVisible(False)
                 self.edit_hex[i].setVisible(False)
                 self.edit_bin[i].setVisible(True)
 
         if sistema_numerico.text() == "Hex":
-            for i in range(0,2):
+            for i in range(2):
                 self.lbl_valor_hex[i].setVisible(False)
                 self.lbl_valor_bin[i].setVisible(True)
                 self.edit_hex[i].setVisible(True)
