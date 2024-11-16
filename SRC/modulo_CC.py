@@ -568,7 +568,7 @@ class ComputadorCompleto(QMainWindow):
         if nombre_archivo:
             self.nombre_archivo = nombre_archivo
             self.open_proc()
-            self.setWindowTitle(f"{self._dict_sel['Title']} - {nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {self.nombre_archivo}")
 
     def open_proc(self):
         try:
