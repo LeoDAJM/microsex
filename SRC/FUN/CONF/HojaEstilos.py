@@ -191,6 +191,9 @@ estilos_gui = {
         QTableCornerButton { color: rgb(0, 230, 125);
                 background-color: rgb(255, 70, 70);}""",
 "scrolled_monitor":  """
+        QTextEdit {
+                border: 1px solid rgb(70, 74, 82);
+        }
         QScrollBar:vertical {
                 border: 1px solid grey;
                 background: rgb(20, 20, 20);

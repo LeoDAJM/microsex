@@ -1,6 +1,9 @@
 import string
 from FUN.CONF.nemonicos import nemonicos_microsex
 from FUN.CONF.nemonicos import argumentos_instrucciones
+from FUN.CONF.dict_eng_esp import dict_asm
+import FUN.CONF.configCC as config
+
 
 numeros = tuple(str(i) for i in string.digits)
 
@@ -10,7 +13,7 @@ nemonicos = list(instrucciones_arg.keys())
 
 
 def verificar_segmento_codigo(DATOS, origen, TS, direccion):
-
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
     errores = 0
@@ -133,14 +136,15 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
             # print({direccion: hex(contenido_m_prog[n])})
 
     if errores == 0:
-        mensaje = mensaje + '\n ** OK **: todo correcto en segmento de código'
+        mensaje = mensaje + f'\n ** OK **: {_dic_sel["allRight_cs"]}'
 
     else:
-        mensaje = f'{mensaje}\n ** Total errores en segmento de código: {errores}'
+        mensaje = f'{mensaje}\n ** {_dic_sel["tot_cs_eRR"]}: {errores}'
 
     return errores, mensaje, m_prog, listado
 
 def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, permitidos, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     intento = 0
     cantidad_intentos = len(permitidos)
 
@@ -188,7 +192,7 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
                 except NameError:
                     intento += 1
                     errores = errores_previos + 1
-                    mensaje = mensaje + str('\nError en linea {}: número inválido "{}"'.format(indice+1,argumento))
+                    mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
             else:
                 intento += 1
 
@@ -201,7 +205,7 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
             except NameError:
                 intento += 1
                 errores = errores_previos + 1
-                mensaje = mensaje + str('\nError en linea {}: número inválido "{}"'.format(indice+1,argumento))
+                mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
         elif perm == 'indexado':
             if argumento.startswith('IX'):
                 argumento = argumento.split('+')
@@ -234,26 +238,31 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
 
 
 def err_directiva_desconocida(errores_previos, mensaje, instruccion, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: directiva desconocida "{instruccion}"'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["unk_dir_eRR"]} "{instruccion}"'
     return errores, mensaje
 
 def err_no_alfanumero(errores_previos, mensaje, instruccion, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: el símbolo no es alfanumérico'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["noAlpha_sym_eRR"]}'
     return errores, mensaje
 
 def err_instruccion_desconocida(errores_previos, mensaje, instruccion, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: instrucción desconocida {instruccion}'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["unk_inst_eRR"]} {instruccion}'
     return errores, mensaje
 
 def err_argumento_invalido(errores_previos, mensaje, argumento, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: argumento inválido "{argumento}"'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["inv_arg_eRR"]} "{argumento}"'
     return errores, mensaje
 
 def err_sintaxis(errores_previos, mensaje, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en línea {indice + 1}: sintaxis incorrecta'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["syntax_eRR"]}'
     return errores, mensaje

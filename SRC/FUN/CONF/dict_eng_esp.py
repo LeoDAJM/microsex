@@ -42,6 +42,7 @@ dict_CC = {
         "read_eRR": "No se puede guardar el archivo. Verifique los permisos o si el archivo está abierto.",
         "not_saved_stt": "Archivo no guardado",
         "txt_mon": "Monitor de errores",
+        "utf8_stt": "Archivo convertido a UTF8 abierto.",
         "toolb_txt": [
             "Abrir",
             "Guardar",
@@ -148,6 +149,7 @@ dict_CC = {
         "read_eRR": "Cannot save the file. Check permissions or if the file is open.",
         "not_saved_stt": "File not saved",
         "txt_mon": "Error Monitor",
+        "utf8_stt": "Converted to UTF8 file open.",
         "toolb_txt": [
             "Open",
             "Save",
@@ -271,7 +273,7 @@ dict_asm = {
         "CS": dict_CC["eng"]["CS"],
         "DS": dict_CC["eng"]["DS"],
         "end_code": "end of code",
-        "line_eRR": "Line error",
+        "line_eRR": "Error on line",
         "inv_numb": "invalid number",
         "allRight_dir": "all correct in segment directives",
         "tot_dir_eRR": "Total errors in directives:",

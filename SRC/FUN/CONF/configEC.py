@@ -13,6 +13,40 @@ estilo_editor = """ QCodeEditor {
                 background-color: rgb(13, 16, 23);
                 selection-background-color: rgb(19, 23, 33);
                 }
+    QScrollBar:horizontal {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                height: 15px;
+                margin: 0px 20px 0 20px;
+                }
+    QScrollBar::handle:horizontal {
+                background: rgb(200, 200, 200);
+                min-width: 20px;
+                }
+    QScrollBar::add-line:horizontal {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                width: 20px;
+                subcontrol-position: right;
+                subcontrol-origin: margin;
+                }
+    QScrollBar::sub-line:horizontal {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                width: 20px;
+                subcontrol-position: left;
+                subcontrol-origin: margin;
+                }
+    QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+                image: url(:/arrow_right.png);
+                border: 1px solid grey;
+                width: 3px;
+                height: 3px;
+                background: rgb(200, 200, 200);
+                }
+    QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+                background: none;
+                }
     QScrollBar:vertical {
                 border: 1px solid grey;
                 background: rgb(20, 20, 20);

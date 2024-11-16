@@ -78,10 +78,10 @@ class ComputadorCompleto(QMainWindow):
             args = args[1:]
             try:
                 self.dialogo_abrir(args[0])
-                print(f"{self._dict_sel["open"]} {args[0]}")
+                print(f'{self._dict_sel["open"]} {args[0]}')
             except FileNotFoundError:
                 QMessageBox.warning(
-                    self, f'{self._dict_sel["Warn"]}', f"{self._dict_sel["notExist"]} {args[0]}."
+                    self, f'{self._dict_sel["Warn"]}', f'{self._dict_sel["notExist"]} {args[0]}.'
                 )
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}.")
@@ -245,12 +245,6 @@ class ComputadorCompleto(QMainWindow):
             self.comp_0()
         else:
             self.comp_1()
-        for i in range(self.layout_grid.columnCount()):
-            self.layout_grid.setColumnStretch(i, 1)
-        for i in range(self.layout_grid.rowCount()):
-            self.layout_grid.setRowStretch(i, 1)
-
-
 
         area_trabajo = QWidget()
         styles = config2.styles_fun()
@@ -395,17 +389,25 @@ class ComputadorCompleto(QMainWindow):
         self.layout_grid.addWidget(self.mem["d"],0,col1,row1,col2)
         self.layout_grid.addWidget(self.mem["c"],row1,col1,row2,col2)
         self.layout_grid.addWidget(self.mem["s"],row1+row2,col1,row3,col2)
-        self.layout_grid.addWidget(self.monitor,row1+row2+row3,col1,row1,col2)
+        self.layout_grid.addWidget(self.portA,0,col1+2,row1+row2+row3,1)
+        self.layout_grid.addWidget(self.monitor,row1+row2+row3,col1,row1,col2+1)
+        self.layout_grid.setColumnStretch(5,0)
+        self.layout_grid.setRowMinimumHeight(5,0)
         self.layout_grid.setVerticalSpacing(0)
+        for i in range(self.layout_grid.columnCount()):
+            self.layout_grid.setColumnStretch(i, 1)
+        for i in range(self.layout_grid.rowCount()):
+            self.layout_grid.setRowStretch(i, 1)
+        self.layout_grid.setColumnStretch(5,0)
+        self.layout_grid.setRowMinimumHeight(5,0)
 
     def comp_0(self):
         col1 = 4
         self.layout_grid.addWidget(self.main_tab,0,0,4,col1)
         self.layout_grid.addWidget(self.mem["c"],4,0,2,col1)
         self.layout_grid.addWidget(self.mem["d"],6,0,2,col1)
-
-        self.layout_grid.addLayout(self.bloque_regSS,0,col1,6,1)
-        self.layout_grid.addWidget(self.monitor,6,col1,1,1)
+        self.layout_grid.addLayout(self.bloque_regSS,0,col1,6,2)
+        self.layout_grid.addWidget(self.monitor,6,col1,2,2)
         for i in range(self.layout_grid.columnCount()):
             self.layout_grid.setColumnStretch(i, 1)
         for i in range(self.layout_grid.rowCount()):
@@ -567,13 +569,29 @@ class ComputadorCompleto(QMainWindow):
         if nombre_archivo:
             self.nombre_archivo = nombre_archivo
             self.open_proc()
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {self.nombre_archivo}")
 
     def open_proc(self):
-        f = open(self.nombre_archivo, "r", encoding="utf-8")
-        with f:
-            datos_archivo = f.read()
-            self.editor_codigo.editor.setPlainText(datos_archivo)
+        try:
+            f = open(self.nombre_archivo, "r", encoding="utf-8")
+            with f:
+                datos_archivo = f.read()
+                self.editor_codigo.editor.setPlainText(datos_archivo)
+        except UnicodeDecodeError as e:
+            print(f"Warn: Latin-1. {e}")
+            with open(self.nombre_archivo, "r", encoding="latin-1") as archivo_original:
+                contenido = archivo_original.read()
+            with open(f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}', "w", encoding="utf-8") as archivo_utf8:
+                archivo_utf8.write(contenido)
+                self.nombre_archivo = f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}'
+                print(f'{self._dict_sel["utf8_stt"]}')
+                f.close()
+            f = open(self.nombre_archivo, "r", encoding="utf-8")
+            with f:
+                datos_archivo = f.read()
+                self.editor_codigo.editor.setPlainText(datos_archivo)
+            self.barra_estado.showMessage(self._dict_sel["utf8_stt"])
+        
 
     def save_fcn(self, save_type: str):
         cursor = self.editor_codigo.editor.textCursor()
@@ -593,7 +611,7 @@ class ComputadorCompleto(QMainWindow):
             if not nombre_archivo[0]:
                 return
             self.nombre_archivo = nombre_archivo[0]
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {nombre_archivo[0]}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {nombre_archivo[0]}")
         if self.nombre_archivo:
             nombre_archivo = str(self.nombre_archivo)
             with open(nombre_archivo, "w", encoding="utf-8") as f:
@@ -801,7 +819,7 @@ class ComputadorCompleto(QMainWindow):
                 self.barra_estado.showMessage(self._dict_sel["HLT_stt"])
             if pre_ins in vtmp:
                 msg_bk = (
-                    f"{self._dict_sel["brk_stt"]} {str(ktmp[vtmp.index(pre_ins)])})"
+                    f"{self._dict_sel['brk_stt']} {str(ktmp[vtmp.index(pre_ins)])})"
                 )
                 self.barra_estado.showMessage(msg_bk)
                 break
@@ -941,7 +959,7 @@ class ComputadorCompleto(QMainWindow):
         self.msg.setWindowFlags(
             self.msg.windowFlags() & ~Qt.WindowType.WindowCloseButtonHint
         )
-        lbl = QLabel(f"{self._dict_sel["seg_select"]} {msg_str}:")
+        lbl = QLabel(f"{self._dict_sel['seg_select']} {msg_str}:")
         self.btt_dialog = QPushButton(msg_str.upper())
         self.btt_dialog.setEnabled(False)
         self.chkbx["s"] = QCheckBox(text=self._dict_sel["SS"])
@@ -1063,13 +1081,16 @@ class ComputadorCompleto(QMainWindow):
 
     def toggle(self):
         self.portA.setVisible(not self.portA.isVisible())
+        self.layout_grid.setColumnStretch(5,1 if self.portA.isVisible() else 0)
+        self.layout_grid.setRowMinimumHeight(5,1 if self.portA.isVisible() else 0)
         return
 
     def chng_lang(self, lang: str):
         past = self.lang_sel
         self.lang_sel = lang
+        config.lang = lang
         if self.nombre_archivo:
-            self.setWindowTitle(f"{self._dict_sel["Title"]} - {self.nombre_archivo}")
+            self.setWindowTitle(f"{self._dict_sel['Title']} - {self.nombre_archivo}")
         else:
             self.setWindowTitle(self._dict_sel["Title"])
         to_en = 22 if lang == "esp" else 21

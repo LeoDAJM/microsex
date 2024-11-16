@@ -29,6 +29,7 @@ class QCodeEditor(QPlainTextEdit):
         self.cursorPositionChanged.connect(self.highlightCurrentLine)
         self.updateLineNumberAreaWidth(0)
         self.setAcceptDrops(False)
+        self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
 
     def keyPressEvent(self, event):
         if event.key() == 16777265:  # El código de la tecla F2
