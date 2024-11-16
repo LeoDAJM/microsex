@@ -58,7 +58,7 @@ nemonicos_computador_completo = {
 "AND C,M": [[0xF5], 3], "OR C,M": [[0xF6], 3],  "XOR C,M": [[0xF7], 3],
 "ADD C,M": [[0xF8], 3], "SUB C,M": [[0xF9], 3], "ADC C,M": [[0xFA], 3], "SBC C,M": [[0xFB], 3], "CMP C,M": [[0xFC], 3],
 
-"HLT": [[0x10], 1],
+"FIN": [[0x10], 1],
 
 "INC X": [[0x83], 1], "DEC X": [[0x84], 1],
 "INC Y": [[0x93], 1], "DEC Y": [[0x94], 1],
@@ -141,7 +141,7 @@ nemonicos_computador_completo = {
 instrucciones_arg = {
 'BOR' : [['acumuladores', 'indexado', 'directo']],
 'NOP' : [],
-'HLT' : [],
+'FIN' : [],
 'VBC' : [],
 'VBD' : [],
 'VAC' : [],

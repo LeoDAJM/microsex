@@ -183,3 +183,4 @@ build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.Debug.gschema.xml
 build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.EmojiChooser.gschema.xml
 build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.FileChooser.gschema.xml
 dist/Microsex
+SRC/to_dec.py

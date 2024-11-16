@@ -10,6 +10,8 @@ import math
 import re
 import string
 from re import search
+from FUN.CONF.dict_eng_esp import dict_asm
+import FUN.CONF.configCC as config
 
 from FUN.CONF.nemonicos import argumentos_instrucciones
 
@@ -31,9 +33,8 @@ palabras_reservadas.extend(reservados)
 
 numeros = tuple(str(i) for i in string.digits)
 
-
 def verificar_segmento_datos(DATOS, origen):
-
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = 0
     mensaje = ""
     tabla_simbolos = []
@@ -138,9 +139,9 @@ def verificar_segmento_datos(DATOS, origen):
                 mensaje,
             )
     if errores == 0:
-        mensaje = mensaje + "\n ** OK **: todo correcto en segmento de datos"
+        mensaje = mensaje + f"\n ** OK **: {_dic_sel['allRight_ds']}"
     else:
-        mensaje = f"{mensaje}\n ** Total errores en segmento de datos: {errores}"
+        mensaje = f"{mensaje}\n ** {_dic_sel['tot_ds_eRR']} {errores}"
     return errores, mensaje, tabla_simbolos, lista_simbolos, direccion
 
 
@@ -201,6 +202,7 @@ def insum_if(
     errores,
     mensaje,
 ):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     if (
         contenido.isalnum()
         or ("_" in contenido)
@@ -244,7 +246,7 @@ def insum_if(
         except ValueError:
             errores += 1
             mensaje = (
-                f'{mensaje}\nError en linea {i + 1}: contenido inválido "{contenido}"'
+                f'{mensaje}\n{_dic_sel["line_eRR"]} {i + 1}: {_dic_sel["content_inv_eRR"]} "{contenido}"'
             )
     else:
         errores, mensaje = err_contenido_invalido(errores, mensaje, contenido, i)
@@ -266,44 +268,51 @@ def insum_if(
 
 
 def err_directiva_desconocida(errores_previos, mensaje, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f"{mensaje}\nError en línea {indice + 1}: directiva desconocida"
+    mensaje = f"{mensaje}\n{_dic_sel['line_eRR']} {indice + 1}: {_dic_sel['unk_dir_eRR']}"
     return errores, mensaje
 
 
 def err_sintaxis(errores_previos, mensaje, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f"{mensaje}\nError en línea {indice + 1}: sintaxis incorrecta"
+    mensaje = f"{mensaje}\n{_dic_sel['line_eRR']} {indice + 1}: {_dic_sel['syntax_eRR']}"
     return errores, mensaje
 
 
 def err_simbolo_invalido(errores_previos, mensaje, simbolo, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en linea {indice + 1}: símbolo inválido "{simbolo}"'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["sym_inv_eRR"]} "{simbolo}"'
     return errores, mensaje
 
 
 def err_simbolo_definido_antes(errores_previos, mensaje, simbolo, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f'{mensaje}\nError en linea {indice + 1}: símbolo definido previamente "{simbolo}"'
+    mensaje = f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["sym_dup_eRR"]} "{simbolo}"'
     return errores, mensaje
 
 
 def err_simbolo_palabra_reservada(errores_previos, mensaje, simbolo, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f"{mensaje}\nError en línea {indice + 1}: símbolo no admite palabra reservada {simbolo}"
+    mensaje = f"{mensaje}\n{_dic_sel['line_eRR']} {indice + 1}: {_dic_sel['res_word_eRR']} {simbolo}"
     return errores, mensaje
 
 
 def err_simbolo_exp_reservada(errores_previos, mensaje, simbolo, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
-    mensaje = f"{mensaje}\nError en línea {indice + 1}: símbolo no admite expresión reservada {simbolo}"
+    mensaje = f"{mensaje}\n{_dic_sel['line_eRR']} {indice + 1}: {_dic_sel['res_exp_eRR']} {simbolo}"
     return errores, mensaje
 
 
 def err_contenido_invalido(errores_previos, mensaje, contenido, indice):
+    _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = errores_previos + 1
     mensaje = (
-        f'{mensaje}\nError en linea {indice + 1}: contenido inválido "{contenido}"'
+        f'{mensaje}\n{_dic_sel["line_eRR"]} {indice + 1}: {_dic_sel["content_inv_eRR"]} "{contenido}"'
     )
     return errores, mensaje

@@ -57,4 +57,5 @@ portA = [0]*8
 estilo = stylesheet()
 
 lang_init = "esp"
+lang = None
 composition = 1

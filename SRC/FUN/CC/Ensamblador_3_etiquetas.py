@@ -1,7 +1,6 @@
 import string
 from FUN.CONF.nemonicos import nemonicos_microsex
 from FUN.CONF.nemonicos import argumentos_instrucciones
-
 numeros = tuple(str(i) for i in string.digits)
 
 ne_usex = nemonicos_microsex()
@@ -10,7 +9,7 @@ nemonicos = list(instrucciones_arg.keys())
 
 
 def verificar_etiquetas(DATOS, origen, TS, direccion):
-
+    
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
 
