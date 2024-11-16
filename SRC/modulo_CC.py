@@ -321,12 +321,12 @@ class ComputadorCompleto(QMainWindow):
                 [self._dict_sel["menu_txt"]["fl"]["exit"], "", QApplication.instance().quit],
             ],
             self._dict_sel["menu_txt"]["ed"]["t"]: [
-                [self._dict_sel["menu_txt"]["ed"]["undo"], "Ctrl+Z", self.deshacer_accion],
-                [self._dict_sel["menu_txt"]["ed"]["redo"], "Ctrl+Y", self.rehacer_accion],
+                [self._dict_sel["menu_txt"]["ed"]["undo"], "Ctrl+Z", lambda: self.editor_codigo.editor.undo()],
+                [self._dict_sel["menu_txt"]["ed"]["redo"], "Ctrl+Y", lambda: self.editor_codigo.editor.redo()],
                 ["separator"],
-                [self._dict_sel["menu_txt"]["ed"]["cut"], "", self.cortar],
-                [self._dict_sel["menu_txt"]["ed"]["cpy"], "", self.copiar],
-                [self._dict_sel["menu_txt"]["ed"]["pst"], "", self.pegar],
+                [self._dict_sel["menu_txt"]["ed"]["cut"], "", lambda: self.focusWidget().cut()], #
+                [self._dict_sel["menu_txt"]["ed"]["cpy"], "", lambda: self.focusWidget().copy()], #
+                [self._dict_sel["menu_txt"]["ed"]["pst"], "", lambda: self.focusWidget().paste()], #
                 ["separator"],
                 [self._dict_sel["menu_txt"]["ed"]["add_ind"], "Ctrl+Tab", self.agregar_sangria],
                 [self._dict_sel["menu_txt"]["ed"]["del_ind"], "Shift+Tab", self.quitar_sangria],
@@ -370,6 +370,7 @@ class ComputadorCompleto(QMainWindow):
                     self.menu_elems[cnt] = QAction(i[0], self)
                     if i[1] != "":
                         self.menu_elems[cnt].setShortcut(i[1])
+                    print(cnt)
                     self.menu_elems[cnt].triggered.connect(i[2])
                     self.menu[k].addAction(self.menu_elems[cnt])
                     cnt += 1
@@ -605,21 +606,6 @@ class ComputadorCompleto(QMainWindow):
     # endregion
 
     # region FUNCIONES DEL MENÚ EDITAR-----------------------------------------------------
-
-    def deshacer_accion(self):
-        self.editor_codigo.editor.undo()
-
-    def rehacer_accion(self):
-        self.editor_codigo.text.redo()
-
-    def cortar(self):
-        self.editor_codigo.text.cut()
-
-    def copiar(self):
-        self.editor_codigo.text.copy()
-
-    def pegar(self):
-        self.text.paste()
 
     def agregar_sangria(self):
         tab = "\t"
