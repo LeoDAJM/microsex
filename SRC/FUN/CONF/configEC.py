@@ -3,16 +3,20 @@ from FUN.CONF.nemonicos import argumentos_instrucciones
 
 
 fuente = QFont("mononoki NF", 12)
-
 #rgb(132, 160, 184)
 # rgb(19, 23, 33)
 #rgb(53, 57, 64)
-
+#color: rgb(191, 189, 182); 
+# #409fff4d
 estilo_editor = """ QCodeEditor {
-                color: rgb(191, 189, 182);
+                color: rgb(191, 189, 182); 
                 background-color: rgb(13, 16, 23);
-                selection-background-color: rgb(19, 23, 33);
+                selection-background-color: rgb(44, 139, 215);
                 }
+    QLineNumberArea {
+                color: #6c7380;
+                background-color: rgb(13, 16, 23);
+    }
     QScrollBar:horizontal {
                 border: 1px solid grey;
                 background: rgb(20, 20, 20);
@@ -82,13 +86,13 @@ estilo_editor = """ QCodeEditor {
                 }"""
 
 
-color_directivas = QColor(255, 142, 0)        # rgb(250, 180, 120) rgb(255, 142, 0)
-color_instrucciones = QColor(57, 186, 230)       # rgb(0, 230, 250)  D2A6FF rgb(210, 166, 255)
-color_comentarios = QColor(210, 166, 255)       # rgb(100, 100, 150) rgb(57, 186, 230)
+color_directivas = QColor(255, 143, 60)        # rgb(250, 180, 120) rgb(255, 142, 0) #59C2FF (57, 186, 230)  #FF8F40
+color_instrucciones = QColor(89, 194, 255)       # rgb(0, 230, 250)  D2A6FF rgb(210, 166, 255)
+color_comentarios = QColor(172, int("b6",16), int("bf",16), int("8c",16))       # rgb(100, 100, 150) rgb(57, 186, 230) QColor(210, 166, 255) #ACB6BF8C
 color_etiquetas = QColor(170, 217, 76)           # rgb(0, 230, 125) rgb(170, 217, 76)
 color_ascii = QColor(200, 1, 120)             #rgb(200, 1, 120)
 
-
+#asdasdasdasd
 nemonicos_may = list(argumentos_instrucciones().keys())
 nemonicos_min = [nemonicos_may[i].lower() for i in range(len(nemonicos_may))]
 

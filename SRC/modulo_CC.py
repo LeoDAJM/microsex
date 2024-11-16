@@ -34,6 +34,7 @@ from PyQt6.QtWidgets import (
     QWidget,
     QTabWidget,
     QGridLayout,
+    QSplitter,
 )
 from FUN.CONF.dict_eng_esp import CC_dict
 
@@ -149,7 +150,7 @@ class ComputadorCompleto(QMainWindow):
 
         ed_font = self.fuente
         ed_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 110)
-        self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_min)
+        self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_mid)
         self.editor_codigo.editor.setFont(ed_font)
         fontMetrics = QFontMetricsF(ed_font)
         spaceWidth = fontMetrics.horizontalAdvance(" ")
@@ -166,7 +167,6 @@ class ComputadorCompleto(QMainWindow):
         #setCentralWidget
     # region Drag Drop
     def dragEnterEvent(self, event):
-        self.editor_codigo.editor.setAcceptDrops(False)
         if event.mimeData().hasUrls():
             for url in event.mimeData().urls():
                 if url.toLocalFile().lower().endswith(
@@ -177,7 +177,6 @@ class ComputadorCompleto(QMainWindow):
         event.ignore()
 
     def dropEvent(self, event):
-        self.editor_codigo.editor.setAcceptDrops(True)
         if event.mimeData().hasUrls():
             for url in event.mimeData().urls():
                 file_path = url.toLocalFile()
@@ -193,7 +192,6 @@ class ComputadorCompleto(QMainWindow):
         self.mode = "start"  # "edit" "run" "loaded"
         self.misc = []
         self.detected_past = None
-        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.setFont(self.fuente)
 
         to_en = 24 if config.composition == 1 else 23
@@ -202,24 +200,8 @@ class ComputadorCompleto(QMainWindow):
         to_dis2 = 21 if config.lang_init == "esp" else 22
 
         self.direccion_inicio = "0000"
-        self.chkbx = {
-            "s": QCheckBox(text=" "),
-            "c": QCheckBox(text=" "),
-            "d": QCheckBox(text=" "),
-        }
-        self.datalst = [["","",""]]
-
-        self.lst = lst_table(self.datalst)
-        self.editor_codigo = EditorCodigo()
-        self.registros = EditorRegistros()
-        self.mem = {
-            "s": memory(16, 0, "stack"),
-            "c": memory(0, 16, "code"),
-            "d": memory(0, 16, "data"),
-        }
-        self.portA = IOPortA()
-
-        self.monitor = QTextEdit(self)
+        self.create_elements()
+    
         self.bpoints = self.editor_codigo.editor.breakline
         self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
         self.state_lib = False
@@ -290,7 +272,7 @@ class ComputadorCompleto(QMainWindow):
             self.ejecutar_instruccion,
             self.run_for_bpoint,
             self.ejecutar,
-            QApplication.instance().quit,
+            self.close,
         ]
         for k, _ in enumerate(self.tools):
             self.tools[k] = QAction(QIcon(f":IMG/{im_tools[k]}.png"), txt[k], self)
@@ -312,7 +294,7 @@ class ComputadorCompleto(QMainWindow):
                 [self._dict_sel["menu_txt"]["fl"]["save"], "Ctrl+G", lambda: self.save_fcn("save")],
                 [self._dict_sel["menu_txt"]["fl"]["save_as"], "Ctrl+Shift+G", lambda: self.save_fcn("como")],
                 ["separator"],
-                [self._dict_sel["menu_txt"]["fl"]["exit"], "", QApplication.instance().quit],
+                [self._dict_sel["menu_txt"]["fl"]["exit"], "", self.close],
             ],
             self._dict_sel["menu_txt"]["ed"]["t"]: [
                 [self._dict_sel["menu_txt"]["ed"]["undo"], "Ctrl+Z", lambda: self.editor_codigo.editor.undo()],
@@ -364,7 +346,6 @@ class ComputadorCompleto(QMainWindow):
                     self.menu_elems[cnt] = QAction(i[0], self)
                     if i[1] != "":
                         self.menu_elems[cnt].setShortcut(i[1])
-                    print(cnt)
                     self.menu_elems[cnt].triggered.connect(i[2])
                     self.menu[k].addAction(self.menu_elems[cnt])
                     cnt += 1
@@ -377,6 +358,24 @@ class ComputadorCompleto(QMainWindow):
         # region ToolBar
         self.state_def(st_comp=True, st_cnt=False, st_cnt_bkp=False, st_edit=True)
 
+    def create_elements(self):
+        self.chkbx = {
+            "s": QCheckBox(text=" "),
+            "c": QCheckBox(text=" "),
+            "d": QCheckBox(text=" "),
+        }
+        self.datalst = [["","",""]]
+        self.lst = lst_table()
+        self.editor_codigo = EditorCodigo()
+        self.registros = EditorRegistros()
+        self.mem = {
+            "s": memory("stack"),
+            "c": memory("code"),
+            "d": memory("data"),
+        }
+        self.portA = IOPortA()
+        self.monitor = QTextEdit(self)
+
     def comp_1(self):
         col1 = 3
         col2 = 2
@@ -385,10 +384,8 @@ class ComputadorCompleto(QMainWindow):
         row3 = 1
         self.layout_grid.addWidget(self.main_tab,0,0,row1+row2+row3,col1)
         self.layout_grid.addWidget(self.registros,row1+row2+row3,0,row1,col1)
-
-        self.layout_grid.addWidget(self.mem["d"],0,col1,row1,col2)
-        self.layout_grid.addWidget(self.mem["c"],row1,col1,row2,col2)
-        self.layout_grid.addWidget(self.mem["s"],row1+row2,col1,row3,col2)
+        self.splitter_create(row1, row2, row3)
+        self.layout_grid.addWidget(self.splitter,0,col1,row1+row2+row3,col2)
         self.layout_grid.addWidget(self.portA,0,col1+2,row1+row2+row3,1)
         self.layout_grid.addWidget(self.monitor,row1+row2+row3,col1,row1,col2+1)
         self.layout_grid.setColumnStretch(5,0)
@@ -400,6 +397,27 @@ class ComputadorCompleto(QMainWindow):
             self.layout_grid.setRowStretch(i, 1)
         self.layout_grid.setColumnStretch(5,0)
         self.layout_grid.setRowMinimumHeight(5,0)
+
+    def splitter_create(self, row1, row2, row3):
+        self.splitter = QSplitter(Qt.Orientation.Vertical)
+        self.splitter.addWidget(self.mem["d"]) # 0,col1,row1,col2
+        self.splitter.addWidget(self.mem["c"]) # row1,col1,row2,col2)
+        self.splitter.addWidget(self.mem["s"]) # row1+row2,col1,row3,col2
+        self.splitter.setStretchFactor(0, row1)
+        self.splitter.setStretchFactor(1, row2)
+        self.splitter.setStretchFactor(2, row3)
+        self.splitter.setStyleSheet("""
+            QSplitter::handle {
+                background: qlineargradient(
+                    x1: 0, x2: 1,
+                    stop: 0 #333333, stop: 0.5 #202020, stop: 1 #333333
+                );
+                height: 3.5px;
+                margin-left: 30px;  /* Márgen izquierdo */
+                margin-right: 30px; /* Márgen derecho */
+            }
+        """)
+        self.splitter.setOpaqueResize(True)
 
     def comp_0(self):
         col1 = 4
@@ -448,11 +466,12 @@ class ComputadorCompleto(QMainWindow):
                 self._size[k] = _max - v
                 _max = v
         for (k, v), (_, u) in zip(self.mem.items(), self._size.items()):
-            if k == "s":
+            if k == "s" and config.composition == 0:
                 v.table.setColumnCount(2)
-                v.table.setRowCount(16)
-                if u == 0:
+                if u == 0 and k == "s":
                     v.table.setColumnCount(0)
+                    if hasattr(self, "splitter"):
+                        self.splitter.setStretchFactor(2,0)
                 else:
                     v.table.setHorizontalHeaderLabels(
                         [
@@ -462,16 +481,16 @@ class ComputadorCompleto(QMainWindow):
                     )
             else:
                 v.table.setRowCount(u)
-                v.table.setColumnCount(16)
-                v.table.setVerticalHeaderLabels(
-                    [
-                        format(i * 16, "X").zfill(4)
-                        for i in range(self._ds[k], self._ds[k] + u)
-                    ]
-                )
+                if self._ds[k] is not None:
+                    v.table.setVerticalHeaderLabels(
+                        [
+                            format(i * 16, "X").zfill(4)
+                            for i in range(self._ds[k], self._ds[k] + u)
+                        ]
+                    )
 
     def regen_all(self):
-        for _, v in self.mem.items():
+        for v in self.mem.values():
             for i in range(v.table.rowCount()):
                 v.table.setRowHeight(i, 8)
                 for j in range(v.table.columnCount()):
@@ -495,7 +514,7 @@ class ComputadorCompleto(QMainWindow):
                 if ix >= qty[1]:
                     i, j = (
                         (ix % 16, ix // 16 - qty[1] // 16)
-                        if qty[0] == "s"
+                        if qty[0] == "s" and config.composition == 0
                         else (ix // 16 - qty[1] // 16, ix % 16)
                     )
                     if self.mem[qty[0]].table.item(i, j).text() != val:
@@ -578,19 +597,22 @@ class ComputadorCompleto(QMainWindow):
                 datos_archivo = f.read()
                 self.editor_codigo.editor.setPlainText(datos_archivo)
         except UnicodeDecodeError as e:
-            print(f"Warn: Latin-1. {e}")
-            with open(self.nombre_archivo, "r", encoding="latin-1") as archivo_original:
-                contenido = archivo_original.read()
-            with open(f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}', "w", encoding="utf-8") as archivo_utf8:
-                archivo_utf8.write(contenido)
-                self.nombre_archivo = f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}'
-                print(f'{self._dict_sel["utf8_stt"]}')
-                f.close()
-            f = open(self.nombre_archivo, "r", encoding="utf-8")
-            with f:
-                datos_archivo = f.read()
-                self.editor_codigo.editor.setPlainText(datos_archivo)
-            self.barra_estado.showMessage(self._dict_sel["utf8_stt"])
+            self.decode_latin(f, e)
+
+    def decode_latin(self, f, e):
+        print(f"Warn: Latin-1. {e}")
+        with open(self.nombre_archivo, "r", encoding="latin-1") as archivo_original:
+            contenido = archivo_original.read()
+        with open(f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}', "w", encoding="utf-8") as archivo_utf8:
+            archivo_utf8.write(contenido)
+            self.nombre_archivo = f'{self.nombre_archivo[:-4]}_UTF8{self.nombre_archivo[-4:]}'
+            print(f'{self._dict_sel["utf8_stt"]}')
+            f.close()
+        f = open(self.nombre_archivo, "r", encoding="utf-8")
+        with f:
+            datos_archivo = f.read()
+            self.editor_codigo.editor.setPlainText(datos_archivo)
+        self.barra_estado.showMessage(self._dict_sel["utf8_stt"])
         
 
     def save_fcn(self, save_type: str):
@@ -714,7 +736,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            with open(self.nombre_archivo) as archivo:
+            with open(self.nombre_archivo, encoding="utf-8") as archivo:
                 programa = archivo.readlines()
                 cod = list(programa)
             err, msj, mp, ls, ts, libs = verificacion_codigo(

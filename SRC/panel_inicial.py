@@ -85,18 +85,16 @@ https://github.com/korvec/microsex
 
     def seleccion_modulos(self):
 
-        self.boton_seleccion.setEnabled(False)
-        self.combo_seleccion.setEnabled(True)
-        self.boton_cc.setEnabled(False)
-
-        self.boton_aceptar.setEnabled(True)
-        self.boton_cancelar.setEnabled(True)
+        self.select_fcn(False, True)
 
     def funciones_principales(self):
 
-        self.boton_seleccion.setEnabled(True)
-        self.combo_seleccion.setEnabled(False)
-        self.boton_cc.setEnabled(True)
+        self.select_fcn(True, False)
 
-        self.boton_aceptar.setEnabled(False)
-        self.boton_cancelar.setEnabled(False)
+    # TODO Rename this here and in `seleccion_modulos` and `funciones_principales`
+    def select_fcn(self, arg0, arg1):
+        self.boton_seleccion.setEnabled(arg0)
+        self.combo_seleccion.setEnabled(arg1)
+        self.boton_cc.setEnabled(arg0)
+        self.boton_aceptar.setEnabled(arg1)
+        self.boton_cancelar.setEnabled(arg1)

@@ -18,8 +18,8 @@ class EditorCodigo(QWidget):
 
         self.editor = QCodeEditor(self)
         self.editor.setStyleSheet(config.estilo_editor)
-        self.editor.setFont(config.fuente)
         self.resaltador = Resaltador(self.editor.document())
+        self.setAcceptDrops(False)
 
         bloque_edicion = QHBoxLayout()
         bloque_edicion.addWidget(self.editor)
@@ -56,7 +56,6 @@ class Resaltador(QSyntaxHighlighter):
 
         formato_etiqueta = QTextCharFormat()
         formato_etiqueta.setForeground(config.color_etiquetas)
-
         patron = QRegularExpression("^[A-Za-z][A_Za-z0-9_]*:")
         regla = (patron, formato_etiqueta)
         self.reglas_resaltado.append(regla)
@@ -76,6 +75,14 @@ class Resaltador(QSyntaxHighlighter):
         regla = (patron, formato_ascii)
         self.reglas_resaltado.append(regla)
 
+        formato_bsr_rut = QTextCharFormat()
+        formato_bsr_rut.setForeground(config.color_etiquetas)
+        patron = QRegularExpression(r"bsr (.+)")
+        regla = (patron, formato_bsr_rut)
+        self.reglas_resaltado.append(regla)
+
+
+
 
     def highlightBlock(self, text):
         for patron, formato in self.reglas_resaltado:
@@ -83,8 +90,8 @@ class Resaltador(QSyntaxHighlighter):
             match = expresion.match(text)  # Realiza la búsqueda inicial
 
             while match.hasMatch():  # Verifica si hay coincidencias
-                indice = match.capturedStart()  # Posición de inicio de la coincidencia
-                longitud = match.capturedLength()  # Longitud de la coincidencia
+                indice = match.capturedStart(match.lastCapturedIndex())  # Posición de inicio de la coincidencia
+                longitud = match.capturedLength(match.lastCapturedIndex())  # Longitud de la coincidencia
                 self.setFormat(indice, longitud, formato)
                 
                 # Busca la siguiente coincidencia a partir de la posición siguiente

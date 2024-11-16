@@ -8,12 +8,11 @@ import FUN.CONF.configCC as config
 from FUN.CONF.dict_eng_esp import dict_lst_table 
 class lst_table(QWidget):
 
-    def __init__(self, lst_data: list):
+    def __init__(self):
         self._lang = config.lang_init
         self._dict_sel = dict_lst_table[self._lang]
         super().__init__()
         self.initUI()
-        self.update(lst_data)
 
     def initUI(self):
         self.table = QTableWidget(self)
@@ -27,6 +26,8 @@ class lst_table(QWidget):
         vb2 = QVBoxLayout()
         vb2.addWidget(self.table)
         self.setLayout(vb2)
+        vb2.setContentsMargins(0,0,0,0)
+
     
     def update(self, lst_data: list):
         lbl_rows = [x[0] for x in lst_data]
@@ -40,6 +41,7 @@ class lst_table(QWidget):
                 self.table.setItem(i, j, QTableWidgetItem(str(valor).strip()))
                 self.table.item(i, j).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
         self.table.resizeColumnsToContents()
+        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
     def upd_lang(self, lang: str):
         self._lang = lang

@@ -136,7 +136,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
             # print({direccion: hex(contenido_m_prog[n])})
 
     if errores == 0:
-        mensaje = mensaje + f'\n ** OK **: {_dic_sel["allRight_cs"]}'
+        mensaje = f'{mensaje}\n ** OK **: {_dic_sel["allRight_cs"]}'
 
     else:
         mensaje = f'{mensaje}\n ** {_dic_sel["tot_cs_eRR"]}: {errores}'

@@ -178,7 +178,7 @@ class EditorRegistros(QWidget):
             self.bloque_principal.addLayout(self.bloque_punteros,0,3)
             self.bloque_principal.addLayout(self.bloque_banderas,0,4)
             self.bloque_principal.addWidget(self.CA_button,0,5)
-            self.bloque_principal.setHorizontalSpacing(30)
+            self.bloque_principal.setHorizontalSpacing(20)
         else:
             self.bloque_principal.addLayout(self.bloque_PIns,1,0)
             self.bloque_principal.addLayout(self.bloque_acumuladores,2,0)
@@ -187,6 +187,7 @@ class EditorRegistros(QWidget):
             self.bloque_principal.addWidget(self.CA_button,5,0)
             self.bloque_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.bloque_principal.setVerticalSpacing(15)
+        
 
         self.setLayout(self.bloque_principal)
         #self.setMaximumWidth(int(t_w * 0.14))

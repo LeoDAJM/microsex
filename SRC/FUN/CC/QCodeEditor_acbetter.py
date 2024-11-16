@@ -4,30 +4,28 @@
 
 from PyQt6.QtCore import Qt, QRect, QSize
 from PyQt6.QtWidgets import QWidget, QPlainTextEdit, QTextEdit
-from PyQt6.QtGui import QColor, QPainter, QTextFormat, QTextCursor
-
+from PyQt6.QtGui import QColor, QPainter, QTextFormat, QTextCursor, QTextCharFormat
 
 class QLineNumberArea(QWidget):
     def __init__(self, editor):
         super().__init__(editor)
         self.codeEditor = editor
-
-    def sizeHint(self):
-        return QSize(self.editor.lineNumberAreaWidth(), 0)
+        self.setContentsMargins(0,0,0,0)
 
     def paintEvent(self, event):
         self.codeEditor.lineNumberAreaPaintEvent(event)
 
 class QCodeEditor(QPlainTextEdit):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
+        self.sp_width = 28
         self.breakline = set()
         self.xtra = self.extraSelections()
         self.lineNumberArea = QLineNumberArea(self)
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)
         self.cursorPositionChanged.connect(self.highlightCurrentLine)
-        self.updateLineNumberAreaWidth(0)
+        self.updateLineNumberAreaWidth()
         self.setAcceptDrops(False)
         self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
 
@@ -42,16 +40,15 @@ class QCodeEditor(QPlainTextEdit):
         else:
             super().keyPressEvent(event)
 
-    def lineNumberAreaWidth(self):
+    def updateLineNumberAreaWidth(self):
         digits = 1
         max_value = max(1, self.blockCount())
         while max_value >= 10:
             max_value /= 10
             digits += 1
-        return 7 + self.fontMetrics().horizontalAdvance('9' * digits)
-
-    def updateLineNumberAreaWidth(self, _):
-        self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
+        if digits > 3:
+            self.sp_width = 24 + (digits-3)*8
+        self.setViewportMargins(self.sp_width, 0, 0, 0)
 
     def updateLineNumberArea(self, rect, dy):
         if dy:
@@ -59,12 +56,12 @@ class QCodeEditor(QPlainTextEdit):
         else:
             self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
         if rect.contains(self.viewport().rect()):
-            self.updateLineNumberAreaWidth(0)
+            self.updateLineNumberAreaWidth()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
         cr = self.contentsRect()
-        self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height()))
+        self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.sp_width, cr.height()))
 
     def highlight_brkp(self):
         if not self.isReadOnly():
@@ -103,7 +100,7 @@ class QCodeEditor(QPlainTextEdit):
             if hasattr(self, "past_line"):
                 self.xtra.remove(self.past_line)
             selection = QTextEdit.ExtraSelection()
-            lineColor = QColor(60, 64, 72).lighter(40)
+            lineColor = QColor(60, 64, 72).lighter(60)
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.Property.FullWidthSelection, True)
             selection.cursor = self.textCursor()
@@ -115,10 +112,6 @@ class QCodeEditor(QPlainTextEdit):
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.lineNumberArea)
 
-        barColor = QColor(60, 64, 72)
-
-        painter.fillRect(event.rect(), barColor)
-
         block = self.firstVisibleBlock()
         blockNumber = block.blockNumber()
         top = self.blockBoundingGeometry(block).translated(self.contentOffset()).top()
@@ -129,8 +122,7 @@ class QCodeEditor(QPlainTextEdit):
         while block.isValid() and (top <= event.rect().bottom()):
             if block.isVisible() and (bottom >= event.rect().top()):
                 number = str(blockNumber + 1)
-                painter.setPen(QColor(120, 124, 132))
-                painter.drawText(0, int(top), self.lineNumberArea.width(), height, Qt.AlignmentFlag.AlignRight, number)
+                painter.drawText(0, int(top), self.lineNumberArea.width()-3, height, Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight, number)
             block = block.next()
             top = bottom
             bottom = top + self.blockBoundingRect(block).height()

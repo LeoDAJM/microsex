@@ -9,6 +9,7 @@ from modulo_ALU import *
 from modulo_USC import *
 from modulo_USCE import *
 from modulo_CC import *
+from FUN.CONF.dict_general import dict_Microsex
 
 
 class Principal(QMainWindow):
@@ -81,9 +82,24 @@ class Principal(QMainWindow):
 
 class mod_CC(ComputadorCompleto):
     def closeEvent(self, event):
-        self.cams = Principal()
-        self.cams.show()
-        self.close()
+
+        msg_box = QMessageBox(self)
+        msg_box.setWindowTitle("Confirmación")
+        msg_box.setText("¿Deseas salir del Módulo CC?")
+        msg_box.setIcon(QMessageBox.Icon.Question)
+        volver_menu_button = msg_box.addButton("Volver al menú", QMessageBox.ButtonRole.AcceptRole)
+        salir_button = msg_box.addButton("Salir", QMessageBox.ButtonRole.DestructiveRole)
+        cancelar_button = msg_box.addButton("Cancelar", QMessageBox.ButtonRole.RejectRole)
+        msg_box.exec()
+        if msg_box.clickedButton() == volver_menu_button:
+            self.cams = Principal()
+            self.cams.show()
+            self.close()
+        elif msg_box.clickedButton() == salir_button:
+            QApplication.quit()
+        else:
+            event.ignore()
+        
 
 class mod_UBC(UBC):
     def closeEvent(self, event):
