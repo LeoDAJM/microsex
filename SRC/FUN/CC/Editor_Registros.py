@@ -60,7 +60,8 @@ class EditorRegistros(QWidget):
 
         self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_Registro_F.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_banderas = [0]*6
+        
+        self.lbl_banderas = [QLabel()] * 6  # Initialize a list with 6 placeholders
         for i in range(6):
             self.lbl_banderas[i] = QLabel(banderas[i],self)
 
