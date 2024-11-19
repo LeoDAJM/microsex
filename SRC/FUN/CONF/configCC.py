@@ -59,3 +59,6 @@ estilo = stylesheet()
 lang_init = "esp"
 lang = None
 composition = 1
+# LCD
+rows_LCD = 4
+cols_LCD = 16

@@ -139,7 +139,7 @@ def verificar_segmento_datos(DATOS, origen):
                 mensaje,
             )
     if errores == 0:
-        mensaje = mensaje + f"\n ** OK **: {_dic_sel['allRight_ds']}"
+        mensaje = f"{mensaje}\n ** OK **: {_dic_sel['allRight_ds']}"
     else:
         mensaje = f"{mensaje}\n ** {_dic_sel['tot_ds_eRR']} {errores}"
     return errores, mensaje, tabla_simbolos, lista_simbolos, direccion

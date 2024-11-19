@@ -226,6 +226,48 @@ estilos_gui = {
                 }
         QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 background: none;
+                }""",
+"LCD_":  """
+        QTextEdit {
+                border: 2px solid rgb(70, 74, 82);
+                color: rgb(40,255,40);
+                background: rgb(0, 0, 0);
+                border-radius: 10px;
+                outline: 20px solid rgba(0, 255, 255, 1);
+                margin: 10px;
+        }
+        QScrollBar:vertical {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                width: 15px;
+                margin: 22px 0 22px 0;
+                }
+        QScrollBar::handle:vertical {
+                background: rgb(200, 200, 200);
+                min-height: 20px;
+                }
+        QScrollBar::add-line:vertical {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                height: 20px;
+                subcontrol-position: bottom;
+                subcontrol-origin: margin;
+                }
+        QScrollBar::sub-line:vertical {
+                border: 1px solid grey;
+                background: rgb(20, 20, 20);
+                height: 20px;
+                subcontrol-position: top;
+                subcontrol-origin: margin;
+                }
+        QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+                border: 1px solid grey;
+                width: 3px;
+                height: 3px;
+                background: rgb(200, 200, 200);
+                }
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
                 }"""
 }
 

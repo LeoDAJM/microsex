@@ -8,6 +8,7 @@ import sys
 import FUN.CONF.config_custom as config2
 from FUN.CONF.configCC import lang_init
 from FUN.CC.portA import *
+from FUN.CC.display import *
 import rc_icons
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
@@ -155,6 +156,16 @@ class ComputadorCompleto(QMainWindow):
         fontMetrics = QFontMetricsF(ed_font)
         spaceWidth = fontMetrics.horizontalAdvance(" ")
         self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
+        lcd_font = QFont(
+            self.families[0], min(max(event.size().height() // 45, 15), 20)
+        )
+        lcd_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 200)
+        self.display.display16x2.setFont(lcd_font)
+        self.display.display16x2.setMinimumWidth(int(QFontMetricsF(lcd_font).horizontalAdvance(" "))*(config.cols_LCD+1))
+        self.display.display16x2.setMaximumWidth(int(QFontMetricsF(lcd_font).horizontalAdvance(" "))*(config.cols_LCD+6))
+        
+        #spaceWidth = QFontMetricsF(lcd_font).horizontalAdvance(" ")
+        #self.display.display16x2.setFixedWidth(int(spaceWidth*16)+30)
 
         for child in self.registros.findChildren(QWidget):
             child.setFont(self.fuente_mid)
@@ -210,12 +221,11 @@ class ComputadorCompleto(QMainWindow):
         self.monitor.setReadOnly(True)
         self.monitor.setFont(self.fuente)
         self.monitor.setStyleSheet(config.estilo["scrolled_monitor"])
-        
-
 
         self.main_tab = QTabWidget(self, tabPosition=QTabWidget.TabPosition.West, movable=True)
         self.main_tab.addTab(self.editor_codigo, self._dict_sel["editor_tab"])
         self.main_tab.addTab(self.lst, self._dict_sel["lst_tab"])
+        self.main_tab.addTab(self.display, "Display")
 
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.mem["s"], 3)
@@ -368,10 +378,11 @@ class ComputadorCompleto(QMainWindow):
         self.lst = lst_table()
         self.editor_codigo = EditorCodigo()
         self.registros = EditorRegistros()
+        self.display = LCD()
         self.mem = {
-            "s": memory("stack"),
-            "c": memory("code"),
-            "d": memory("data"),
+            "s": memory("stack", self),
+            "c": memory("code", self),
+            "d": memory("data", self),
         }
         self.portA = IOPortA()
         self.monitor = QTextEdit(self)
@@ -1185,6 +1196,9 @@ class ComputadorCompleto(QMainWindow):
             self.comp_1()
         config.composition = 1 if dsg == "new" else 0
         self.registros.redraw()
+    
+    def _upd_LCD(self, data, pos_ini):
+        self.display.update(data, pos_ini)
         
 
 
