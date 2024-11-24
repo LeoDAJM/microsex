@@ -172,6 +172,8 @@ class ComputadorCompleto(QMainWindow):
         for child in self.menuBar().findChildren(QWidget):
             child.setFont(self.fuente_mid)
         self.toolbar.setFont(self.fuente_min)
+        self.lst.table.setFont(self.fuente_mid)
+        self.lst.table.setWordWrap(False)
         super().resizeEvent(event)
 
 
