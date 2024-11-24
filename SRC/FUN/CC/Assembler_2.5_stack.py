@@ -1,3 +1,6 @@
+Index_SSEG = False if not (".SSEG" in DATOS) else DATOS.index([".SSEG"])
+    Lim_Sup = Indice_Codigo if not (".SSEG" in DATOS) else Index_SSEG
+
 """
 Los símbolos son guardados en la tabla de símbolos:
 
@@ -33,99 +36,33 @@ palabras_reservadas.extend(reservados)
 
 numeros = tuple(str(i) for i in string.digits)
 
-def verificar_segmento_datos(DATOS, origen):
+def validate_sseg(DATOS, origen):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     errores = 0
-    mensaje = ""
-    tabla_simbolos = []
-    lista_simbolos = {}
-    simbolos = []
-    valores = {}
-    direccion = 0
-    phantom_vars_ct = 0
-
-    Indice_Datos = DATOS.index([".DSEG"])
-    Indice_Codigo = DATOS.index([".CSEG"])
-    Index_SSEG = False if not (".SSEG" in DATOS) else DATOS.index([".SSEG"])
-    Lim_Sup = Indice_Codigo if not (".SSEG" in DATOS) else Index_SSEG
-
-    for org in origen:
-        if org < Indice_Datos + 1:
-            direccion = origen[org]
-
-    for i in range(Indice_Datos + 1, Lim_Sup):
-
-        if len(DATOS[i]) == 1:
-            errores, mensaje = err_sintaxis(errores, mensaje, i)
-
-        if len(DATOS[i]) == 2:
-            simbolo_correcto = 1
-            directiva = DATOS[i][0]
-            if directiva in [".DB", ".RB"]:
-                simbolo = f"{chr(219)}_nc{phantom_vars_ct}"
-                #simbolo = " "
-                contenido = DATOS[i][1]
-                if directiva in directivas_dseg:
-                    simbolo_correcto += 1
-                elif directiva.startswith("."):
-                    errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
-                else:
-                    errores, mensaje = err_sintaxis(errores, mensaje, i)
-                errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion = insum_if(
-                    tabla_simbolos,
-                    lista_simbolos,
-                    simbolos,
-                    direccion,
-                    directiva,
-                    simbolo,
-                    valores,
-                    i,
-                    simbolo_correcto,
-                    contenido,
-                    errores,
-                    mensaje,
-                )
-            elif directiva != ".ORG":
-                if directiva.startswith("."):
-                    errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
-                else:
-                    errores, mensaje = err_sintaxis(errores, mensaje, i)
-            else:
-                direccion = origen[i + 1]
-
-        elif len(DATOS[i]) == 3:
-            simbolo_correcto = 0
-            simbolo = DATOS[i][0]
-            directiva = DATOS[i][1]
-            contenido = DATOS[i][2]
-
-            if simbolo.startswith(numeros):
-                errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
-            elif simbolo in palabras_reservadas:
-                errores, mensaje = err_simbolo_palabra_reservada(
-                    errores, mensaje, simbolo, i
-                )
-            elif simbolo in new_reserved_word:
-                errores, mensaje = err_simbolo_exp_reservada(
-                    errores, mensaje, chr(219), i
-                )
-            elif simbolo in simbolos:
-                errores, mensaje = err_simbolo_definido_antes(
-                    errores, mensaje, simbolo, i
-                )
-            elif simbolo.isalnum() or ("_" in simbolo):
-                simbolo_correcto += 1
-            else:
-                errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
-
+    mensaje = ''
+    m_prog = {}
+    listado = {}
+    Index_CSEG = DATOS.index([".CSEG"])
+    Index_SSEG = DATOS.index([".SSEG"])
+    data_sec = DATOS[Index_SSEG:Index_CSEG][1:]
+    if not all(data_sec,""):
+        eRR_stack()
+    comm = DATOS[Index_SSEG]
+    if len(comm) != 1:
+        errores, mensaje = err_sintaxis(errores, mensaje, i)
+    if len(comm) == 2:
+        simbolo_correcto = 1
+        st_size = 
+        if directiva in [".DB", ".RB"]:
+            simbolo = f"{chr(219)}_nc{phantom_vars_ct}"
+            #simbolo = " "
+            contenido = DATOS[i][1]
             if directiva in directivas_dseg:
                 simbolo_correcto += 1
-
             elif directiva.startswith("."):
                 errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
             else:
                 errores, mensaje = err_sintaxis(errores, mensaje, i)
-
             errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion = insum_if(
                 tabla_simbolos,
                 lista_simbolos,
@@ -140,6 +77,56 @@ def verificar_segmento_datos(DATOS, origen):
                 errores,
                 mensaje,
             )
+        elif directiva != ".ORG":
+            if directiva.startswith("."):
+                errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
+            else:
+                errores, mensaje = err_sintaxis(errores, mensaje, i)
+        else:
+            direccion = origen[i + 1]
+    elif len(comm) == 3:
+        simbolo_correcto = 0
+        simbolo = DATOS[i][0]
+        directiva = DATOS[i][1]
+        contenido = DATOS[i][2]
+        if simbolo.startswith(numeros):
+            errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
+        elif simbolo in palabras_reservadas:
+            errores, mensaje = err_simbolo_palabra_reservada(
+                errores, mensaje, simbolo, i
+            )
+        elif simbolo in new_reserved_word:
+            errores, mensaje = err_simbolo_exp_reservada(
+                errores, mensaje, chr(219), i
+            )
+        elif simbolo in simbolos:
+            errores, mensaje = err_simbolo_definido_antes(
+                errores, mensaje, simbolo, i
+            )
+        elif simbolo.isalnum() or ("_" in simbolo):
+            simbolo_correcto += 1
+        else:
+            errores, mensaje = err_simbolo_invalido(errores, mensaje, simbolo, i)
+        if directiva in directivas_dseg:
+            simbolo_correcto += 1
+        elif directiva.startswith("."):
+            errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
+        else:
+            errores, mensaje = err_sintaxis(errores, mensaje, i)
+        errores, mensaje, tabla_simbolos, lista_simbolos, simbolos, valores, direccion = insum_if(
+            tabla_simbolos,
+            lista_simbolos,
+            simbolos,
+            direccion,
+            directiva,
+            simbolo,
+            valores,
+            i,
+            simbolo_correcto,
+            contenido,
+            errores,
+            mensaje,
+        )
     if errores == 0:
         mensaje = f"{mensaje}\n ** OK **: {_dic_sel['allRight_ds']}"
     else:
