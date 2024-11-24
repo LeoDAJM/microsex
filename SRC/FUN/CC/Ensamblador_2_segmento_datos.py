@@ -55,7 +55,6 @@ def verificar_segmento_datos(DATOS, origen):
             direccion = origen[org]
     
     data_orig = direccion//16
-    print(direccion)
 
     for i in range(Indice_Datos + 1, Lim_Sup):
 

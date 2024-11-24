@@ -28,7 +28,6 @@ def verificacion_codigo(DATOS: list, name: str):
     if errores == 0:
         errores, mensaje_dseg, tabla_simbolos, listado_sim,cont_prog, simbolos, valores, orig["d"] = verificar_segmento_datos(DATOS, origen)
     if errores == 0:
-        tabla_simbolos, listado_etq = verificar_etiquetas(DATOS, origen, tabla_simbolos, cont_prog)
         orig["s"] = cont_prog//16
         errores, msg_sseg, cont_prog, to_cseg, st_dir = validate_sseg(DATOS, origen,
                 tabla_simbolos, simbolos, valores, cont_prog)
@@ -36,6 +35,7 @@ def verificacion_codigo(DATOS: list, name: str):
             orig["s"] = None
     if errores == 0:
         orig["c"] = cont_prog//16
+        tabla_simbolos, listado_etq = verificar_etiquetas(DATOS, origen, tabla_simbolos, cont_prog, to_cseg)
         errores, mensaje_cseg, m_prog, listado_prog = verificar_segmento_codigo(DATOS, origen, tabla_simbolos, cont_prog,
                 to_cseg, st_dir)
         mensaje = mensaje + mensaje_cseg + msg_sseg + mensaje_dseg

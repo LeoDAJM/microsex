@@ -34,7 +34,6 @@ class IOPortA(QWidget):
         self.button[i].setCheckable(True)  # Hacer que los botones sean seleccionables (como un interruptor)
         self.button[i].clicked.connect(self.on_button_click)  # Conectar la acción al evento
         self.button[i].setMinimumHeight(50)
-        self.button[i].setMinimumWidth(0)
         self.button[i].setStyleSheet(config2.styles_cs["button_port"])
 
     def on_button_click(self):
@@ -50,6 +49,7 @@ class IOPortA(QWidget):
     def reset(self):
         for i in range(8):
             self.button[i].setChecked(False)
+            config.portA[i] = 0
 
     def upd_lang(self, lang: str):
         self._lang = lang

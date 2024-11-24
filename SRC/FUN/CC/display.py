@@ -8,6 +8,8 @@ from FUN.CONF.dict_eng_esp import dict_others
 class LCD(QWidget):
     def __init__(self):
         super().__init__()
+        self._lang = config.lang_init
+        self._dict_sel = dict_others[self._lang]
         self.initUI()
         
 
@@ -16,7 +18,7 @@ class LCD(QWidget):
         h_layout = QVBoxLayout()
         h_layout.addStretch(1)
         self.display16x2 = QTextEdit()
-        self.lbl = QLabel("LCD Display", self)
+        self.lbl = QLabel(self._dict_sel["lcd_t"], self)
         self.lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         h_layout.addWidget(self.lbl,alignment=Qt.AlignmentFlag.AlignHCenter)
         h_layout.addWidget(self.display16x2,alignment=Qt.AlignmentFlag.AlignVCenter)
@@ -53,4 +55,4 @@ class LCD(QWidget):
     def upd_lang(self, lang: str):
         self._lang = lang
         self._dict_sel = dict_others[self._lang]
-        self.lbl.setText(self._dict_sel["pA"])
+        self.lbl.setText(self._dict_sel["lcd_t"])

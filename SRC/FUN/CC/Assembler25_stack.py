@@ -40,12 +40,10 @@ def validate_sseg(DATOS, origen, sym_t, sym, vals, dir):
     mensaje = ''
     Index_CSEG = DATOS.index([".CSEG"])
     Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
-    data_sec = DATOS[Index_SSEG:Index_CSEG][1:]
     
     if Index_SSEG is not False:
         comm = DATOS[Index_SSEG]
         if len(comm) == 2:
-            print(dir,"pre")
             st_size = comm[1]
             errores, mensaje, direccion, st_size, to_cseg= insum_if(sym_t,
             sym,
@@ -55,7 +53,6 @@ def validate_sseg(DATOS, origen, sym_t, sym, vals, dir):
             st_size,
             errores,
             mensaje)
-            print(direccion,"post")
             st_dir = direccion - 1
         else:
             errores, mensaje = err_sintaxis(errores, mensaje, Index_SSEG)
@@ -137,7 +134,6 @@ def insum_if(
                 errores, mensaje = err_contenido_invalido(
                     errores, mensaje, contenido, i
                 )
-                print("eRRRR")
         except ValueError:
             errores += 1
             mensaje = (

@@ -24,7 +24,6 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
     Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
 
     if to_cseg:
-        print(st_dir, direccion)
         _cont_m_prog = [195, st_dir//256, st_dir%256]  # C# = 195
         listado[Index_SSEG + 1] = [
             hex(direccion),
@@ -36,6 +35,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
         for n in range(3):
             m_prog[direccion] = hex(_cont_m_prog[n])
             direccion += 1
+
     for i in range (Indice_Codigo + 1, Indice_Fin):
         if len(DATOS[i]) == 1:
             instruccion = DATOS[i][0]
@@ -145,9 +145,6 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
 
         elif len(DATOS[i]) > 2:
             errores, mensaje = err_sintaxis(errores, mensaje, i)
-
-            # print(i, DATOS[i])
-            # print({direccion: hex(contenido_m_prog[n])})
 
     if errores == 0:
         mensaje = f'{mensaje}\n ** OK **: {_dic_sel["allRight_cs"]}'

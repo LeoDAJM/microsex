@@ -227,7 +227,7 @@ class ComputadorCompleto(QMainWindow):
         self.main_tab = QTabWidget(self, tabPosition=QTabWidget.TabPosition.West, movable=True)
         self.main_tab.addTab(self.editor_codigo, self._dict_sel["editor_tab"])
         self.main_tab.addTab(self.lst, self._dict_sel["lst_tab"])
-        self.main_tab.addTab(self.display, "Display")
+        self.main_tab.addTab(self.display, "LCD 16x4")
 
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.mem["s"], 3)
@@ -365,6 +365,7 @@ class ComputadorCompleto(QMainWindow):
         self.menu_elems[to_en].setEnabled(True)
         self.menu_elems[to_dis2].setEnabled(False)
         self.menu_elems[to_en2].setEnabled(True)
+        self.menu[6].menuAction().setVisible(False)
         # endregion
 
         # region ToolBar
@@ -405,7 +406,8 @@ class ComputadorCompleto(QMainWindow):
         self.layout_grid.setRowMinimumHeight(5,0)
         self.layout_grid.setVerticalSpacing(0)
         for i in range(self.layout_grid.columnCount()):
-            self.layout_grid.setColumnStretch(i, 1)
+            self.layout_grid.setColumnStretch(i, 2)
+        self.layout_grid.setColumnStretch(col1+2, 1)
         for i in range(self.layout_grid.rowCount()):
             self.layout_grid.setRowStretch(i, 1)
         self.layout_grid.setColumnStretch(5,0)
@@ -530,23 +532,20 @@ class ComputadorCompleto(QMainWindow):
                         if qty[0] == "s" and config.composition == 0
                         else (ix // 16 - qty[1] // 16, ix % 16)
                     )
-                    try:
-                        if self.mem[qty[0]].table.item(i, j).text() != val:
-                            self.mem[qty[0]].table.item(i, j).setText(val)
-                            self.mem[qty[0]].table.item(i, j).setBackground(
-                                QColor(255, 75, 75, 90)
+                    if self.mem[qty[0]].table.item(i, j).text() != val:
+                        self.mem[qty[0]].table.item(i, j).setText(val)
+                        self.mem[qty[0]].table.item(i, j).setBackground(
+                            QColor(255, 75, 75, 90)
+                        )
+                    else:
+                        self.mem[qty[0]].table.item(i, j).setBackground(
+                            QColor(20, 20, 20)
+                        )
+                        if qty[0] == "c":
+                            self.mem[qty[0]].table.item(i, j).setForeground(
+                                QColor(120, 150, 175)
                             )
-                        else:
-                            self.mem[qty[0]].table.item(i, j).setBackground(
-                                QColor(20, 20, 20)
-                            )
-                            if qty[0] == "c":
-                                self.mem[qty[0]].table.item(i, j).setForeground(
-                                    QColor(120, 150, 175)
-                                )
-                        break
-                    except:
-                        print(i, j, qty[0])
+                    break
 
     def F_monitor(self):
         bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
@@ -741,7 +740,6 @@ class ComputadorCompleto(QMainWindow):
     # region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
-        print(self._ds)
         self.registros.edit_PIns.setText(format(self._ds["c"] * 16, "X").zfill(4))
         config.PIns = int(self.registros.edit_PIns.text(), 16)
         config2.cs_initial = int(self.registros.edit_PIns.text(), 16)
@@ -878,15 +876,10 @@ class ComputadorCompleto(QMainWindow):
         self.draw_ip()
 
     def draw_ip(self):
-        try:
-            self.mem["c"].table.item(self.post // 16, self.post % 16).setBackground(
-                QColor(0, 255, 100)
-            )
-        except:
-            print(self.post // 16, self.post % 16)
+        self.mem["c"].table.item(self.post // 16, self.post % 16).setBackground(
+                QColor(0, 255, 100))
         self.mem["c"].table.item(self.post // 16, self.post % 16).setForeground(
-            QColor(20, 60, 134)
-        )
+            QColor(20, 60, 134))
         if self.mode != "loaded":
             if config.PIns != "FIN":
                 detected = max(
@@ -1187,6 +1180,7 @@ class ComputadorCompleto(QMainWindow):
         self.mem["s"].upd_lang(self.lang_sel)
         self.mem["c"].upd_lang(self.lang_sel)
         self.mem["d"].upd_lang(self.lang_sel)
+        self.display.upd_lang(self.lang_sel)
 
     def chng_dsg(self, dsg: str):
         to_en = 24 if dsg == "new" else 23

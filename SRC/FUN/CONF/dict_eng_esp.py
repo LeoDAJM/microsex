@@ -341,6 +341,7 @@ dict_others = {
         "stack": dict_CC["esp"]["SS"],
         "code": dict_CC["esp"]["CS"],
         "data": dict_CC["esp"]["DS"],
+        "lcd_t": "Pantalla LCD",
     },
     "eng": {
         #port A
@@ -350,6 +351,7 @@ dict_others = {
         "stack": dict_CC["eng"]["SS"],
         "code": dict_CC["eng"]["CS"],
         "data": dict_CC["eng"]["DS"],
+        "lcd_t": "LCD Display",
     }
     # portA
 

@@ -8,13 +8,15 @@ instrucciones_arg = argumentos_instrucciones()
 nemonicos = list(instrucciones_arg.keys())
 
 
-def verificar_etiquetas(DATOS, origen, TS, direccion):
+def verificar_etiquetas(DATOS, origen, TS, direccion, to_cseg: bool):
     
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
 
     errores = 0
     lista_etiquetas = {}
+    if to_cseg:
+        direccion += 3
 
     for i in range (Indice_Codigo + 1, Indice_Fin):
 
