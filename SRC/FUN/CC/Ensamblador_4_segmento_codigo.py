@@ -12,7 +12,7 @@ instrucciones_arg = argumentos_instrucciones()
 nemonicos = list(instrucciones_arg.keys())
 
 
-def verificar_segmento_codigo(DATOS, origen, TS, direccion):
+def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_dir: int):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
@@ -20,9 +20,23 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
     mensaje = ''
     m_prog = {}
     listado = {}
+    Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
+    Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
 
+    if to_cseg:
+        print(st_dir, direccion)
+        _cont_m_prog = [195, st_dir//256, st_dir%256]  # C# = 195
+        listado[Index_SSEG + 1] = [
+            hex(direccion),
+            [
+                hex(_cont_m_prog[i])
+                for i in range(3)
+            ],
+        ]
+        for n in range(3):
+            m_prog[direccion] = hex(_cont_m_prog[n])
+            direccion += 1
     for i in range (Indice_Codigo + 1, Indice_Fin):
-
         if len(DATOS[i]) == 1:
             instruccion = DATOS[i][0]
 
@@ -64,8 +78,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                     errores, mensaje = err_instruccion_desconocida(errores, mensaje, instruccion, i)
                 else:
 
-                    argumentos_permitidos = instrucciones_arg[instruccion]
-                    argumentos = argumento.split(',')
+                    argumentos_permitidos = instrucciones_arg[instruccion]  # [['acumuladores', 'punteros', 'ppila'],['acumuladores', 'inmediato', 'indexado', 'directo']]
+                    argumentos = argumento.split(',') # ["P", dir+st_size]
 
                     if len(argumentos) != len(argumentos_permitidos):
                         errores, mensaje = err_argumento_invalido(errores, mensaje, argumento, i)
@@ -142,6 +156,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
         mensaje = f'{mensaje}\n ** {_dic_sel["tot_cs_eRR"]}: {errores}'
 
     return errores, mensaje, m_prog, listado
+
+#errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento1, argumentos_permitidos[0], i)
 
 def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, permitidos, indice):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]

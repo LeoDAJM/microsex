@@ -16,8 +16,8 @@ def verificar_directivas(DATOS):
             errores, mensaje = err_inexistencia_directivas(errores, mensaje, _dic_sel[k])
         elif i[0] > 1:
             errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, i[0], i[1])
-    
-    csseg = DATOS[0].count(['.SSEG'])
+    Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
+    csseg = Datac0.count(['.SSEG'])
     if csseg > 1:
         errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, csseg, '.SSEG')
 
@@ -45,11 +45,9 @@ def verificar_directivas(DATOS):
                             origen[i+1] = int(contenido)
                         else:
                             errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
-
                     else:
                         errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
-
-                elif directiva.startswith('.') and directiva.replace(" ", "") not in [".DB", ".RB"]:
+                elif directiva.startswith('.') and directiva.replace(" ", "") not in [".DB", ".RB", ".SSEG"]:
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
 
         except ValueError:

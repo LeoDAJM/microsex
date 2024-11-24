@@ -530,20 +530,23 @@ class ComputadorCompleto(QMainWindow):
                         if qty[0] == "s" and config.composition == 0
                         else (ix // 16 - qty[1] // 16, ix % 16)
                     )
-                    if self.mem[qty[0]].table.item(i, j).text() != val:
-                        self.mem[qty[0]].table.item(i, j).setText(val)
-                        self.mem[qty[0]].table.item(i, j).setBackground(
-                            QColor(255, 75, 75, 90)
-                        )
-                    else:
-                        self.mem[qty[0]].table.item(i, j).setBackground(
-                            QColor(20, 20, 20)
-                        )
-                        if qty[0] == "c":
-                            self.mem[qty[0]].table.item(i, j).setForeground(
-                                QColor(120, 150, 175)
+                    try:
+                        if self.mem[qty[0]].table.item(i, j).text() != val:
+                            self.mem[qty[0]].table.item(i, j).setText(val)
+                            self.mem[qty[0]].table.item(i, j).setBackground(
+                                QColor(255, 75, 75, 90)
                             )
-                    break
+                        else:
+                            self.mem[qty[0]].table.item(i, j).setBackground(
+                                QColor(20, 20, 20)
+                            )
+                            if qty[0] == "c":
+                                self.mem[qty[0]].table.item(i, j).setForeground(
+                                    QColor(120, 150, 175)
+                                )
+                        break
+                    except:
+                        print(i, j, qty[0])
 
     def F_monitor(self):
         bool_flags = [x.text() == "1" for x in self.registros.edit_banderas]
@@ -738,6 +741,7 @@ class ComputadorCompleto(QMainWindow):
     # region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
+        print(self._ds)
         self.registros.edit_PIns.setText(format(self._ds["c"] * 16, "X").zfill(4))
         config.PIns = int(self.registros.edit_PIns.text(), 16)
         config2.cs_initial = int(self.registros.edit_PIns.text(), 16)
@@ -749,12 +753,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            with open(self.nombre_archivo, encoding="utf-8") as archivo:
-                programa = archivo.readlines()
-                cod = list(programa)
-            err, msj, mp, ls, ts, libs = verificacion_codigo(
-                programa, self.nombre_archivo
-            )
+            cod, err, msj, mp, ls, ts, libs = self.open_toload()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
@@ -765,6 +764,16 @@ class ComputadorCompleto(QMainWindow):
                 self.portA.reset()
                 self.load(self.nombre_archivo, cod, ls, ts, libs)
                 self.state_def(True, True, True, True)
+
+    def open_toload(self):
+        with open(self.nombre_archivo, encoding="utf-8") as archivo:
+            programa = archivo.readlines()
+            cod = list(programa)
+        err, msj, mp, ls, ts, libs, self._ds = verificacion_codigo(
+                programa, self.nombre_archivo
+            )
+        
+        return cod,err,msj,mp,ls,ts,libs
 
     def state_def(
         self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool, mems=True
@@ -790,19 +799,12 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.actions()[arg3].setEnabled(arg1)
 
     def cargar(self):
-        self.lang_sel = "esp"
-        
         if self.nombre_archivo == False:
             self.save_fcn("como")
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            with open(self.nombre_archivo) as archivo:
-                programa = archivo.readlines()
-                cod = list(programa)
-            err, msj, mp, ls, ts, libs = verificacion_codigo(
-                programa, self.nombre_archivo
-            )
+            cod, err, msj, mp, ls, ts, libs = self.open_toload()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
@@ -816,7 +818,7 @@ class ComputadorCompleto(QMainWindow):
         ]
         self.lst.update(self.datalst)
         config.m_prog.update(self.mp)
-        self.extraer_valores()
+        #self.extraer_valores()
         self.ds_op()
         self.regen_all()
         self.update_segments(self.mp)
@@ -876,9 +878,12 @@ class ComputadorCompleto(QMainWindow):
         self.draw_ip()
 
     def draw_ip(self):
-        self.mem["c"].table.item(self.post // 16, self.post % 16).setBackground(
-            QColor(0, 255, 100)
-        )
+        try:
+            self.mem["c"].table.item(self.post // 16, self.post % 16).setBackground(
+                QColor(0, 255, 100)
+            )
+        except:
+            print(self.post // 16, self.post % 16)
         self.mem["c"].table.item(self.post // 16, self.post % 16).setForeground(
             QColor(20, 60, 134)
         )

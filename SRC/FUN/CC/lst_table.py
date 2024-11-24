@@ -23,11 +23,11 @@ class lst_table(QWidget):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.table.setShowGrid(False)
         vb2 = QVBoxLayout()
         vb2.addWidget(self.table)
         self.setLayout(vb2)
         vb2.setContentsMargins(0,0,0,0)
-
     
     def update(self, lst_data: list):
         lbl_rows = [x[0] for x in lst_data]
@@ -39,7 +39,7 @@ class lst_table(QWidget):
         for i, fila in enumerate(lst_data):
             for j, valor in enumerate(fila[1:]):
                 self.table.setItem(i, j, QTableWidgetItem(str(valor).strip()))
-                self.table.item(i, j).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
+                self.table.item(i, j).setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
 
