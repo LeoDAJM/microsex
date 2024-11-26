@@ -122,6 +122,14 @@ def verificar_argumento(argumento, permitidos):
                 return 'N'
             else:
                 intento += 1
+        
+        elif perm == 'vector':
+            if argumento.startswith("#"):
+                return 'V'
+            elif cantidad_intentos == 1:
+                return 'V'
+            else:
+                intento += 1
 
 
         elif perm == 'directo':

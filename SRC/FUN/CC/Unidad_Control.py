@@ -27,11 +27,9 @@ def ciclo_instruccion():
     elif direccionamiento_inh == 1 and config.senal_control_LR[18] == 0:
         salir()
         return
-
     elif direccionamiento_idx == 1:
         index()
         return
-
     if config.senal_control_LR[18] == 1:
         retorno_subrutina()
         return
@@ -49,6 +47,11 @@ def ciclo_instruccion():
 
     config.RDat[8:16] = hex_a_op(config.m_prog[config.RDir])
     config.PIns += 1
+    
+    if config.senal_control_LR[19] == 1:
+        call_vector_routine()
+        return
+    
     config.RDir = config.PIns
     config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])
     if direccionamiento_inm == 1:
@@ -87,6 +90,24 @@ def llamada_subrutina():
 
     config.PIns = op_a_dec(config.RDat)
 
+    salir()
+    return
+
+def call_vector_routine():
+    config.PP -= 1
+    config.RDir = config.PP
+
+    config.PIns_H = str(config.PIns // 256)
+    config.m_prog[config.RDir] = dec_a_hex(config.PIns_H)
+
+    config.PP -= 1
+    config.RDir = config.PP
+    config.PIns_L = str(config.PIns % 256)
+    config.m_prog[config.RDir] = dec_a_hex(config.PIns_L)
+
+    config.RDat[:8] = [0]*8
+    #config.RDat[:8], config.RDat[8:] = config.RDat[8:], config.RDat[:8]
+    config.PIns = vec_2_dec(config.RDat)
     salir()
     return
 
@@ -209,7 +230,7 @@ def port():
     salir()
     return
 
-def salir():
+def  salir():
 
     computador_completo()
 
@@ -217,7 +238,10 @@ def salir():
     senal_ramificacion = logica_ramificacion(config.senal_control_LR, banderas_resultado)
 
     if senal_ramificacion == 1:
-        config.PIns = int(op_a_dec(config.RDat))
+        if config.senal_control_LR[19] == 0:
+            config.PIns = int(op_a_dec(config.RDat))
+        else:
+            config.PIns = int(vec_2_dec(config.RDat))
 
     elif config.hacer_alto_contador == 1:
         config.PIns += 1
@@ -234,14 +258,14 @@ def distribucion_senales():
     config.senal_control_USC     = config.senal_control[:31]
     config.lectura_escritura     = config.senal_control[22]
     config.modo_direccionamiento = config.senal_control[31:35]
-    config.senal_control_LR      = config.senal_control[35:54]
-    config.hacer_alto_contador   = config.senal_control[54]
-    config.senal_control_PD      = config.senal_control[55:61]
-    config.guardado_punteros     = config.senal_control[61]
-    config.senal_control_CP      = config.senal_control[62]
-    config.mux_interfaz_memoria  = config.senal_control[63:66]
-    config.uso_pila              = config.senal_control[66]
-    config.uso_port              = config.senal_control[67]
+    config.senal_control_LR      = config.senal_control[35:55]
+    config.hacer_alto_contador   = config.senal_control[55]
+    config.senal_control_PD      = config.senal_control[56:62]
+    config.guardado_punteros     = config.senal_control[62]
+    config.senal_control_CP      = config.senal_control[63]
+    config.mux_interfaz_memoria  = config.senal_control[64:67]
+    config.uso_pila              = config.senal_control[67]
+    config.uso_port              = config.senal_control[68]
 
 
 def computador_completo():

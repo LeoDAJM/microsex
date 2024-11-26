@@ -49,7 +49,8 @@ def logica_ramificacion(senal_control, registro_F): # Sólo las señales S[35:54
 
     bsr = senal_control[17]             # S[52]
     ret = senal_control[18]
+    srv = senal_control[19]
 
-    habilitacion_carga = int(ramificacion_1 or ramificacion_2 or bsr or ret)
+    habilitacion_carga = int(ramificacion_1 or ramificacion_2 or bsr or ret or srv)
 
     return habilitacion_carga

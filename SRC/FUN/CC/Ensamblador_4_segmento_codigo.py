@@ -219,6 +219,26 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
                 intento += 1
                 errores = errores_previos + 1
                 mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+
+        elif perm == 'vector':
+            if argumento.startswith("#"):
+                simbolo = 'V'
+                argumento = argumento[1::]
+                try:
+                    argumento = eval(argumento)
+                    if argumento > 31:
+                        intento += 1
+                        errores = errores_previos + 1
+                        mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+                    else:
+                        return errores_previos, mensaje, simbolo, [argumento*8]
+                except NameError:
+                    intento += 1
+                    errores = errores_previos + 1
+                    mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+            else:
+                intento += 1
+
         elif perm == 'indexado':
             if argumento.startswith('IX'):
                 argumento = argumento.split('+')
