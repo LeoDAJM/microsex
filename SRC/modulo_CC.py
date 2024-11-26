@@ -1005,7 +1005,7 @@ class ComputadorCompleto(QMainWindow):
         if msg_str.upper() == self._dict_sel["imp"].upper():
             self.msg.setWindowTitle(self._dict_sel["ld"])
             if row is not None:
-                self.btt_dialog.clicked.connect(self.csv2mem(row))
+                self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
         else:
             self.msg.setWindowTitle(self._dict_sel["dmp"])
             self.btt_dialog.clicked.connect(self.save_fun)
