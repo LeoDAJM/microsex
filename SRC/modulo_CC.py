@@ -930,8 +930,11 @@ class ComputadorCompleto(QMainWindow):
     def csv_gen(self, f, strs):
         writer = csv.writer(f)
         # Guardado de ORG
-        org_data = ["ORG leaps SS,CS,DS"]
-        org_data.extend(str(i) for i in self._ds.values())
+        org_data = ["ORG SS,CS,DS"]
+        #org_data.extend(self._ds[k] if self.chkbx[k].isChecked() else "" for k, _ in self._ds.items())
+        org_data.extend(self._ds[k] for k, _ in self._ds.items())
+        mode = self.chkbx["s"].isChecked()*4 + self.chkbx["c"].isChecked()*2 + self.chkbx["d"].isChecked()*1
+        org_data.extend([mode])
         writer.writerow(org_data)
         for k, x in self.mem.items():
             if not self.chkbx[k].isChecked():
@@ -945,7 +948,8 @@ class ComputadorCompleto(QMainWindow):
                     )
                     or self.response_clear != QMessageBox.StandardButton.Yes
                 ):
-                    row_data = [str(i)]
+                    row_data = [x.table.verticalHeaderItem(i).text()]
+                    #row_data = [str(i)]
                     row_data.extend(
                         x.table.item(i, j).text() for j in range(x.table.columnCount())
                     )
@@ -1000,10 +1004,11 @@ class ComputadorCompleto(QMainWindow):
         self.chkbx["d"] = QCheckBox(text=self._dict_sel["DS"])
         if msg_str.upper() == self._dict_sel["imp"].upper():
             self.msg.setWindowTitle(self._dict_sel["ld"])
-            self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
+            if row is not None:
+                self.btt_dialog.clicked.connect(self.csv2mem(row))
         else:
             self.msg.setWindowTitle(self._dict_sel["dmp"])
-            self.btt_dialog.clicked.connect(lambda: self.save_fun)
+            self.btt_dialog.clicked.connect(self.save_fun)
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
         for x, i in self.chkbx.items():
@@ -1038,35 +1043,45 @@ class ComputadorCompleto(QMainWindow):
 
     def recon_seg(self, csv):
         rows = list(csv)
-        for u in rows:
-            for v in range(max(1, len(u) - 1)):
-                if u[v].lower() == "stack segment":
-                    self.state["s"] = True
-                elif u[v].lower() == "code segment":
-                    self.state["c"] = True
-                elif u[v].lower() == "data segment":
-                    self.state["d"] = True
+        mode = int(rows[0][4])
+        segs = ["d", "c", "s"]
+        for i_s in segs:
+            self.state[i_s] = mode % 2 == 1
+            mode = mode // 2
         return rows
 
     def csv2mem(self, rows):
         mem = None
-        for u in rows:
-            for v in range(max(1, len(u) - 1)):
-                if u[v].lower() in ["stack segment", "code segment", "data segment"]:
-                    mem = (
-                        self.mem[u[v].lower()[0]].table
-                        if self.chkbx[u[v].lower()[0]].isChecked()
-                        else None
-                    )
-                elif u[0].lower() == "org leaps ss,cs,ds":
-                    for k, val in self.state.items():
-                        if val:
-                            self._ds[k] = int(u[self._ds.index(k) + 1])
-                    self.ds_op()
-                    self.regen_all()
-                    break
-                elif mem is not None:
-                    mem.item(int(u[0]), v).setText(u[v + 1].zfill(2).upper())
+        temp = {k: (
+                None
+                if rows[0][num + 1] == "None"
+                else int(rows[0][num + 1])
+            )
+            for num, (k, _) in enumerate(self.state.items())}
+        self._ds = temp
+        self.ds_op()
+        self.regen_all()
+        for u in rows[1:]:
+            try:
+                seg = max(
+                    (
+                        k
+                        for k, v in temp.items()
+                        if v is not None and v <= int(u[0][:3], 16)
+                    ),
+                    key=lambda k: temp[k],
+                    default=None,
+                )
+                values = u[1:]
+                values = ["00" if "" else x for x in values]
+                while len(values) < 16:
+                    values.append("00")
+                if self.state[seg]:
+                    for num, val in enumerate(values):
+                        config.m_prog.update({int(u[0],16)+num: val})
+            except Exception:
+                print(f"eRR_l: {u}")
+        self.update_segments(config.m_prog)
         QMessageBox.information(
             self, self._dict_sel["ld_mssg_t"], self._dict_sel["ld_mssg"]
         )

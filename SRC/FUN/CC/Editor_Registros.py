@@ -297,6 +297,8 @@ class EditorRegistros(QWidget):
         config.AcA = hex_a_op("0")
         config.AcB = hex_a_op("0")
         config.AcC = hex_a_op("0")
+        if isinstance(config2.cs_initial, str):
+            config2.cs_initial = int(config2.cs_initial)
         config.PIns = config2.cs_initial
         for child in self.findChildren(LineEditHex):
             child.setStyleSheet("border: 2px solid rgb(255,255,255);")

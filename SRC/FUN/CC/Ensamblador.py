@@ -19,9 +19,9 @@ def verificacion_codigo(DATOS: list, name: str):
     tabla_simbolos = []
     simbolos = []
     valores = {}
-    orig = {   "d": None,
-                                "s": None,
-                                "c": None}
+    orig = {   "s": None,
+                "c": None,
+                "d": None}
 
     errores, mensaje, origen = verificar_directivas(DATOS)
 
