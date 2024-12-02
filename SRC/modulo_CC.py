@@ -135,14 +135,16 @@ class ComputadorCompleto(QMainWindow):
             return
 
     def resizeEvent(self, event: "QResizeEvent"):  # type: ignore
+        hg = event.size().height()
+        wd = event.size().width()
         self.fuente = QFont(
-            self.families[0], min(max(event.size().height() // 80, 10), 14)
+            self.families[0], min(max(hg // 80, 10), 14, wd // 130)
         )
         self.fuente_mid = QFont(
-            self.families[0], min(max(event.size().height() // 85, 7), 12)
+            self.families[0], min(max(hg // 85, 7), 12, wd // 115)
         )
         self.fuente_min = QFont(
-            self.families[0], min(max(event.size().height() // 100, 6), 10)
+            self.families[0], min(max(hg // 100, 6), 10, wd // 110)
         )
         for _, i in self.mem.items():
             i.table.setFont(self.fuente_mid)
@@ -151,13 +153,17 @@ class ComputadorCompleto(QMainWindow):
 
         ed_font = self.fuente
         ed_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 110)
-        self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_mid)
-        self.editor_codigo.editor.setFont(ed_font)
+        self.editor_codigo.editor.lineNumberArea.setFont(QFont(
+            self.families[0], min(max(hg // 85, 7), 12)
+        ))
+        self.editor_codigo.editor.setFont(QFont(
+            self.families[0], min(max(hg // 85, 7), 12)
+        ))
         fontMetrics = QFontMetricsF(ed_font)
         spaceWidth = fontMetrics.horizontalAdvance(" ")
         self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
         lcd_font = QFont(
-            self.families[0], min(max(event.size().height() // 45, 15), 20)
+            self.families[0], min(max(hg // 45, 15), 20, wd // 60)
         )
         lcd_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 200)
         self.display.display16x2.setFont(lcd_font)
@@ -218,6 +224,7 @@ class ComputadorCompleto(QMainWindow):
         self.bpoints = self.editor_codigo.editor.breakline
         self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
         self.state_lib = False
+        self.monitor.setContentsMargins(0, 0, 0, 0)
         self.monitor.setText(self._dict_sel["txt_mon"])
         self.monitor.setMaximumHeight(100)
         self.monitor.setReadOnly(True)

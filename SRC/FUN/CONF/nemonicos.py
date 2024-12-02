@@ -137,7 +137,7 @@ nemonicos_computador_completo = {
 
 "DIN": [[0x0F], 1], "HIN": [[0x1F], 1], "MIN": [[0x2F], 2],
 "RTI": [[0x3F], 1],
-
+# Deshabilitar INT, Habilitar INT, Mask INT, Return ISR
 }
 
 
