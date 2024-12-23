@@ -3,7 +3,7 @@ from ubc_16 import ubc_16
 from names import ubc_flags
 
 
-def mux4_1(data_in: list[bitarray], s_in: bitarray, bits):
+def mux4_1(data_in: list[bitarray], s_in: bitarray):
 	return data_in[s_in[0]*2 + s_in[1]]
 
 def flags_gen(a_in: bitarray, b_in: bitarray, r_in: bitarray, s_in: bitarray, c_out, h_out):
@@ -18,6 +18,42 @@ def flags_gen(a_in: bitarray, b_in: bitarray, r_in: bitarray, s_in: bitarray, c_
 	flags['C'] = c_out
 	flags['H'] = h_out
 	return flags
+
+def shift_barrel(x_in: bitarray, s_in: bitarray):
+	r_shift = bitarray(8)
+	r_shift[1:] = x_in[1:] << 1 if s_in[1] else x_in[1:] >> 1
+ 	if s_in[0]:
+		if s_in[1]:
+			c_td = x_in[0]
+			if s_in[2]:
+				r_shift[-1] = False		#Desp. Lógico Izq.
+			else:
+				r_shift[0] = x_in[0]	#Desp. Aritm. Izq.
+		else:
+			c_td = x_in[-1]
+			if s_in[2]:
+				r_shift[0] = False		#Desp. Lógico Der.
+			else:
+				r_shift[-1] = x_in[-1]	#Desp. Aritm. Der.
+	else:
+		if s_in[1]:
+			if s_in[2]:
+				c_td = x_in[0]
+				r_shift[-1] = c_in		#Desp. Lógico Izq.
+			else:
+				c_td = x_in[0]
+				r_shift[-1] = x_in[]	#Desp. Aritm. Izq.
+		else:
+			if s_in[2]:
+				r_shift[0] = False		#Desp. Lógico Der.
+			else:
+				r_shift[-1] = x_in[-1]	#Desp. Aritm. Der.
+		
+        
+def rom_mult(bits):
+    rom = bitarray(32 * (2 ** (2*bits)))
+    for i in range(2 ** (2*bits)):
+        rom[i*32:(i+1)*32] = format((i//(2*bits)) * (i%(2*bits)), '32b')
 
 def alu_16(a_in: bitarray, b_in: bitarray, s_in: bitarray, bits=16):
 	r_ubc, c_ubc, h_ubc = ubc_16(a_in, b_in, s_in[3:], bits)

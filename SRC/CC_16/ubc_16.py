@@ -1,7 +1,7 @@
 from bitarray import bitarray
 
 
-def ubc_16(a_in: bitarray, b_in: bitarray, s_in: bitarray, bits=16):
+def ubc_16(a_in: bitarray, b_in: bitarray, c_in, s_in: bitarray, bits=16):
 	# Step 1: NOT
 	s_in.reverse()
 	a_1 = a_in & (bits * bitarray(str(s_in[4])))
@@ -10,7 +10,8 @@ def ubc_16(a_in: bitarray, b_in: bitarray, s_in: bitarray, bits=16):
 	a_2 = a_1 ^ (bits * bitarray(str(s_in[2])))
 	b_2 = b_1 ^ (bits * bitarray(str(s_in[1])))
 
-	r_out, c_out, h_out = adder_fast(a_2, b_2, s_in[0], bits)
+	carry = c_in if s_in[5] else s_in[0]
+	r_out, c_out, h_out = adder_fast(a_2, b_2, carry, bits)
 	return r_out, c_out, h_out
 
 def adder_fast(a_in, b_in, c_in, bits):
