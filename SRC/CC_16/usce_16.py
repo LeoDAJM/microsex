@@ -1,7 +1,7 @@
 from bitarray import bitarray
 from usc_16 import usc_16
 from names import ubc_flags
-from utils import reg_in_selector, MUX2INT
+from utils import reg_in_selector, MUX2INT, RAM
 
 
 '''
@@ -186,3 +186,10 @@ print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
 print("----------------------------------------------------------------")
 USCE.cycle(b_in, s2_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
 print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
+
+memory = RAM(65536)
+memory.update_byte(3, 932, bitarray('01010111'))
+memory.update_word(1, 932, bitarray('0001110101011001'))
+print(memory.read_byte(3,932))
+print(memory.read_word(1,932))
+print(memory.read_byte(65535, 65535))

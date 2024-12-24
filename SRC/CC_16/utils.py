@@ -4,9 +4,20 @@ def slicer(*args: bitarray, len: bool, bits = 16):
 
 class RAM:
 	def __init__(self, pages = 8):
-		self.memory = bitarray(pages * (2 ** 16))
-	def update(self, page: int, dir: int):
-		len_seg = len(self.memory) - 
+		self.memory = bitarray(8 * pages * (2 ** 16))
+		self.pages = pages
+	def update_byte(self, page: int, dir: int, data: bitarray):
+		#len_seg = self.pages.bit_length()
+		self.memory[8 * (page*65536 + dir) : 8 * (page*65536 + dir) + 8] = data
+	def update_word(self, page: int, dir: int, data: bitarray):
+		self.memory[8 * (page*65536 + dir) : 8 * (page*65536 + dir) + 16] = data
+	def read_byte(self, page: int, dir: int):
+		return self.memory[8 * (page*65536 + dir) : 8 * (page*65536 + dir) + 8]
+	def read_word(self, page: int, dir: int):
+		return self.memory[8 * (page*65536 + dir) : 8 * (page*65536 + dir) + 16]
+	def clear_all(self):
+		self.memory.clear()
+
 def MUX2INT(selector: bitarray):
     d_sel = 0
     selector.reverse()
