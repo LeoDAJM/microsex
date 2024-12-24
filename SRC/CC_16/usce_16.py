@@ -1,54 +1,188 @@
 from bitarray import bitarray
 from usc_16 import usc_16
 from names import ubc_flags
+from utils import reg_in_selector, MUX2INT
 
 
-''' Señal de Control
-	S[0:15] = USC
-	S[15:18] = Control B 3b
-	S[18:20] = Control A 2b
-	S[20:23] = Control X 3b
+'''
+------------ UBC --------------
+S[0:6] = RL MSB(C_ctrl, A_&, B_&, A_^, B_^, c_in)
+S[6:10] = RH MSB(A_&, B_&, A_^, B_^)
+S[10] = Op. Length 0 = 8b, 1 = 16b
+------------ ALU --------------
+S[11:14] = MUX
+	0 0 0 : AND
+	0 0 1 : OR
+	0 1 0 : XOR
+	0 1 1 : UBC
+	1 0 0 : SHIFT BARREL	fl: C V
+	1 0 1 : LUT x			fl: C V H
+	1 1 0 : Free ...
+S[14:17] = Tambor de Desplz.
+	0 0 0 : Rot. Der s/C
+	0 0 1 : Rot. Der c/C
+	0 1 0 : Rot. Izq s/C
+	0 1 1 : Rot. Izq c/C
+	1 0 0 : Dsp. Arit Der 
+	1 0 1 : Dsp. Lógi Der
+	1 1 0 : Dsp. Arit Izq
+	1 1 1 : Dsp. Lógi Izq
+S[17] = TD In Sel
+	0 : ALU A_in
+	1 : ALU B_in
+------------ USC --------------
+S[18] = C_enable
+S[19] = H_enable
+S[20] = V_enable
+S[21] = C_clk
+S[22] = V_clk
+S[23] = N,Z,H,P clk
+------------ USCE -------------
+S[24:28] = Control MUX AL_in
+	0 0 0 0 : AL
+	0 0 0 1 : AH
+	0 0 1 0 : BL
+	0 0 1 1 : BH
+	0 1 0 0 : CL
+	0 1 0 1 : CH
+	0 1 1 0 : DL
+	0 1 1 1 : DH
+	1 0 0 0 : Memoria_byte_word
+	1 0 0 1 : Flags_byte
+	1 0 1 0 : IP_L
+	1 0 1 1 : Segment_L
+	1 1 0 0 : IX_L
+	1 1 0 1 : IY_L
+	1 1 1 0 : IZ_L
+	1 1 1 1 : Data_EXT
+S[28:32] = Control MUX BL_in
+	0 0 0 0 : AL
+	0 0 0 1 : AH
+	0 0 1 0 : BL
+	0 0 1 1 : BH
+	0 1 0 0 : CL
+	0 1 0 1 : CH
+	0 1 1 0 : DL
+	0 1 1 1 : DH
+	1 0 0 0 : Memoria_byte
+	1 0 0 1 : Flags_byte
+	1 0 1 0 : IP_L 				NC
+	1 0 1 1 : Segment_L			NC
+	1 1 0 0 : IX_L				NC
+	1 1 0 1 : IY_L				NC
+	1 1 1 0 : IZ_L				NC
+	1 1 1 1 : Vector INT_byte	NC
+S[32:36] = Control MUX AH_in
+	0 0 0 0 : AL
+	0 0 0 1 : AH
+	0 0 1 0 : BL
+	0 0 1 1 : BH
+	0 1 0 0 : CL
+	0 1 0 1 : CH
+	0 1 1 0 : DL
+	0 1 1 1 : DH
+	1 0 0 0 : Memoria_byte
+	1 0 0 1 : Flags_byte
+	1 0 1 0 : IP_H
+	1 0 1 1 : Segment_H
+	1 1 0 0 : IX_H
+	1 1 0 1 : IY_H
+	1 1 1 0 : IZ_H
+	1 1 1 1 : Data_EXT
+S[36:40] = Control MUX BH_in
+	0 0 0 0 : AL
+	0 0 0 1 : AH
+	0 0 1 0 : BL
+	0 0 1 1 : BH
+	0 1 0 0 : CL
+	0 1 0 1 : CH
+	0 1 1 0 : DL
+	0 1 1 1 : DH
+	1 0 0 0 : Memoria_byte
+	1 0 0 1 : Flags_byte
+	1 0 1 0 : IP_L 				NC
+	1 0 1 1 : Segment_L			NC
+	1 1 0 0 : IX_L				NC
+	1 1 0 1 : IY_L				NC
+	1 1 1 0 : IZ_L				NC
+	1 1 1 1 : Vector INT_byte	NC
+S[40:43] = Acumulador de Salida Low
+	0 0 0 : AL
+	0 0 1 : AH
+	0 1 0 : BL
+	0 1 1 : BH
+	1 0 0 : CL
+	1 0 1 : CH
+	1 1 0 : DL
+	1 1 1 : DH
+S[43:45] = Acumulador de Salida High
+	0 0 : AX
+	0 1 : BX
+	1 0 : CX
+	1 1 : DX
 '''
 class usce_16:
 	def __init__(self, bits = 16):
-		self.ax = bitarray(8)
-		self.bx = bitarray(8)
-		self.cx = bitarray(8)
+		self.ax = bitarray(bits)
+		self.bx = bitarray(bits)
+		self.cx = bitarray(bits)
+		self.dx = bitarray(bits)
+		self.a_in = bitarray(bits)
+		self.b_in = bitarray(bits)
 		self.flags = dict(zip(ubc_flags, bitarray(6)))
 		self.bits = bits
-		self.USC = usc_16()
+		self.USC = usc_16(bits)
 
-	def clock_usc(self, a_in: bitarray, b_in: bitarray):
-		self.USC.clock(a_in, b_in, self.s_in[-14:], self.bits)
-  
-	def cycle(self, b_in_ext: bitarray, s_in: bitarray, data_mem: bitarray):
+	def cycle(self, data_ext: bitarray, s_in: bitarray, data_mem: bitarray, IP_in: bitarray, segment_in: bitarray, IX_in: bitarray, IY_in: bitarray, IZ_in: bitarray, c_in = False):
 		self.s_in = s_in
-		ctrl_a = s_in[2]*2 + s_in[3]
-		ctrl_b = s_in[4]*4 + s_in[5]*2 + s_in[6]
-		if ctrl_a == 0:
-			a_in = self.ax
-		elif ctrl_a == 1:
-			a_in = self.bx
-		elif ctrl_a == 2:
-			a_in = self.cx
-		else:
-			a_in = self.ax[:8].append('00').append(self.flags)
+		self.a_in[-self.bits//2:] = reg_in_selector(s_in[17:21], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
+		self.b_in[-self.bits//2:] = reg_in_selector(s_in[13:17], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
+		self.a_in[:self.bits//2] = reg_in_selector(s_in[9:13], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
+		self.b_in[:self.bits//2] = reg_in_selector(s_in[5:9], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
+		#print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
+		self.USC.clock(self.a_in, self.b_in, s_in[-24:], c_in)
 
-		if ctrl_b == 0:
-			b_in = b_in_ext
-		elif ctrl_b == 1:
-			b_in = data_mem
-		elif ctrl_b == 2:
-			b_in = self.ax
-		elif ctrl_b == 3:
-			b_in = self.bx
-		elif ctrl_b == 4:
-			b_in = self.cx
+		match MUX2INT(s_in[:2]):
+			case 0:
+				self.ax[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+			case 1:
+				self.bx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+			case 2:
+				self.cx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+			case 3:
+				self.dx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
 
-		self.clock_usc(a_in, b_in)
-		if s_in[0]:
-			self.ax = self.USC.a_buff
-		if s_in[1]:
-			self.bx = self.USC.a_buff
-		if s_in[2]:
-			self.cx = self.USC.a_buff
+		match MUX2INT(s_in[2:5]):
+			case 0:
+				self.ax[-self.bits//2:] = self.USC.a_buff[-self.bits//2:]
+			case 1:
+				self.ax[:self.bits//2] = self.USC.a_buff[-self.bits//2:]
+			case 2:
+				self.bx[-self.bits//2:] = self.USC.a_buff[-self.bits//2:]
+			case 3:
+				self.bx[:self.bits//2] = self.USC.a_buff[-self.bits//2:]
+			case 4:
+				self.cx[-self.bits//2:] = self.USC.a_buff[-self.bits//2:]
+			case 5:
+				self.cx[:self.bits//2] = self.USC.a_buff[-self.bits//2:]
+			case 6:
+				self.dx[-self.bits//2:] = self.USC.a_buff[-self.bits//2:]
+			case 7:
+				self.dx[:self.bits//2] = self.USC.a_buff[-self.bits//2:]
+
+		self.flags = self.USC.flags
+
+
+
+a_in = bitarray('0010 0101 1010 1011') #9.643
+b_in = bitarray('0011 0001 1111 0010') #12.786
+trap2 = bitarray('0010 0101 1010 1011')
+s_in = 	bitarray('00 000 0000 1111 0000 1111 111 111 1 101 011 1 1100 011000') # 22.429 '0101 0111 1001 1101'
+s2_in = bitarray('00 000 1111 0000 1111 0000 111 111 1 101 011 1 1100 011000') # 22.429 '0101 0111 1001 1101'
+
+USCE = usce_16(16)
+USCE.cycle(a_in, s_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
+print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
+print("----------------------------------------------------------------")
+USCE.cycle(b_in, s2_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
+print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
