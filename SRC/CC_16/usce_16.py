@@ -122,11 +122,15 @@ S[42:46] = Acumulador de Salida Low
 	1 0 0 0 : Memoria
 	1 0 0 1 : Puerto
 	1 0 1 0 : Index
+	1 0 1 1 : Flags
 S[46:48] = Acumulador de Salida High
 	0 0 0 : AX
 	0 0 1 : BX
 	0 1 0 : CX
 	0 1 1 : DX
+	1 0 0 : Memoria
+	1 0 1 : Puerto
+	1 1 0 : Index
 '''
 class usce_16:
 	def __init__(self, bits = 16):
@@ -148,16 +152,16 @@ class usce_16:
 		self.b_in[:self.bits//2] = reg_in_selector(s_in[7:11], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
 		print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
 		self.USC.clock(self.a_in, self.b_in, s_in[-26:], c_in)
-
-		match MUX2INT(s_in[:3]):
-			case 0:
-				self.ax[:self.bits//2] = self.USC.a_buff[:self.bits//2]
-			case 1:
-				self.bx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
-			case 2:
-				self.cx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
-			case 3:
-				self.dx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+		if s_in[-11]:
+			match MUX2INT(s_in[:3]):
+				case 0:
+					self.ax[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+				case 1:
+					self.bx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+				case 2:
+					self.cx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
+				case 3:
+					self.dx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
 
 		match MUX2INT(s_in[3:7]):
 			case 0:
@@ -183,8 +187,8 @@ class usce_16:
 
 a_in23 = bitarray('0010 0101 1010 1011') #9.643
 b_in23 = bitarray('0011 0001 1111 0010') #12.786
-s3_in = bitarray('00 000 0000 1111 0000 1111 111 00 111 1 101 011 0 0000 0 1000 0') # 22.429 '0101 0111 1001 1101'
-s2_in = bitarray('00 000 1111 0000 1111 0000 111 00 111 1 101 011 0 0000 0 1100 0') # 22.429 '0101 0111 1001 1101'
+s3_in = bitarray('000 0001  0000 1111 0000 1111 111 00 111 1 101 011 0 0000 0 1000 0') # 22.429 '0101 0111 1001 1101'
+s2_in = bitarray('000 0000  1111 0000 1111 0000 111 00 111 1 101 011 0 0000 0 1100 0') # 22.429 '0101 0111 1001 1101'
 
 USCE = usce_16(16)
 USCE.cycle(a_in23, s3_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)

@@ -55,7 +55,6 @@ class usc_16:
 			if mask[i]:
 				self.flags[k] = flags_gen[k]
 		self.a_buff = r
-		#print("R_USC: ", r, "f:", self.flags)
 
 def temp(s_in: bitarray): # S [12->7]
 	mask = bitarray(6)
