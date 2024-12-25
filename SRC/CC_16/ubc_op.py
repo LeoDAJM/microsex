@@ -1089,10 +1089,6 @@ usce_op = {
 	# ------------------  MEM --------------------
 	# 26 INST POR ACC, TOTAL = 104 + NOP
 	# ------------------  ARITH --------------------
-	# Lógicas
-	0x30: bitarray(21) + alu_op[0x30],		# AND
-	0x31: bitarray(21) + alu_op[0x31],		# OR
-	0x32: bitarray(21) + alu_op[0x32],		# XOR
 	# SET AND CLR (V, C)
 	0x38: bitarray(21) + alu_op[0x0],		# CLR C
 	0x39: bitarray(21) + alu_op[0x0],		# SET C
