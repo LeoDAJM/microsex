@@ -32,9 +32,13 @@ S[17] = TD In Sel
 S[18] = C_enable
 S[19] = H_enable
 S[20] = V_enable
-S[21] = C_clk
-S[22] = V_clk
-S[23] = N,Z,H,P clk
+
+S[21] = C_set
+S[22] = V_set
+
+S[23] = C_clk
+S[24] = V_clk
+S[25] = N,Z,H,P clk
 '''
 
 class usc_16:
@@ -45,7 +49,7 @@ class usc_16:
 	def clock(self, a_in: bitarray, b_in: bitarray, s_in: bitarray, c_in = False):
 		#print("USC_16", a_in, b_in)
 		r, _, flags_gen = alu_16(a_in, b_in, s_in[-18:], self.bits, c_in)
-		self.flags = control(flags_gen, s_in[3:6])
+		self.flags = control(flags_gen, s_in[3:8])
 		mask = temp(s_in[:3])
 		for i, k in enumerate(self.flags.keys()):
 			if mask[i]:
@@ -62,9 +66,9 @@ def temp(s_in: bitarray): # S [12->7]
 
 def control(flags: dict[str, bitarray], s_in: bitarray):
 	s_1 = flags
-	s_1['V'] = flags['V'] & s_in[0]
-	s_1['H'] = flags['H'] & s_in[1]
-	s_1['C'] = flags['C'] & s_in[2]
+	s_1['V'] = (flags['V'] & s_in[2]) | s_in[0]
+	s_1['H'] = flags['H'] & s_in[3]
+	s_1['C'] = (flags['C'] & s_in[4]) | s_in[1]
 	return s_1
 
 # a_in = bitarray('0010 0101 1010 1011') #9.643

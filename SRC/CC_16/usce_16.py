@@ -34,11 +34,15 @@ S[17] = TD In Sel
 S[18] = C_enable
 S[19] = H_enable
 S[20] = V_enable
-S[21] = C_clk
-S[22] = V_clk
-S[23] = N,Z,H,P clk
+
+S[21] = C_set
+S[22] = V_set
+
+S[23] = C_clk
+S[24] = V_clk
+S[25] = N,Z,H,P clk
 ------------ USCE -------------
-S[24:28] = Control MUX AL_in
+S[26:30] = Control MUX AL_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
 	0 0 1 0 : BL
@@ -55,7 +59,7 @@ S[24:28] = Control MUX AL_in
 	1 1 0 1 : IY_L
 	1 1 1 0 : IZ_L
 	1 1 1 1 : Data_EXT
-S[28:32] = Control MUX BL_in
+S[30:34] = Control MUX BL_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
 	0 0 1 0 : BL
@@ -71,8 +75,8 @@ S[28:32] = Control MUX BL_in
 	1 1 0 0 : IX_L				NC
 	1 1 0 1 : IY_L				NC
 	1 1 1 0 : IZ_L				NC
-	1 1 1 1 : Vector INT_byte	NC
-S[32:36] = Control MUX AH_in
+	1 1 1 1 : Data_EXT
+S[34:38] = Control MUX AH_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
 	0 0 1 0 : BL
@@ -88,8 +92,8 @@ S[32:36] = Control MUX AH_in
 	1 1 0 0 : IX_H
 	1 1 0 1 : IY_H
 	1 1 1 0 : IZ_H
-	1 1 1 1 : Data_EXT
-S[36:40] = Control MUX BH_in
+	1 1 1 1 : Data_EXT			NC
+S[38:42] = Control MUX BH_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
 	0 0 1 0 : BL
@@ -106,20 +110,23 @@ S[36:40] = Control MUX BH_in
 	1 1 0 1 : IY_L				NC
 	1 1 1 0 : IZ_L				NC
 	1 1 1 1 : Vector INT_byte	NC
-S[40:43] = Acumulador de Salida Low
-	0 0 0 : AL
-	0 0 1 : AH
-	0 1 0 : BL
-	0 1 1 : BH
-	1 0 0 : CL
-	1 0 1 : CH
-	1 1 0 : DL
-	1 1 1 : DH
-S[43:45] = Acumulador de Salida High
-	0 0 : AX
-	0 1 : BX
-	1 0 : CX
-	1 1 : DX
+S[42:46] = Acumulador de Salida Low
+	0 0 0 0 : AL
+	0 0 0 1 : AH
+	0 0 1 0 : BL
+	0 0 1 1 : BH
+	0 1 0 0 : CL
+	0 1 0 1 : CH
+	0 1 1 0 : DL
+	0 1 1 1 : DH
+	1 0 0 0 : Memoria
+	1 0 0 1 : Puerto
+	1 0 1 0 : Index
+S[46:48] = Acumulador de Salida High
+	0 0 0 : AX
+	0 0 1 : BX
+	0 1 0 : CX
+	0 1 1 : DX
 '''
 class usce_16:
 	def __init__(self, bits = 16):
@@ -135,14 +142,14 @@ class usce_16:
 
 	def cycle(self, data_ext: bitarray, s_in: bitarray, data_mem: bitarray, IP_in: bitarray, segment_in: bitarray, IX_in: bitarray, IY_in: bitarray, IZ_in: bitarray, c_in = False):
 		self.s_in = s_in
-		self.a_in[-self.bits//2:] = reg_in_selector(s_in[17:21], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
-		self.b_in[-self.bits//2:] = reg_in_selector(s_in[13:17], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
-		self.a_in[:self.bits//2] = reg_in_selector(s_in[9:13], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
-		self.b_in[:self.bits//2] = reg_in_selector(s_in[5:9], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
-		#print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
-		self.USC.clock(self.a_in, self.b_in, s_in[-24:], c_in)
+		self.a_in[-self.bits//2:] = reg_in_selector(s_in[19:23], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
+		self.b_in[-self.bits//2:] = reg_in_selector(s_in[15:19], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'L', self.bits, s_in[-11])
+		self.a_in[:self.bits//2] = reg_in_selector(s_in[11:15], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
+		self.b_in[:self.bits//2] = reg_in_selector(s_in[7:11], self.ax, self.bx, self.cx, self.dx, data_mem, self.flags.values(), IP_in, segment_in, IX_in, IY_in, IZ_in, data_ext, 'H', self.bits, s_in[-11])
+		print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
+		self.USC.clock(self.a_in, self.b_in, s_in[-26:], c_in)
 
-		match MUX2INT(s_in[:2]):
+		match MUX2INT(s_in[:3]):
 			case 0:
 				self.ax[:self.bits//2] = self.USC.a_buff[:self.bits//2]
 			case 1:
@@ -152,7 +159,7 @@ class usce_16:
 			case 3:
 				self.dx[:self.bits//2] = self.USC.a_buff[:self.bits//2]
 
-		match MUX2INT(s_in[2:5]):
+		match MUX2INT(s_in[3:7]):
 			case 0:
 				self.ax[-self.bits//2:] = self.USC.a_buff[-self.bits//2:]
 			case 1:
@@ -174,22 +181,21 @@ class usce_16:
 
 
 
-a_in = bitarray('0010 0101 1010 1011') #9.643
-b_in = bitarray('0011 0001 1111 0010') #12.786
-trap2 = bitarray('0010 0101 1010 1011')
-s_in = 	bitarray('00 000 0000 1111 0000 1111 111 111 1 101 011 1 1100 011000') # 22.429 '0101 0111 1001 1101'
-s2_in = bitarray('00 000 1111 0000 1111 0000 111 111 1 101 011 1 1100 011000') # 22.429 '0101 0111 1001 1101'
+a_in23 = bitarray('0010 0101 1010 1011') #9.643
+b_in23 = bitarray('0011 0001 1111 0010') #12.786
+s3_in = bitarray('00 000 0000 1111 0000 1111 111 00 111 1 101 011 0 0000 0 1000 0') # 22.429 '0101 0111 1001 1101'
+s2_in = bitarray('00 000 1111 0000 1111 0000 111 00 111 1 101 011 0 0000 0 1100 0') # 22.429 '0101 0111 1001 1101'
 
 USCE = usce_16(16)
-USCE.cycle(a_in, s_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
+USCE.cycle(a_in23, s3_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
 print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
 print("----------------------------------------------------------------")
-USCE.cycle(b_in, s2_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
+USCE.cycle(b_in23, s2_in, bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), bitarray(16), False)
 print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
 
-memory = RAM(65536)
-memory.update_byte(3, 932, bitarray('01010111'))
-memory.update_word(1, 932, bitarray('0001110101011001'))
-print(memory.read_byte(3,932))
-print(memory.read_word(1,932))
-print(memory.read_byte(65535, 65535))
+#memory = RAM(65536)
+#memory.update_byte(3, 932, bitarray('01010111'))
+#memory.update_word(1, 932, bitarray('0001110101011001'))
+#print(memory.read_byte(3,932))
+#print(memory.read_word(1,932))
+#print(memory.read_byte(65535, 65535))
