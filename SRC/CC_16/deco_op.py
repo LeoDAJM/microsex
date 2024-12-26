@@ -7,7 +7,12 @@
 	Decrementar A	1  0  0  1  0		     A -1	18
 	Sumar A y B	 	1  1  0  0  0		     A +B	24
 	Restar B de A   1  1  0  1  1		     A -B	27
-'''
+
+Modos de DIR:
+	Inherente: Cod. Op.
+	Inmmediato: Cod. Op. + 1 byte (EQU)
+	
+	'''
 import copy
 from bitarray import bitarray
 
@@ -1300,6 +1305,7 @@ usce_op = {
 
 
 microX_op = usc_op.copy()
+microX_direct = []
 # Modo INHERENTE
 for i in microX_op:
 	microX_op[i] = bitarray('00001') + microX_op[i]
@@ -1307,6 +1313,9 @@ for i in microX_op:
 # Modo INMEDIATO
 for i in microX_op:
 	microX_op[i] = bitarray('00010') + microX_op[i]
+
+
+
 
 
 '''# Word Mem
