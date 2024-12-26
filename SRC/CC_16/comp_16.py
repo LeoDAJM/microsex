@@ -2,9 +2,8 @@
 
 from bitarray import bitarray
 from usce_16 import usce_16
-from names import ubc_flags
-from utils import reg_in_selector, MUX2INT, RAM
-from deco_op import usce_op
+from utils import RAM
+from deco_op import microX_op
 
 '''
 ------------ UBC --------------
@@ -182,7 +181,8 @@ class microX:
 		self.SS = bitarray(bits)
 		# Banderas
 		self.flags = bitarray(7)
-	def exec_(self, code_op: int):
-		inst = usce_op[usce_op]
-		arg
+	def exec_(self, code_op: int, ):
+		self.fetch()
 		pass
+	def fetch(self):
+		self.inst = usce_op[usce_op]

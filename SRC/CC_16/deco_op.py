@@ -8,8 +8,10 @@
 	Sumar A y B	 	1  1  0  0  0		     A +B	24
 	Restar B de A   1  1  0  1  1		     A -B	27
 '''
+import copy
 from bitarray import bitarray
 
+from CC_16.comp_16 import microX
 from FUN import usc
 
 ubc_op = {
@@ -1297,6 +1299,15 @@ usce_op = {
 }
 
 
+microX_op = usc_op.copy()
+# Modo INHERENTE
+for i in microX_op:
+	microX_op[i] = bitarray('00001') + microX_op[i]
+
+# Modo INMEDIATO
+for i in microX_op:
+	microX_op[i] = bitarray('00010') + microX_op[i]
+
 
 '''# Word Mem
 		0x11: bitarray('011 0110 0000 0111 0000 0110') + usc_op[0x11],		# CLRW
@@ -1305,5 +1316,11 @@ usce_op = {
 		0x1C: bitarray('011 0110 0000 0111 0000 0110') + usc_op[0x1C],		# INC
 		0x1D: bitarray('011 0110 0000 0111 0000 0110') + usc_op[0x1D],		# DEC'''
 
+'''
+DIRECTO   = Memoria
+INHERENTE = ACC
+INMEDIATO = Dato
+INDEXADO  = Memoria
+'''
 
 print(ubc_op, alu_op)
