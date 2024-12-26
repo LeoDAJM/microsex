@@ -4,3 +4,10 @@ ubc_flags = ['N',
 			'H',
 			'P',
 			'C']
+comp_flags = ['I',
+            'N',
+			'Z',
+			'V',
+			'H',
+			'P',
+			'C']
