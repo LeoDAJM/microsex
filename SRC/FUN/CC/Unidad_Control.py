@@ -6,9 +6,13 @@ from FUN.lr import logica_ramificacion
 from FUN.pd import bloque_puntero_datos
 from FUN.cp import comparador_punteros
 import FUN.CONF.configCC as config
+from tabulate import tabulate
 
 def ciclo_instruccion():
-
+    #DOC2 = config.DO2_CC.copy()
+    #for i in DOC2:
+    #    DOC2[i] = int("".join(str(x) for x in DOC2[i]), 2)
+    #print(DOC2)
     config.RDir = config.PIns
     config.RIns = int(config.m_prog[config.RDir],16)
 

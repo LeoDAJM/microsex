@@ -52,14 +52,14 @@ S[26:30] = Control MUX AL_in
 	0 1 0 1 : CH
 	0 1 1 0 : DL
 	0 1 1 1 : DH
-	1 0 0 0 : Memoria_byte_word
-	1 0 0 1 : Segment_H
-	1 0 1 0 : IP_H
-	1 0 1 1 : IX_H
-	1 1 0 0 : IY_H
-	1 1 0 1 : IZ_H
-	1 1 1 0 : Flags_byte
-	1 1 1 1 : Data_EXT
+	1 0 0 0 : Byte_Ext
+	1 0 0 1 : Word_Ext
+	1 0 1 0 : ---
+	1 0 1 1 : ---
+	1 1 0 0 : ---
+	1 1 0 1 : ---
+	1 1 1 0 : ---
+	1 1 1 1 : ---
 S[30:34] = Control MUX BL_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
@@ -69,14 +69,14 @@ S[30:34] = Control MUX BL_in
 	0 1 0 1 : CH
 	0 1 1 0 : DL
 	0 1 1 1 : DH
-	1 0 0 0 : Memoria_byte
-	1 0 0 1 : Segment_L
-	1 0 1 0 : IP_L
-	1 0 1 1 : IX_L
-	1 1 0 0 : IY_L
-	1 1 0 1 : IZ_L
-	1 1 1 0 : SP_L
-	1 1 1 1 : Data_EXT
+	1 0 0 0 : Byte_Ext
+	1 0 0 1 : Word_Ext
+	1 0 1 0 : ---
+	1 0 1 1 : ---
+	1 1 0 0 : ---
+	1 1 0 1 : ---
+	1 1 1 0 : ---
+	1 1 1 1 : ---
 S[34:38] = Control MUX AH_in
 	0 0 0 0 : AL
 	0 0 0 1 : AH
@@ -86,14 +86,14 @@ S[34:38] = Control MUX AH_in
 	0 1 0 1 : CH
 	0 1 1 0 : DL
 	0 1 1 1 : DH
-	1 0 0 0 : Memoria_byte
-	1 0 0 1 : Segment_H
-	1 0 1 0 : IP_H
-	1 0 1 1 : IX_H
-	1 1 0 0 : IY_H
-	1 1 0 1 : IZ_H
-	1 1 1 0 : Flags_byte
-	1 1 1 1 : Data_EXT			NC
+	1 0 0 0 : Byte_Ext
+	1 0 0 1 : Word_Ext
+	1 0 1 0 : ---
+	1 0 1 1 : ---
+	1 1 0 0 : ---
+	1 1 0 1 : ---
+	1 1 1 0 : ---
+	1 1 1 1 : ---
 S[38:42] = Control MUX BH_in
 	0 0 0 0 : AL				NU
 	0 0 0 1 : AH
@@ -103,13 +103,13 @@ S[38:42] = Control MUX BH_in
 	0 1 0 1 : CH
 	0 1 1 0 : DL				NU
 	0 1 1 1 : DH
-	1 0 0 0 : Memoria_byte
-	1 0 0 1 : Segment_H
-	1 0 1 0 : IP_H
-	1 0 1 1 : IX_H
-	1 1 0 0 : IY_H
-	1 1 0 1 : IZ_H
-	1 1 1 0 : SP_H
+	1 0 0 0 : Byte_Ext
+	1 0 0 1 : Word_Ext
+	1 0 1 0 : ---
+	1 0 1 1 : ---
+	1 1 0 0 : ---
+	1 1 0 1 : ---
+	1 1 1 0 : ---
 	1 1 1 1 : ---
 S[42:46] = Acumulador de Salida Low
 	0 0 0 0 : AL
@@ -120,21 +120,21 @@ S[42:46] = Acumulador de Salida Low
 	0 1 0 1 : CH
 	0 1 1 0 : DL
 	0 1 1 1 : DH
-	1 0 0 0 : Memoria
-	1 0 0 1 : Puerto
-	1 0 1 0 : Flags
-	1 0 1 1 : IX, IY, IZ, SPL
-	1 1 0 0 : IP
-	1 1 0 1 : ES, DS, CS, SS
+	1 0 0 0 : data_ext
+	1 0 0 1 : ---
+	1 0 1 0 : ---
+	1 0 1 1 : ---
+	1 1 0 0 : ---
+	1 1 0 1 : ---
 S[46:49] = Acumulador de Salida High
 	0 0 0 : AX
 	0 0 1 : BX
 	0 1 0 : CX
 	0 1 1 : DX
-	1 0 0 : Memoria
-	1 0 1 : IX, IY, IZ, SPH
-	1 1 0 : IPH
-	1 1 1 : ES, DS, CS, SS
+	1 0 0 : data_ext
+	1 0 1 : ---
+	1 1 0 : ---
+	1 1 1 : ---
 """
 
 
@@ -146,27 +146,14 @@ class usce_16:
         self.dx = bitarray(bits)
         self.a_in = bitarray(bits)
         self.b_in = bitarray(bits)
-        self.mem_out = bitarray(bits)
-        self.port_out = bitarray(bits // 2)
-        self.flags_out = bitarray(bits // 2)
-        self.pointer_out = bitarray(bits)
-        self.index_out = bitarray(bits)
-        self.segment_out = bitarray(bits)
-        self.flags = dict(zip(ubc_flags, bitarray(6)))
         self.bits = bits
+        self.data_out = bitarray(bits)
         self.USC = usc_16(bits)
 
     def cycle(
         self,
-        data_ext: bitarray,
         s_in: bitarray,
-        data_mem: bitarray,
-        IP_in: bitarray,
-        segment_in: bitarray,
-        IX_in: bitarray,
-        IY_in: bitarray,
-        IZ_in: bitarray,
-        SP_in,
+        data_in: bitarray,
         c_in=False,
     ):
         self.s_in = s_in
@@ -176,17 +163,9 @@ class usce_16:
             self.bx,
             self.cx,
             self.dx,
-            data_mem,
-            segment_in,
-            IP_in,
-            IX_in,
-            IY_in,
-            IZ_in,
-            self.flags.values() + bitarray(2),
-            data_ext,
+            data_in,
             "L",
             self.bits,
-            s_in[-11],
         )
         self.b_in[-self.bits // 2 :] = reg_in_selector(
             s_in[15:19],
@@ -194,17 +173,9 @@ class usce_16:
             self.bx,
             self.cx,
             self.dx,
-            data_mem,
-            segment_in,
-            IP_in,
-            IX_in,
-            IY_in,
-            IZ_in,
-            SP_in,
-            data_ext,
+            data_in,
             "L",
             self.bits,
-            s_in[-11],
         )
         self.a_in[: self.bits // 2] = reg_in_selector(
             s_in[11:15],
@@ -212,17 +183,9 @@ class usce_16:
             self.bx,
             self.cx,
             self.dx,
-            data_mem,
-            segment_in,
-            IP_in,
-            IX_in,
-            IY_in,
-            IZ_in,
-            self.flags.values() + bitarray(2),
-            data_ext,
+            data_in,
             "H",
             self.bits,
-            s_in[-11],
         )
         self.b_in[: self.bits // 2] = reg_in_selector(
             s_in[7:11],
@@ -230,19 +193,11 @@ class usce_16:
             self.bx,
             self.cx,
             self.dx,
-            data_mem,
-            segment_in,
-            IP_in,
-            IX_in,
-            IY_in,
-            IZ_in,
-            SP_in,
-            data_ext,
+            data_in,
             "H",
             self.bits,
-            s_in[-11],
         )
-        print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
+        #print("USCE_16:", self.a_in, self.b_in, "EXT:", data_ext)
         self.USC.clock(self.a_in, self.b_in, s_in[-26:], c_in)
         if s_in[-11]:
             match MUX2INT(s_in[:3]):
@@ -255,17 +210,7 @@ class usce_16:
                 case 3:
                     self.dx[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
                 case 4:
-                    self.mem_out[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
-                case 5:
-                    self.index_out[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
-                case 6:
-                    self.pointer_out[: self.bits // 2] = self.USC.a_buff[
-                        : self.bits // 2
-                    ]
-                case 7:
-                    self.segment_out[: self.bits // 2] = self.USC.a_buff[
-                        : self.bits // 2
-                    ]
+                    self.data_out[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
 
         match MUX2INT(s_in[3:7]):
             case 0:
@@ -285,17 +230,7 @@ class usce_16:
             case 7:
                 self.dx[: self.bits // 2] = self.USC.a_buff[-self.bits // 2 :]
             case 8:
-                self.mem_out[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
-            case 9:
-                self.port_out = self.USC.a_buff[-self.bits // 2 :]
-            case 10:
-                self.flags_out = self.USC.a_buff[-self.bits // 2 :]
-            case 11:
-                self.index_out[-self.bits // 2 :] = self.USC.a_buff[-self.bits // 2 :]
-            case 12:
-                self.pointer_out[-self.bits // 2 :] = self.USC.a_buff[-self.bits // 2 :]
-            case 13:
-                self.segment_out[-self.bits // 2 :] = self.USC.a_buff[-self.bits // 2 :]
+                self.data_out[: self.bits // 2] = self.USC.a_buff[: self.bits // 2]
 
         self.flags = self.USC.flags
 
@@ -311,27 +246,15 @@ s2_in = bitarray(
 
 USCE = usce_16(16)
 USCE.cycle(
-    a_in23,
     s3_in,
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
+    a_in23,
     False,
 )
 print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)
 print("----------------------------------------------------------------")
 USCE.cycle(
-    b_in23,
     s2_in,
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
-    bitarray(16),
+    b_in23,
     False,
 )
 print("AX", USCE.ax, "BX", USCE.bx, "CX", USCE.cx, "DX", USCE.dx, USCE.flags)

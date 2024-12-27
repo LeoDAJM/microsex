@@ -25,7 +25,7 @@ def MUX2INT(selector: bitarray):
         d_sel += selector[i]*(2 ** i)
     return d_sel
 
-def reg_in_selector(s_in: bitarray, ax: bitarray, bx: bitarray, cx: bitarray, dx: bitarray, mem: bitarray, s_9: bitarray, s_10: bitarray, s_11: bitarray, s_12: bitarray, s_13: bitarray, s_14: bitarray, data_ext: bitarray, pond: str, bits: int, bits8_16: bool):
+def reg_in_selector(s_in: bitarray, ax: bitarray, bx: bitarray, cx: bitarray, dx: bitarray, data_ext: bitarray, pond: str, bits: int):
     x_in = bitarray(bits//2)
     #print(MUX2INT(s_in), s_in)
     match MUX2INT(s_in):
@@ -45,26 +45,8 @@ def reg_in_selector(s_in: bitarray, ax: bitarray, bx: bitarray, cx: bitarray, dx
             x_in = dx[-bits//2:]
         case 7:
             x_in = dx[:bits//2]
-        case 8:
-            if pond == 'H':
-                x_in = mem[:bits//2]
-            elif pond == 'L':
-                x_in = mem[-bits//2:] if bits8_16 else mem[:bits//2]
-        case 9:
-            x_in = s_9[:bits//2] if pond == 'H' else s_9[-bits//2:]
-        case 10:
-            x_in = s_10[:bits//2] if pond == 'H' else s_10[-bits//2:]
-        case 11:
-            x_in = s_11[:bits//2] if pond == 'H' else s_11[-bits//2:]
-        case 12:
-            x_in = s_12[:bits//2] if pond == 'H' else s_12[-bits//2:]
-        case 13:
-            x_in = s_13[:bits//2] if pond == 'H' else s_13[-bits//2:]
-        case 14:
-            x_in = s_14[:bits//2] if pond == 'H' else s_14[-bits//2:]
-        case 15:
-            if pond == 'H' and bits8_16:
-                x_in = data_ext[:bits//2]
-            elif pond == 'L':
-                x_in = data_ext[-bits//2:]
+        case 8:                            # Byte
+            x_in = data_ext[-bits//2:]
+        case 9:                            # Word
+            x_in = data_ext[:bits//2] if pond == 'H' else data_ext[-bits//2:]
     return x_in
