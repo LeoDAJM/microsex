@@ -58,13 +58,13 @@ def validate_sseg(DATOS, origen, sym_t, sym, vals, dir):
         else:
             errores, mensaje = err_sintaxis(errores, mensaje, Index_SSEG)
         if errores == 0:
-            mensaje = f"{mensaje}\n ** OK **: {_dic_sel['allRight_ds']}"
+            mensaje = f"{mensaje}\n ** OK **: {_dic_sel['allRight_ss']}"
         else:
-            mensaje = f"{mensaje}\n ** {_dic_sel['tot_ds_eRR']} {errores}"
+            mensaje = f"{mensaje}\n ** {_dic_sel['tot_ss_eRR']} {errores}"
         for i in range(Index_SSEG + 1, Index_CSEG):
-            if DATOS[i][0] != ".ORG":
+            if len(DATOS[i]) > 0 and DATOS[i][0] != ".ORG":
                 errores, mensaje = err_directiva_desconocida(errores, mensaje, DATOS[i][0], i)
-            else:
+            elif len(DATOS[i]) == 2:
                 direccion = origen[i+1]
         return errores, mensaje, direccion, to_cseg, st_dir
     else:
