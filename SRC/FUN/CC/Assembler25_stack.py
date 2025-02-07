@@ -36,7 +36,7 @@ numeros = tuple(str(i) for i in string.digits)
 def validate_sseg(DATOS, origen, sym_t, sym, vals, dir):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
-    print(Datac0)
+    #print(Datac0)
     errores = 0
     mensaje = ''
     Index_CSEG = DATOS.index([".CSEG"])

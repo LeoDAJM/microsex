@@ -260,6 +260,9 @@ dict_asm = {
         #asm 4
         "allRight_cs": "todo correcto en segmento de código",
         "tot_cs_eRR": "Total errores en segmento de código:",
+        #asm 4
+        "allRight_ss": "todo correcto en segmento de pila",
+        "tot_ss_eRR": "Total errores en segmento de pila:",
         #line_eRR
         #inv_numb
         #unk_dir
@@ -275,16 +278,16 @@ dict_asm = {
         "end_code": "end of code",
         "line_eRR": "Error on line",
         "inv_numb": "invalid number",
-        "allRight_dir": "all correct in segment directives",
+        "allRight_dir": "No issues found in segment directives",
         "tot_dir_eRR": "Total errors in directives:",
         "code_dir_eRR": "Code error: missing directive ",
         "rep_dir_eRR": "duplicate directive",
         "line": "line",
         "unk_dir_eRR": "unknown directive",
-        "syntax_eRR": "incorrect syntax",
+        "syntax_eRR": "invalid syntax",
 
         #asm 2
-        "allRight_ds": "all correct in data segment",
+        "allRight_ds": "No issues found in data segment",
         "tot_ds_eRR": "Total errors in data segment:",
         #line_eRR
         "content_inv_eRR": "invalid content",
@@ -296,8 +299,11 @@ dict_asm = {
         #syntax_eRR
         
         #asm 4
-        "allRight_cs": "all correct in code segment",
+        "allRight_cs": "No issues found in code segment",
         "tot_cs_eRR": "Total errors in code segment:",
+        #asm 4
+        "allRight_cs": "No issues found in stack segment",
+        "tot_cs_eRR": "Total errors in stack segment:",
         #line_eRR
         #inv_numb
         #unk_dir

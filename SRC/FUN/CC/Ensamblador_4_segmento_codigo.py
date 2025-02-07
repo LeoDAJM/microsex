@@ -24,7 +24,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
     Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
 
     if to_cseg:
-        _cont_m_prog = [195, st_dir//256, st_dir%256]  # C# = 195
+        st_dir -= 1
+        _cont_m_prog = [195, st_dir//256, st_dir%256]  # C3 = 195
         listado[Index_SSEG + 1] = [
             hex(direccion),
             [

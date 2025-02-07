@@ -24,33 +24,34 @@ def ciclo_instruccion():
     direccionamiento_dir = config.modo_direccionamiento[2]
     direccionamiento_idx = config.modo_direccionamiento[3]
     if direccionamiento_inh == 1 and config.uso_pila == 1:
-        print('INHERENTE Y PILA')
+        #print('INHERENTE Y PILA')
         pila()
         return
     if config.modo_direccionamiento == [1,1,1,1]:
-        print('INH, INMEDIATO, DIRECCIONADO, INDEXADO')
+        #print('INH, INMEDIATO, DIRECCIONADO, INDEXADO')
         port()
         return
     elif direccionamiento_inh == 1 and config.senal_control_LR[18] == 0: # 18 = RET
-        print('INHERENTE y No RET')
+        #print('INHERENTE y No RET')
         salir()
         return
     elif direccionamiento_idx == 1:
-        print('INDEXADO')
+        #print('INDEXADO')
         index()
         return
     if config.senal_control_LR[18] == 1:
-        print('RETORNO')
+        #print('RETORNO')
         retorno_subrutina()
         return
 
-    print('DIRECCIONAMIENTO DIRECTO')
+    #if direccionamiento_dir:
+    #    print('DIRECCIONAMIENTO DIRECTO')
     config.PIns += 1
     config.RDir = config.PIns
     config.BMem = hex_a_op(config.m_prog[config.RDir])
 
     if direccionamiento_inm == 1 and config.senal_control_PD[:3] == [0,0,0]:
-        print('INMEDIATO y NO PUNTERO')
+        #print('INMEDIATO y NO PUNTERO')
         salir()
         return
 
@@ -60,28 +61,28 @@ def ciclo_instruccion():
     config.PIns += 1
     
     if config.senal_control_LR[19] == 1:
-        print('CALL VECTOR')
+        #print('CALL VECTOR')
         call_vector_routine()
         return
     
     config.RDir = config.PIns
     config.RDat[:8] = hex_a_op(config.m_prog[config.RDir])
     if direccionamiento_inm == 1:
-        print('INMEDIATO')
+        #print('INMEDIATO')
         salir()
         return
 
     if config.senal_control_LR[17] == 1:
-        print('CALL')
+        #print('CALL')
         llamada_subrutina()
         return
     config.RDir = int(op_a_dec(config.RDat))
     if config.guardado_punteros == 1:
-        print('GUARDADO PUNTEROS')
+        #print('GUARDADO PUNTEROS')
         guard_punt()
         return
     if config.senal_control_PD[:3] != [0,0,0]:
-        print('PUNTERO')
+        #print('PUNTERO')
         carga_punt()
         return
     config.BMem = hex_a_op(config.m_prog[config.RDir])
