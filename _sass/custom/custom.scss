@@ -14,16 +14,15 @@
     /* .site-nav > .nav-list-link {
         color: #A5A3A6
     } */
-    .site-nav {
-        width: 24rem;
-    }
+
+    @media (min-width: 66.5rem) {
+        .site-nav, .site-header, .site-footer {
+          width: 24rem;
+        }
+      }
     
     .nav-list .nav-list-item>.nav-list {
         padding-left: 1.25rem;
-    }
-
-    .site-nav .nav-list-link {
-        color: #A5A3A6;
     }
 
     .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {
