@@ -747,7 +747,7 @@ class ComputadorCompleto(QMainWindow):
     # region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
-        self.registros.edit_PIns.setText(format(self._ds["c"] * 16, "X").zfill(4))
+        self.registros.edit_PIns.setText(format(self.csInit, "X").zfill(4))
         config.PIns = int(self.registros.edit_PIns.text(), 16)
         config2.cs_initial = int(self.registros.edit_PIns.text(), 16)
 
@@ -758,7 +758,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            cod, err, msj, mp, ls, ts, libs = self.open_toload()
+            cod, err, msj, mp, ls, ts, libs = self.openToLoad()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
@@ -770,13 +770,15 @@ class ComputadorCompleto(QMainWindow):
                 self.load(self.nombre_archivo, cod, ls, ts, libs)
                 self.state_def(True, True, True, True)
 
-    def open_toload(self):
+    def openToLoad(self):
         with open(self.nombre_archivo, encoding="utf-8") as archivo:
             programa = archivo.readlines()
             cod = list(programa)
         err, msj, mp, ls, ts, libs, self._ds = verificacion_codigo(
                 programa, self.nombre_archivo
             )
+        self.csInit = self._ds["c"]
+        self._ds = {k: (v // 16 if v is not None else None) for k, v in self._ds.items()}
         
         return cod,err,msj,mp,ls,ts,libs
 
@@ -809,7 +811,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            cod, err, msj, mp, ls, ts, libs = self.open_toload()
+            cod, err, msj, mp, ls, ts, libs = self.openToLoad()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
