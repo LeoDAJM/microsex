@@ -1,8 +1,9 @@
 ---
 title: Microsex - HomePage
-layout: home
+# layout: home
+layout: minimal
 nav_order: 1
-description: "Sitio (no) Oficial del Emulador Microsex v1.1 desarrollado como proyecto de materia ETN801, pen el año 2024 mes de Octubre."
+description: "Sitio Oficial del Emulador Microsex v1.1 desarrollado como proyecto de materia ETN801, en el año 2024 mes de Octubre."
 permalink: /
 ---
 
