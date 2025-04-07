@@ -22,13 +22,17 @@
       }
     
     .nav-list .nav-list-item>.nav-list {
-        padding-left: 1.1rem;
+        padding-left: 1rem;
     }
 
     .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {
-        color: #B5B3B6;
+        color: #81baff;
     }
 
-    .nav-list .nav-list-item > .nav-list .nav-list-item > .nav-list-link {
+    .nav-list .nav-list-item > .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {
+        color: #d3e0f5;
+    }
+
+    .nav-list .nav-list-item > .nav-list .nav-list-item > .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {
         color: #E5E3E6;
     }
