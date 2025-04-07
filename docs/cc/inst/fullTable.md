@@ -77,7 +77,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Inverso</td>
-            <td style="text-align: center;">not</td>
+            <td style="text-align: center;">cpl</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">04</td>
@@ -422,7 +422,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Hacer un alto al programa</td>
-            <td style="text-align: center;">hlt</td>
+            <td style="text-align: center;">fin</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">10</td>
             <td style="text-align: center;">-</td>
@@ -434,7 +434,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Cero al acarreo</td>
-            <td style="text-align: center;">clc</td>
+            <td style="text-align: center;">vbc</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">20</td>
             <td style="text-align: center;">-</td>
@@ -446,7 +446,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Cero al desborde</td>
-            <td style="text-align: center;">clv</td>
+            <td style="text-align: center;">bvd</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">30</td>
             <td style="text-align: center;">-</td>
@@ -458,7 +458,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Establecer acarreo</td>
-            <td style="text-align: center;">sec</td>
+            <td style="text-align: center;">vac</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">90</td>
             <td style="text-align: center;">-</td>
@@ -470,7 +470,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Establecer desborde</td>
-            <td style="text-align: center;">sev</td>
+            <td style="text-align: center;">vad</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">A0</td>
             <td style="text-align: center;">-</td>
@@ -482,7 +482,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Cero al resultado</td>
-            <td style="text-align: center;">clr</td>
+            <td style="text-align: center;">bor</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">01</td>
@@ -662,7 +662,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td rowspan=3 style="text-align: left;">Guardar acumulador</td>
-            <td style="text-align: center;">sta a</td>
+            <td style="text-align: center;">gda a</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -673,7 +673,7 @@ parent: Instrucciones del Computador Completo
             <td style="text-align: center;">82</td>
         </tr>
         <tr>
-            <td style="text-align: center;">sta b</td>
+            <td style="text-align: center;">gda b</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -684,7 +684,7 @@ parent: Instrucciones del Computador Completo
             <td style="text-align: center;">92</td>
         </tr>
         <tr>
-            <td style="text-align: center;">sta c</td>
+            <td style="text-align: center;">gda c</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -853,7 +853,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Guardar IX</td>
-            <td style="text-align: center;">sta x</td>
+            <td style="text-align: center;">gda x</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -865,7 +865,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Guardar IY</td>
-            <td style="text-align: center;">sta y</td>
+            <td style="text-align: center;">gda y</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -877,7 +877,7 @@ parent: Instrucciones del Computador Completo
         </tr>
         <tr>
             <td style="text-align: left;">Guardar PP</td>
-            <td style="text-align: center;">sta p</td>
+            <td style="text-align: center;">gda p</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
@@ -1129,6 +1129,11 @@ parent: Instrucciones del Computador Completo
             <td style="text-align: center;">-</td>
         </tr>
         <tr>
+            <td style="text-align: left;">Llamada a subrutina vectorizada</td>
+            <td style="text-align: center;">srv</td>
+            <td colspan=8 style="text-align: center;">(Direccionamiento Vectorizado) 36</td>
+        </tr>
+        <tr>
             <td style="text-align: left;">Retorno de subrutina</td>
             <td style="text-align: center;">ret</td>
             <td style="text-align: center;">-</td>
@@ -1296,6 +1301,42 @@ parent: Instrucciones del Computador Completo
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+        </tr>
+    </tbody>
+</table>
+
+## Manejo de Pila
+
+<table>
+    <thead>
+        <tr>
+            <th rowspan=2 style="text-align: left;">Operación</th>
+            <th rowspan=2 style="text-align: center;">MNEUMÓNICO</th>
+            <th rowspan=2 style="text-align: center;">Inherente</th>
+            <th colspan=3 style="text-align: center;">Acumuladores</th>
+        </tr>
+        <tr>
+            <th style="text-align: center;">A</th>
+            <th style="text-align: center;">B</th>
+            <th style="text-align: center;">C</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">Importar de Puerto a Acumulador</td>
+            <td style="text-align: center;">IMP</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">02</td>
+            <td style="text-align: center;">12</td>
+            <td style="text-align: center;">22</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Exportar de Acumulador a Puerto</td>
+            <td style="text-align: center;">EXP</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">1F</td>
             <td style="text-align: center;">-</td>
             <td style="text-align: center;">-</td>
         </tr>
