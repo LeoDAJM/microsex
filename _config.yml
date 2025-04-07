@@ -18,7 +18,7 @@ url: https://leodajm.github.io
 locale: es_BO
 
 # logo: "/assets/images/just-the-docs.png"
-favicon_ico: "/_img/icon256x256.ico"
+#favicon_ico: "/microsex/assets/icon256x256.ico"
 
 search:
   # Split pages into sections that can be searched individually

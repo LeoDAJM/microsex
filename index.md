@@ -25,7 +25,7 @@ permalink: /
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex/pyqt6?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
 ![PyPI - Version](https://img.shields.io/pypi/v/pyqt6?style=for-the-badge&logo=qt&logoColor=white&label=PyQt6&labelColor=101010)
 
-![image info](/_img/logo.png)
+![image info](/assets/logo.png)
 
 
 [Guía de Inicio](/README){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
@@ -34,11 +34,11 @@ permalink: /
 ---
 
 <span class="fs-8">
-[Instalación](/#contacto){: .btn .btn-green .mr-2 }
+[Instalación](/microsex/#contacto){: .btn .btn-green .mr-2 }
 </span>
 
 <span class="fs-8">
-[Documentación](/docs){: .btn .btn-blue .mr-2 }
+[Documentación](/microsex/docs){: .btn .btn-blue .mr-2 }
 </span>
 
 
