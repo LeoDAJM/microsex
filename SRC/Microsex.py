@@ -11,6 +11,8 @@ from modulo_USCE import *
 from modulo_CC import *
 from FUN.CONF.dict_general import dict_Microsex
 
+import rsc2
+
 
 class Principal(QMainWindow):
 
@@ -44,13 +46,19 @@ class Principal(QMainWindow):
         self.setCentralWidget(self.panel_inicial)
 
         p = self.palette()
-        p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
-        p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        #303435
+        #p.setColor(p.ColorRole.Window, QColor(60,64,72))          # rgb(60,64,72)
+        p.setColor(p.ColorRole.Window, QColor(30,34,35))          # rgb(60,64,72)
+        #p.setColor(p.ColorRole.Window, QColor(48,52,53))          # rgb(60,64,72)
+        #p.setColor(p.ColorRole.WindowText, QColor(0,230,230))     # rgb(0,230,230)
+        #05F2F2
+        p.setColor(p.ColorRole.WindowText, QColor(5,242,242))     # rgb(0,230,230)
         self.setPalette(p)
 
-        self.setFixedSize(350, 550)
-        self.setWindowTitle('Emulador Microsex')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
+        self.setFixedSize(350, 600)
+        self.setWindowTitle('Emulador Microsex 2.0')
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
+
         self.show()
 
 

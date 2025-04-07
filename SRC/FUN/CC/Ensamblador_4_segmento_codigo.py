@@ -22,7 +22,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
     listado = {}
     Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
     Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
-
+    req = [False, 0]
     if to_cseg:
         st_dir -= 1
         _cont_m_prog = [195, st_dir//256, st_dir%256]  # C3 = 195
@@ -36,6 +36,11 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
         for n in range(3):
             m_prog[direccion] = hex(_cont_m_prog[n])
             direccion += 1
+
+    cleanCS = [[i, DATOS[i]] for i in range(Indice_Codigo + 1, Indice_Fin) if len(DATOS[i]) > 0]
+    if (len(cleanCS) > 0) and (cleanCS[0][1][0] == ".ORG"):
+        req = [True, origen[cleanCS[0][0]+1]]
+
 
     for i in range (Indice_Codigo + 1, Indice_Fin):
         if len(DATOS[i]) == 1:
@@ -70,6 +75,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, instruccion, i)
                 else:
                     direccion = origen[i+1]
+                
 
             elif instruccion.startswith(numeros):
                 errores, mensaje = err_sintaxis(errores, mensaje, i)
@@ -153,7 +159,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_di
     else:
         mensaje = f'{mensaje}\n ** {_dic_sel["tot_cs_eRR"]}: {errores}'
 
-    return errores, mensaje, m_prog, listado
+    return errores, mensaje, m_prog, listado, req
 
 #errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento1, argumentos_permitidos[0], i)
 

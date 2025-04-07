@@ -4,8 +4,10 @@ from PyQt6.QtWidgets import QLabel, QPushButton, QComboBox
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from PyQt6.QtGui import QPixmap, QColor, QFont
+from PyQt6.QtGui import QPixmap, QColor, QFont, QIcon
 from PyQt6.QtCore import Qt
+
+import rsc2
 
 from FUN.CONF.HojaEstilos import stylesheet
 
@@ -24,8 +26,7 @@ class PanelInicialWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        Logo = QPixmap(":IMG/LOGO_GRANDE.png")
-
+        Logo = QPixmap(":/icons/regularIcon.png")
         self.logo_inicial = QLabel(self)
         self.logo_inicial.setPixmap(Logo)
         self.logo_inicial.setAlignment(Qt.AlignmentFlag.AlignCenter)

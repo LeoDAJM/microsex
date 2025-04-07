@@ -37,7 +37,22 @@ class LineEditHex(QLineEdit):
             c = c.zfill(self.cant)
         c = c.upper()
         self.setText(c)
+        
+class LineEditHex2(QLineEdit):
+    def __init__(self, digits: int = 2, parent=None):
+        super().__init__(parent)
+        self.digits = digits
 
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        hex_regex = QRegularExpression(f"[0-9A-Fa-f]{{0,{self.digits}}}")
+        validator = QRegularExpressionValidator(hex_regex, self)
+        self.setValidator(validator)
+        self.setMaxLength(self.digits)
+
+    def focusOutEvent(self, event):
+        text = self.text().upper()
+        self.setText(text.zfill(self.digits))
+        super().focusOutEvent(event)
 
 class EditorRegistros(QWidget):
     def __init__(self):
@@ -85,7 +100,7 @@ class EditorRegistros(QWidget):
 # Edición de Registros
         self.edit_acumuladores = [0]*3
         for i in range(3):
-            self.edit_acumuladores[i] = LineEditHex(2)
+            self.edit_acumuladores[i] = LineEditHex2(2)
             self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
@@ -99,10 +114,10 @@ class EditorRegistros(QWidget):
 
         self.edit_punteros = [0]*3
         for i in range(3):
-            self.edit_punteros[i] = LineEditHex(4)
+            self.edit_punteros[i] = LineEditHex2(4)
             self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
 
-        self.edit_PIns = LineEditHex(4)
+        self.edit_PIns = LineEditHex2(4)
         self.edit_PIns.editingFinished.connect(self.editar_PIns)
 
         self.actualizar_registros()

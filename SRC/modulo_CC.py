@@ -10,6 +10,7 @@ from FUN.CONF.configCC import lang_init
 from FUN.CC.portA import *
 from FUN.CC.display import *
 import rc_icons
+import rsc2
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
 from FUN.CC.Ensamblador import *
@@ -72,9 +73,8 @@ class ComputadorCompleto(QMainWindow):
         flags |= Qt.WindowType.WindowMaximizeButtonHint
         self.setWindowFlags(flags)
         self.setWindowTitle(self._dict_sel["Title"])
-        app_icon = QIcon()
-        app_icon.addFile(":IMG/icon32.png", QSize(50, 50))
-        self.setWindowIcon(app_icon)
+        
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
         self.initUI()
         if args is not None and len(args) > 1:  # Acción
             args = args[1:]
@@ -603,7 +603,7 @@ class ComputadorCompleto(QMainWindow):
 
     def dialogo_abrir(self, cust_name=True):
         nombre_archivo = (
-            QFileDialog.getOpenFileName(self, self._dict_sel["open_wndw"])[0]
+            QFileDialog.getOpenFileName(self, self._dict_sel["open_wndw"], filter="Archivos ASM (*.asm);;Archivos de texto (*.txt);;Todos los archivos (*.*)")[0]
             if cust_name
             else cust_name
         )

@@ -10,6 +10,8 @@ from FUN.alu import unidad_aritmetica_logica
 from FUN.usc import unidad_secuencial_calculo
 import FUN.CONF.configUSC as config
 
+import rsc2
+
 
 class USC(QWidget):
 
@@ -423,7 +425,7 @@ class USC(QWidget):
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
 
 
 if __name__ == '__main__':

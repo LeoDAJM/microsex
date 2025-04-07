@@ -59,9 +59,9 @@ estilos_gui = {
                 padding: 10px;
                 padding-right: 25px;
                 border-radius: 4px;
-                border: 2px solid rgb(0, 40, 100);
+                border: 2px solid rgb(0, 80, 150);
                 color: rgb(0, 40, 100);
-                background-color: rgb(0, 180, 180);
+                background-color: rgb(5, 242, 242);
         }
         QComboBox:hover {
                 background-color: rgb(0, 230, 250);
@@ -71,36 +71,39 @@ estilos_gui = {
                 padding-right: 15px;
         }
         QComboBox::drop-down {
-                border: 0px;
+                border: 20px;
+                border-left-width: 0px;
+                border-left-color: transparent;
         }
         QComboBox QAbstractItemView {
-                padding-left: 5px;
+                padding-left: 0px;
                 padding-top: 5px;
                 padding-bottom: 5px;
                 padding-right: 5px;
-                color: rgb(0, 100, 100);
-                background-color: rgb(0, 180, 180);
+                color: rgb(10, 40, 100);
+                background-color: rgb(10, 230, 230);
                 selection-color: rgb(0, 40, 100);
-                selection-background-color: rgb(0, 230, 230);}
+                border: 2px solid rgb(0, 80, 150);
+                selection-background-color: rgb(10, 200, 200);}
         QComboBox:disabled {
-                border: 2px solid rgb(80,80,80);
+                border: 2px solid rgb(20,80,120);
                 color: rgb(0, 100, 100);
-                background-color: rgb(60, 64, 72);}""",
+                background-color: rgb(48,52,53);}""",
 "estilo_boton_inicio": """
         QPushButton {
                 padding: 10px;
-                border: 2px solid rgb(0, 40, 100);
+                border: 2px solid rgb(0, 80, 150);
                 border-radius: 4px;
                 color: rgb(0, 40, 100);
-                background-color: rgb(0, 180, 180);
+                background-color: rgb(5, 242, 242);
         }
         QPushButton:hover{
-                background-color: rgb(100,230,250);
+                background-color: rgb(5,255,255);
         }
         QPushButton:disabled {
-                border: 2px solid rgb(80,80,80);
+                border: 2px solid rgb(20,80,120);
                 color: rgb(0,100,100);
-                background-color: rgb(60,64,72);}""",
+                background-color: rgb(48,52,53);}""",
 "estilo_celdas":  """
         QTableWidget {
                 color: rgb(120, 150, 175);

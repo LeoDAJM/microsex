@@ -45,7 +45,7 @@ class IOPortA(QWidget):
     def update(self):
         for i in range(8):
             self.button[i].setChecked(config.portA[i] == 1)
-    
+
     def reset(self):
         for i in range(8):
             self.button[i].setChecked(False)
