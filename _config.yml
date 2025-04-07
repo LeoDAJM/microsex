@@ -17,8 +17,8 @@ author: DAJM
 url: https://leodajm.github.io
 locale: es_BO
 
-logo: "/assets/images/just-the-docs.png"
-favicon_ico: "/assets/images/favicon.ico"
+# logo: "/assets/images/just-the-docs.png"
+favicon_ico: "/_img/icon256x256.ico"
 
 search:
   # Split pages into sections that can be searched individually
@@ -52,7 +52,7 @@ aux_links: # remove if you don't want this link to appear on your pages
     - https://github.com/LeoDAJM/microsex/
 
 
-back_to_top_text: "Volver al inicio" # Texto del botón "Volver al inicio"
+# back_to_top_text: "Volver al inicio" # Texto del botón "Volver al inicio"
 back_to_top: true                    # Habilita el botón "Volver al inicio"
 
 enable_copy_code_button: true

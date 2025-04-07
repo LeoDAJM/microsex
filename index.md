@@ -11,7 +11,7 @@ permalink: /
 # Microsex - v1.1 (Ale-V)
 {: .no_toc }
 
-## Table of contents
+## Contenidos
 {: .no_toc .text-delta }
 
 1. TOC
@@ -25,35 +25,24 @@ permalink: /
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/LeoDAJM/microsex/pyqt6?style=for-the-badge&logo=comma&logoColor=white&label=Commits&labelColor=101010)
 ![PyPI - Version](https://img.shields.io/pypi/v/pyqt6?style=for-the-badge&logo=qt&logoColor=white&label=PyQt6&labelColor=101010)
 
-<pre><font color="#2F69A2"><b>               =========</b></font>                  <font color="#2F69A2"><b>Project</b></font><b>:</b> microsex (4 branches)
-<font color="#2F69A2"><b>            ===============</b></font>               <font color="#2F69A2"><b>Created</b></font><b>:</b> 5 years ago
-<font color="#2F69A2"><b>           =================</b></font>              <font color="#2F69A2"><b>Languages</b></font><b>:</b> <span style="background-color:#3572A5">                         </span><span style="background-color:#083FA1"> </span>
-<font color="#2F69A2"><b>          ===  ==============</b></font>                        <font color="#3572A5">●</font> Python (95.2 %) <font color="#083FA1">●</font> Markdown (4.8 %)
-<font color="#2F69A2"><b>          ===================</b></font>             <font color="#2F69A2"><b>Authors</b></font><b>:</b> 29% Diego Ramírez 27
-<font color="#2F69A2"><b>                   ==========</b></font>                      26% Diego Ramirez 24
-<font color="#2F69A2"><b>   ========================== </b></font><font color="#FFD940"><b>=======</b></font>              17% Ale_Linux 16
-<font color="#2F69A2"><b> ============================ </b></font><font color="#FFD940"><b>========</b></font>             15% LeoDAJM 14
-<font color="#2F69A2"><b>============================= </b></font><font color="#FFD940"><b>=========</b></font>            12% Alejandro ;) 11
-<font color="#2F69A2"><b>============================ </b></font><font color="#FFD940"><b>==========</b></font>   <font color="#2F69A2"><b>URL</b></font><b>:</b> https://github.com/LeoDAJM/microsex
-<font color="#2F69A2"><b>========================== </b></font><font color="#FFD940"><b>============</b></font>   <font color="#2F69A2"><b>Commits</b></font><b>:</b> 92
-<font color="#2F69A2"><b>============ </b></font><font color="#FFD940"><b>==========================</b></font>   <font color="#2F69A2"><b>Lines of code</b></font><b>:</b> 5 625
-<font color="#2F69A2"><b>========== </b></font><font color="#FFD940"><b>============================</b></font>   <font color="#2F69A2"><b>Size</b></font><b>:</b> 6.69 MiB (58 files)
-<font color="#2F69A2"><b>========= </b></font><font color="#FFD940"><b>=============================</b></font>   <font color="#2F69A2"><b>License</b></font><b>:</b> MIT
-<font color="#2F69A2"><b> ======== </b></font><font color="#FFD940"><b>============================</b></font>    
-<font color="#2F69A2"><b>  ======= </b></font><font color="#FFD940"><b>==========================</b></font>      <span style="background-color:#000000">   </span><span style="background-color:#CD0000">   </span><span style="background-color:#00CD00">   </span><span style="background-color:#CDCD00">   </span><span style="background-color:#0000CD">   </span><span style="background-color:#CD00CD">   </span><span style="background-color:#00CDCD">   </span><span style="background-color:#FAEBD7">   </span>
-<font color="#FFD940"><b>          ==========</b></font>                   
-<font color="#FFD940"><b>          ===================</b></font>          
-<font color="#FFD940"><b>          ==============  ===</b></font>          
-<font color="#FFD940"><b>           =================</b></font>           
-<font color="#FFD940"><b>            ===============</b></font>            
-<font color="#FFD940"><b>               =========</b></font>               
-</pre>
+![image info](/_img/logo.png)
 
 
-[Get started now](/README){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Guía de Inicio](/README){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [View it on GitHub][Repo]{: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
+
+<span class="fs-8">
+[Instalación](/#contacto){: .btn .btn-green .mr-2 }
+</span>
+
+<span class="fs-8">
+[Documentación](/docs){: .btn .btn-blue .mr-2 }
+</span>
+
+
+
 
 ## Introducción
 
