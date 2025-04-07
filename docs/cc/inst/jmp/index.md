@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Salto
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones de salto implementadas y utilizadas dentro del presente proyecto.
 

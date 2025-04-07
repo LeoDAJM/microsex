@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Manejo de Punteros
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones dedicadas al manejo de punteros implementadas y utilizadas dentro del presente proyecto.
 

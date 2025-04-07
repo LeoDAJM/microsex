@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Transferencia
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones de transferencia de datos implementadas y utilizadas dentro del presente proyecto.
 

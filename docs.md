@@ -2,6 +2,7 @@
 title: Documentación
 nav_order: 2
 permalink: /docs/
+has_toc: false
 ---
 
 # Documentación Proyecto Microsex 2.0

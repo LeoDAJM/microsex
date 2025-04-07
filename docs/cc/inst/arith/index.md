@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones Aritméticas
 
---
+---
 
 Esta sección de la detalla el conjunto de instrucciones aritméticas implementadas y utilizadas dentro del presente proyecto.
 

@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Control
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones de control de flujo implementadas y utilizadas dentro del presente proyecto.
 

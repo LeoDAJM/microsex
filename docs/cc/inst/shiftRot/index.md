@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Desplazamiento
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones de desplazamiento de bits implementadas y utilizadas dentro del presente proyecto.
 

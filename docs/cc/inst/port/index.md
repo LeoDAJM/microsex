@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones de Manejo de Puertos
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones para el manejo de puertos de entrada/salida (E/S) implementadas y utilizadas dentro del presente proyecto.
 

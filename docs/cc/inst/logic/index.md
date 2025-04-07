@@ -6,7 +6,7 @@ parent: Instrucciones del Computador Completo
 
 # Operaciones Lógicas
 
---
+---
 
 Esta sección de la documentación detalla el conjunto de instrucciones lógicas implementadas y utilizadas dentro del presente proyecto.
 
