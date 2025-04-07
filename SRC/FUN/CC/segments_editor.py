@@ -28,8 +28,8 @@ class Validador2(QItemDelegate):
 
 class memory(QWidget):
 
-    def __init__(self, type: str, rows = 0, cols = 16):
-        super().__init__()
+    def __init__(self, type: str, parent=None,rows = 0, cols = 16):
+        super().__init__(parent)
         self._lang = config.lang_init
         self._dict_sel = dict_others[self._lang]
         self.initUI(type, rows, cols)
@@ -81,7 +81,9 @@ class memory(QWidget):
             if pos_ini in config.m_prog:
                 self.table.item(r, c).setBackground(QColor(255, 75, 75, 90))
             config.m_prog.update({pos_ini: data})
-        self.table.item(r, c).setText(data)        
+        self.table.item(r, c).setText(data)
+        if pos_ini > (65535 - config.rows_LCD*config.cols_LCD):
+            self.parent().parent().parent()._upd_LCD(data, pos_ini - 65536 + config.rows_LCD*config.cols_LCD)
 
     def reset(self):
         for i, j in itertools.product(range(self.table.rowCount()), range(self.table.columnCount())):

@@ -8,7 +8,9 @@ import sys
 import FUN.CONF.config_custom as config2
 from FUN.CONF.configCC import lang_init
 from FUN.CC.portA import *
+from FUN.CC.display import *
 import rc_icons
+import rsc2
 from FUN.CC.Editor_Codigo import *
 from FUN.CC.Editor_Registros import *
 from FUN.CC.Ensamblador import *
@@ -71,9 +73,8 @@ class ComputadorCompleto(QMainWindow):
         flags |= Qt.WindowType.WindowMaximizeButtonHint
         self.setWindowFlags(flags)
         self.setWindowTitle(self._dict_sel["Title"])
-        app_icon = QIcon()
-        app_icon.addFile(":IMG/icon32.png", QSize(50, 50))
-        self.setWindowIcon(app_icon)
+        
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
         self.initUI()
         if args is not None and len(args) > 1:  # Acción
             args = args[1:]
@@ -134,14 +135,16 @@ class ComputadorCompleto(QMainWindow):
             return
 
     def resizeEvent(self, event: "QResizeEvent"):  # type: ignore
+        hg = event.size().height()
+        wd = event.size().width()
         self.fuente = QFont(
-            self.families[0], min(max(event.size().height() // 80, 10), 14)
+            self.families[0], min(max(hg // 80, 10), 14, wd // 130)
         )
         self.fuente_mid = QFont(
-            self.families[0], min(max(event.size().height() // 85, 7), 12)
+            self.families[0], min(max(hg // 85, 7), 12, wd // 115)
         )
         self.fuente_min = QFont(
-            self.families[0], min(max(event.size().height() // 100, 6), 10)
+            self.families[0], min(max(hg // 100, 6), 10, wd // 110)
         )
         for _, i in self.mem.items():
             i.table.setFont(self.fuente_mid)
@@ -150,17 +153,33 @@ class ComputadorCompleto(QMainWindow):
 
         ed_font = self.fuente
         ed_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 110)
-        self.editor_codigo.editor.lineNumberArea.setFont(self.fuente_mid)
-        self.editor_codigo.editor.setFont(ed_font)
+        self.editor_codigo.editor.lineNumberArea.setFont(QFont(
+            self.families[0], min(max(hg // 85, 7), 12)
+        ))
+        self.editor_codigo.editor.setFont(QFont(
+            self.families[0], min(max(hg // 85, 7), 12)
+        ))
         fontMetrics = QFontMetricsF(ed_font)
         spaceWidth = fontMetrics.horizontalAdvance(" ")
         self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
+        lcd_font = QFont(
+            self.families[0], min(max(hg // 45, 15), 20, wd // 60)
+        )
+        lcd_font.setLetterSpacing(QFont.SpacingType.PercentageSpacing, 200)
+        self.display.display16x2.setFont(lcd_font)
+        self.display.display16x2.setMinimumWidth(int(QFontMetricsF(lcd_font).horizontalAdvance(" "))*(config.cols_LCD+1))
+        self.display.display16x2.setMaximumWidth(int(QFontMetricsF(lcd_font).horizontalAdvance(" "))*(config.cols_LCD+6))
+        
+        #spaceWidth = QFontMetricsF(lcd_font).horizontalAdvance(" ")
+        #self.display.display16x2.setFixedWidth(int(spaceWidth*16)+30)
 
         for child in self.registros.findChildren(QWidget):
             child.setFont(self.fuente_mid)
         for child in self.menuBar().findChildren(QWidget):
             child.setFont(self.fuente_mid)
         self.toolbar.setFont(self.fuente_min)
+        self.lst.table.setFont(self.fuente_mid)
+        self.lst.table.setWordWrap(False)
         super().resizeEvent(event)
 
 
@@ -205,17 +224,17 @@ class ComputadorCompleto(QMainWindow):
         self.bpoints = self.editor_codigo.editor.breakline
         self.editor_codigo.editor.textChanged.connect(self.texto_modificado)
         self.state_lib = False
+        self.monitor.setContentsMargins(0, 0, 0, 0)
         self.monitor.setText(self._dict_sel["txt_mon"])
         self.monitor.setMaximumHeight(100)
         self.monitor.setReadOnly(True)
         self.monitor.setFont(self.fuente)
         self.monitor.setStyleSheet(config.estilo["scrolled_monitor"])
-        
-
 
         self.main_tab = QTabWidget(self, tabPosition=QTabWidget.TabPosition.West, movable=True)
         self.main_tab.addTab(self.editor_codigo, self._dict_sel["editor_tab"])
         self.main_tab.addTab(self.lst, self._dict_sel["lst_tab"])
+        self.main_tab.addTab(self.display, "LCD 16x4")
 
         self.bloque_regSS = QHBoxLayout()
         self.bloque_regSS.addWidget(self.mem["s"], 3)
@@ -353,6 +372,7 @@ class ComputadorCompleto(QMainWindow):
         self.menu_elems[to_en].setEnabled(True)
         self.menu_elems[to_dis2].setEnabled(False)
         self.menu_elems[to_en2].setEnabled(True)
+        self.menu[6].menuAction().setVisible(False)
         # endregion
 
         # region ToolBar
@@ -368,10 +388,11 @@ class ComputadorCompleto(QMainWindow):
         self.lst = lst_table()
         self.editor_codigo = EditorCodigo()
         self.registros = EditorRegistros()
+        self.display = LCD()
         self.mem = {
-            "s": memory("stack"),
-            "c": memory("code"),
-            "d": memory("data"),
+            "s": memory("stack", self),
+            "c": memory("code", self),
+            "d": memory("data", self),
         }
         self.portA = IOPortA()
         self.monitor = QTextEdit(self)
@@ -392,7 +413,8 @@ class ComputadorCompleto(QMainWindow):
         self.layout_grid.setRowMinimumHeight(5,0)
         self.layout_grid.setVerticalSpacing(0)
         for i in range(self.layout_grid.columnCount()):
-            self.layout_grid.setColumnStretch(i, 1)
+            self.layout_grid.setColumnStretch(i, 2)
+        self.layout_grid.setColumnStretch(col1+2, 1)
         for i in range(self.layout_grid.rowCount()):
             self.layout_grid.setRowStretch(i, 1)
         self.layout_grid.setColumnStretch(5,0)
@@ -581,7 +603,7 @@ class ComputadorCompleto(QMainWindow):
 
     def dialogo_abrir(self, cust_name=True):
         nombre_archivo = (
-            QFileDialog.getOpenFileName(self, self._dict_sel["open_wndw"])[0]
+            QFileDialog.getOpenFileName(self, self._dict_sel["open_wndw"], filter="Archivos ASM (*.asm);;Archivos de texto (*.txt);;Todos los archivos (*.*)")[0]
             if cust_name
             else cust_name
         )
@@ -725,7 +747,7 @@ class ComputadorCompleto(QMainWindow):
     # region FUNCIONES DEL MENÚ EJECUTAR --------------------------------------------------
 
     def set_Pins(self):
-        self.registros.edit_PIns.setText(format(self._ds["c"] * 16, "X").zfill(4))
+        self.registros.edit_PIns.setText(format(self.csInit, "X").zfill(4))
         config.PIns = int(self.registros.edit_PIns.text(), 16)
         config2.cs_initial = int(self.registros.edit_PIns.text(), 16)
 
@@ -736,12 +758,7 @@ class ComputadorCompleto(QMainWindow):
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            with open(self.nombre_archivo, encoding="utf-8") as archivo:
-                programa = archivo.readlines()
-                cod = list(programa)
-            err, msj, mp, ls, ts, libs = verificacion_codigo(
-                programa, self.nombre_archivo
-            )
+            cod, err, msj, mp, ls, ts, libs = self.openToLoad()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
@@ -752,6 +769,18 @@ class ComputadorCompleto(QMainWindow):
                 self.portA.reset()
                 self.load(self.nombre_archivo, cod, ls, ts, libs)
                 self.state_def(True, True, True, True)
+
+    def openToLoad(self):
+        with open(self.nombre_archivo, encoding="utf-8") as archivo:
+            programa = archivo.readlines()
+            cod = list(programa)
+        err, msj, mp, ls, ts, libs, self._ds = verificacion_codigo(
+                programa, self.nombre_archivo
+            )
+        self.csInit = self._ds["c"]
+        self._ds = {k: (v // 16 if v is not None else None) for k, v in self._ds.items()}
+        
+        return cod,err,msj,mp,ls,ts,libs
 
     def state_def(
         self, st_comp: bool, st_cnt: bool, st_cnt_bkp: bool, st_edit: bool, mems=True
@@ -777,19 +806,12 @@ class ComputadorCompleto(QMainWindow):
         self.toolbar.actions()[arg3].setEnabled(arg1)
 
     def cargar(self):
-        self.lang_sel = "esp"
-        
         if self.nombre_archivo == False:
             self.save_fcn("como")
         else:
             self.save_fcn("save")
         if self.nombre_archivo:
-            with open(self.nombre_archivo) as archivo:
-                programa = archivo.readlines()
-                cod = list(programa)
-            err, msj, mp, ls, ts, libs = verificacion_codigo(
-                programa, self.nombre_archivo
-            )
+            cod, err, msj, mp, ls, ts, libs = self.openToLoad()
             self.mp = mp.copy()
             self.monitor.setText(msj)
             if err == 0:
@@ -803,7 +825,7 @@ class ComputadorCompleto(QMainWindow):
         ]
         self.lst.update(self.datalst)
         config.m_prog.update(self.mp)
-        self.extraer_valores()
+        #self.extraer_valores()
         self.ds_op()
         self.regen_all()
         self.update_segments(self.mp)
@@ -864,11 +886,9 @@ class ComputadorCompleto(QMainWindow):
 
     def draw_ip(self):
         self.mem["c"].table.item(self.post // 16, self.post % 16).setBackground(
-            QColor(0, 255, 100)
-        )
+                QColor(0, 255, 100))
         self.mem["c"].table.item(self.post // 16, self.post % 16).setForeground(
-            QColor(20, 60, 134)
-        )
+            QColor(20, 60, 134))
         if self.mode != "loaded":
             if config.PIns != "FIN":
                 detected = max(
@@ -919,8 +939,11 @@ class ComputadorCompleto(QMainWindow):
     def csv_gen(self, f, strs):
         writer = csv.writer(f)
         # Guardado de ORG
-        org_data = ["ORG leaps SS,CS,DS"]
-        org_data.extend(str(i) for i in self._ds.values())
+        org_data = ["ORG SS,CS,DS"]
+        #org_data.extend(self._ds[k] if self.chkbx[k].isChecked() else "" for k, _ in self._ds.items())
+        org_data.extend(self._ds[k] for k, _ in self._ds.items())
+        mode = self.chkbx["s"].isChecked()*4 + self.chkbx["c"].isChecked()*2 + self.chkbx["d"].isChecked()*1
+        org_data.extend([mode])
         writer.writerow(org_data)
         for k, x in self.mem.items():
             if not self.chkbx[k].isChecked():
@@ -934,7 +957,8 @@ class ComputadorCompleto(QMainWindow):
                     )
                     or self.response_clear != QMessageBox.StandardButton.Yes
                 ):
-                    row_data = [str(i)]
+                    row_data = [x.table.verticalHeaderItem(i).text()]
+                    #row_data = [str(i)]
                     row_data.extend(
                         x.table.item(i, j).text() for j in range(x.table.columnCount())
                     )
@@ -989,10 +1013,11 @@ class ComputadorCompleto(QMainWindow):
         self.chkbx["d"] = QCheckBox(text=self._dict_sel["DS"])
         if msg_str.upper() == self._dict_sel["imp"].upper():
             self.msg.setWindowTitle(self._dict_sel["ld"])
-            self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
+            if row is not None:
+                self.btt_dialog.clicked.connect(lambda: self.csv2mem(row))
         else:
             self.msg.setWindowTitle(self._dict_sel["dmp"])
-            self.btt_dialog.clicked.connect(lambda: self.save_fun)
+            self.btt_dialog.clicked.connect(self.save_fun)
         layout = QVBoxLayout()
         layout.addWidget(lbl, stretch=1)
         for x, i in self.chkbx.items():
@@ -1027,35 +1052,45 @@ class ComputadorCompleto(QMainWindow):
 
     def recon_seg(self, csv):
         rows = list(csv)
-        for u in rows:
-            for v in range(max(1, len(u) - 1)):
-                if u[v].lower() == "stack segment":
-                    self.state["s"] = True
-                elif u[v].lower() == "code segment":
-                    self.state["c"] = True
-                elif u[v].lower() == "data segment":
-                    self.state["d"] = True
+        mode = int(rows[0][4])
+        segs = ["d", "c", "s"]
+        for i_s in segs:
+            self.state[i_s] = mode % 2 == 1
+            mode = mode // 2
         return rows
 
     def csv2mem(self, rows):
         mem = None
-        for u in rows:
-            for v in range(max(1, len(u) - 1)):
-                if u[v].lower() in ["stack segment", "code segment", "data segment"]:
-                    mem = (
-                        self.mem[u[v].lower()[0]].table
-                        if self.chkbx[u[v].lower()[0]].isChecked()
-                        else None
-                    )
-                elif u[0].lower() == "org leaps ss,cs,ds":
-                    for k, val in self.state.items():
-                        if val:
-                            self._ds[k] = int(u[self._ds.index(k) + 1])
-                    self.ds_op()
-                    self.regen_all()
-                    break
-                elif mem is not None:
-                    mem.item(int(u[0]), v).setText(u[v + 1].zfill(2).upper())
+        temp = {k: (
+                None
+                if rows[0][num + 1] == "None"
+                else int(rows[0][num + 1])
+            )
+            for num, (k, _) in enumerate(self.state.items())}
+        self._ds = temp
+        self.ds_op()
+        self.regen_all()
+        for u in rows[1:]:
+            try:
+                seg = max(
+                    (
+                        k
+                        for k, v in temp.items()
+                        if v is not None and v <= int(u[0][:3], 16)
+                    ),
+                    key=lambda k: temp[k],
+                    default=None,
+                )
+                values = u[1:]
+                values = ["00" if "" else x for x in values]
+                while len(values) < 16:
+                    values.append("00")
+                if self.state[seg]:
+                    for num, val in enumerate(values):
+                        config.m_prog.update({int(u[0],16)+num: val})
+            except Exception:
+                print(f"eRR_l: {u}")
+        self.update_segments(config.m_prog)
         QMessageBox.information(
             self, self._dict_sel["ld_mssg_t"], self._dict_sel["ld_mssg"]
         )
@@ -1169,6 +1204,7 @@ class ComputadorCompleto(QMainWindow):
         self.mem["s"].upd_lang(self.lang_sel)
         self.mem["c"].upd_lang(self.lang_sel)
         self.mem["d"].upd_lang(self.lang_sel)
+        self.display.upd_lang(self.lang_sel)
 
     def chng_dsg(self, dsg: str):
         to_en = 24 if dsg == "new" else 23
@@ -1185,6 +1221,9 @@ class ComputadorCompleto(QMainWindow):
             self.comp_1()
         config.composition = 1 if dsg == "new" else 0
         self.registros.redraw()
+    
+    def _upd_LCD(self, data, pos_ini):
+        self.display.update(data, pos_ini)
         
 
 

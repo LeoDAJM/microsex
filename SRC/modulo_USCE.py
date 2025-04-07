@@ -9,6 +9,8 @@ from FUN.util import *
 from FUN.usce import unidad_secuencial_calculo
 import FUN.CONF.configUSCE as config
 
+import rsc2
+
 
 class USCE(QWidget):
 
@@ -460,7 +462,7 @@ class USCE(QWidget):
 
         self.setFixedSize(700, 540)
         self.setWindowTitle('Unidad Secuencial de Cálculo')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
 
 
 if __name__ == '__main__':

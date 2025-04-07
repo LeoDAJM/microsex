@@ -6,7 +6,7 @@ def crear_archivo_listado(ARCHIVO, DATOS, LISTADO, TS, data_lib: list[list]):
     for i in range(len(DATOS)):
         if i in num_lines:
             num = num_lines.index(i)
-            with open(data_lib[num][2]) as archivo:
+            with open(data_lib[num][2], encoding="utf-8") as archivo:
                 lib_prog = list(archivo.readlines())
                 for k in range(len(lib_prog)):
                     lib_prog[k] = ["lib",lib_prog[k]]
@@ -18,7 +18,7 @@ def crear_archivo_listado(ARCHIVO, DATOS, LISTADO, TS, data_lib: list[list]):
     data_lst(DATOS, LISTADO, archlst, no_lib_listed)
     
     archivo = f'{ARCHIVO[:-3]}lst'
-    with open(archivo, "w") as f:
+    with open(archivo, "w", encoding="utf-8") as f:
         for item in archlst:
             line = '\t'.join(item)
             f.write(f"{line}")

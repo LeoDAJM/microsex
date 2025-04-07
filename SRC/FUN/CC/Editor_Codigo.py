@@ -60,6 +60,11 @@ class Resaltador(QSyntaxHighlighter):
         regla = (patron, formato_etiqueta)
         self.reglas_resaltado.append(regla)
 
+        formato_bsr_rut = QTextCharFormat()
+        formato_bsr_rut.setForeground(config.color_etiquetas)
+        patron = QRegularExpression(r"bsr (.+)")
+        regla = (patron, formato_bsr_rut)
+        self.reglas_resaltado.append(regla)
 
         formato_comentario = QTextCharFormat()
         formato_comentario.setForeground(config.color_comentarios)
@@ -75,18 +80,13 @@ class Resaltador(QSyntaxHighlighter):
         regla = (patron, formato_ascii)
         self.reglas_resaltado.append(regla)
 
-        formato_bsr_rut = QTextCharFormat()
-        formato_bsr_rut.setForeground(config.color_etiquetas)
-        patron = QRegularExpression(r"bsr (.+)")
-        regla = (patron, formato_bsr_rut)
-        self.reglas_resaltado.append(regla)
-
 
 
 
     def highlightBlock(self, text):
         for patron, formato in self.reglas_resaltado:
             expresion = QRegularExpression(patron)
+            expresion.setPatternOptions(QRegularExpression.PatternOption.CaseInsensitiveOption)
             match = expresion.match(text)  # Realiza la búsqueda inicial
 
             while match.hasMatch():  # Verifica si hay coincidencias

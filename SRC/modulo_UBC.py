@@ -8,6 +8,8 @@ from PyQt6.QtGui import QPixmap, QFont, QPen, QColor, QPainter, QPolygonF, QIcon
 from FUN.util import *
 from FUN.ubc import unidad_basica_calculo
 
+import rsc2
+
 import FUN.CONF.configUBC as config
 
 class UBC(QWidget):
@@ -344,7 +346,7 @@ class UBC(QWidget):
 
         self.setFixedSize(700, 500)
         self.setWindowTitle('Unidad Básica de Cálculo')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ instrucciones_arg = argumentos_instrucciones()
 nemonicos = list(instrucciones_arg.keys())
 
 
-def verificar_segmento_codigo(DATOS, origen, TS, direccion):
+def verificar_segmento_codigo(DATOS, origen, TS, direccion, to_cseg: bool, st_dir: int):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
     Indice_Codigo = DATOS.index(['.CSEG'])
     Indice_Fin    = DATOS.index(['.FIN'])
@@ -20,9 +20,29 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
     mensaje = ''
     m_prog = {}
     listado = {}
+    Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
+    Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
+    req = [False, 0]
+    if to_cseg:
+        st_dir -= 1
+        _cont_m_prog = [195, st_dir//256, st_dir%256]  # C3 = 195
+        listado[Index_SSEG + 1] = [
+            hex(direccion),
+            [
+                hex(_cont_m_prog[i])
+                for i in range(3)
+            ],
+        ]
+        for n in range(3):
+            m_prog[direccion] = hex(_cont_m_prog[n])
+            direccion += 1
+
+    cleanCS = [[i, DATOS[i]] for i in range(Indice_Codigo + 1, Indice_Fin) if len(DATOS[i]) > 0]
+    if (len(cleanCS) > 0) and (cleanCS[0][1][0] == ".ORG"):
+        req = [True, origen[cleanCS[0][0]+1]]
+
 
     for i in range (Indice_Codigo + 1, Indice_Fin):
-
         if len(DATOS[i]) == 1:
             instruccion = DATOS[i][0]
 
@@ -55,6 +75,7 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, instruccion, i)
                 else:
                     direccion = origen[i+1]
+                
 
             elif instruccion.startswith(numeros):
                 errores, mensaje = err_sintaxis(errores, mensaje, i)
@@ -64,8 +85,8 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
                     errores, mensaje = err_instruccion_desconocida(errores, mensaje, instruccion, i)
                 else:
 
-                    argumentos_permitidos = instrucciones_arg[instruccion]
-                    argumentos = argumento.split(',')
+                    argumentos_permitidos = instrucciones_arg[instruccion]  # [['acumuladores', 'punteros', 'ppila'],['acumuladores', 'inmediato', 'indexado', 'directo']]
+                    argumentos = argumento.split(',') # ["P", dir+st_size]
 
                     if len(argumentos) != len(argumentos_permitidos):
                         errores, mensaje = err_argumento_invalido(errores, mensaje, argumento, i)
@@ -132,16 +153,15 @@ def verificar_segmento_codigo(DATOS, origen, TS, direccion):
         elif len(DATOS[i]) > 2:
             errores, mensaje = err_sintaxis(errores, mensaje, i)
 
-            # print(i, DATOS[i])
-            # print({direccion: hex(contenido_m_prog[n])})
-
     if errores == 0:
         mensaje = f'{mensaje}\n ** OK **: {_dic_sel["allRight_cs"]}'
 
     else:
         mensaje = f'{mensaje}\n ** {_dic_sel["tot_cs_eRR"]}: {errores}'
 
-    return errores, mensaje, m_prog, listado
+    return errores, mensaje, m_prog, listado, req
+
+#errores, mensaje, simb, argum = verificar_argumento(TS, errores, mensaje, argumento1, argumentos_permitidos[0], i)
 
 def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, permitidos, indice):
     _dic_sel = dict_asm[config.lang_init] if config.lang is None else dict_asm[config.lang]
@@ -206,6 +226,26 @@ def verificar_argumento(tabla_simbolos, errores_previos, mensaje, argumento, per
                 intento += 1
                 errores = errores_previos + 1
                 mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+
+        elif perm == 'vector':
+            if argumento.startswith("#"):
+                simbolo = 'V'
+                argumento = argumento[1::]
+                try:
+                    argumento = eval(argumento)
+                    if argumento > 31:
+                        intento += 1
+                        errores = errores_previos + 1
+                        mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+                    else:
+                        return errores_previos, mensaje, simbolo, [argumento*8]
+                except NameError:
+                    intento += 1
+                    errores = errores_previos + 1
+                    mensaje = mensaje + f'\n{_dic_sel["line_eRR"]} {indice+1}: {_dic_sel["inv_numb"]} "{argumento}"'
+            else:
+                intento += 1
+
         elif perm == 'indexado':
             if argumento.startswith('IX'):
                 argumento = argumento.split('+')

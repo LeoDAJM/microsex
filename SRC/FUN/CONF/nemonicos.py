@@ -74,7 +74,7 @@ nemonicos_computador_completo = {
 
 "BRC M": [[0x15], 3], "BRV M": [[0x16], 3], "BRN M": [[0x17], 3], "BRZ M": [[0x18], 3], "BMA M": [[0x19], 3], "BMI M": [[0x1A], 3], "BME M": [[0x1B], 3], "BNI M": [[0x1C], 3],
 "BNC M": [[0x25], 3], "BNV M": [[0x26], 3], "BRP M": [[0x27], 3], "BNZ M": [[0x28], 3], "BSU M": [[0x29], 3], "BSI M": [[0x2A], 3], "BIN M": [[0x2B], 3], "BII M": [[0x2C], 3],
-"BRI M": [[0x35], 3], "BSR M": [[0x36], 3], "RET":   [[0x37], 1],
+"BRI M": [[0x35], 3], "BSR M": [[0x36], 3], "RET":   [[0x37], 1], "SRV V": [[0X46], 2],
 
 "BOR M": [[0x31], 3], "NEG M": [[0x33], 3], "CPL M": [[0x34], 3],
 "INC M": [[0x73], 3], "DEC M": [[0x74], 3],
@@ -135,6 +135,9 @@ nemonicos_computador_completo = {
 "RPI X": [[0xC0], 1], "RPI Y": [[0xD0], 1], "RPI F": [[0xE0], 1],
 "GPI X": [[0xC2], 1], "GPI Y": [[0xD2], 1], "GPI F": [[0xE2], 1],
 
+"DIN": [[0x0F], 1], "HIN": [[0x1F], 1], "MIN": [[0x2F], 2],
+"RTI": [[0x3F], 1],
+# Deshabilitar INT, Habilitar INT, Mask INT, Return ISR
 }
 
 
@@ -195,6 +198,7 @@ instrucciones_arg = {
 'BII' : [['directo']],
 'BRI' : [['directo']],
 'BSR' : [['directo']],
+'SRV' : [['vector']],
 'RET' : [],
 'GPI' : [['acumuladores', 'punteros', 'banderas']],
 'RPI' : [['acumuladores', 'punteros', 'banderas']],
@@ -204,6 +208,11 @@ instrucciones_arg = {
 'RPI X': [],
 'RPI Y': [],
 'RPI F': [],
+
+'DIN': [],
+'HIN': [],
+'MIN': [['interrupt']],
+'RTI': [],
 }
 
 def nemonicos_microsex():

@@ -4,8 +4,10 @@ from PyQt6.QtWidgets import QLabel, QPushButton, QComboBox
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from PyQt6.QtGui import QPixmap, QColor, QFont
+from PyQt6.QtGui import QPixmap, QColor, QFont, QIcon
 from PyQt6.QtCore import Qt
+
+import rsc2
 
 from FUN.CONF.HojaEstilos import stylesheet
 
@@ -24,8 +26,7 @@ class PanelInicialWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        Logo = QPixmap(":IMG/LOGO_GRANDE.png")
-
+        Logo = QPixmap(":/icons/regularIcon.png")
         self.logo_inicial = QLabel(self)
         self.logo_inicial.setPixmap(Logo)
         self.logo_inicial.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -62,16 +63,20 @@ class PanelInicialWidget(QWidget):
         self.boton_cc.setStyleSheet(estilo["estilo_boton_inicio"])
         self.boton_cc.setFont(fuente)
 
-        txtDMRJ = """Por: Diego Marcelo Ramírez Jove
+        txtFooter = """
+Diego Marcelo Ramírez Jove
 https://github.com/korvec/microsex
-2019
+Diego Alejandro Jimenez Mendoza
+https://github.com/LeoDAJM/microsex
+v1 2019 - v2 2024
 """
 
         # DMRJ = QLabel('Por: Diego Marcelo Ramírez Jove\n2019\n', self)
-        DMRJ = QLabel(txtDMRJ,self)
-        DMRJ.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        footer = QLabel(txtFooter,self)
+        footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         bloque_inicial = QVBoxLayout()
+        bloque_inicial.addStretch(1)
         bloque_inicial.addWidget(self.logo_inicial)
         bloque_inicial.addStretch(1)
         bloque_inicial.addWidget(self.boton_seleccion)
@@ -79,7 +84,7 @@ https://github.com/korvec/microsex
         bloque_inicial.addLayout(bloque_botones_aceptar)
         bloque_inicial.addWidget(self.boton_cc)
         bloque_inicial.addStretch(1)
-        bloque_inicial.addWidget(DMRJ)
+        bloque_inicial.addWidget(footer)
 
         self.setLayout(bloque_inicial)
 

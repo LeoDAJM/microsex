@@ -4,6 +4,7 @@ SRC/FUN/CONF/__pycache__
 SRC/FUN/CC/__pycache__
 /SRC/font
 SRC/rsc.qrc
+rsc.qrc
 /SRC/IMG
 *.qrc
 SRC/test.py
@@ -184,3 +185,17 @@ build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.EmojiChooser.gschema.xm
 build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.FileChooser.gschema.xml
 dist/Microsex
 SRC/to_dec.py
+SRC/test.asm
+SRC/CC_16/__pycache__/alu_16.cpython-312.pyc
+SRC/CC_16/__pycache__/ubc_16.cpython-312.pyc
+SRC/CC_16/__pycache__/usc_16.cpython-312.pyc
+SRC/CC_16/__pycache__/utils.cpython-312.pyc
+SRC/CC_16/__pycache__/alu_16.cpython-312.pyc
+SRC/CC_16/__pycache__/ubc_16.cpython-312.pyc
+test.py
+debug.log
+SRC/test copy.py
+SRC/regular.png
+SRC/regular.ico
+SRC/big.png
+SRC/icon.ico

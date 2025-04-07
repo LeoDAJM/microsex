@@ -46,12 +46,19 @@ def verificar_segmento_datos(DATOS, origen):
 
     Indice_Datos = DATOS.index([".DSEG"])
     Indice_Codigo = DATOS.index([".CSEG"])
+    Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
+    Index_SSEG = False if not (".SSEG" in Datac0) else Datac0.index(".SSEG")
+    Lim_Sup = Indice_Codigo if not (".SSEG" in Datac0) else Index_SSEG
 
     for org in origen:
         if org < Indice_Datos + 1:
             direccion = origen[org]
+    
+    
+    #data_orig = direccion//16
+    data_orig = direccion
 
-    for i in range(Indice_Datos + 1, Indice_Codigo):
+    for i in range(Indice_Datos + 1, Lim_Sup):
 
         if len(DATOS[i]) == 1:
             errores, mensaje = err_sintaxis(errores, mensaje, i)
@@ -84,10 +91,7 @@ def verificar_segmento_datos(DATOS, origen):
                     mensaje,
                 )
             elif directiva != ".ORG":
-                if directiva.startswith("."):
-                    errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
-                else:
-                    errores, mensaje = err_sintaxis(errores, mensaje, i)
+                errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
             else:
                 direccion = origen[i + 1]
 
@@ -139,10 +143,10 @@ def verificar_segmento_datos(DATOS, origen):
                 mensaje,
             )
     if errores == 0:
-        mensaje = mensaje + f"\n ** OK **: {_dic_sel['allRight_ds']}"
+        mensaje = f"{mensaje}\n ** OK **: {_dic_sel['allRight_ds']}"
     else:
         mensaje = f"{mensaje}\n ** {_dic_sel['tot_ds_eRR']} {errores}"
-    return errores, mensaje, tabla_simbolos, lista_simbolos, direccion
+    return errores, mensaje, tabla_simbolos, lista_simbolos, direccion, simbolos, valores, data_orig
 
 
 def sim_all_good(

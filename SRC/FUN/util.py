@@ -65,10 +65,13 @@ def dec_a_sig(txt_dec):
 def bin_a_dec(txt_bin):
     return str(int(txt_bin,2))
 
-
-
 def op_a_dec(mat_bin):
     return bin_a_dec(op_a_bin(mat_bin))
+
+def vec_2_dec(mat_bin):
+    mat_txt_bin = [str(i) for i in mat_bin]
+    mat_txt_bin[8:] = reversed(mat_txt_bin[8:])
+    return str(int("".join(mat_txt_bin),2))
 
 def dec_a_op(num_dec):
     return hex_a_op(dec_a_hex(num_dec))

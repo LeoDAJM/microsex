@@ -37,7 +37,22 @@ class LineEditHex(QLineEdit):
             c = c.zfill(self.cant)
         c = c.upper()
         self.setText(c)
+        
+class LineEditHex2(QLineEdit):
+    def __init__(self, digits: int = 2, parent=None):
+        super().__init__(parent)
+        self.digits = digits
 
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        hex_regex = QRegularExpression(f"[0-9A-Fa-f]{{0,{self.digits}}}")
+        validator = QRegularExpressionValidator(hex_regex, self)
+        self.setValidator(validator)
+        self.setMaxLength(self.digits)
+
+    def focusOutEvent(self, event):
+        text = self.text().upper()
+        self.setText(text.zfill(self.digits))
+        super().focusOutEvent(event)
 
 class EditorRegistros(QWidget):
     def __init__(self):
@@ -60,7 +75,8 @@ class EditorRegistros(QWidget):
 
         self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
         self.lbl_Registro_F.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_banderas = [0]*6
+        
+        self.lbl_banderas = [QLabel()] * 6  # Initialize a list with 6 placeholders
         for i in range(6):
             self.lbl_banderas[i] = QLabel(banderas[i],self)
 
@@ -84,7 +100,7 @@ class EditorRegistros(QWidget):
 # Edición de Registros
         self.edit_acumuladores = [0]*3
         for i in range(3):
-            self.edit_acumuladores[i] = LineEditHex(2)
+            self.edit_acumuladores[i] = LineEditHex2(2)
             self.edit_acumuladores[i].editingFinished.connect(self.editar_acumuladores)
 
         self.edit_banderas = [0]*6
@@ -98,10 +114,10 @@ class EditorRegistros(QWidget):
 
         self.edit_punteros = [0]*3
         for i in range(3):
-            self.edit_punteros[i] = LineEditHex(4)
+            self.edit_punteros[i] = LineEditHex2(4)
             self.edit_punteros[i].editingFinished.connect(self.editar_punteros)
 
-        self.edit_PIns = LineEditHex(4)
+        self.edit_PIns = LineEditHex2(4)
         self.edit_PIns.editingFinished.connect(self.editar_PIns)
 
         self.actualizar_registros()
@@ -296,6 +312,8 @@ class EditorRegistros(QWidget):
         config.AcA = hex_a_op("0")
         config.AcB = hex_a_op("0")
         config.AcC = hex_a_op("0")
+        if isinstance(config2.cs_initial, str):
+            config2.cs_initial = int(config2.cs_initial)
         config.PIns = config2.cs_initial
         for child in self.findChildren(LineEditHex):
             child.setStyleSheet("border: 2px solid rgb(255,255,255);")

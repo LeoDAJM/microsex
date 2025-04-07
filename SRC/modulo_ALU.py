@@ -9,6 +9,8 @@ from FUN.util import *
 from FUN.alu import unidad_aritmetica_logica
 import FUN.CONF.configALU as config
 
+import rsc2
+
 
 class ALU(QWidget):
 
@@ -379,7 +381,7 @@ class ALU(QWidget):
 
         self.setFixedSize(700, 500)
         self.setWindowTitle('Unidad Aritmética Lógica')
-        self.setWindowIcon(QIcon(':IMG/icono.png'))
+        self.setWindowIcon(QIcon(':/icons/navIcon.ico'))
 
 
 if __name__ == '__main__':

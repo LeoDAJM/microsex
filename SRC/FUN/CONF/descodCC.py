@@ -11,37 +11,37 @@ condicionales de ramificación 2
 [bma, bmi, bme, bni,  bsu, bsi, bin, bii]           # S[44:52] OK (LR)
 
 ramificación a subrrutina
-[bsr, ret]                                          # S[52:54] OK (LR)
+[bsr, ret, srv]                               # S[52:55] OK (LR)
 
 contador de programa, 1 = sigue contando, 0 = hacer alto
-[hlt]                                               # S[54]    CC
+[hlt]                                               # S[55]    CC
 
 puntero de datos
-[sel_IX, sel_IY, sel_PP]                            # S[55:58] OK (PD)
+[sel_IX, sel_IY, sel_PP]                            # S[56:59] OK (PD)
 
 instrucciones en punteros
-[inc_dec, carga]                                    # S[58:60] OK (PD)
+[inc_dec, carga]                                    # S[59:61] OK (PD)
 [0, 0] Decremento
 [1, 0] Incremento
 [X, 1] Carga
 
 multicanalizador del puntero de datos
-[mux_LSB]                                           # S[60]    OK (PD)
+[mux_LSB]                                           # S[61]    OK (PD)
 [0] PDat = IX
 [1] PDat = IY
 
 señal de guardado de puntero de datos
-[ST_Puntero]                                        # S[61]    CC
+[ST_Puntero]                                        # S[62]    CC
 [1] STX, STY, STP
 [0] otro caso
 
 comparación de punteros IX, IY
-[CMP_Puntero]                                       # S[62]    OK (CP)
+[CMP_Puntero]                                       # S[63]    OK (CP)
 [0] compara IX
 [1] compara IY
 
 multicanalizador de interfaz de memoria
-[mux2_LSB, mux2_MSB]                                # S[63:66] CC
+[mux2_LSB, mux2_MSB]                                # S[64:67] CC
 [0,0,0] entrada A de la ALU (acumulador seleccionado)
 [1,0,0] resultado de la ALU
 [0,1,0] parte alta de IX
@@ -54,12 +54,12 @@ multicanalizador de interfaz de memoria
 [1,0,0,1] res ALU
 
 instrucciones de pila
-[uso_pila]                                          # S[66] CC
+[uso_pila]                                          # S[67] CC
 [0] No se requiere la pila
 [1] Se usa la pila
 
 instrucciones de puerto bidir
-[uso_port]                                          # S[67] CC
+[uso_port]                                          # S[68] CC
 [0] Salida
 [1] Entrada
 """
@@ -239,13 +239,15 @@ BIN_M = expandir(do_usce[0x00], [0,0,1,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,
 BII_M = expandir(do_usce[0x00], [0,0,1,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,0,1], [0,0], [1])
 
 BSR_M = expandir(do_usce[0x00], [0,0,1,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,0,0], [1,0], [1])
+SRV_V = expandir(do_usce[0x00], [0,0,1,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,0,0], [0,0], [1])
+
 RET   = expandir(do_usce[0x00], [1,0,0,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,0,0], [0,1], [1])
 HLT   = expandir(do_usce[0x00], [1,0,0,0], [0,0,0,0, 0,0,0,0, 0], [0,0,0,0, 0,0,0,0], [0,0], [0])
 
 instrucciones_ramificacion = {
 0x15: BRC_M, 0x16: BRV_M, 0x17: BRN_M, 0x18: BRZ_M, 0x19: BMA_M, 0x1A: BMI_M, 0x1B: BME_M, 0x1C: BNI_M,
 0x25: BNC_M, 0x26: BNV_M, 0x27: BRP_M, 0x28: BNZ_M, 0x29: BSU_M, 0x2A: BSI_M, 0x2B: BIN_M, 0x2C: BII_M,
-0x35: BRI_M, 0x36: BSR_M, 0x37: RET,   0x10: HLT
+0x35: BRI_M, 0x36: BSR_M, 0x46: SRV_V,   0x37: RET,   0x10: HLT
 }
 
 # Se actualiza el descodificador de operaciones con las instrucciones de ramificación
@@ -426,6 +428,14 @@ do_comp[0x22][67] = 1
 [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
 [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]'''
+
+for i in do_comp:
+    do_comp[i].insert(54, 0)
+for i in do2_comp:
+    do2_comp[i].insert(54, 0)
+
+do_comp[0x46][54] = 1
+
 def descodificadorCC():
     return dict(do_comp)
 

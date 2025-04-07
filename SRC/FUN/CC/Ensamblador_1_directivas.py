@@ -5,24 +5,21 @@ def verificar_directivas(DATOS):
     _dic_sel = dict_asm[configCC.lang_init] if configCC.lang is None else dict_asm[configCC.lang]
     errores = 0
     mensaje = ''
-    ndseg = DATOS.count(['.DSEG'])
-    ncseg = DATOS.count(['.CSEG'])
-    nfin  = DATOS.count(['.FIN'])
-
-    if ndseg == 0:
-        errores, mensaje = err_inexistencia_directivas(errores, mensaje, _dic_sel["DS"])
-    elif ndseg > 1:
-        errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, ndseg, '.DSEG')
-
-    if ncseg == 0:
-        errores, mensaje = err_inexistencia_directivas(errores, mensaje, _dic_sel["CS"])
-    elif ncseg > 1:
-        errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, ncseg, '.CSEG')
-
-    if nfin == 0:
-        errores, mensaje = err_inexistencia_directivas(errores, mensaje,  _dic_sel["end_code"])
-    elif nfin > 1:
-        errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, nfin, '.FIN')
+    cntseg = {
+        "DS" : [DATOS.count(['.DSEG']), '.DSEG'],
+        "CS" : [DATOS.count(['.CSEG']), '.CSEG'],
+        "end_code" : [DATOS.count(['.FIN']), '.FIN']
+    }
+    
+    for k, i in cntseg.items():
+        if i[0] == 0:
+            errores, mensaje = err_inexistencia_directivas(errores, mensaje, _dic_sel[k])
+        elif i[0] > 1:
+            errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, i[0], i[1])
+    Datac0 = [x[0] if len(x) > 0 else "" for x in DATOS]
+    csseg = Datac0.count(['.SSEG'])
+    if csseg > 1:
+        errores, mensaje = err_duplicidad_directivas(errores, mensaje, DATOS, csseg, '.SSEG')
 
     origen = {}
     for i in range(len(DATOS)):
@@ -33,11 +30,9 @@ def verificar_directivas(DATOS):
                 elif DATOS[i][0].startswith('.'):
                     if DATOS[i][0] not in directivas:
                         errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
-
             elif len(DATOS[i]) == 2:
                 directiva = DATOS[i][0]
                 contenido = DATOS[i][1]
-
                 if directiva == '.ORG':
                     if contenido.isalnum():
                         if contenido.startswith('0X'):
@@ -50,11 +45,9 @@ def verificar_directivas(DATOS):
                             origen[i+1] = int(contenido)
                         else:
                             errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
-
                     else:
                         errores, mensaje = err_numero_invalido(errores, mensaje, contenido, i)
-
-                elif directiva.startswith('.') and directiva.replace(" ", "") not in [".DB", ".RB"]:
+                elif directiva.startswith('.') and directiva.replace(" ", "") not in [".DB", ".RB", ".SSEG"]:
                     errores, mensaje = err_directiva_desconocida(errores, mensaje, i)
 
         except ValueError:
