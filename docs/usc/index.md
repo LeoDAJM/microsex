@@ -2,7 +2,7 @@
 title: Unidad Secuencial de Cálculo
 nav_order: 3
 permalink: /docs/USC/
-parent: Documentación del Proyecto
+parent: Documentación
 ---
 
 # Descripción Unidad Secuencial de Cálculo

@@ -2,7 +2,7 @@
 title: Computador Completo
 nav_order: 5
 permalink: /docs/CC/
-parent: Documentación del Proyecto
+parent: Documentación
 ---
 
 # Descripción Modulo Computador Completo

@@ -6,7 +6,7 @@ parent: Unidad Básica de Cálculo
 
 # Interfaz
 
-![Poster_UI](__img/poster.png?raw=true)
+![UBC](__img/ubc.png?raw=true)
 
 La interfaz se compone posee:
 - Barra de Estado.

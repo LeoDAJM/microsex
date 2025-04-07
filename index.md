@@ -103,6 +103,11 @@ Para más información o dudas, contacta a LeoDAJM a través del repositorio en 
 {: .warning }
 > This website documents the features of the current `main` branch of the Just the Docs theme. See CHANGELOG for a list of releases, new features, and bug fixes.
 
+## Instrucciones
+
+
+
+
 
 
 ### License
