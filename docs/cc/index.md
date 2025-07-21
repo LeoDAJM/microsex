@@ -14,8 +14,8 @@ Es una plataforma de desarrollo diseñada para facilitar la programación en **M
 
 Al abrir el proyecto, se muestra la pantalla inicial que nos permite elegir el múdlo a ejecutar, en este caso, se debe hacer click en el botón `Computador Completo`:
 
-![cc0sel](/assets/cc0sel.png)
+![cc0sel](../../assets/cc0sel.png)
 
 Y se inicia el módulo.
 
-![cc0clear](/assets/cc0clear.png)
+![cc0clear](../../assets/cc0clear.png)

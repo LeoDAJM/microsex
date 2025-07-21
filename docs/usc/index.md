@@ -11,8 +11,8 @@ parent: Documentación
 
 Al abrir el proyecto, se muestra la pantalla inicial que nos permite elegir el múdlo a ejecutar, en este caso, se debe elegir el módulo `Unidad Secuencial de Cálculo`:
 
-![usc0](/assets/usc0.png)
+![usc0](../../assets/usc0.png)
 
 Y darle click en `Aceptar` para iniciar el módulo.
 
-![usc1](/assets/usc1.png)
+![usc1](../../assets/usc1.png)

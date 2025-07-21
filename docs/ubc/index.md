@@ -15,4 +15,4 @@ Al abrir el proyecto, se muestra la pantalla inicial que nos permite elegir el m
 
 Y darle click en `Aceptar` para iniciar el módulo.
 
-![ubc1](/assets/ubc1.png)
+![ubc1](../../assets/ubc1.png)
