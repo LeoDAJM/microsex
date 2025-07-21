@@ -50,6 +50,44 @@ Microsex fue creado para facilitar el aprendizaje y experimentación en ensambla
 
 ## Instalación
 
+El emulador Microsex 2.0 se distribuye de forma portable, a través de ejecutable(s) para las plataformas:
+- Windows. `(.exe)`
+- Ubuntu 20.04. `(*.)`
+
+Para la instalación del emulador únicamente se debe descargar el ejecutable del apartado de [`Releases`](https://github.com/LeoDAJM/microsex/releases) (Lanzamientos) de la página del [Repositorio de GitHub](https://github.com/LeoDAJM/microsex):
+
+1. Click en `Releases` en
+
+![git1](/assets/git1.png)
+
+2. Buscar la versión con la etiqueta `Latest`, en la sección `Assets` hacer click sobre el archivo `microsexABC_win64_xxx.exe` (Windows) o `microsexABC_ubuntu64_xxx` (Ubuntu) según corresponda para descargar el emulador:
+
+![git1](/assets/git2.png)
+
+Nota: Puedes hacer click en el siguiente [ENLACE](https://github.com/LeoDAJM/microsex/releases/tag/v2.1.0) para ir directamente a la última versión publicada.
+
+3. El ejecutable ya estará descargado en tu equipo (normalmente en la carpeta `Descargas`).
+
+## Guía de Uso (Windows)
+
+1. Abrir el Programa: Ejecuta `microsexABC_win64_xxx.exe` para abrir la interfaz gráfica.
+2. Elegir el módulo a utilizar del emulador:
+    - Unidad Básica de Cálculo.
+    - Unidad Aritmética-Lógica.
+    - Unidad Secuencial de Cálculo.
+    - Unidad Secuencial de Cálculo con Memoria de Datos.
+    - Computador Completo.
+
+![start](/assets/start.png)
+
+Para una guía completa, revisa la documentación online.
+
+
+## Para Modificar el Código (Clonar Repositorio)
+
+{: .warning }
+> Se debe tener instalada una versión de `Git` en el equipo: [Tutorial para Instalar Git](https://git-scm.com/book/es/v2/Inicio---Sobre-el-Control-de-Versiones-Instalaci%C3%B3n-de-Git).
+
 Para instalar y utilizar Microsex, sigue estos pasos:
 
 1. Clona el repositorio:
@@ -67,40 +105,19 @@ Para instalar y utilizar Microsex, sigue estos pasos:
     python Microsex.py
     ```
 
-
-## Guía de Uso
-
-1. Abrir el Programa: Ejecuta Microsex.py para abrir la interfaz gráfica.
-2. Cargar Archivo ASM: Puedes cargar programas en ensamblador escrito en Microsex, módulo_CC.
-3. Ejecutar Programa: Usa el botón de ejecución para simular el programa en la USCE.
-4. Inspeccionar la Memoria: Verifica y modifica el estado de la memoria durante la ejecución.
-
-Para una guía completa, revisa la documentación.
-
-## Contribuir
+## Contribuir (Avanzado)
 
 ¿Quieres contribuir al proyecto? Sigue estos pasos:
 
-- Haz un fork del repositorio y crea una nueva rama para tu feature o bugfix.
+- Haz un fork del repositorio y crea una nueva rama.
 - Haz un pull request con una descripción detallada de tus cambios.
-- Asegúrate de seguir los lineamientos del proyecto.
 
 ## Contacto
 
-Para más información o dudas, contacta a LeoDAJM a través del repositorio en GitHub.
+Para más información o dudas, contacta a LeoDAJM a través del repositorio en GitHub. mediante la pestaña `Issues`.
 
 
-{: .warning }
-> This website documents the features of the current `main` branch of the Just the Docs theme. See CHANGELOG for a list of releases, new features, and bug fixes.
-
-## Instrucciones
-
-
-
-
-
-
-### License
+### Licencia
 
 Distributed by an [MIT license](https://github.com/LeoDAJM/microsex/tree/master/LICENSE).
 
