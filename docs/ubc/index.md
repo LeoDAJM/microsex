@@ -11,7 +11,7 @@ parent: Documentación
 
 Al abrir el proyecto, se muestra la pantalla inicial que nos permite elegir el múdlo a ejecutar, en este caso, se debe elegir el módulo `Unidad Básica de Cálculo`:
 
-![ubc0](../assets/ubc0.png)
+![ubc0](../../assets/ubc0.png)
 
 Y darle click en `Aceptar` para iniciar el módulo.
 
