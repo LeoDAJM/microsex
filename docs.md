@@ -5,7 +5,7 @@ permalink: /docs/
 has_toc: false
 ---
 
-# Documentación Proyecto Microsex 2.0
+# Documentación Microsex 2.0
 
 El presente proyecto se divide en 2 secciones, una para la parte del uso del IDE (debugger gráfico), y otra para el emulador:
 

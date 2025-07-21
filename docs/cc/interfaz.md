@@ -6,10 +6,11 @@ parent: Computador Completo
 
 # Interfaz
 
-![Poster_UI](__img/poster.png?raw=true)
 
 La interfaz se compone posee:
 - Barra de Estado.
 - Barra de Herramientas.
 - Barra de menús.
 - Espacio de Trabajo.
+
+![cc](assets/cc0.png)
