@@ -6,7 +6,6 @@ from FUN.lr import logica_ramificacion
 from FUN.pd import bloque_puntero_datos
 from FUN.cp import comparador_punteros
 import FUN.CONF.configCC as config
-from tabulate import tabulate
 
 def ciclo_instruccion():
     #DOC2 = config.DO2_CC.copy()

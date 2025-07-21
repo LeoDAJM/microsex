@@ -2,6 +2,9 @@ SRC/__pycache__
 SRC/FUN/__pycache__
 SRC/FUN/CONF/__pycache__
 SRC/FUN/CC/__pycache__
+Microsex.build
+icon.png
+Microsex.exe
 /SRC/font
 SRC/rsc.qrc
 rsc.qrc
@@ -184,6 +187,8 @@ build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.Debug.gschema.xml
 build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.EmojiChooser.gschema.xml
 build/Microsex/_pyi_gschema_compilation/org.gtk.Settings.FileChooser.gschema.xml
 dist/Microsex
+Microsex.dist
+Microsex.onefile-build
 SRC/to_dec.py
 SRC/test.asm
 SRC/CC_16/__pycache__/alu_16.cpython-312.pyc
