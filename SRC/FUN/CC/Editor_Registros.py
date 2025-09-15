@@ -64,7 +64,7 @@ class EditorRegistros(QWidget):
     def initUI(self):
         self.lbl_Acumuladores = QLabel(self._dict_sel["ac"], self)
         self.lbl_Acumuladores.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_Acumuladores.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_Acumuladores.setStyleSheet("color: rgb(8, 135, 161); font: bold;")
         self.lbl_acumulador_A = QLabel('A:', self)
         self.lbl_acumulador_B = QLabel('B:', self)
         self.lbl_acumulador_C = QLabel('C:', self)
@@ -73,7 +73,7 @@ class EditorRegistros(QWidget):
         banderas = ['C:', 'D:', 'H:', 'S:', 'Z:', 'P:']
         self.lbl_Registro_F = QLabel(self._dict_sel["flg"], self)
 
-        self.lbl_Registro_F.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_Registro_F.setStyleSheet("color: rgb(8, 135, 161); font: bold;")
         self.lbl_Registro_F.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.lbl_banderas = [QLabel()] * 6  # Initialize a list with 6 placeholders
@@ -82,13 +82,13 @@ class EditorRegistros(QWidget):
 
 
         self.lbl_Punteros = QLabel(self._dict_sel["pnt"], self)
-        self.lbl_Punteros.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_Punteros.setStyleSheet("color: rgb(8, 135, 161); font: bold;")
         self.lbl_Punteros.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_puntero_IX = QLabel('IX:', self)
         self.lbl_puntero_IY = QLabel('IY:', self)
         self.lbl_puntero_PP = QLabel('PP:', self)
         self.lbl_puntero_PI = QLabel('PI', self)
-        self.lbl_puntero_PI.setStyleSheet("color: rgb(201, 233, 210); font: bold;")
+        self.lbl_puntero_PI.setStyleSheet("color: rgb(8, 135, 161); font: bold;")
         self.lbl_puntero_PI.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 

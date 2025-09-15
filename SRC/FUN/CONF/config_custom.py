@@ -1,8 +1,7 @@
 styles_cs = {
 "work_space" : """
         QWidget {
-                color : rgb(200,200,200);
-                background-color : rgb(20,20,20);}""",
+                }""",
 "estilo_boton" : """
         QPushButton {
                 border: 2px solid rgb(30,30,30);

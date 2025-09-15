@@ -157,11 +157,11 @@ class ComputadorCompleto(QMainWindow):
             self.families[0], min(max(hg // 85, 7), 12)
         ))
         self.editor_codigo.editor.setFont(QFont(
-            self.families[0], min(max(hg // 85, 7), 12)
+            self.families[0], min(max(hg // 85, 9), 12)
         ))
         fontMetrics = QFontMetricsF(ed_font)
         spaceWidth = fontMetrics.horizontalAdvance(" ")
-        self.editor_codigo.editor.setTabStopDistance(spaceWidth * 4)
+        self.editor_codigo.editor.setTabStopDistance(spaceWidth * 8)
         lcd_font = QFont(
             self.families[0], min(max(hg // 45, 15), 20, wd // 60)
         )
@@ -178,7 +178,8 @@ class ComputadorCompleto(QMainWindow):
         for child in self.menuBar().findChildren(QWidget):
             child.setFont(self.fuente_mid)
         self.toolbar.setFont(self.fuente_min)
-        self.lst.table.setFont(self.fuente_mid)
+        self.lst.table.setFont(QFont(
+            self.families[0], min(max(hg // 85, 9), 12)))
         self.lst.table.setWordWrap(False)
         super().resizeEvent(event)
 
@@ -425,6 +426,7 @@ class ComputadorCompleto(QMainWindow):
         self.splitter.addWidget(self.mem["d"]) # 0,col1,row1,col2
         self.splitter.addWidget(self.mem["c"]) # row1,col1,row2,col2)
         self.splitter.addWidget(self.mem["s"]) # row1+row2,col1,row3,col2
+        self.splitter.widget(2).setVisible(False)
         self.splitter.setStretchFactor(0, row1)
         self.splitter.setStretchFactor(1, row2)
         self.splitter.setStretchFactor(2, row3)
@@ -434,9 +436,9 @@ class ComputadorCompleto(QMainWindow):
                     x1: 0, x2: 1,
                     stop: 0 #333333, stop: 0.5 #202020, stop: 1 #333333
                 );
-                height: 3.5px;
-                margin-left: 30px;  /* Márgen izquierdo */
-                margin-right: 30px; /* Márgen derecho */
+                height: 2.5px;
+                margin-left: 10px;  /* Márgen izquierdo */
+                margin-right: 10px; /* Márgen derecho */
             }
         """)
         self.splitter.setOpaqueResize(True)
