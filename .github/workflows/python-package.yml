@@ -5,9 +5,9 @@ name: Python package
 
 on:
   push:
-    branches: [ "master" , "pyqt6" ]
+    branches: [ "master", "dev" ]
   pull_request:
-    branches: [ "master" , "pyqt6" ]
+    branches: [ "master", "dev" ]
 
 jobs:
   build:
