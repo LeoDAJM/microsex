@@ -38,7 +38,7 @@ def bloque_puntero_datos(punteros_anterior, registro_datos, desplazamiento, sena
     return punteros_acutal, puntero_datos
 
 def operaciones_puntero(puntero_anterior, registro_datos, inc_dec, carga):
-
+    
     if carga == 0:
         if inc_dec == 0:
             puntero_actual = int(puntero_anterior) - 1
@@ -46,5 +46,4 @@ def operaciones_puntero(puntero_anterior, registro_datos, inc_dec, carga):
             puntero_actual = int(puntero_anterior) + 1
     else:
         puntero_actual = op_a_dec(registro_datos)
-
     return puntero_actual

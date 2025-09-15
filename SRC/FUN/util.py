@@ -44,17 +44,11 @@ def hex_a_dec(txt_hex):
     return str(int(txt_hex,16))
 
 def dec_a_hex(txt_dec):
-    txt_hex = hex(int(txt_dec))
-    txt_hex = txt_hex.split('x')[1]
-    txt_hex = txt_hex.zfill(2)
-    txt_hex = txt_hex.upper()
+    txt_hex = format(int(txt_dec) & 0xff, '02X')
     return txt_hex
 
 def dec_a_hex4(txt_dec):
-    txt_hex = hex(int(txt_dec))
-    txt_hex = txt_hex.split('x')[1]
-    txt_hex = txt_hex.zfill(4)
-    txt_hex = txt_hex.upper()
+    txt_hex = format(int(txt_dec) & 0xffff, '04X')
     return txt_hex
 
 
