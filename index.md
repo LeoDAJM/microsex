@@ -54,7 +54,7 @@ Para la instalación del emulador únicamente se debe descargar el ejecutable de
 
 ![git1](/assets/git2.png)
 
-Nota: Puedes hacer click en el siguiente [ENLACE](https://github.com/LeoDAJM/microsex/releases/tag/v2.1.0) para ir directamente a la última versión publicada.
+Nota: Puedes hacer click en el siguiente [ENLACE](https://github.com/LeoDAJM/microsex/releases/latest) para ir directamente a la última versión publicada.
 
 3. El ejecutable ya estará descargado en tu equipo (normalmente en la carpeta `Descargas`).
 
